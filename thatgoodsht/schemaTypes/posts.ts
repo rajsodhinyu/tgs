@@ -21,6 +21,14 @@ export const postType = defineType({
             validation: rule => rule.required()
         }),
         defineField({
+            name: 'slug',
+            title: 'URL',
+            type: 'slug',
+            options: {source: 'name'},
+            description: 'thatgoodshitmusic.com/',
+            validation: rule => rule.required()
+        }),
+        defineField({
             name: 'date',
             title: 'Date',
             type: 'date',

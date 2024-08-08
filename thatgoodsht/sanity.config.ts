@@ -12,7 +12,7 @@ import { BsCalendar2Heart, BsPerson, BsPencilSquare } from "react-icons/bs"
 export default defineConfig({
   name: 'default',
   icon: myLogo,
-  title: "That Good Shit",
+  title: "ThatGoodShit",
 
   projectId: 'fnvy29id',
   dataset: 'tgs',

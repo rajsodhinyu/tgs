@@ -41,6 +41,17 @@ export const eventType = defineType({
         type: 'string',
     }),
     defineField({
+      name: 'slug',
+      title: 'URL',
+      type: 'slug',
+      options: {
+        // include category if dataset is production
+        source: 'name'
+      },
+      description: 'thatgoodshitmusic.com/',
+      validation: rule => rule.required()
+  }),
+    defineField({
         name: 'description',
         title: 'Details', 
         type: 'array', 
