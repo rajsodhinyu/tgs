@@ -4,7 +4,8 @@ import {visionTool} from '@sanity/vision'
 import {schemaTypes} from './schemaTypes'
 import {structure} from './structure'
 import {myLogo} from './components/MyLogo'
-import { BsCalendar2Heart, BsPerson, BsPencilSquare } from "react-icons/bs"
+import {media} from 'sanity-plugin-media'
+
 
 
 
@@ -17,7 +18,7 @@ export default defineConfig({
   projectId: 'fnvy29id',
   dataset: 'tgs',
 
-  plugins: [structureTool({structure}), visionTool()],
+  plugins: [structureTool({structure}),media()],
   
 
   schema: {
