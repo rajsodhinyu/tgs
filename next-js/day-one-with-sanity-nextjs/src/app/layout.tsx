@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import { Inter_Tight } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter_Tight({ subsets: ["latin"] });
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -17,7 +17,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       
-      <body className={inter.className}> <img src="https://cdn.sanity.io/images/fnvy29id/tgs/6e0d6fefaf95cf0e570f958d10c13cf66265735a-1266x750.png" alt="" width={250}/> {children} </body>
+      <body className={inter.className}> 
+        <a href="../">
+          <img src="https://cdn.sanity.io/images/fnvy29id/tgs/6e0d6fefaf95cf0e570f958d10c13cf66265735a-1266x750.png" alt="" width={250}/></a>
+       {children} </body>
     </html>
   );
 }
