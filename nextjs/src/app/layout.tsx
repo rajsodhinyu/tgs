@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Image from "next/image";
+import Link from 'next/link';
 
 
 const inter = Inter({ subsets: ["latin"] });
@@ -19,23 +20,20 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>{children}
-      <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:size-auto lg:bg-none">
-    <a
-      className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-      href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-      target="_blank"
-      rel="noopener noreferrer"
-    >
-      By{" "}
-      <Image
-        src="https://cdn.sanity.io/images/fnvy29id/tgs/6e0d6fefaf95cf0e570f958d10c13cf66265735a-1266x750.png"
-        alt="Vercel Logo"
+      
+      <div className="py-8 outline-black">
         
-        width={100}
-        height={24}
-        priority
-      />
-    </a>
+
+      <div className="flex place-content-evenly place-items-center">
+      <div className="p-3"><Image src="https://cdn.sanity.io/images/fnvy29id/tgs/6e0d6fefaf95cf0e570f958d10c13cf66265735a-1266x750.png" alt="Vercel Logo" width={120} height={90} /></div>
+      <div className=""><Image src="https://cdn.sanity.io/images/fnvy29id/tgs/2db78d790b6062d7cb293b895f1d8cd3748353ef-1786x755.png" alt="Vercel Logo" width={130} height={90} /></div>
+
+      <div className=""><Image src="https://cdn.sanity.io/images/fnvy29id/tgs/9a5244d1c770d1e667006b7f54f5738745847917-1533x846.png" alt="Vercel Logo" width={100} height={90} /></div>
+
+      <div className=""><Image src="https://cdn.sanity.io/images/fnvy29id/tgs/a82c27d8c7dcd43014eaa1fdc852185942645f7e-2037x795.png" alt="Vercel Logo" width={130} height={90} /></div>
+      
+      <div className=""><Image src="https://cdn.sanity.io/images/fnvy29id/tgs/7162c809beb7a870dfbb0127b72fc6359218b456-1874x954.png" alt="Vercel Logo" width={110} height={90} /></div>
+  </div>
   </div>
   </body>
     </html>
