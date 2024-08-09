@@ -1,8 +1,10 @@
+// `app/page.tsx` is the UI for the `/` URL
 import Image from "next/image";
+import Link from "next/link";
+import Nav from "./nav";
 
-export default function Home() {
-  return (<div>
-    <p> </p>
-  </div>
-);
+export default function Page() {
+  return (
+    <h1>Hello World</h1>
+  )
 }
