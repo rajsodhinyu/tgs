@@ -10,12 +10,14 @@ const EVENTS_QUERY = `*[
 
 const BLOG_QUERY = `*[
   _type == "post" 
-  && defined(slug.current)
 ]{_id, name, slug, date}|order(date desc)`;
 
 export default async function IndexPage() {
   const events = await sanityFetch<SanityDocument[]>({query: EVENTS_QUERY});
+  
   const blogs = await sanityFetch<SanityDocument[]>({query: BLOG_QUERY});
+  console.log("test")
+  console.log(blogs);
 
   return (
     <main className="flex bg-gray-100 min-h-screen flex-col p-24 gap-12">
