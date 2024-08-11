@@ -5,6 +5,6 @@ import Nav from "./nav";
 
 export default function Page() {
   return (
-    <h1>Hello World</h1>
+<h2>hello</h2>
   )
 }
