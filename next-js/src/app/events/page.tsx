@@ -4,6 +4,7 @@ import { SanityImageSource } from "@sanity/image-url/lib/types/types";
 import imageUrlBuilder from "@sanity/image-url";
 import { SanityDocument } from "next-sanity";
 import { sanityFetch } from "../client";
+import { log } from "console";
 
 const projectId = 'fnvy29id';
 const dataset = 'tgs'
@@ -28,13 +29,20 @@ export default async function Page(){
 
 function stringifyDate(input:string) {
   let date = new Date(input);
+  const options = {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  };
   let str = date.toDateString();
   const monthNames = ["January", "February", "March", "April", "June", "July", "August", "September", "October", "December"];
-  return `${monthNames[date.getMonth()]} ${date.getDay().toString()}`;
+  return `${monthNames[(date.getUTCMonth()-1)]} ${date.getDate()}`;
+
 }
 
   return (<div>
-    <div className=" grid grid-cols-5 p-3 gap-2">
+    <div className=" grid grid-cols-3 p-3 gap-2">
       {events.map((event) => (
 
         <div className="rounded-lg hover:scale-95" key={event._id}>
