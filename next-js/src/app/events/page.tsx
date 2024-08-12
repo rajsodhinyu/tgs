@@ -17,7 +17,7 @@ const urlFor = (source: SanityImageSource) =>
     : null; 
 
 
-export function eventImage(event:any) {
+  function eventImage(event:any) {
   let pull = event.flyer.asset._ref;
   let thing = pull ? urlFor(pull)?.url(): null;
   return (thing)
