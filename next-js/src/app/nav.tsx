@@ -3,22 +3,23 @@ import Link from "next/link";
 
 export default function Nav() {
   return (
-    <main>
+    <main >
       <div className="static"> {/*nav bar?*/}
-        <div className="flex items-center px-9 pt-6">
-          <div className="flex-auto"> 
+      
+        <div className="flex items-center pt-6 ">
+          
+        <div className="flex-auto"> 
             <Link href='/'>
             <Image src="https://cdn.sanity.io/images/fnvy29id/tgs/6e0d6fefaf95cf0e570f958d10c13cf66265735a-1266x750.png" alt="TGS Logo" width={120} height={70} priority />
             </Link>
             </div>
-
-          <div className="flex-auto">
+           <div className="flex-auto">
             <Link href='/about'>
             <Image src="https://cdn.sanity.io/images/fnvy29id/tgs/2db78d790b6062d7cb293b895f1d8cd3748353ef-1786x755.png" alt="About"
               width={130}
               height={50} />
             </Link>
-          </div>
+          </div> 
           
             <div className="flex-auto">
             <Link href="/blog">

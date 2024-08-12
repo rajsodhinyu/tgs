@@ -29,19 +29,19 @@ export default async function Page(){
 function stringifyDate(input:string) {
   let date = new Date(input);
   let str = date.toDateString();
-  return str.substring(0,10);
+  const monthNames = ["January", "February", "March", "April", "June", "July", "August", "September", "October", "December"];
+  return `${monthNames[date.getMonth()]} ${date.getDay().toString()}`;
 }
 
   return (<div>
-    <h1 className="bg-orange-500">Events Home</h1>
-    <div className=" grid grid-cols-5 pt-3 gap-x-2">
+    <div className=" grid grid-cols-5 p-3 gap-2">
       {events.map((event) => (
 
         <div className="rounded-lg hover:scale-95" key={event._id}>
           <Link className="hover:underline"
-            href={`/events/${event.slug.current}`}>
+            href={`${event.link}`}>
             <div className="text-white flex place-content-center">
-              <div className="relative size-56 ">
+              <div className="relative size-72 ">
                 <Image className=" object-contain "
                   src={`${eventImage(event)}`}
                   fill={true}
@@ -49,11 +49,12 @@ function stringifyDate(input:string) {
                 />
               </div>
             </div>
-            <p className="text-gray-500 text-center">
-              {stringifyDate(event.date)}
-            </p>
-            <p className="text-gray-500 text-center font-bold">
+            
+            <p className="text-gray-500 text-center font-bold text-balance text-base pt-1">
               {event.name}
+            </p>
+            <p className="text-gray-500 text-center pb-4 -m-2">
+              {stringifyDate(event.date)}
             </p>
             
           </Link>
