@@ -12,7 +12,7 @@ export const postType = defineType({
             validation: rule => rule.required()
         }),
         defineField({
-            name: 'Writer',
+            name: 'writer',
             type: 'reference',
             to: [{type: 'writer'}],
             options: {

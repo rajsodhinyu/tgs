@@ -1,64 +1,68 @@
 import Image from "next/image"
-import Card from "./eventCard";
-import { event } from "./eventCard";
+import Link from "next/link";
+import { SanityImageSource } from "@sanity/image-url/lib/types/types";
+import imageUrlBuilder from "@sanity/image-url";
+import { SanityDocument } from "next-sanity";
+import { sanityFetch } from "../client";
 
-let rae :event = {
-  flyer: 'https://cdn.sanity.io/images/fnvy29id/tgs/fa90fe6315a7b25776d1a718b2ec2c5c0880135d-1125x1406.jpg',
-  slug: 'https://www.eventbrite.com/e/rae-khalil-crybaby-album-release-event-public-records-tickets-978470691177?utm-campaign=social&utm-content=attendeeshare&utm-medium=discovery&utm-term=listing&utm-source=cp&aff=ebdsshcopyurl'
+const projectId = 'fnvy29id';
+const dataset = 'tgs'
+
+
+const EVENTS_QUERY = `*[_type == "event"]{_id, name, link, flyer, slug, date}|order(date desc)`;
+
+const urlFor = (source: SanityImageSource) =>
+  projectId && dataset
+    ? imageUrlBuilder({ projectId, dataset }).image(source)
+    : null; 
+
+
+export function eventImage(event:any) {
+  let pull = event.flyer.asset._ref;
+  let thing = pull ? urlFor(pull)?.url(): null;
+  return (thing)
 }
-let meow = 'https://google.com';
 
-export default function Page(){
-    return (<div>
-      <h1 className="bg-orange-500">Events Home</h1>
-          <div className=" grid grid-flow-row-dense grid-cols-4 gap-2">
+export default async function Page(){
+  const events = await sanityFetch<SanityDocument[]>({query: EVENTS_QUERY});
 
-        <Card slug = {meow} flyer="https://cdn.sanity.io/images/fnvy29id/tgs/fa90fe6315a7b25776d1a718b2ec2c5c0880135d-1125x1406.jpg" />
-        <Card slug = {meow} flyer="https://cdn.sanity.io/images/fnvy29id/tgs/9c0e3a4c693eafa091cdac9cea10db5f6c2c37fd-1080x1350.jpg" />
-        <Card slug = {meow} flyer="https://cdn.sanity.io/images/fnvy29id/tgs/57d74eea376fa502e0c1acf40c8bc570a0738035-1418x1418.jpg" />
-        <Card slug = {meow} flyer="https://cdn.sanity.io/images/fnvy29id/tgs/28cb6f969774dbec3865973c3c89cfb4c2faa7db-1600x1600.jpg" />
-        <Card slug = {meow} flyer="https://cdn.sanity.io/images/fnvy29id/tgs/a09469015f7f67dcb9ef8b6ab638c45bfcf95c87-2542x2546.png" />
-        <Card slug = {meow} flyer="https://cdn.sanity.io/images/fnvy29id/tgs/c7a9a2b522967b7fa3c198f90729704fac2a698e-2200x2742.png" />
-        <Card slug = {meow} flyer="https://cdn.sanity.io/images/fnvy29id/tgs/fa90fe6315a7b25776d1a718b2ec2c5c0880135d-1125x1406.jpg" />
-        <Card slug = {meow} flyer="https://cdn.sanity.io/images/fnvy29id/tgs/9c0e3a4c693eafa091cdac9cea10db5f6c2c37fd-1080x1350.jpg" />
-        <Card slug = {meow} flyer="https://cdn.sanity.io/images/fnvy29id/tgs/57d74eea376fa502e0c1acf40c8bc570a0738035-1418x1418.jpg" />
-        <Card slug = {meow} flyer="https://cdn.sanity.io/images/fnvy29id/tgs/28cb6f969774dbec3865973c3c89cfb4c2faa7db-1600x1600.jpg" />
-        <Card slug = {meow} flyer="https://cdn.sanity.io/images/fnvy29id/tgs/a09469015f7f67dcb9ef8b6ab638c45bfcf95c87-2542x2546.png" />
-        <Card slug = {meow} flyer="https://cdn.sanity.io/images/fnvy29id/tgs/c7a9a2b522967b7fa3c198f90729704fac2a698e-2200x2742.png" />
-        <Card slug = {meow} flyer="https://cdn.sanity.io/images/fnvy29id/tgs/fa90fe6315a7b25776d1a718b2ec2c5c0880135d-1125x1406.jpg" />
-        <Card slug = {meow} flyer="https://cdn.sanity.io/images/fnvy29id/tgs/9c0e3a4c693eafa091cdac9cea10db5f6c2c37fd-1080x1350.jpg" />
-        <Card slug = {meow} flyer="https://cdn.sanity.io/images/fnvy29id/tgs/57d74eea376fa502e0c1acf40c8bc570a0738035-1418x1418.jpg" />
-        <Card slug = {meow} flyer="https://cdn.sanity.io/images/fnvy29id/tgs/28cb6f969774dbec3865973c3c89cfb4c2faa7db-1600x1600.jpg" />
-        <Card slug = {meow} flyer="https://cdn.sanity.io/images/fnvy29id/tgs/a09469015f7f67dcb9ef8b6ab638c45bfcf95c87-2542x2546.png" />
-        <Card slug = {meow} flyer="https://cdn.sanity.io/images/fnvy29id/tgs/c7a9a2b522967b7fa3c198f90729704fac2a698e-2200x2742.png" />
-        <Card slug = {meow} flyer="https://cdn.sanity.io/images/fnvy29id/tgs/fa90fe6315a7b25776d1a718b2ec2c5c0880135d-1125x1406.jpg" />
-        <Card slug = {meow} flyer="https://cdn.sanity.io/images/fnvy29id/tgs/9c0e3a4c693eafa091cdac9cea10db5f6c2c37fd-1080x1350.jpg" />
-        <Card slug = {meow} flyer="https://cdn.sanity.io/images/fnvy29id/tgs/57d74eea376fa502e0c1acf40c8bc570a0738035-1418x1418.jpg" />
-        <Card slug = {meow} flyer="https://cdn.sanity.io/images/fnvy29id/tgs/28cb6f969774dbec3865973c3c89cfb4c2faa7db-1600x1600.jpg" />
-        <Card slug = {meow} flyer="https://cdn.sanity.io/images/fnvy29id/tgs/a09469015f7f67dcb9ef8b6ab638c45bfcf95c87-2542x2546.png" />
-        <Card slug = {meow} flyer="https://cdn.sanity.io/images/fnvy29id/tgs/c7a9a2b522967b7fa3c198f90729704fac2a698e-2200x2742.png" />
-        <Card slug = {meow} flyer="https://cdn.sanity.io/images/fnvy29id/tgs/9c0e3a4c693eafa091cdac9cea10db5f6c2c37fd-1080x1350.jpg" />
-        <Card slug = {meow} flyer="https://cdn.sanity.io/images/fnvy29id/tgs/57d74eea376fa502e0c1acf40c8bc570a0738035-1418x1418.jpg" />
-        <Card slug = {meow} flyer="https://cdn.sanity.io/images/fnvy29id/tgs/28cb6f969774dbec3865973c3c89cfb4c2faa7db-1600x1600.jpg" />
-        <Card slug = {meow} flyer="https://cdn.sanity.io/images/fnvy29id/tgs/a09469015f7f67dcb9ef8b6ab638c45bfcf95c87-2542x2546.png" />
-        <Card slug = {meow} flyer="https://cdn.sanity.io/images/fnvy29id/tgs/c7a9a2b522967b7fa3c198f90729704fac2a698e-2200x2742.png" />
-        <Card slug = {meow} flyer="https://cdn.sanity.io/images/fnvy29id/tgs/fa90fe6315a7b25776d1a718b2ec2c5c0880135d-1125x1406.jpg" />
-        <Card slug = {meow} flyer="https://cdn.sanity.io/images/fnvy29id/tgs/9c0e3a4c693eafa091cdac9cea10db5f6c2c37fd-1080x1350.jpg" />
-        <Card slug = {meow} flyer="https://cdn.sanity.io/images/fnvy29id/tgs/57d74eea376fa502e0c1acf40c8bc570a0738035-1418x1418.jpg" />
-        <Card slug = {meow} flyer="https://cdn.sanity.io/images/fnvy29id/tgs/28cb6f969774dbec3865973c3c89cfb4c2faa7db-1600x1600.jpg" />
-        <Card slug = {meow} flyer="https://cdn.sanity.io/images/fnvy29id/tgs/a09469015f7f67dcb9ef8b6ab638c45bfcf95c87-2542x2546.png" />
-        <Card slug = {meow} flyer="https://cdn.sanity.io/images/fnvy29id/tgs/9c0e3a4c693eafa091cdac9cea10db5f6c2c37fd-1080x1350.jpg" />
-        <Card slug = {meow} flyer="https://cdn.sanity.io/images/fnvy29id/tgs/57d74eea376fa502e0c1acf40c8bc570a0738035-1418x1418.jpg" />
-        <Card slug = {meow} flyer="https://cdn.sanity.io/images/fnvy29id/tgs/28cb6f969774dbec3865973c3c89cfb4c2faa7db-1600x1600.jpg" />
-        <Card slug = {meow} flyer="https://cdn.sanity.io/images/fnvy29id/tgs/a09469015f7f67dcb9ef8b6ab638c45bfcf95c87-2542x2546.png" />
-        <Card slug = {meow} flyer="https://cdn.sanity.io/images/fnvy29id/tgs/c7a9a2b522967b7fa3c198f90729704fac2a698e-2200x2742.png" />
-        <Card slug = {meow} flyer="https://cdn.sanity.io/images/fnvy29id/tgs/fa90fe6315a7b25776d1a718b2ec2c5c0880135d-1125x1406.jpg" />
-        <Card slug = {meow} flyer="https://cdn.sanity.io/images/fnvy29id/tgs/9c0e3a4c693eafa091cdac9cea10db5f6c2c37fd-1080x1350.jpg" />
-        <Card slug = {meow} flyer="https://cdn.sanity.io/images/fnvy29id/tgs/57d74eea376fa502e0c1acf40c8bc570a0738035-1418x1418.jpg" />
-        <Card slug = {meow} flyer="https://cdn.sanity.io/images/fnvy29id/tgs/28cb6f969774dbec3865973c3c89cfb4c2faa7db-1600x1600.jpg" />
-        <Card slug = {meow} flyer="https://cdn.sanity.io/images/fnvy29id/tgs/a09469015f7f67dcb9ef8b6ab638c45bfcf95c87-2542x2546.png" />
-        </div><div className=" grid grid-flow-col-dense gap-2">
-    </div></div>
+function stringifyDate(input:string) {
+  let date = new Date(input);
+  let str = date.toDateString();
+  return str.substring(0,10);
+}
+
+  return (<div>
+    <h1 className="bg-orange-500">Events Home</h1>
+    <div className=" grid grid-cols-5 pt-3 gap-x-2">
+      {events.map((event) => (
+
+        <div className="rounded-lg hover:scale-95" key={event._id}>
+          <Link className="hover:underline"
+            href={`/events/${event.slug.current}`}>
+            <div className="text-white flex place-content-center">
+              <div className="relative size-56 ">
+                <Image className=" object-contain "
+                  src={`${eventImage(event)}`}
+                  fill={true}
+                  alt={`${event.name}`}
+                />
+              </div>
+            </div>
+            <p className="text-gray-500 text-center">
+              {stringifyDate(event.date)}
+            </p>
+            <p className="text-gray-500 text-center font-bold">
+              {event.name}
+            </p>
+            
+          </Link>
+        </div>
+      ))}
+    </div>
+
+
+  </div>
   )
 } 
 
