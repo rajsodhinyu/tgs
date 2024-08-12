@@ -25,7 +25,7 @@ export const postType = defineType({
             title: 'URL',
             type: 'slug',
             options: {source: 'name'},
-            description: 'thatgoodshitmusic.com/',
+            description: 'thatgoodshitmusic.com/blog/',
             validation: rule => rule.required()
         }),
         defineField({
