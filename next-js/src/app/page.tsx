@@ -5,7 +5,6 @@ import Nav from "./nav";
 
 export default function Page() {
   return (<div>
-  </div>
-
-  )
+    <h2 className="rounded-lg text-black flex place-content-center ">That Good Sh*t</h2>
+  </div>)
 }
