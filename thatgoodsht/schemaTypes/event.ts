@@ -21,7 +21,7 @@ export const eventType = defineType({
     defineField({
         name: 'link',
         title: 'Ticket Link',
-        description: 'Must start with https',
+        initialValue: 'https://www.',
         type: 'url',
         validation: rule => rule.required()
     }),
