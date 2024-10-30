@@ -9,7 +9,6 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['var(--font-inter)'],
         bit: ['var(--font-bitcount)'],
         roc: ['var(--font-roc)']
       },
