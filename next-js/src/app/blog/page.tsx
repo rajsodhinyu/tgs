@@ -3,20 +3,19 @@ import Card from "./blogCard";
 
 export default function Page() {
   return (
-  <div className="bg-white justify-between items-start inline-flex"> {/* Whole Site */}
-    <div className="grow shrink basis-0 self-stretch flex-col justify-start items-center gap-2.5 inline-flex"> {/* Right Side, Carousel + */}
-      <div className="basis-0 py-96 justify-center items-center gap-2.5 inline-flex">
-        <div><img src="https://via.placeholder.com/1920x1080" alt="" /></div>
+  <div className="w-full items-start gap-2.5 inline-flex"> 
+  {/* Whole Site */}
+    <div className="grow"> {/* Right Side, Carousel + */}
+      <div className="basis-full place-items-center gap-2.5">
+        <div><img src="https://cdn.sanity.io/images/fnvy29id/tgs/a72fd5d0c723e3344aab5aeb213cde41dd4b5d38-1440x1080.jpg" alt="" /></div>
       </div>
     </div>
-    <div className=" ">
-      <div className="text-center text-[#212121] text-3xl font-bit leading-10 tracking-widest">Latest Stories</div>
-      <img className="w-80 h-96 p-2.5 shadow border border-[#6f5bc4]" src="https://via.placeholder.com/335x369" />
-      <img className="w-80 h-96 p-2.5 shadow border border-[#6f5bc4]" src="https://via.placeholder.com/335x369" />
-      <div className="w-80 h-96 p-2.5 bg-[#65b9e7] shadow border border-[#6f5bc4]"></div>
-      <img className="w-80 h-96 p-2.5 shadow border border-[#6f5bc4]" src="https://via.placeholder.com/335x369" />
-      <img className="w-80 h-96 p-2.5 shadow border border-[#6f5bc4]" src="https://via.placeholder.com/335x369" />
-      <div className="w-80 h-96 p-2.5 bg-[#65b9e7] shadow border border-[#6f5bc4]"></div>
+    <div className="-mt-2">
+      <div className="text-center tracking-wide font-bold text-[#212121] text-4xl font-bit leading-10">Latest Stories</div>
+      <img className="w-96 p-2.5 hover:scale-95" src="https://cdn.sanity.io/images/fnvy29id/tgs/a69917951e63fb28e469139c00a97aa638d315a9-1440x1439.jpg" />
+      <img className="w-96 p-2.5 hover:scale-95" src="https://cdn.sanity.io/images/fnvy29id/tgs/296b48575ba1d7b059ebbfb1a7e6c800f8f19692-720x720.png" />
+      <img className="w-96 p-2.5 hover:scale-95" src="https://cdn.sanity.io/images/fnvy29id/tgs/a69917951e63fb28e469139c00a97aa638d315a9-1440x1439.jpg" />
+      <img className="w-96 p-2.5 hover:scale-95" src="https://cdn.sanity.io/images/fnvy29id/tgs/296b48575ba1d7b059ebbfb1a7e6c800f8f19692-720x720.png" />
     </div>
   </div>
   )
