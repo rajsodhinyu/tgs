@@ -29,7 +29,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" >
-      <body className={`mx-10 ${bitcount.variable} ${roc.variable}`}>
+      <body className={`mx-4 ${bitcount.variable} ${roc.variable}`}>
         <Nav />
         <main>{children}</main>
       </body>
