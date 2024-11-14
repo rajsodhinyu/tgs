@@ -5,7 +5,7 @@ import { BsCalendar2Heart, BsPerson, BsPencilSquare } from "react-icons/bs"
 export const structure: StructureResolver = (S) =>
   S.list()
     .id('root')
-    .title('Structure')
+    .title('Backend')
     .items([
       S.documentTypeListItem('post').title('Blog').icon(BsPencilSquare),
       S.documentTypeListItem('event').title('Events').icon(BsCalendar2Heart),
