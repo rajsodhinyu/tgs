@@ -16,6 +16,11 @@ const roc = localFont({
   variable: '--font-roc',
 })
 
+const bitcount_fill = localFont({
+  src: '../../font_title.ttf',
+  display: 'swap',
+  variable: '--font-bitcount-filled',
+})
 
 export const metadata = {
   title: 'ThatGoodSh*t',
@@ -29,7 +34,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" >
-      <body className={`mx-4 ${bitcount.variable} ${roc.variable}`}>
+      <body className={`mx-4 ${bitcount.variable} ${roc.variable} ${bitcount_fill.variable}`}>
         <Nav />
         <main>{children}</main>
       </body>

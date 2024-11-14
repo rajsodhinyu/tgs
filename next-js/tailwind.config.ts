@@ -10,7 +10,8 @@ const config: Config = {
     extend: {
       fontFamily: {
         bit: ['var(--font-bitcount)'],
-        roc: ['var(--font-roc)']
+        roc: ['var(--font-roc)'],
+        title: ['var(--font-bitcount-filled)']
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
