@@ -9,7 +9,6 @@ export const postType = defineType({
         name: 'New Blog'
       },
     fields: [
-        
         defineField({
             name: 'name',
             title: 'Headline',
@@ -30,14 +29,15 @@ export const postType = defineType({
         defineField({
             name: 'youtubeURL',
             title: 'Youtube Link',
+            description: 'Needs to start with https://www.',
             type: 'url',
             hidden: ({document}) => !document?.youtube, //show the field if it is a Youtube Post
-            validation: rule => {
-                if (!document.hidden) {
-                    return rule.required()
+            validation: rule => rule.custom((youtubeURL, context) => { 
+                if ((context.document?.youtube) && (context.document?.youtubeURL) == undefined) {
+                        return 'Please add a Link'
                 }
-                else {return rule}
-            }
+                return true
+              })
         }),
         defineField({
             name: 'thumb',
@@ -46,7 +46,6 @@ export const postType = defineType({
             type: 'image',
             options: {sources: [mediaAssetSource]},
             validation: rule => rule.required()
-
         }),
         defineField({
             name: 'writer',
@@ -56,7 +55,12 @@ export const postType = defineType({
             options: {
                 disableNew: true
             },
-            validation: rule => rule.required()
+            validation: rule => rule.custom((writer, context) => { // make required if blog post
+                if (!(context.document?.youtube) && (context.document?.writer) == undefined) {
+                  return 'Required'
+                }
+                return true
+              })
         }),
         defineField({
             name: 'banner',
@@ -75,16 +79,21 @@ export const postType = defineType({
         }),
         defineField({
             name: 'content',
-            title: 'Blog text',
+            title: 'Blog Text',
             type: 'array', 
             of: [{type: 'block'}],
             hidden: ({document}) => !(!document?.youtube), //hide the field if it is a Youtube Post
             description: 'Paste here',
-            validation: rule => rule.required()
+            validation: rule => rule.custom((writer, context) => { // make required if blog post
+                if (!(context.document?.youtube) && (context.document?.content) == undefined) {
+                  return 'Required'
+                }
+                return true
+              })
         }),
         defineField({
             name: 'slug',
-            title: 'URL',
+            title: 'URL Generator',
             type: 'slug',
             options: {source: 'name'},
             description: 'thatgoodshitmusic.com/blog/',
