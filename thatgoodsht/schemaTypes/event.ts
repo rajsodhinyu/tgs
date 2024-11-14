@@ -1,7 +1,4 @@
 import {defineField, defineType} from 'sanity'
-
-
-
 export const eventType = defineType({
   name: 'event',
   title: 'Events',

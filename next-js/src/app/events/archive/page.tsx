@@ -26,7 +26,6 @@ const urlFor = (source: SanityImageSource) =>
 
 export default async function Page(){
   const events = await sanityFetch<SanityDocument[]>({query: EVENTS_QUERY});
-  console.log(events);
 function stringifyDate(input:string) {
   let date = new Date(input);
   const options = {
