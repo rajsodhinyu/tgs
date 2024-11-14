@@ -16,7 +16,9 @@ export default function Page() {
       <img className="w-96 p-2.5 hover:scale-95" src="https://cdn.sanity.io/images/fnvy29id/tgs/296b48575ba1d7b059ebbfb1a7e6c800f8f19692-720x720.png" />
       <img className="w-96 p-2.5 hover:scale-95" src="https://cdn.sanity.io/images/fnvy29id/tgs/a69917951e63fb28e469139c00a97aa638d315a9-1440x1439.jpg" />
       <img className="w-96 p-2.5 hover:scale-95" src="https://cdn.sanity.io/images/fnvy29id/tgs/296b48575ba1d7b059ebbfb1a7e6c800f8f19692-720x720.png" />
+      <a className="font-bit text-3xl hover:underline p-2.5 ml-16" href="/blog/archive">Blog Archive</a>
     </div>
+    
   </div>
   )
 }
