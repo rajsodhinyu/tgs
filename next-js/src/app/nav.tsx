@@ -7,7 +7,7 @@ export default function Nav() {
         <div className="w-full h-24 py-5 items-start inline-flex static"> {/*whole nav bar*/}
           <div className="grow h-12 items-center flex pr-8 gap-x-8"> {/*everything not inc SOTD?*/}
             <Link href='/'>
-              <img className=" h-14 min-w-24" src="https://cdn.sanity.io/images/fnvy29id/tgs/6e0d6fefaf95cf0e570f958d10c13cf66265735a-1266x750.png" />
+              <img className="h-14 min-w-24" src="https://cdn.sanity.io/images/fnvy29id/tgs/6e0d6fefaf95cf0e570f958d10c13cf66265735a-1266x750.png" />
             </Link>
             <Link href='/about'>
               <img className="h-12 min-w-28" src="https://cdn.sanity.io/images/fnvy29id/tgs/2db78d790b6062d7cb293b895f1d8cd3748353ef-1786x755.png" />

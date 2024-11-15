@@ -1,15 +1,19 @@
-import Image from "next/image";
+import Link from "next/link";
 
-export default function PlaylistCard({ url }: { url: string }) {
+
+
+export default function PlaylistCard({ title, description, cover, url }: { title: string, description: string ,cover: string, url:string }) {
   return (
-    <div className="w-30 h-30 inline-flex pb-3">
-      <div className=" content-center">
-        <img className='rounded-xl' src="http://via.placeholder.com/300x300" alt="" />
+    <div className=" align-middle pb-6 ">
+     <Link className="hover:underline"
+            href={url}> 
+        <img className='rounded-xl place-self-center' src={cover} alt="" width={225} height={225}/>
+      <div className="flex-col justify-start">
+        <div className="pt-2 text-center text-black text-2xl font-medium font-bit leading-7">{title}</div>
+        <div className="text-center text-black text-balance text-sm font-semibold font-roc leading-none pt-1">{description}</div>
       </div>
-      <div className="p-4 flex-col justify-start">
-        <div className="text-justify text-black text-3xl font-medium font-bit leading-7 flex ">Playlist Title</div>
-        <div className="text-black text-balance text-sm font-semibold font-roc leading-none flex pt-3">Playlist details: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin eleifend magna id lectus efficitur pellentesque. </div>
-      </div>
+      </Link>
     </div>
+   
   )
 }
