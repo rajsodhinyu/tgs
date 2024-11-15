@@ -34,7 +34,8 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" >
-      <body className={`mx-4 ${bitcount.variable} ${roc.variable} ${bitcount_fill.variable}`}>
+      
+      <body className={`-ml-3 ${bitcount.variable} ${roc.variable} ${bitcount_fill.variable}`}>
         <Nav />
         <main>{children}</main>
       </body>
