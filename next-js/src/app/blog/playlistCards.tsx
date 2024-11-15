@@ -5,7 +5,7 @@ import Link from "next/link";
 export default function PlaylistCard({ title, description, cover, url }: { title: string, description: string ,cover: string, url:string }) {
   return (
     <div className=" align-middle pb-3 ">
-     <Link className="hover:underline"
+     <Link className="hover:underline decoration-indigo-700"
             href={url}> 
         <img className='rounded-xl place-self-center' src={cover} alt="" width={225} height={225}/>
       <div className="flex-col justify-start">

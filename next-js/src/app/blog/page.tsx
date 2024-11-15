@@ -19,11 +19,12 @@ export default function Page() {
         </div>
     </div>
     <div className="lg:w-2/6 -mr-3 place-items-center">
-      <div className="text-center tracking-wide font-bold hover:underline decoration-indigo-700 text-black text-5xl md:text-2xl xl:text-4xl font-bit leading-10"><a href="/blog/archive">Latest Stories </a></div>
-      <img className="w-96 m-1 hover:scale-95 border-4 border-indigo-700" src="https://cdn.sanity.io/images/fnvy29id/tgs/a69917951e63fb28e469139c00a97aa638d315a9-1440x1439.jpg" />
-      <img className="w-96 m-1 hover:scale-95 border-4 border-indigo-700" src="https://cdn.sanity.io/images/fnvy29id/tgs/296b48575ba1d7b059ebbfb1a7e6c800f8f19692-720x720.png" />
-      <img className="w-96 m-1 hover:scale-95 border-4 border-indigo-700" src="https://cdn.sanity.io/images/fnvy29id/tgs/a69917951e63fb28e469139c00a97aa638d315a9-1440x1439.jpg" />
-      <img className="w-96 m-1 hover:scale-95 border-4 border-indigo-700" src="https://cdn.sanity.io/images/fnvy29id/tgs/296b48575ba1d7b059ebbfb1a7e6c800f8f19692-720x720.png" />
+      <div className="text-center tracking-wide font-bold decoration-indigo-700 text-black text-5xl md:text-3xl xl:text-4xl font-bit leading-10">Latest Stories</div>
+      <img className="w-96 m-1 border-opacity-0 hover:border-opacity-100 hover:scale-95 border-2 xl:border-4 border-indigo-700" src="https://cdn.sanity.io/images/fnvy29id/tgs/f62f2ccc359ee9466eb666880cafe92a3d61766d-1980x1980.png" />
+      <img className="w-96 m-1 border-opacity-0 hover:border-opacity-100 hover:scale-95 border-2 xl:border-4 border-indigo-700" src="https://cdn.sanity.io/images/fnvy29id/tgs/a69917951e63fb28e469139c00a97aa638d315a9-1440x1439.jpg" />
+      <img className="w-96 m-1 border-opacity-0 hover:border-opacity-100 hover:scale-95 border-2 xl:border-4 border-indigo-700" src="https://cdn.sanity.io/images/fnvy29id/tgs/096c2f3910068c5dbea80aaf6703ff688d8ac694-1170x1174.jpg" />
+      <img className="w-96 m-1 border-opacity-0 hover:border-opacity-100 hover:scale-95 border-2 xl:border-4 border-indigo-700" src="https://cdn.sanity.io/images/fnvy29id/tgs/517e85c98f4ae92a1287668e0a9731cbbe032ab7-1440x1440.png" />
+      <div className="text-center tracking-wide font-bold hover:underline decoration-indigo-700 text-black text-5xl md:text-3xl xl:text-4xl font-bit leading-10 pb-4"><a href="/blog/archive">All Stories </a></div>
     </div>
   </div>
   )
