@@ -43,7 +43,6 @@ function stringifyDate(input:string) {
   return (<div>
     <div className=" grid grid-cols-5 p-2 gap-2">
       {events.map((event) => (
-
         <div className="rounded-lg hover:scale-95" key={event._id}>
           <Link className="hover:underline"
             href={`${event.link}`}>
@@ -56,7 +55,6 @@ function stringifyDate(input:string) {
                 />
               </div>
             </div>
-            
             <p className="text-center text-xl font-bit font-black text-balance pt-1">
               {event.name}
             </p>
