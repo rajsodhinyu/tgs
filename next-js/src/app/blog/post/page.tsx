@@ -1,3 +1,3 @@
 export default function Post() {
-    return (<h1>post</h1>)
+    return (<h1>test</h1>)
   }
