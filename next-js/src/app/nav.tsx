@@ -4,9 +4,9 @@ import Link from "next/link";
 export default function Nav() {
   return (
     <main >
-        <div className="w-dvh inset-0 h-24 p-3 flex items-baseline justify-around flex-wrap py-7
-        md:justify-between md:flex-row"> {/*whole nav bar*/}
-          <div className="shrink h-12 flex px-6 gap-4 lg:gap-8 items-center md:justify-start"> {/*everything not inc SOTD?*/}
+        <div className="w-svh inset-0 h-24 p-3 flex items-baseline justify-around flex-wrap py-7 mb-14
+        md:justify-between md:flex-nowrap md:flex-row"> {/*whole nav bar*/}
+          <div className="shrink h-12 flex md:px-6 px-3 gap-4 lg:gap-8 items-center md:justify-start"> {/*everything not inc SOTD?*/}
             <Link href='/'>
               <img className="min-h-6 max-h-16 min-w-10" src="https://cdn.sanity.io/images/fnvy29id/tgs/6e0d6fefaf95cf0e570f958d10c13cf66265735a-1266x750.png" />
             </Link>

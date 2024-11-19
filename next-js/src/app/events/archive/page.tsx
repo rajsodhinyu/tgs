@@ -41,13 +41,13 @@ function stringifyDate(input:string) {
 }
 
   return (<div>
-    <div className=" grid grid-cols-5 p-2 gap-2">
+    <div className="grid lg:grid-cols-5 sm:grid-cols-3 grid-cols-1 md:p-2 sm:pt-6 pt-12 gap-1 md:gap-2">
       {events.map((event) => (
         <div className="rounded-lg hover:scale-95" key={event._id}>
           <Link className="hover:underline"
             href={`${event.link}`}>
             <div className="text-white flex place-content-center">
-              <div className="relative size-72 ">
+              <div className="relative lg:size-72 sm:size-44 size-80">
                 <Image className=" object-contain "
                   src={`${eventImage(event)}`}
                   fill={true}
