@@ -28,7 +28,13 @@ export default async function Page(){
 
   const blogs = await sanityFetch<SanityDocument[]>({query: BLOGS_QUERY});
 function linkResolver(isYoutube:boolean,youtubeLink:string,slug:any) {
-  return `post/${slug.current}`;
+  if (isYoutube){
+    return `${youtubeLink}`
+  }
+  else {
+    return `post/${slug.current}`
+  }
+  
 }
 function stringifyDate(input:string) {
   let date = new Date(input);
