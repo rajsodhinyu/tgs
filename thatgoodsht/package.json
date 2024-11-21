@@ -15,6 +15,8 @@
     "sanity"
   ],
   "dependencies": {
+    "-": "^0.0.1",
+    "@sanity/cli": "^3.64.1",
     "@sanity/icons": "^3.4.0",
     "@sanity/vision": "^3.64.1",
     "react": "^18.3.1",
