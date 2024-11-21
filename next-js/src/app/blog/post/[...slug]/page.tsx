@@ -2,9 +2,8 @@ import Image from "next/image"
 import PlaylistCard from "../../playlistCards";
 import Sidebar from "../../sidebar";
 import React from "react";
-
 import { sanityFetch } from "@/app/client";
-import { SanityDocument } from "next-sanity";
+import { PortableText, SanityDocument } from "next-sanity";
 import { SanityImageSource } from "@sanity/image-url/lib/types/types";
 import imageUrlBuilder from "@sanity/image-url";
 
@@ -23,22 +22,6 @@ const urlFor = (source: SanityImageSource) =>
   return (thing)
 }
 
-function toPlainText(blocks = []) {
-  return blocks
-    // loop through each block
-    .map(block => {
-      // if it's not a text block with children, 
-      // return nothing
-      if (block._type !== 'block' || !block.children) {
-        return ''
-      }
-      // loop through the children spans, and join the
-      // text strings
-      return block.children.map(child => child.text).join('')
-    })
-    // join the paragraphs leaving split by two linebreaks
-    .join('\n\n')
-}
 
 export default async function Page({
   params,
@@ -68,7 +51,9 @@ export default async function Page({
           {post.name}
         </div>
         <div className="font-roc text-lg text-balance text-left">
-          {toPlainText(post.content)}
+          <PortableText
+            value={post.content}
+          />
         </div>
         <div className=" invisible"><img src="https://cdn.sanity.io/images/fnvy29id/tgs/a72fd5d0c723e3344aab5aeb213cde41dd4b5d38-1440x1080.jpg" alt="" /></div>
       </div>
