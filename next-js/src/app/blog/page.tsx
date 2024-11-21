@@ -1,9 +1,12 @@
 import Image from "next/image"
 import PlaylistCard from "./playlistCards";
+import Sidebar from "./sidebar";
+
+
 
 export default function Page() {
   return (
-  <div className="-mt-10 sm:flex-wrap gap-2.5 md:-mt-20 ml-4 lg:-mr-4 md:flex-nowrap md:inline-flex md:flex-row md:justify-around w-auto xl:w-screen
+  <div className="-mt-10 px-3 sm:flex-wrap gap-2.5 md:-mt-20 lg:-mr-4 md:flex-nowrap md:inline-flex md:flex-row md:justify-around w-auto xl:w-screen
   pt-12"> 
   {/* Whole Site */}
     <div className=""> {/* Right Side, Carousel + */} 
@@ -19,13 +22,8 @@ export default function Page() {
       </div>
         </div>
     </div>
-    <div className="sm:w-screen md:w-9/12 lg:w-6/12 flex-col place-items-center justify-end rounded-xl"> {/* Left Side */}
-      <div className="tracking-wide font-bold hover:underline decoration-purple-700 text-black text-3xl  lg:text-4xl font-bit leading-10 text-center"><a href="/blog/archive">ALL POSTS</a></div>
-      <img className="w-96 lg:w-full m-1 border-opacity-0 hover:border-opacity-100 hover:scale-95 border-2 xl:border-4 border-purple-700" src="https://cdn.sanity.io/images/fnvy29id/tgs/f62f2ccc359ee9466eb666880cafe92a3d61766d-1980x1980.png" />
-      <img className="w-96 lg:w-full m-1 border-opacity-0 hover:border-opacity-100 hover:scale-95 border-2 xl:border-4 border-purple-700" src="https://cdn.sanity.io/images/fnvy29id/tgs/a69917951e63fb28e469139c00a97aa638d315a9-1440x1439.jpg" />
-      <img className="w-96 lg:w-full m-1 border-opacity-0 hover:border-opacity-100 hover:scale-95 border-2 xl:border-4 border-purple-700" src="https://cdn.sanity.io/images/fnvy29id/tgs/096c2f3910068c5dbea80aaf6703ff688d8ac694-1170x1174.jpg" />
-      <img className="w-96 lg:w-full m-1 border-opacity-0 hover:border-opacity-100 hover:scale-95 border-2 xl:border-4 border-purple-700" src="https://cdn.sanity.io/images/fnvy29id/tgs/517e85c98f4ae92a1287668e0a9731cbbe032ab7-1440x1440.png" />
-
+    <div className="sm:w-screen md:w-9/12 lg:w-4/12 flex-col place-items-center justify-end rounded-xl"> {/* Left Side */}
+    <Sidebar items={3}></Sidebar>
     </div>
   </div>
   )

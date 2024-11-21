@@ -4,12 +4,12 @@ import { SanityImageSource } from "@sanity/image-url/lib/types/types";
 import imageUrlBuilder from "@sanity/image-url";
 import { SanityDocument } from "next-sanity";
 import { sanityFetch } from "../../client";
-import { log } from "console";
+
 
 const projectId = 'fnvy29id';
 const dataset = 'tgs'
 
-const EVENTS_QUERY = `*[_type == "event"]{_id, name, link, flyer, slug, date}|order(date desc)`;
+
 const BLOGS_QUERY = `*[_type == "post"]{_id, name, youtube,youtubeURL, thumb, writer, banner,playlistURL, content, slug, date}|order(date desc)`;
 
 const urlFor = (source: SanityImageSource) =>
@@ -25,9 +25,11 @@ const urlFor = (source: SanityImageSource) =>
 }
 
 export default async function Page(){
-  const events = await sanityFetch<SanityDocument[]>({query: EVENTS_QUERY});
-  const blogs = await sanityFetch<SanityDocument[]>({query: BLOGS_QUERY});
 
+  const blogs = await sanityFetch<SanityDocument[]>({query: BLOGS_QUERY});
+function linkResolver(isYoutube:boolean,youtubeLink:string,slug:any) {
+  return `post/${slug.current}`;
+}
 function stringifyDate(input:string) {
   let date = new Date(input);
   const options = {
@@ -42,11 +44,11 @@ function stringifyDate(input:string) {
 
 }
   return (<div>
-    <div className="grid grid-cols-4 p-3 gap-2">
+    <div className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 p-3 gap-2 md:-mt-10 ">
       {blogs.map((blog) => (
         <div className="rounded-lg hover:scale-95" key={blog._id}>
           <Link className="hover:underline"
-            href={`${blog.link}`}>
+            href={`${linkResolver(blog.youtube,blog.youtubeURL,blog.slug)}`}>
             <div className="text-white flex place-content-center">
               <div className="relative size-72 ">
                 <Image className=" object-contain "
