@@ -61,11 +61,11 @@ export default async function Page({
     <div className="-mt-10 sm:flex-wrap gap-2.5 md:-mt-20 lg:-mr-4 md:flex-nowrap md:inline-flex md:flex-row md:justify-around w-auto xl:w-screen
   pt-12">
       {/* Whole Site */}
-      <div className=" sm:w-screen md:w-10/12 lg:w-8/12 "> {/* Right Side, Carousel + */}
-      <div className="relative size-1/5 flex-row w-full ">
+      <div className=" sm:w-screen md:w-10/12 lg:w-8/12 flex-col"> {/* Right Side, Carousel + */}
+      <div className=" w-full flex relative size-1/5">
                 <Image className="object-contain "
                   src={`${bannerResolver(post)}`}
-                  fill={true}
+                  fill = {true}
                   alt={`${post.name}`}
                   sizes=""
                 />
