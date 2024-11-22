@@ -22,6 +22,18 @@ const urlFor = (source: SanityImageSource) =>
   return (thing)
 }
 
+function spotifyEmbed(playlist:string) {
+  let input = playlist;
+  const parts = input.split("/")
+  let i = 0;
+  parts.forEach(function(thing) {
+    console.log(i)
+    console.log(thing)
+    i++
+  })
+  return (`https://open.spotify.com/embed/${parts[3]}/${parts[4]}`)
+}
+
 
 export default async function Page({
   params,
@@ -32,8 +44,6 @@ export default async function Page({
   const SLUG_QUERY = `*[_type == "post" && slug.current == "${slug}"]`;
   const posts = await sanityFetch<SanityDocument[]>({ query: SLUG_QUERY });
   const post = posts[0];
-  console.log(post);
-  {console.log(post.content)}
   return (
     <div className="-mt-10 sm:flex-wrap gap-2.5 md:-mt-20 lg:-mr-4 md:flex-nowrap md:inline-flex md:flex-row md:justify-around w-auto xl:w-screen
   pt-12">
@@ -50,8 +60,12 @@ export default async function Page({
         <div className="xl:text-6xl text-3xl font-bit text-center">
           {post.name}
         </div>
-        <div className="font-roc text-lg text-balance text-left">
-          <PortableText
+        <div className="place-items-center mt-3 -mb-5"> 
+        <iframe  src={`${spotifyEmbed(post.playlistURL)}`} width="90%" height="200" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+
+        </div>
+        <div className="font-roc text-lg text-balance md:text-left">
+          <PortableText 
             value={post.content}
           />
         </div>
@@ -63,3 +77,4 @@ export default async function Page({
     </div>
   )
 }
+
