@@ -18,11 +18,11 @@ const urlFor = (source: SanityImageSource) =>
     : null; 
 
 
-  function eventImage(event:any) {
-  let pull = event.thumb.asset._ref;
-  let thing = pull ? urlFor(pull)?.url(): null;
-  return (thing)
-}
+    function eventImage(event:any) {
+      let pull = event.thumb.asset._ref;
+      let thing = pull ? urlFor(pull)?.url(): null;
+      return (thing)
+    }
 
 export default async function Page(){
 

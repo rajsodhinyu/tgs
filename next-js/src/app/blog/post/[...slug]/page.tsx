@@ -24,6 +24,9 @@ const urlFor = (source: SanityImageSource) =>
 
 function spotifyEmbed(playlist:string) {
   let input = playlist;
+  if (input == null) {
+    input = "https://open.spotify.com/playlist/67OMv1NpyxUTmUetPeTJ39?si=05467d1c522d4b22"
+  };
   const parts = input.split("/")
   let i = 0;
   parts.forEach(function(thing) {
@@ -32,6 +35,16 @@ function spotifyEmbed(playlist:string) {
     i++
   })
   return (`https://open.spotify.com/embed/${parts[3]}/${parts[4]}`)
+}
+
+
+function bannerResolver(post:any) {
+  if (post?.banner == undefined) {
+    return (eventImage(post))
+  }
+  else {
+    return (urlFor(post?.banner)?.url())
+  }
 }
 
 
@@ -51,7 +64,7 @@ export default async function Page({
       <div className=" sm:w-screen md:w-10/12 lg:w-8/12 "> {/* Right Side, Carousel + */}
       <div className="relative size-1/5 flex-row w-full ">
                 <Image className="object-contain "
-                  src={`${eventImage(post)}`}
+                  src={`${bannerResolver(post)}`}
                   fill={true}
                   alt={`${post.name}`}
                   sizes=""
