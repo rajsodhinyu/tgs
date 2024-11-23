@@ -8,28 +8,28 @@ import { SanityImageSource } from "@sanity/image-url/lib/types/types";
 import imageUrlBuilder from "@sanity/image-url";
 
 const projectId = 'fnvy29id';
-const dataset = 'tgs' 
+const dataset = 'tgs'
 
 const urlFor = (source: SanityImageSource) =>
   projectId && dataset
     ? imageUrlBuilder({ projectId, dataset }).image(source)
-    : null; 
+    : null;
 
 
-  function eventImage(event:any) {
+function eventImage(event: any) {
   let pull = event.thumb.asset._ref;
-  let thing = pull ? urlFor(pull)?.url(): null;
+  let thing = pull ? urlFor(pull)?.url() : null;
   return (thing)
 }
 
-function spotifyEmbed(playlist:string) {
+function spotifyEmbed(playlist: string) {
   let input = playlist;
   if (input == null) {
     input = "https://open.spotify.com/playlist/67OMv1NpyxUTmUetPeTJ39?si=05467d1c522d4b22"
   };
   const parts = input.split("/")
   let i = 0;
-  parts.forEach(function(thing) {
+  parts.forEach(function (thing) {
     console.log(i)
     console.log(thing)
     i++
@@ -38,12 +38,12 @@ function spotifyEmbed(playlist:string) {
 }
 
 
-function bannerResolver(post:any) {
+function bannerResolver(post: any) {
   if (post?.banner == undefined) {
-    return (eventImage(post))
+    return (urlFor(post?.thumb)?.height(500)?.url())
   }
   else {
-    return (urlFor(post?.banner)?.url())
+    return (urlFor(post?.banner)?.height(500)?.url())
   }
 }
 
@@ -61,24 +61,25 @@ export default async function Page({
     <div className="-mt-10 sm:flex-wrap gap-2.5 md:-mt-20 lg:-mr-4 md:flex-nowrap md:inline-flex md:flex-row md:justify-around w-auto xl:w-screen
   pt-12">
       {/* Whole Site */}
-      <div className=" sm:w-screen md:w-10/12 lg:w-8/12 flex-col"> {/* Right Side, Carousel + */}
-      <div className=" w-full flex relative size-1/5">
-                <Image className="object-contain "
-                  src={`${bannerResolver(post)}`}
-                  fill = {true}
-                  alt={`${post.name}`}
-                  sizes=""
-                />
-              </div>
-        <div className="xl:text-6xl text-3xl font-bit text-center">
-          {post.name}
-        </div>
-        <div className="place-items-center mt-3 -mb-5"> 
-        <iframe  src={`${spotifyEmbed(post.playlistURL)}`} width="90%" height="200" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+      <div className=" sm:w-screen md:w-10/12 lg:w-8/12 flex-row"> {/* Right Side, Carousel + */}
 
-        </div>
         <div className="font-roc text-lg text-balance md:text-left">
-          <PortableText 
+          <div className="place-items-center">
+            <img className=""
+              src={`${bannerResolver(post)}`}
+              alt={`${post.name}`}
+            />
+          </div>
+          <div className="xl:text-6xl text-3xl font-bit text-center relative">
+            {post.name}
+          </div>
+
+          <div className="place-items-center mt-3 -mb-5">
+            <iframe src={`${spotifyEmbed(post.playlistURL)}`} width="90%" height="200" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+
+          </div>
+
+          <PortableText
             value={post.content}
           />
         </div>
