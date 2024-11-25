@@ -65,7 +65,7 @@ export const postType = defineType({
         defineField({
             name: 'banner',
             title: 'Banner',
-            description: 'Optional wide image. Otherwise the thumbnail is shown at the top',
+            description: 'Optional image that must be 16x9!',
             type: 'image',
             hidden: ({document}) => !(!document?.youtube), //hide the field if it is a Youtube Post
             options: {hotspot: true},
@@ -83,7 +83,7 @@ export const postType = defineType({
             type: 'array', 
             of: [{type: 'block'}],
             hidden: ({document}) => !(!document?.youtube), //hide the field if it is a Youtube Post
-            description: 'Paste here',
+            description: 'Paste here (Links must start with https://)',
             validation: rule => rule.custom((writer, context) => { // make required if blog post
                 if (!(context.document?.youtube) && (context.document?.content) == undefined) {
                   return 'Required'

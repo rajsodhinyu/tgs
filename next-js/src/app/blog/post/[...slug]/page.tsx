@@ -3,9 +3,11 @@ import PlaylistCard from "../../playlistCards";
 import Sidebar from "../../sidebar";
 import React from "react";
 import { sanityFetch } from "@/app/client";
-import { PortableText, SanityDocument } from "next-sanity";
+import { PortableText, PortableTextComponents, SanityDocument } from "next-sanity";
 import { SanityImageSource } from "@sanity/image-url/lib/types/types";
 import imageUrlBuilder from "@sanity/image-url";
+
+
 
 const projectId = 'fnvy29id';
 const dataset = 'tgs'
@@ -39,10 +41,31 @@ function spotifyEmbed(playlist: string) {
 
 function bannerResolver(post: any) {
   if (post?.banner == undefined) {
-    return (urlFor(post?.thumb)?.height(500)?.url())
+    return (urlFor(post?.thumb)?.fit('crop').height(500)?.url())
   }
   else {
     return (urlFor(post?.banner)?.height(500)?.url())
+  }
+}
+
+
+const components: PortableTextComponents = {
+  block: {
+    // Ex. 1: customizing common block types
+    h1: ({children}) => <h1 className="text-2xl text-blue-800">{children}</h1>,
+    normal: ({children}) => <p>{children}<br /></p>
+    
+  },
+  marks: {
+    em: ({children}) => <em className="text-purple-400">{children} </em>,
+    link: ({children, value}) => {
+      const rel = !value.href.startsWith('/') ? 'noreferrer noopener' : undefined
+      return (
+        <a className = "underline text-pink-400" href={value.href} rel={rel}>
+          {children}
+        </a>
+      )
+    },
   }
 }
 
@@ -74,8 +97,8 @@ export default async function Page({
           <div className="place-items-center mt-3 -mb-5"> {/* Spotify Embed */}
             <iframe src={`${spotifyEmbed(post.playlistURL)}`} width="90%" height="200" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
           </div>
-          <div className="mx-5 text-sm lg:text-lg text-pretty text-justify">
-            <PortableText value={post.content}/>
+          <div className="mx-5 text-sm lg:text-lg text-pretty text-justify pb-10 indent-8">
+            <PortableText value={post.content} components={components}/>
           </div>
         </div>
       </div>
