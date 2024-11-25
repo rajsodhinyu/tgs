@@ -30,11 +30,6 @@ function spotifyEmbed(playlist: string) {
   };
   const parts = input.split("/")
   let i = 0;
-  parts.forEach(function (thing) {
-    console.log(i)
-    console.log(thing)
-    i++
-  })
   return (`https://open.spotify.com/embed/${parts[3]}/${parts[4]}`)
 }
 
@@ -55,6 +50,17 @@ const components: PortableTextComponents = {
     h1: ({children}) => <h1 className="text-2xl text-blue-800">{children}</h1>,
     normal: ({children}) => <p>{children}<br /></p>
     
+  },
+  list: {
+    // Ex. 1: customizing common list types
+    bullet: ({children}) => <ul className="mt-xl">{children}</ul>,
+    number: ({children}) => <ol className="mt-lg">{children}</ol>,
+  },
+  listItem: {
+    // Ex. 1: customizing common list types
+    bullet: ({children}) => <li style={{listStyleType: 'disc'}}>{children}</li>,
+    number: ({children}) => <li style={{listStyleType: 'decimal'}}>{children}</li>,
+
   },
   marks: {
     em: ({children}) => <em className="text-purple-400">{children} </em>,
