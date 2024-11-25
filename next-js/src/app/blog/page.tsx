@@ -6,7 +6,7 @@ import Sidebar from "./sidebar";
 
 export default function Page() {
   return (
-  <div className="-mt-10 px-3 sm:flex-wrap gap-2.5 md:-mt-20 lg:-mr-4 md:flex-nowrap md:inline-flex md:flex-row md:justify-around w-auto xl:w-screen
+  <div className="-mt-10 px-3 sm:flex-wrap gap-2.5 md:-mt-20 md:flex-nowrap md:inline-flex md:flex-row md:justify-around w-auto xl:w-screen
   pt-12"> 
   {/* Whole Site */}
     <div className=""> {/* Right Side, Carousel + */} 
