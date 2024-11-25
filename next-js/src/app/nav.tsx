@@ -18,7 +18,7 @@ export default function Nav() {
             <Link href="/events">
               <img className="min-h-6 max-h-16 min-w-16" src="https://cdn.sanity.io/images/fnvy29id/tgs/a82c27d8c7dcd43014eaa1fdc852185942645f7e-2037x795.png" />
             </Link>
-            <Link href="/">
+            <Link href="/shop">
               <img className="min-h-5 max-h-16 min-w-12" src="https://cdn.sanity.io/images/fnvy29id/tgs/7162c809beb7a870dfbb0127b72fc6359218b456-1874x954.png" />
             </Link>
             </div>
