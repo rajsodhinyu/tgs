@@ -103,7 +103,8 @@ export default async function Page({
           <div className="place-items-center mt-3 -mb-5"> {/* Spotify Embed */}
             <iframe src={`${spotifyEmbed(post.playlistURL)}`} width="90%" height="200" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
           </div>
-          <div className="mx-5 text-sm lg:text-lg text-pretty text-justify pb-10 indent-8">
+          <div className="mx-5 text-sm lg:text-lg text-pretty text-justify pb-10 indent-8 first-letter:text-7xl first-letter:font-bit first-letter:text-black
+  first-letter:mr-3 first-letter:float-left">
             <PortableText value={post.content} components={components}/>
           </div>
         </div>
