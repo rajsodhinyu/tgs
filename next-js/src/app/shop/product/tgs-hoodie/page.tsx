@@ -24,7 +24,7 @@ const HorizontalCarousel: React.FC<HorizontalCarouselProps> = ({ cards }) => {
         <div className="flex flex-row items-center justify-start w-full md:w-96 relative">
             {/* Left Button */}
             <button
-                className="absolute left-0 z-10 bg-pink-400 bg-opacity-100  text-white p-1 pb-2 rounded-full"
+                className="absolute -left-8 z-10 bg-pink-400 bg-opacity-100  text-white p-1 pb-2 rounded-full"
                 onClick={() => scrollCarousel("left")}
             >
                 <div className="font-bit text-3xl "> &lt; </div>
@@ -48,7 +48,7 @@ const HorizontalCarousel: React.FC<HorizontalCarouselProps> = ({ cards }) => {
 
             {/* Right Button */}
             <button
-                className="absolute right-0 z-10 bg-pink-400 bg-opacity-100 text-white p-1 pb-2 rounded-full flex"
+                className="absolute -right-8 z-10 bg-pink-400 bg-opacity-100 text-white p-1 pb-2 rounded-full flex"
                 onClick={() => scrollCarousel("right")}
             >
                 <div className="font-bit text-3xl ">&gt;</div>
