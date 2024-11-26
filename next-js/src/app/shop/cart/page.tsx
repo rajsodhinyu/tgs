@@ -5,7 +5,8 @@ export default function Post() {
           <div className="">CART</div>
         </div>
         <br />
-        <div className="grid gap-10 grid-cols-1 sm:grid-cols-3">
+        <div className="text-4xl font-roc">
+            Your Cart:
           </div>
       </div>)
 }
