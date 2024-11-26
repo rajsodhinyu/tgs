@@ -44,7 +44,7 @@ export default function Nav() {
         <div className="pt-3 md:pt-0">
           <div className="w-72 xl:w-72 md:ml-4 xl:flex-none h-16 bg-gradient-to-r from-[#aa3e98] to-[#9368b7] rounded-xl inline-flex place-items-center align-center justify-around">
             <div>
-              <img src="https://cdn.sanity.io/images/fnvy29id/tgs/28685632d9f7cafdcf0eac8957e9146268afd0f9-163x116.png" alt="" width={50} />
+              <img src="https://cdn.sanity.io/images/fnvy29id/tgs/28685632d9f7cafdcf0eac8957e9146268afd0f9-163x116.png" alt="" width={40} />
             </div>
             <div className="text-white font-extrabold text-xl leading-3 tracking-wide font-title text-right md:text-lg">
               SONG OF THE DAY
