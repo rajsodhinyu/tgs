@@ -20,7 +20,7 @@ const HorizontalCarousel = () => {
                 <img
                   src={data}
                   alt="Images to scroll horizontal"
-                  className="w-full h-[500px]"
+                  className="h-[300px] md:h-[500px]"
                 />
               </section>
             );
