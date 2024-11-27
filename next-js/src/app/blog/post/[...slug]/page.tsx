@@ -63,11 +63,11 @@ const components: PortableTextComponents = {
 
   },
   marks: {
-    em: ({children}) => <em className="text-purple-400">{children} </em>,
+    em: ({children}) => <em className="text-tgs-purple">{children} </em>,
     link: ({children, value}) => {
       const rel = !value.href.startsWith('/') ? 'noreferrer noopener' : undefined
       return (
-        <a className = "underline text-pink-400" href={value.href} rel={rel}>
+        <a className = "underline text-tgs-pink" href={value.href} rel={rel}>
           {children}
         </a>
       )
