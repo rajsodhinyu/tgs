@@ -27,7 +27,7 @@ const HorizontalCarousel: React.FC<HorizontalCarouselProps> = ({ cards }) => {
                 className="absolute -left-8 z-10 bg-pink-400 bg-opacity-100  text-white p-1 pb-2 rounded-full"
                 onClick={() => scrollCarousel("left")}
             >
-                <div className="font-bit text-3xl "> &lt; </div>
+                <div className="font-bit text-3xl pl-1"> &lt; </div>
             </button>
 
             {/* Carousel container */}
@@ -51,7 +51,7 @@ const HorizontalCarousel: React.FC<HorizontalCarouselProps> = ({ cards }) => {
                 className="absolute -right-8 z-10 bg-pink-400 bg-opacity-100 text-white p-1 pb-2 rounded-full flex"
                 onClick={() => scrollCarousel("right")}
             >
-                <div className="font-bit text-3xl ">&gt;</div>
+                <div className="font-bit text-3xl pl-1">&gt;</div>
             </button>
         </div>
     );
@@ -68,7 +68,7 @@ export default function Post() {
         <div className="text-3xl text-center font-title font-bold">
             THATGOODSH*T HOODIE
         </div>
-        <div className="flex-wrap sm:flex-nowrap sm:inline-flex">
+        <div className="flex-wrap md:flex-nowrap md:inline-flex">
             <div className="flex mx-10 mt-5">
                 {<HorizontalCarousel cards={cards}></HorizontalCarousel>}
                 <div>
