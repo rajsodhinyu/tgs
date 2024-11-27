@@ -24,14 +24,14 @@ const HorizontalCarousel: React.FC<HorizontalCarouselProps> = ({ cards }) => {
         <div className="flex flex-row items-center justify-start w-full md:w-96 relative">
             {/* Left Button */}
             <button
-                className="absolute -left-8 z-10 bg-tgs-pink bg-opacity-100  text-white p-1 pb-2 rounded-full"
+                className="absolute -left-8 z-10 bg-tgs-purple bg-opacity-100  text-white p-1 pb-2 rounded-full"
                 onClick={() => scrollCarousel("left")}
             >
                 <div className="font-title text-3xl pl-1"> &lt; </div>
             </button>
 
             {/* Carousel container */}
-            <div className="carousel-container flex overflow-x-scroll snap-x snap-mandatory space-x-4 scrollbar-hidden rounded-lg">
+            <div className="carousel-container flex overflow-x-scroll snap-x snap-mandatory no-scrollbar rounded-lg">
                 {cards.map((data, index) => (
                     <section
                         className="flex-shrink-0 snap-center flex justify-center items-center"
@@ -48,7 +48,7 @@ const HorizontalCarousel: React.FC<HorizontalCarouselProps> = ({ cards }) => {
 
             {/* Right Button */}
             <button
-                className="absolute -right-8 z-10 bg-tgs-pink bg-opacity-100 text-white p-1 pb-2 rounded-full flex"
+                className="absolute -right-8 z-10 bg-tgs-purple bg-opacity-100 text-white p-1 pb-2 rounded-full flex"
                 onClick={() => scrollCarousel("right")}
             >
                 <div className="font-title text-3xl pl-1">&gt;</div>
@@ -65,11 +65,13 @@ export default function Post() {
             <div className="">CART</div>
         </div>
         <br />
-        <div className="text-3xl text-center font-title font-bold">
+        <div className="text-center font-title font-bold
+        text-3xl md:text-5xl text-tgs-purple
+        ">
             THATGOODSH*T HOODIE
         </div>
-        <div className="flex-wrap md:flex-nowrap md:inline-flex">
-            <div className="flex mx-10 mt-5">
+        <div className="flex-wrap place-items-center md:flex-nowrap md:inline-flex">
+            <div className="flex mx-10 mt-5 w-60 md:w-full">
                 {<HorizontalCarousel cards={cards}></HorizontalCarousel>}
                 <div>
 
