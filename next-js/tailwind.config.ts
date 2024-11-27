@@ -20,9 +20,10 @@ const config: Config = {
       },
       colors :{
         'regal-blue': '#243c5a',
-        'tgs-pink': '#FFA6F2',
-        'tgs-purple': '#6B5DB0',
+        'tgs-pink': '#ed9df9',
+        'tgs-purple': '#6c5cbe',
         'tgs-dark-purple': '#3D3564',
+        
       }
     },
   },
