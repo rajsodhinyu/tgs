@@ -138,16 +138,16 @@ export default function Post() {
         ">
                 Lounge Hoodie
         </div>
-        <div className="flex flex-col flex-wrap place-items-center md:flex-nowrap md:flex-row md:justify-between md:inline-flex">
-            <div className="flex mx-10 mt-5 w-60 md:w-full">
-                {<HorizontalCarousel cards={cards}></HorizontalCarousel>}
-                <div>
-                </div>
-            </div>
-            <div className="flex w-11/12 place-self-center text-center align-center text-black text-balance text-sm lg:text-lg font-semibold font-roc leading-none justify-end pt-2">
-                {<ShopInfo cards2={cards}></ShopInfo>}
-            </div>
+        <div className="w-full flex justify-around flex-col flex-wrap sm:flex-nowrap sm:flex-row">
+              <div className="flex mx-10 mt-5 w-60 md:w-fit place-self-center">
+                  {<HorizontalCarousel cards={cards}></HorizontalCarousel>}
+                  <div>
+                  </div>
+              </div>
 
+              <div className="flex text-center place-self-center text-black text-balance text-sm md:text-lg pt-2">
+                  {<ShopInfo cards2={cards}></ShopInfo>}
+              </div>
         </div>
 
     </div>)
