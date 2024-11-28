@@ -41,13 +41,8 @@ export default function Nav() {
           </Link>
         </div>
         <div className="pt-3 md:pt-0">
-          <div className="w-72 xl:w-72 md:ml-4 xl:flex-none h-16 bg-gradient-to-r from-tgs-pink via-pink-500 to-tgs-purple rounded-xl inline-flex place-items-center align-center justify-around">
-            <div>
-              <img src="https://cdn.sanity.io/images/fnvy29id/tgs/28685632d9f7cafdcf0eac8957e9146268afd0f9-163x116.png?h=200" alt="" width={40} />
-            </div>
-            <div className="text-white font-extrabold text-xl leading-3 tracking-wide font-title text-right md:text-xl">
-              SONG OF THE DAY
-            </div>
+          <div className="w-72 xl:w-72 md:ml-4 xl:flex-none h-16  rounded-xl inline-flex place-items-center align-center justify-around">
+            <img src="https://cdn.sanity.io/images/fnvy29id/tgs/9d324ccb04867fdad82cf73515eb8f1461570d31-2010x516.png" alt="" />
           </div>
         </div>
       </div>
