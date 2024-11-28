@@ -50,7 +50,7 @@ function stringifyDate(input:string) {
 
 }
   return (<div>
-    <div className="grid lg:grid-cols-4 xl:grid-cols-5 md:grid-cols-3 grid-cols-2 p-3 gap-2 md:-mt-10 ">
+    <div className="grid lg:grid-cols-4 xl:grid-cols-5 md:grid-cols-3 grid-cols-2 p-3 gap-2 md:-mt-10 sm:-mt-0-mt-10 ">
       {blogs.map((blog) => (
         <div className="rounded-lg hover:scale-95" key={blog._id}>
           <Link className="hover:underline"
@@ -58,7 +58,7 @@ function stringifyDate(input:string) {
             <div className="text-white flex place-content-center">
               <div className="relative size-72 ">
                 <Image className=" object-contain "
-                  src={`${eventImage(blog)}`}
+                  src={`${eventImage(blog)}?h=700`}
                   fill={true}
                   alt={`${blog.name}`}
                 />
