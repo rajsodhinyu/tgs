@@ -22,7 +22,7 @@ export default function Page() {
       </div>
         </div>
     </div>
-    <div className="sm:w-screen md:w-9/12 lg:w-4/12 flex-col place-items-center justify-end rounded-xl"> {/* Left Side */}
+    <div className="sm:w-[90vw] md:w-9/12 lg:w-8/12 xl:w-5/12 flex-col place-items-center justify-end rounded-xl"> {/* Left Side */}
     <Sidebar items={3}></Sidebar>
     </div>
   </div>
