@@ -6,7 +6,7 @@ export const client = createClient({
     projectId: "fnvy29id",
     dataset: "tgs",
     apiVersion: "2024-01-01",
-    useCdn: false,
+    useCdn: true,
   });
 
 export async function sanityFetch<QueryResponse>({
