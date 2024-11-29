@@ -121,11 +121,7 @@ const ShopInfo: React.FC<ShopInfoProps> = ({cards2}) => {
 }
 
 export default function Post() {
-    return (<div className="m-10 sm:-mt-8">
-        <div className="text-4xl font-bit font-bold text-black text-left flex justify-between"> {/* Title */}
-            <div className="hover:underline decoration-from-font decoration-tgs-purple"><a href="/shop">SHOP</a></div>
-            <div className="">CART</div>
-        </div>
+    return (<div >
         <br />
         <div className="text-center font-title font-bold
         text-2xl sm:text-3xl md:text-5xl text-tgs-purple
