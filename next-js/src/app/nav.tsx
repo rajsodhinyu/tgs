@@ -4,7 +4,7 @@ import Link from "next/link";
 export default function Nav() {
   return (
     <main>
-      <div className="w-svh sm:m-10 mx-3 md:mt-4 inset-0 h-24 flex items-baseline md:items-center flex-wrap md:justify-between  md:flex-nowrap md:flex-row justify-around mb-10">
+      <div className="w-svh sm:m-10 mx-3 md:mt-4 inset-0 h-24 flex items-baseline md:items-center flex-wrap md:justify-between md:flex-nowrap md:flex-row justify-around mb-10">
         {" "}
         {/*whole nav bar*/}
         <div className="shrink h-12 flex gap-6 items-center lg:gap-8 justify-start">
@@ -40,8 +40,9 @@ export default function Nav() {
             />
           </Link>
         </div>
-        <div className="pt-3 md:pt-0 ">
-          <div className="w-72 xl:w-72 md:ml-4 xl:flex-none h-16  rounded-xl inline-flex place-items-center align-center justify-around">
+        <div className="pt-3 md:pt-0">
+          <div className="w-72 xl:w-72 md:ml-4 xl:flex-none rounded-xl inline-flex place-items-center align-center justify-around">
+          
             <img src="https://cdn.sanity.io/images/fnvy29id/tgs/9d324ccb04867fdad82cf73515eb8f1461570d31-2010x516.png" alt="" />
           </div>
         </div>

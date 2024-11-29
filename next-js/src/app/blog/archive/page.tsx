@@ -61,6 +61,8 @@ function stringifyDate(input:string) {
                   src={`${eventImage(blog)}?h=700`}
                   fill={true}
                   alt={`${blog.name}`}
+                  sizes="(max-width: 300px) 100vw"
+                  quality={100}
                 />
               </div>
             </div>
