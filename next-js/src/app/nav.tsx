@@ -4,7 +4,7 @@ import Link from "next/link";
 export default function Nav() {
   return (
     <main>
-      <div className="w-svh sm:m-10 mx-3 md:mt-4 inset-0 h-24 flex items-baseline md:items-center flex-wrap md:justify-between md:flex-nowrap md:flex-row justify-around mb-10">
+      <div className="w-svh m-10 mx-3 md:mt-4 inset-0 h-24 flex items-baseline md:items-center flex-wrap md:justify-between md:flex-nowrap md:flex-row justify-around mb-10">
         {" "}
         {/*whole nav bar*/}
         <div className="shrink h-12 flex gap-6 items-center lg:gap-8 justify-start">
