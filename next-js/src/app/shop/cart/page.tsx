@@ -62,12 +62,12 @@ async function getName (id:string) {
 
 export default async function Post() {
     const cookieStore = await cookies() 
-
+    console.log("ENTERING cookieStore.get('cart')?.value")
     const cartCookie = cookieStore.get('cart')?.value
+    console.log(`current cart is ${cartCookie}`)
+    console.log("exiting cookieStore.get('cart')?.value")
     
-    console.log(cookieStore.toString())
-    
-    const query = `
+    const findCart = `
     query {
     cart(
       id: "${cartCookie}"
@@ -86,27 +86,29 @@ export default async function Post() {
     }
     `;
     
-    const { data } = await client.request(query, {
+    const { data } = await client.request(findCart, {
         variables: {
             handle: 'sample-product',
         },
     });
     
     
-    const checkoutURL = data.cart.checkoutUrl
-    const array = data.cart.lines.edges
+    const checkoutURL = data?.cart.checkoutUrl
+    const array = data?.cart.lines.edges
     return (<div >
 
         <br />
         <div className="text-4xl font-roc" key={'hey'}>
-            Your Cart:
-            {array.map((node:any) => (
+            Your Cart: ({cartCookie})
+            {console.log(data.cart)}
+            {array?.map((node:any) => (
         <div key={node.id}>
+          <br />
           {getName(node.node.id)}, {getSize(node.node.id)}: {node.node.quantity}
         </div>
       ))}
             <br />
-            <div> <a href={checkoutURL}>checkout</a> </div>
+            <div className="text-right font-bit font-bold"> <form action={"/shop"}> <button type="submit" name="action" value={"clear"}>CLEAR</button></form><a href={checkoutURL}>CHECKOUT</a> </div>
 
         </div>
     </div>)

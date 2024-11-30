@@ -5,27 +5,37 @@ import { cookies } from "next/headers";
 
 
 const client = createStorefrontApiClient({
-  storeDomain: 'http://d83529-c9.myshopify.com',
-  apiVersion: '2024-04',
-  publicAccessToken: '78a95c5656c69f0b57bec27d59a4e799',
+    storeDomain: 'http://d83529-c9.myshopify.com',
+    apiVersion: '2024-04',
+    publicAccessToken: '78a95c5656c69f0b57bec27d59a4e799',
 });
 
 
 
 export async function GET(request: Request) {
-  console.log(`received ${request.url}`)
-  const product = `gid://shopify/ProductVariant/${request.url.split("?")[1].split("=")[1]}`
-  console.log(`hoodie ${product} added to cart`);
-  const mutationQ = `mutation {
-  cartCreate(
-    input: {
-      lines: [
-        {
-          quantity: 1
-          merchandiseId: "${product}"
-        }
-      ],
+    const cookieStore = await cookies()
+
+    console.log(`received ${request.url}`)
+    const action = request.url.split("&")[1].split("=")[1]
+    console.log(`action is ${action}`)
+    const actionlessURL = request.url.split("&")[0]
+    const product = `gid://shopify/ProductVariant/${actionlessURL.split("?")[1].split("=")[1]}`
+    console.log(`hoodie ${product} added to cart`);
+
+
+
+    const newEmptyCart = `
+    mutation {
+  cartCreate(input: {lines: []}) {
+    cart {
+      id
     }
+  }
+}`
+
+    const newCartwithItem = `mutation {
+  cartCreate(
+    input: {lines: [{quantity: 1, merchandiseId: "${product}"}]}
   ) {
     cart {
       id
@@ -43,43 +53,77 @@ export async function GET(request: Request) {
           }
         }
       }
-      # The estimated total cost of all merchandise that the customer will pay at checkout.
       cost {
         totalAmount {
           amount
           currencyCode
         }
-        # The estimated amount, before taxes and discounts, for the customer to pay at checkout.
         subtotalAmount {
           amount
           currencyCode
         }
-        # The estimated tax amount for the customer to pay at checkout.
         totalTaxAmount {
           amount
           currencyCode
         }
-        # The estimated duty amount for the customer to pay at checkout.
         totalDutyAmount {
           amount
           currencyCode
         }
       }
+      checkoutUrl
     }
   }
 }`;
 
-  const { data } = await client.request(mutationQ, {
-    variables: {
-      handle: 'sample-product',
-    },
-  });
 
-  const cookieStore = await cookies()
-  const cart = data.cartCreate.cart.id
 
-  const cartCookie = cookieStore.set('cart', cart)
-  console.log(`adding ${cart} to cookies`)
-  redirect('/shop/cart')
+    let finalURL = '/shop'
+
+    console.log(cookieStore.getAll('cart'))
+    const cartbool = cookieStore.has('cart')
+    console.log(cartbool)
+    let currentCart = cookieStore.get('cart')
+    console.log(`current cart is ${currentCart?.value}`)
+    if ((currentCart?.value == '') || (!cartbool)) { /* if there is no cart (very unlikely) */
+        const { data } = await client.request(newCartwithItem, {
+            variables: {
+                handle: 'sample-product',
+            },
+        });
+        const cart = data.cartCreate.cart.id
+        const cartCookie = cookieStore.set('cart', cart)
+        console.log(`added new cart ${cart} to cookies`)
+        finalURL = data.cartCreate.cart.checkoutUrl
+    }
+    else {
+        const addItemtoCart = `
+                mutation {
+  cartLinesAdd(
+    cartId: "${currentCart?.value}"
+    lines: {merchandiseId: "${product}"}
+  ) {
+    cart {
+      id
+      checkoutUrl
+    }
+  }
+}
+    `
+        const { data } = await client.request(addItemtoCart, {
+            variables: {
+                handle: 'sample-product',
+            },
+        });
+
+        finalURL = data.cartLinesAdd.cart.checkoutUrl
+    }
+
+
+    if (action == "now") {
+        redirect(finalURL)
+    }
+    else { redirect('/shop/cart') }
+
 }
 

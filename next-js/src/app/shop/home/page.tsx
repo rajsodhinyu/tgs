@@ -1,8 +1,10 @@
-import ShopCard from "../blog/shopCards"
+import ShopCard from "../../blog/shopCards"
 
 
 
-export default function Post() {
+export default async function Post() {
+
+  
   return (<div >
     
     <br />
