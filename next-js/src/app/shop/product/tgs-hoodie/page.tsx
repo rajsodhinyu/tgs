@@ -1,5 +1,8 @@
 "use client";
 
+import { useEffect } from "react";
+
+
 
 
 
@@ -76,7 +79,7 @@ const HorizontalCarousel: React.FC<HorizontalCarouselProps> = ({ cards }) => {
 
 const ShopInfo: React.FC<ShopInfoProps> = ({cards2}) => {
     return(<div className="flex font-title">
-        <form className="">
+        <form className="" action={"/shop/cart/add/hoodie"}>
           <div className="flex">
             <div className="w-full flex-none mt-2 order-1 text-4xl sm:text-5xl font-bold text-tgs-purple">
               $79.00
@@ -85,31 +88,31 @@ const ShopInfo: React.FC<ShopInfoProps> = ({cards2}) => {
           <div className="flex items-baseline mt-4 mb-6 pb-6 border-b border-tgs-purple place-content-center">
             <div className="space-x-2 flex text-sm font-bold">
               <label>
-                <input className="sr-only peer" name="size" type="radio" value="xs" defaultChecked />
+                <input className="sr-only peer" name="size" type="radio" value="49911676600642" defaultChecked />
                 <div className="w-9 h-9 rounded-full flex items-center justify-center text-violet-400 peer-checked:bg-tgs-purple peer-checked:text-white">
                   S
                 </div>
               </label>
               <label>
-                <input className="sr-only peer" name="size" type="radio" value="s" />
+                <input className="sr-only peer" name="size" type="radio" value="49911676633410" />
                 <div className="w-9 h-9 rounded-full flex items-center justify-center text-violet-400 peer-checked:bg-tgs-purple peer-checked:text-white">
                   M
                 </div>
               </label>
               <label>
-                <input className="sr-only peer" name="size" type="radio" value="m" />
+                <input className="sr-only peer" name="size" type="radio" value="49911676666178" />
                 <div className="w-9 h-9 rounded-full flex items-center justify-center text-violet-400 peer-checked:bg-tgs-purple peer-checked:text-white">
                   L
                 </div>
               </label>
               <label>
-                <input className="sr-only peer" name="size" type="radio" value="l" />
+                <input className="sr-only peer" name="size" type="radio" value="49911676698946" />
                 <div className="w-9 h-9 rounded-full flex items-center justify-center text-violet-400 peer-checked:bg-tgs-purple peer-checked:text-white">
                   XL
                 </div>
               </label>
               <label>
-                <input className="sr-only peer" name="size" type="radio" value="xl" />
+                <input className="sr-only peer" name="size" type="radio" value="49911676731714" />
                 <div className="w-9 h-9 rounded-full flex items-center justify-center text-violet-400 peer-checked:bg-tgs-purple peer-checked:text-white">
                   2XL
                 </div>
@@ -121,7 +124,7 @@ const ShopInfo: React.FC<ShopInfoProps> = ({cards2}) => {
               <button className="h-10 px-6 rounded-full bg-tgs-purple text-white" type="submit">
                 Buy now
               </button>
-              <button className="h-10 px-6 rounded-full border border-tgs-purple text-tgs-purple" type="button">
+              <button className="h-10 px-6 rounded-full border border-tgs-purple text-tgs-purple" type="submit">
                 Add to cart
               </button>
             </div>
@@ -132,7 +135,11 @@ const ShopInfo: React.FC<ShopInfoProps> = ({cards2}) => {
 }
 
 export default function Post() {
-
+  useEffect(() => {
+    console.log(`cart is ${localStorage.getItem("cart")}`)
+    document.cookie = ("cart=cartID")
+    console.log(document.cookie)
+  }, []);
     return (<div>
 
         <br />

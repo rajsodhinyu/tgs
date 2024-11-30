@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect } from "react";
+
 const cards = [
     "https://cdn.sanity.io/images/fnvy29id/tgs/3fcdb1608e9d8a639cd6c42a1371ff72f3a0efd0-1786x2233.jpg"
 ];
@@ -116,6 +118,9 @@ const ShopInfo: React.FC<ShopInfoProps> = ({cards2}) => {
 }
 
 export default function Post() {
+  useEffect(() => {
+    console.log(`cart is ${localStorage.getItem("cart")}`)
+  }, []);
     return (<div >
         
         <br />
