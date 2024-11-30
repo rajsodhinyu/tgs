@@ -25,7 +25,7 @@ export async function GET(request: Request) {
   let finalURL = '/shop/home'
     const cookieStore = await cookies()
     let cartbool = cookieStore.has('cart')
-    const action = request.url.split("?")[1].split("=")[1]
+    const action = request.url.split("?")[1]?.split("=")[1]
     console.log(`action is ${action}`)
     if (action == 'clear' ) {
       cartbool = false;

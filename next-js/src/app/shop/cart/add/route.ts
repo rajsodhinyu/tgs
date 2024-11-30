@@ -76,8 +76,6 @@ export async function GET(request: Request) {
   }
 }`;
 
-
-
     let finalURL = '/shop'
 
     console.log(cookieStore.getAll('cart'))
