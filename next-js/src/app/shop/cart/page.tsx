@@ -8,41 +8,7 @@ const client = createStorefrontApiClient({
     publicAccessToken: '78a95c5656c69f0b57bec27d59a4e799',
 });
 
-const cookieStore = await cookies() 
 
-const cartCookie = cookieStore.get('cart')?.value
-
-console.log(cookieStore.toString())
-
-const query = `
-query {
-cart(
-  id: "${cartCookie}"
-) {
-  checkoutUrl
-  totalQuantity
-  lines(first: 10) {
-    edges {
-      node {
-        id
-        quantity
-      }
-    }
-  }
-}
-}
-`;
-
-const { data } = await client.request(query, {
-    variables: {
-        handle: 'sample-product',
-    },
-});
-
-
-const checkoutURL = data.cart.checkoutUrl
-const array = data.cart.lines.edges
-//console.log(array)
 
 async function getSize (id:string) {
     console.log(id)
@@ -95,11 +61,44 @@ async function getName (id:string) {
 }
 
 export default async function Post() {
+    const cookieStore = await cookies() 
 
+    const cartCookie = cookieStore.get('cart')?.value
+    
+    console.log(cookieStore.toString())
+    
+    const query = `
+    query {
+    cart(
+      id: "${cartCookie}"
+    ) {
+      checkoutUrl
+      totalQuantity
+      lines(first: 10) {
+        edges {
+          node {
+            id
+            quantity
+          }
+        }
+      }
+    }
+    }
+    `;
+    
+    const { data } = await client.request(query, {
+        variables: {
+            handle: 'sample-product',
+        },
+    });
+    
+    
+    const checkoutURL = data.cart.checkoutUrl
+    const array = data.cart.lines.edges
     return (<div >
 
         <br />
-        <div className="text-4xl font-roc">
+        <div className="text-4xl font-roc" key={'hey'}>
             Your Cart:
             {array.map((node:any) => (
         <div key={node.id}>
