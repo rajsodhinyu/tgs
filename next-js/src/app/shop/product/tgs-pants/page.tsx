@@ -73,7 +73,7 @@ const HorizontalCarousel: React.FC<HorizontalCarouselProps> = ({ cards }) => {
 
 const ShopInfo: React.FC<ShopInfoProps> = ({cards2}) => {
     return(<div className="flex font-title">
-        <form className="">
+        <form className="" action={"/shop/cart/add"}>
           <div className="flex">
             <div className="w-full flex-none mt-2 order-1 text-4xl font-bold text-tgs-purple">
               $79.00
@@ -82,31 +82,31 @@ const ShopInfo: React.FC<ShopInfoProps> = ({cards2}) => {
           <div className="flex items-baseline mt-4 mb-6 pb-6 border-b border-tgs-purple place-content-center">
             <div className="space-x-2 flex text-sm font-bold">
               <label>
-                <input className="sr-only peer" name="size" type="radio" value="xs" checked />
+                <input className="sr-only peer" name="size" type="radio" value="49911677157698" defaultChecked />
                 <div className="w-9 h-9 rounded-full flex items-center justify-center text-violet-400 peer-checked:bg-tgs-purple peer-checked:text-white">
                   S
                 </div>
               </label>
               <label>
-                <input className="sr-only peer" name="size" type="radio" value="s" />
+                <input className="sr-only peer" name="size" type="radio" value="49911677190466" />
                 <div className="w-9 h-9 rounded-full flex items-center justify-center text-violet-400 peer-checked:bg-tgs-purple peer-checked:text-white">
                   M
                 </div>
               </label>
               <label>
-                <input className="sr-only peer" name="size" type="radio" value="m" />
+                <input className="sr-only peer" name="size" type="radio" value="49911677223234" />
                 <div className="w-9 h-9 rounded-full flex items-center justify-center text-violet-400 peer-checked:bg-tgs-purple peer-checked:text-white">
                   L
                 </div>
               </label>
               <label>
-                <input className="sr-only peer" name="size" type="radio" value="l" />
+                <input className="sr-only peer" name="size" type="radio" value="49911677256002" />
                 <div className="w-9 h-9 rounded-full flex items-center justify-center text-violet-400 peer-checked:bg-tgs-purple peer-checked:text-white">
                   XL
                 </div>
               </label>
               <label>
-                <input className="sr-only peer" name="size" type="radio" value="xl" />
+                <input className="sr-only peer" name="size" type="radio" value="49911677288770" />
                 <div className="w-9 h-9 rounded-full flex items-center justify-center text-violet-400 peer-checked:bg-tgs-purple peer-checked:text-white">
                   2XL
                 </div>
