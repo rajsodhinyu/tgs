@@ -1,5 +1,10 @@
 "use client";
 
+
+
+
+
+
 const cards = [
     "https://cdn.sanity.io/images/fnvy29id/tgs/7486e4a90f1e3108c32966ffa1cd24d07394f6c8-2100x2628.jpg",
     "https://cdn.sanity.io/images/fnvy29id/tgs/f128efa4d7545273800504eca5734c3da4a3eb4f-2048x2560.jpg",
@@ -73,14 +78,14 @@ const ShopInfo: React.FC<ShopInfoProps> = ({cards2}) => {
     return(<div className="flex font-title">
         <form className="">
           <div className="flex">
-            <div className="w-full flex-none mt-2 order-1 text-4xl font-bold text-tgs-purple">
+            <div className="w-full flex-none mt-2 order-1 text-4xl sm:text-5xl font-bold text-tgs-purple">
               $79.00
             </div>
           </div>
           <div className="flex items-baseline mt-4 mb-6 pb-6 border-b border-tgs-purple place-content-center">
             <div className="space-x-2 flex text-sm font-bold">
               <label>
-                <input className="sr-only peer" name="size" type="radio" value="xs" checked />
+                <input className="sr-only peer" name="size" type="radio" value="xs" defaultChecked />
                 <div className="w-9 h-9 rounded-full flex items-center justify-center text-violet-400 peer-checked:bg-tgs-purple peer-checked:text-white">
                   S
                 </div>
@@ -127,15 +132,17 @@ const ShopInfo: React.FC<ShopInfoProps> = ({cards2}) => {
 }
 
 export default function Post() {
+
     return (<div>
+
         <br />
         <div className="text-center font-title font-bold
-        text-2xl sm:text-3xl md:text-5xl text-tgs-purple
+          text-4xl md:text-5xl text-tgs-purple
         ">
-                Lounge Hoodie
+                TGS Lounge Hoodie
         </div>
         <div className="w-full flex justify-around flex-col flex-wrap sm:flex-nowrap sm:flex-row">
-              <div className="flex mx-10 mt-5 w-60 md:w-fit place-self-center">
+              <div className="flex mx-10 mt-10 w-60 md:w-fit place-self-center">
                   {<HorizontalCarousel cards={cards}></HorizontalCarousel>}
                   <div>
                   </div>
