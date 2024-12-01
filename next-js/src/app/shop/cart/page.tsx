@@ -116,7 +116,7 @@ export default async function Post() {
     return (<div >
       
         <br />
-        <div className="text-4xl font-roc" key={'hey'}>
+        <div className="text-4xl font-roc" key={"hey"}>
             Your Cart: ({cartCookie})
             {console.log(data.cart)}
             {array?.map((node:any) => (
