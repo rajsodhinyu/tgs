@@ -6,6 +6,7 @@ import { sanityFetch } from "@/app/client";
 import { PortableText, PortableTextComponents, SanityDocument } from "next-sanity";
 import { SanityImageSource } from "@sanity/image-url/lib/types/types";
 import imageUrlBuilder from "@sanity/image-url";
+import { writer } from "repl";
 
 
 
@@ -43,12 +44,18 @@ function bannerResolver(post: any) {
   }
 }
 
+async function findWriter(id:string) {
+  const writerQ = `*[_type == "writer" && _id == "${id}"]{name}`
+  const data:any = await sanityFetch({query:writerQ})
+  console.log(data)
+  return (data[0].name)
+}
 
 const components: PortableTextComponents = {
   block: {
     // Ex. 1: customizing common block types
     h1: ({children}) => <h1 className="text-2xl text-blue-800">{children}</h1>,
-    normal: ({children}) => <p>{children}<br /></p>
+    normal: ({children}) => <p>{children} <br /></p>
     
   },
   list: {
@@ -67,7 +74,7 @@ const components: PortableTextComponents = {
     link: ({children, value}) => {
       const rel = !value.href.startsWith('/') ? 'noreferrer noopener' : undefined
       return (
-        <a className = "underline text-tgs-pink" href={value.href} rel={rel}>
+        <a className = "underline text-tgs-purple" href={value.href} rel={rel}>
           {children}
         </a>
       )
@@ -100,11 +107,14 @@ export default async function Page({
           <div className="xl:text-4xl text-3xl font-bold font-bit text-center relative"> {/* Title */}
             {post.name}
           </div>
+          <div className="xl:text-2xl text-xl font-bold font-bit text-center relative"> {/* Title */}
+            by {findWriter(post.writer._ref)}
+          </div>
           <div className="place-items-center mt-3 -mb-5"> {/* Spotify Embed */}
             <iframe src={`${spotifyEmbed(post.playlistURL)}`} width="90%" height="200" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
           </div>
-          <div className="mx-5 text-sm lg:text-lg text-pretty text-justify pb-10 indent-8 first-letter:text-7xl first-letter:font-title first-letter:text-black
-  first-letter:mr-3 first-letter:float-left">
+          <div className="mx-5 text-sm lg:text-lg text-pretty text-justify pb-10 indent-8 first-letter:text-8xl first-letter:font-title first-letter:text-black
+  first-letter:mr-6 first-letter:float-start">
             <PortableText value={post.content} components={components}/>
           </div>
         </div>
