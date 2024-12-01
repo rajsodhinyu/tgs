@@ -30,14 +30,14 @@ async function getSize(id: string) {
     }
   }
 }`
-    const unparsed = await client.request(query2)
+  const unparsed = await client.request(query2)
 
-    return (unparsed.data.node.merchandise.title)
+  return (unparsed.data.node.merchandise.title)
 }
 
-async function getName (id:string) {
-    console.log(id)
-    let query2 = `query MyQuery {
+async function getName(id: string) {
+  console.log(id)
+  let query2 = `query MyQuery {
   node(
     id: "${id}"
   ) {
@@ -55,19 +55,20 @@ async function getName (id:string) {
     }
   }
 }`
-    const unparsed = await client.request(query2)
-    console.log(unparsed.data.node.merchandise.title)
-    return (unparsed.data.node.merchandise.product.title)
+  const unparsed = await client.request(query2)
+  console.log(unparsed.data.node.merchandise.title)
+  return (unparsed.data.node.merchandise.product.title)
 }
 
 export default async function Post() {
-    const cookieStore = await cookies() 
-    console.log("ENTERING cookieStore.get('cart')?.value")
-    let cartCookie = cookieStore.get('cart')?.value
-    console.log(`current cart is ${cartCookie}`)
-    console.log("exiting cookieStore.get('cart')?.value")
-    
-    {if ((cartCookie == null)||(cartCookie == '')) {
+  const cookieStore = await cookies()
+  console.log("ENTERING cookieStore.get('cart')?.value")
+  let cartCookie = cookieStore.get('cart')?.value
+  console.log(`current cart is ${cartCookie}`)
+  console.log("exiting cookieStore.get('cart')?.value")
+
+  {
+    if ((cartCookie == null) || (cartCookie == '')) {
       const newEmptyCart = `
       mutation {
         cartCreate(input: {lines: []}) {
@@ -78,13 +79,15 @@ export default async function Post() {
       }`
       let { data } = await client.request(newEmptyCart, {
         variables: {
-            handle: 'sample-product',
+          handle: 'sample-product',
         },
-    });
-    cartCookie = data.cartCreate.cart.id;
-    }}
+      });
+      cartCookie = data.cartCreate.cart.id;
 
-    const findCart = `
+    }
+  }
+
+  const findCart = `
     query {
     cart(
       id: "${cartCookie}"
@@ -102,32 +105,48 @@ export default async function Post() {
     }
     }
     `;
-    
-    const { data } = await client.request(findCart, {
-        variables: {
-            handle: 'sample-product',
-        },
-    });
-    
-    
-    const checkoutURL = data?.cart?.checkoutUrl
-    const array = data?.cart.lines.edges
-    
-    return (<div >
-      
-        <br />
-        <div className="text-4xl font-roc" key={"hey"}>
-            Your Cart: ({cartCookie})
-            {console.log(data.cart)}
-            {array?.map((node:any) => (
+
+  const { data } = await client.request(findCart, {
+    variables: {
+      handle: 'sample-product',
+    },
+  });
+
+
+  let checkoutURL = data?.cart?.checkoutUrl
+  if (data?.cart?.totalQuantity == 0) {
+    checkoutURL = null
+  }
+  const array = data?.cart.lines.edges
+
+  return (<div >
+
+    <br />
+    <div className="text-4xl font-roc" key={"hey"}>
+      Your Cart: ({cartCookie})
+      {console.log(data.cart)}
+      {array?.map((node: any) => (
         <div key={node.id}>
           <br />
           {getName(node.node.id)}, {getSize(node.node.id)}: {node.node.quantity}
         </div>
       ))}
-            <br />
-            <div className="text-right font-bit font-bold"> <form action={"/shop"}> <button type="submit" name="action" value={"clear"}>CLEAR</button></form><a href={checkoutURL}>CHECKOUT</a> </div>
-
+      <br />
+      <div className="font-bit font-bold flex justify-between">
+        <div className="justify-start">
+          <form action={"/shop"}>
+            <button className="" type="submit" name="action" value={"clear"}>
+              CLEAR
+            </button>
+          </form>
         </div>
-    </div>)
+        <div>
+          <a className="flex items-end" href={checkoutURL}>
+            CHECKOUT
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>)
 }
