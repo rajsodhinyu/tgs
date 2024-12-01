@@ -63,10 +63,27 @@ async function getName (id:string) {
 export default async function Post() {
     const cookieStore = await cookies() 
     console.log("ENTERING cookieStore.get('cart')?.value")
-    const cartCookie = cookieStore.get('cart')?.value
+    let cartCookie = cookieStore.get('cart')?.value
     console.log(`current cart is ${cartCookie}`)
     console.log("exiting cookieStore.get('cart')?.value")
     
+    {if ((cartCookie == null)||(cartCookie == '')) {
+      const newEmptyCart = `
+      mutation {
+        cartCreate(input: {lines: []}) {
+          cart {
+            id
+          }
+        }
+      }`
+      let { data } = await client.request(newEmptyCart, {
+        variables: {
+            handle: 'sample-product',
+        },
+    });
+    cartCookie = data.cartCreate.cart.id;
+    }}
+
     const findCart = `
     query {
     cart(
@@ -95,8 +112,9 @@ export default async function Post() {
     
     const checkoutURL = data?.cart?.checkoutUrl
     const array = data?.cart.lines.edges
+    
     return (<div >
-
+      
         <br />
         <div className="text-4xl font-roc" key={'hey'}>
             Your Cart: ({cartCookie})
