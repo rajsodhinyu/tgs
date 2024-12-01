@@ -102,31 +102,49 @@ export default async function Post() {
     }
     }
     `;
-    
-    const { data } = await client.request(findCart, {
-        variables: {
-            handle: 'sample-product',
-        },
-    });
-    
-    
-    const checkoutURL = data?.cart?.checkoutUrl
-    const array = data?.cart.lines.edges
-    
-    return (<div >
-      
-        <br />
-        <div className="text-4xl font-roc">
-            Your Cart: ({cartCookie})
-            {console.log(data.cart)}
-            {array?.map((node:any) => (
-        <div key={node.id}>
-          <br />
-          {getName(node.node.id)}, {getSize(node.node.id)}: {node.node.quantity}
-        </div>
-      ))}
+
+  const { data } = await client.request(findCart, {
+    variables: {
+      handle: 'sample-product',
+    },
+  });
+
+
+  let checkoutURL = data?.cart?.checkoutUrl
+  if (data?.cart?.totalQuantity == 0) {
+    checkoutURL = null
+  }
+  const array = data?.cart.lines.edges
+
+  return (<div >
+
+    <br />
+    <div className="text-4xl font-roc" key={"hey"}>
+      Your Cart: ({cartCookie})
+
+      <div className="border-dashed border-black border-2">
+        {array?.map((node: any) => (
+          <div key={node.id} className="my-6 font-title flex-col ">
             <br />
-            <div className="text-right font-bit font-bold"> <form action={"/shop"}> <button type="submit" name="action" value={"clear"}>CLEAR</button></form><a href={checkoutURL}>CHECKOUT</a> </div>
+            <div className="flex-col ">&ensp;[{node.node.quantity}] {getName(node.node.id)}, {getSize(node.node.id)}</div>
+          </div>
+        ))}
+      </div>
+      <br />
+      <div className="font-bit font-bold flex justify-between">
+        <div className="justify-start">
+          <form action={"/shop"}>
+            <button className="" type="submit" name="action" value={"clear"}>
+              CLEAR
+            </button>
+          </form>
+        </div>
+        <div>
+          <a className="flex items-end" href={checkoutURL}>
+            CHECKOUT
+          </a>
+        </div>
+      </div>
 
         </div>
     </div>)

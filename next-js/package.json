@@ -13,6 +13,7 @@
     "@shopify/storefront-api-client": "^1.0.3",
     "next": "15.0.1",
     "next-sanity": "^9.8.19",
+    "pixi.js": "^8.6.2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },
