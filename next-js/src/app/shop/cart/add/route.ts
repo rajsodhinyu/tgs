@@ -114,14 +114,14 @@ export async function GET(request: Request) {
             },
         });
 
-        finalURL = data.cartLinesAdd.cart.checkoutUrl
+        finalURL = `${data.cartLinesAdd.cart.checkoutUrl}`
     }
 
 
     if (action == "now") {
         redirect(finalURL)
     }
-    else { redirect('/shop/cart') }
+    else { redirect('/shop/cart/') }
 
 }
 
