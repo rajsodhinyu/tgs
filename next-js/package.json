@@ -6,17 +6,24 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "script start": "react-scripts start",
+    "script build": "react-scripts build",
+    "script test": "react-scripts test --env=jsdom",
+    "script eject": "react-scripts eject"
   },
   "dependencies": {
     "@sanity/image-url": "^1.1.0",
     "@shopify/storefront-api-client": "^1.0.3",
+    "konva": "^9.3.16",
     "next": "15.0.1",
     "next-sanity": "^9.8.19",
     "p5": "^1.11.2",
     "pixi.js": "^8.6.2",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "react-konva": "^18.2.10",
+    "react-scripts": "^5.0.1"
   },
   "devDependencies": {
     "@types/node": "^20.17.9",
