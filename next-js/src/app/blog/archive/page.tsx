@@ -52,25 +52,22 @@ function stringifyDate(input:string) {
   return (<div>
     <div className="grid lg:grid-cols-4 xl:grid-cols-5 md:grid-cols-3 grid-cols-2 p-3 gap-2 md:-mt-10 sm:-mt-0-mt-10 ">
       {blogs.map((blog) => (
-        <div className="rounded-lg hover:scale-95" key={blog._id}>
+        <div className="hover:scale-[98%]" key={blog._id}>
           <Link className="hover:underline"
             href={`${linkResolver(blog.youtube,blog.youtubeURL,blog.slug)}`}>
             <div className="text-white flex place-content-center">
-              <div className="relative size-72 ">
-                <Image className=" object-contain "
+              <div className="relative size-72">
+                <Image className=" object-contain rounded-md "
                   src={`${eventImage(blog)}?h=700`}
                   fill={true}
-                  alt={`${blog.name}`}
+                  alt={`${blog.name} Cover`}
                   sizes="(max-width: 300px) 100vw"
                   quality={100}
                 />
               </div>
             </div>
-            <p className="text-center text-xl font-bit font-black text-balance pt-1">
+            <p className="text-center text-lg font-bit font-bold text-pretty leading-5  p-2">
               {blog.name}
-            </p>
-            <p className="text-gray-500 text-center font-roc pb-4 -m-2">
-              {stringifyDate(blog.date)}
             </p>
             
           </Link>
