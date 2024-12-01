@@ -122,7 +122,7 @@ export default async function Post() {
   return (<div >
 
     <br />
-    <div className="text-4xl font-bold font-bit" key={"hey"}>
+    <div className="text-4xl font-bold font-bit" key={'test'}>
       Your Order: 
 
       <div className="border-dashed border-black border-2">
