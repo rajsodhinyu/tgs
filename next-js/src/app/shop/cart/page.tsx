@@ -124,13 +124,15 @@ export default async function Post() {
     <br />
     <div className="text-4xl font-roc" key={"hey"}>
       Your Cart: ({cartCookie})
-      {console.log(data.cart)}
-      {array?.map((node: any) => (
-        <div key={node.id}>
-          <br />
-          {getName(node.node.id)}, {getSize(node.node.id)}: {node.node.quantity}
-        </div>
-      ))}
+
+      <div className="border-dashed border-black border-2">
+        {array?.map((node: any) => (
+          <div key={node.id} className="my-6 font-title flex-col ">
+            <br />
+            <div className="flex-col ">&ensp;[{node.node.quantity}] {getName(node.node.id)}, {getSize(node.node.id)}</div>
+          </div>
+        ))}
+      </div>
       <br />
       <div className="font-bit font-bold flex justify-between">
         <div className="justify-start">
