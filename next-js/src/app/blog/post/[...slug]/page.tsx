@@ -107,8 +107,8 @@ export default async function Page({
           <div className="xl:text-4xl text-3xl font-bold font-bit text-center relative"> {/* Title */}
             {post.name}
           </div>
-          <div className="xl:text-2xl text-xl font-bold font-bit text-center relative"> {/* Title */}
-            by {findWriter(post.writer._ref)}
+          <div className="xl:text-2xl text-xl font-bit text-center relative"> {/* Title */}
+            {findWriter(post.writer._ref)}
           </div>
           <div className="place-items-center mt-3 -mb-5"> {/* Spotify Embed */}
             <iframe src={`${spotifyEmbed(post.playlistURL)}`} width="90%" height="200" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
