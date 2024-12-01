@@ -132,7 +132,6 @@ const ShopInfo: React.FC<ShopInfoProps> = ({cards2}) => {
 export default function Post() {
   useEffect(() => {
     console.log(`cart is ${localStorage.getItem("cart")}`)
-    document.cookie = ("cart=cartID")
     console.log(document.cookie)
   }, []);
     return (<div>
