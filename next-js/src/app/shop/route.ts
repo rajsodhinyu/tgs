@@ -12,7 +12,6 @@ const client = createStorefrontApiClient({
 });
 
 
-
 const newEmptyCart = `
 mutation {
   cartCreate(input: {lines: []}) {
@@ -21,6 +20,7 @@ mutation {
     }
   }
 }`
+
 export async function GET(request: Request) {
   let finalURL = '/shop/home'
     const cookieStore = await cookies()
@@ -40,10 +40,7 @@ export async function GET(request: Request) {
             },
         });
         const newCartID = data.cartCreate.cart.id;
-
-
-
-
+        console.log(`new cart ${newCartID} `)
         cookieStore.set('cart', `${newCartID}`)
         let currentCart = cookieStore.get('cart')
 

@@ -83,7 +83,7 @@ export async function GET(request: Request) {
     console.log(cartbool)
     let currentCart = cookieStore.get('cart')
     console.log(`current cart is ${currentCart?.value}`)
-    if ((currentCart?.value == '') || (!cartbool)) { /* if there is no cart (very unlikely) */
+    if ((currentCart?.value == '') || (!cartbool) || (action == 'now')) { /* if there is no cart (very unlikely) */
         const { data } = await client.request(newCartwithItem, {
             variables: {
                 handle: 'sample-product',

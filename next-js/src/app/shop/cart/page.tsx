@@ -93,7 +93,7 @@ export default async function Post() {
     });
     
     
-    const checkoutURL = data?.cart.checkoutUrl
+    const checkoutURL = data?.cart?.checkoutUrl
     const array = data?.cart.lines.edges
     return (<div >
 
