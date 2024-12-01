@@ -33,7 +33,7 @@ export async function GET(request: Request) {
     }
     let currentCart = cookieStore.get('cart')
 
-    if ((currentCart?.value == '')||(!cartbool)) {
+    if ((currentCart?.value == '')||(currentCart?.value == null)||(!cartbool)) {
         const { data } = await client.request(newEmptyCart, {
             variables: {
                 handle: 'sample-product',
