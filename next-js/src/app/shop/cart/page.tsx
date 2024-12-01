@@ -122,23 +122,23 @@ export default async function Post() {
   return (<div >
 
     <br />
-    <div className="text-4xl font-roc" key={"hey"}>
-      Your Cart: ({cartCookie})
+    <div className="text-4xl font-bold font-bit" key={"hey"}>
+      Your Order: 
 
       <div className="border-dashed border-black border-2">
         {array?.map((node: any) => (
-          <div key={node.id} className="my-6 font-title flex-col ">
+          <div className="mb-6 -mt-6 font-title flex-col text-lg md:text-4xl">
             <br />
-            <div className="flex-col ">&ensp;[{node.node.quantity}] {getName(node.node.id)}, {getSize(node.node.id)}</div>
+            <div key={node.node.id} className="flex-col ">&ensp;[{node.node.quantity}] {getName(node.node.id)}, {getSize(node.node.id)}</div>
           </div>
         ))}
       </div>
       <br />
-      <div className="font-bit font-bold flex justify-between">
-        <div className="justify-start">
+      <div className="font-bit font-bold flex justify-between -mt-8">
+        <div className="justify-start ">
           <form action={"/shop"}>
             <button className="" type="submit" name="action" value={"clear"}>
-              CLEAR
+              EMPTY
             </button>
           </form>
         </div>
