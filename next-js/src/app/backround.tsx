@@ -3,10 +3,10 @@ import * as React from 'react'
 import p5 from 'p5';
 
 export const MyComp = () => {
-    if (typeof window !== null) 
+    if (typeof window !== 'undefined') 
         {const s = (s: p5) => {
-            let width = 1000
-            let height = 1000 * 0.86;
+            let width = 100
+            let height = 100 * 0.86;
             let trueHeight = s.windowHeight;
 
             let flower = {
