@@ -13,6 +13,8 @@
     "script eject": "react-scripts eject"
   },
   "dependencies": {
+    "@p5-wrapper/next": "^1.0.3",
+    "@p5-wrapper/react": "^4.4.2",
     "@sanity/image-url": "^1.1.0",
     "@shopify/storefront-api-client": "^1.0.3",
     "konva": "^9.3.16",
@@ -27,6 +29,7 @@
   },
   "devDependencies": {
     "@types/node": "^20.17.9",
+    "@types/p5": "^1.7.6",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "eslint": "^8.57.1",
