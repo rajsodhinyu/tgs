@@ -6,7 +6,7 @@ import p5, { ANGLE_MODE } from 'p5';
 
 
 const DynamicComponentWithNoSSR = dynamic(
-  () => import("./ui/backround"),
+  () => import("../app/ui/backround"),
   { ssr: false }
 )
 
