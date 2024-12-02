@@ -107,8 +107,8 @@ const grid = () => {
 const grid2 = () => {
     const s = (s: p5) => {
         let width = s.windowWidth
-        let height = s.windowHeight * 0.86;
-        let trueHeight = s.windowHeight;
+        let height = s.windowHeight;
+
         let gridSize = 30; // Size of each grid cell
         let cols = width / gridSize;
         let rows = height / gridSize;
