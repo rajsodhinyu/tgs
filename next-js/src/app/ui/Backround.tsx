@@ -369,8 +369,8 @@ const grid6 = () => {
               let y = j * gridSize;
         
               // Calculate offset based on mouse position
-              let dx = 0.1*s.mouseX - x -1000;
-              let dy = 0.1*s.mouseY - y -1000;
+              let dx = 0.1*s.mouseX - x - 1000;
+              let dy = 0.1*s.mouseY - y - 1000;
               let dist = s.sqrt(dx * dx + dy * dy);
         
               // Offset based on elasticity
@@ -383,10 +383,8 @@ const grid6 = () => {
               } else {
                 s.fill(108, 92, 190); // Purple
               }
-        
               // Draw the rectangle with offset
               s.rect(x + offsetX, y + offsetY, gridSize, gridSize);
-              
             }
           }
           
