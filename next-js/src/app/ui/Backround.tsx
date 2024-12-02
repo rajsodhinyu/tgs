@@ -104,7 +104,64 @@ const grid = () => {
     return (<div id='test'></div>)
 }
 
+const grid2 = () => {
+    const s = (s: p5) => {
+        let width = s.windowWidth
+        let height = s.windowHeight * 0.86;
+        let trueHeight = s.windowHeight;
+        let gridSize = 30; // Size of each grid cell
+        let cols = width / gridSize;
+        let rows = height / gridSize;
+        let elasticity = 35; // Factor for mouse movement influence
 
-const Backround = grid
+        s.preload = () => {
+
+        }
+        s.setup = () => {
+            s.createCanvas(width, height);
+            s.background(0)
+            s.noStroke();
+
+        };
+
+        s.draw = () => {
+            s.background(255); // Black background
+           
+            // Loop through the grid
+            for (let i = 0; i < cols; i++) {
+              for (let j = 0; j < rows; j++) {
+                // Calculate x, y position
+                let x = i * gridSize;
+                let y = j * gridSize;
+          
+                // Calculate offset based on mouse position
+                let dx = 100 - x;
+                let dy = 100 - y;
+                let dist = s.sqrt(dx * dx + dy * dy);
+          
+                // Offset based on elasticity
+                let offsetX = s.sin(s.frameCount * 0.01 + dist * 0.05) * elasticity;
+                let offsetY = s.cos(s.frameCount * 0.01 + dist * 0.05) * elasticity;
+          
+                // Alternate colors
+                if ((i + j) % 2 === 0) {
+                  s.fill(237, 157, 249); // Pink
+                } else {
+                  s.fill(108, 92, 190); // Purple
+                }
+          
+                // Draw the rectangle with offset
+                s.rect(x + offsetX, y + offsetY, gridSize, gridSize);
+                
+              }
+            }};
+    };
+    const myP5 = new p5(s);
+    myP5.remove;
+    return (<div id='test'></div>)
+}
+
+
+const Backround = grid2
 export default Backround;
 
