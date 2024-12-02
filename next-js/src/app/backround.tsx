@@ -35,7 +35,7 @@ export const MyComp = () => {
 
             }
             s.setup = () => {
-                s.createCanvas(s.windowWidth, s.windowHeight * 0.86);
+                s.createCanvas(width,height);
                 s.background(0);
                 s.frameRate(1);
 
