@@ -12,11 +12,6 @@ const DynamicComponentWithNoSSR = dynamic(
   { ssr: false, loading: () => <p>Loading...</p>, }
 )
 
-const ClearC = dynamic(
-  () => import("../app/ui/Clear"),
-  { ssr: false, loading: () => <p>Loading...</p>, }
-)
-
 
 export default function Page() {
   return (<div className=''>
@@ -24,16 +19,14 @@ export default function Page() {
       <DynamicComponentWithNoSSR />
       <div className=''>
         <div className='flex flex-col justify-around'>
-          <div className='font-title m-10 absolute inset-0 text-white z-40 text-8xl'>
-            <Link href="/">
-            
+
+          <div className='font-title m-10 absolute inset-0 text-white z-40 text-8xl'><Link href="/">
             <img
               className="h-16 md:h-28 min-w-10"
               src="https://cdn.sanity.io/images/fnvy29id/tgs/6e0d6fefaf95cf0e570f958d10c13cf66265735a-1266x750.png?h=200"
             />
           </Link></div>
-          <div className='font-title m-10 absolute bottom-0 left-0 text-white z-40 text-8xl'>
-            <Link href="/about"> 1<ClearC></ClearC>2
+          <div className='font-title m-10 absolute bottom-0 left-0 text-white z-40 text-8xl'><Link href="/about">
             <img
               className="h-16 md:h-28 min-w-12"
               src="https://cdn.sanity.io/images/fnvy29id/tgs/2db78d790b6062d7cb293b895f1d8cd3748353ef-1786x755.png?h=200"
