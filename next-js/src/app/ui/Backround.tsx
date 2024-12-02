@@ -22,12 +22,11 @@ const grid7 = () => {
         s.resizeCanvas(s.windowWidth, s.windowHeight);
       }
       
-      let a = s.createA("thatgoodsht.com/blog", "<button>hey<button/>"); 
       s.setup = () => {
           s.createCanvas(width, height);
           s.background(0)
           s.noStroke();
-          a.position();
+
           
 
       };
