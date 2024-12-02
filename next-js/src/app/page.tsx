@@ -7,6 +7,8 @@ import p5, { ANGLE_MODE } from 'p5';
 
 export default function Page() {
   
+  useEffect(() => {
+
   
 
   const s = ( s:p5 ) => {
@@ -64,7 +66,6 @@ export default function Page() {
     };
   };
 
-  useEffect(() => {
     const myP5 = new p5(s);
     return myP5.remove;
   },[])
