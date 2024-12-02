@@ -33,7 +33,6 @@ export default function Page() {
             </Link></div>
           <div className='font-title m-10 absolute bottom-0 left-0 text-white z-40 text-8xl'>
             <Link href="/about">
-            <Clear />
               <img
                 className="h-16 md:h-28 min-w-12"
                 src="https://cdn.sanity.io/images/fnvy29id/tgs/2db78d790b6062d7cb293b895f1d8cd3748353ef-1786x755.png?h=200"
