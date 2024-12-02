@@ -3,9 +3,8 @@ import * as React from 'react'
 import p5 from 'p5';
 
 export const MyComp = () => {
-        
-        const s = (s: p5) => {
-
+    if (typeof window !== null) 
+        {const s = (s: p5) => {
             let width = 1000
             let height = 1000 * 0.86;
             let trueHeight = s.windowHeight;
@@ -59,6 +58,6 @@ export const MyComp = () => {
             };
         };
         const myP5 = new p5(s);
-        myP5.remove;
+        myP5.remove;}
         return(<div></div>)
 }
