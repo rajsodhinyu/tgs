@@ -35,8 +35,7 @@ const Backround = () => {
             s.setup = () => {
                 s.createCanvas(width,height);
                 s.background(255);
-
-
+                s.frameRate(4)
 
             };
 
