@@ -2,7 +2,7 @@
 import * as React from 'react'
 import p5 from 'p5';
 
- const Backround = () => {
+const Backround = () => {
     if (typeof window !== 'undefined') 
         {const s = (s: p5) => {
             let width = 100
@@ -63,4 +63,5 @@ import p5 from 'p5';
     }
 }
 
-export default Backround
+export default Backround;
+
