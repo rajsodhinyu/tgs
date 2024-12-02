@@ -4,8 +4,8 @@ import p5 from 'p5';
 
 const Backround = () => {
     const s = (s: p5) => {
-            let width = 1000
-            let height = 100 * 0.86;
+            let width = s.windowWidth
+            let height = s.windowHeight * 0.86;
             let trueHeight = s.windowHeight;
 
             let flower = {
@@ -30,7 +30,7 @@ const Backround = () => {
             }
 
             s.preload = () => {
-
+                
             }
             s.setup = () => {
                 s.createCanvas(width,height);
