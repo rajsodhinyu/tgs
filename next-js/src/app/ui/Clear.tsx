@@ -1,3 +1,4 @@
+"use client"
 import * as React from 'react'
 import p5 from 'p5';
 
@@ -339,14 +340,14 @@ const grid5 = () => {
 
 const grid6 = () => {
   const s = (s: p5) => {
-      let width = window.outerWidth
-      let height = window.outerHeight;
+      let width = s.windowWidth
+      let height = s.windowHeight;
 
       let gridSize = 30; // Size of each grid cell
       let cols = width / gridSize;
       let rows = height / gridSize;
       let elasticity = 10; // Factor for mouse movement influence
-      
+
       s.preload = () => {
 
       }
@@ -356,10 +357,7 @@ const grid6 = () => {
           s.noStroke();
 
       };
-      function end() {
-        s.remove()
-        return null;
-    }
+
       s.draw = () => {
           s.background(61,53,100); // Black background
          
@@ -393,17 +391,17 @@ const grid6 = () => {
         };
   };
   const myP5 = new p5(s);
-  myP5.remove();
-  function handleClick() {
-    
-    console.log('button pressed !')
-    
-  }
-  return (<button onClick={handleClick}>
-    Click me
-  </button>)
+  myP5.remove;
+  return (<div id='test'></div>)
 }
 
-const Backround = grid6
-export default Backround;
+const clear2 = () => {
+  const s = (s:p5) => {
+    s.remove
+  }
+  return(<div><button></button></div>)
+}
+
+const Clear = clear2
+export default Clear;
 
