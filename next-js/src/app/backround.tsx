@@ -3,13 +3,11 @@ import * as React from 'react'
 import p5 from 'p5';
 
 export const MyComp = () => {
-    React.useEffect(() => {
-        //window is accessible here
-        console.log("window.innerHeight", window.innerHeight);
+        
         const s = (s: p5) => {
 
-            let width = s.windowWidth;
-            let height = s.windowHeight * 0.86;
+            let width = 1000
+            let height = 1000 * 0.86;
             let trueHeight = s.windowHeight;
 
             let flower = {
@@ -61,8 +59,6 @@ export const MyComp = () => {
             };
         };
         const myP5 = new p5(s);
-        return myP5.remove;
-    }, [])
-
-    return (<div></div>)
+        myP5.remove;
+        return(<div></div>)
 }
