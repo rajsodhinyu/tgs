@@ -4,7 +4,7 @@ import p5 from 'p5';
 
 const Backround = () => {
     const s = (s: p5) => {
-            let width = 100
+            let width = 1000
             let height = 100 * 0.86;
             let trueHeight = s.windowHeight;
 
@@ -60,6 +60,7 @@ const Backround = () => {
         myP5.remove;
         return (<div id='test'></div>)
     }
+
 
 
 export default Backround;

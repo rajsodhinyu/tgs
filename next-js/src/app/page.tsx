@@ -6,15 +6,15 @@ import p5, { ANGLE_MODE } from 'p5';
 
 
 const DynamicComponentWithNoSSR = dynamic(
-  () => import("../app/ui/backround"),
+  () => import("../app/ui/Backround"),
   { ssr: false ,  loading: () => <p>Loading...</p> ,}
 )
 
 
 export default function Page() {
   return (
-    <div>
-      <p>View pictures</p>
+    <div className='w-full'>
+      
  
       <DynamicComponentWithNoSSR />
     </div>
