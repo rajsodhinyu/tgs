@@ -8,11 +8,13 @@ import { MyComp } from './backround';
 
 
 export default function Page() {
-  
+  React.useEffect(() => {
+    <MyComp></MyComp>
+  },[])
   return (
     <div >
       <div>
-      <MyComp></MyComp>
+
       </div>
     </div>
   );
