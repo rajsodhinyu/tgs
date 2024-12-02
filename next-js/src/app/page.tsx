@@ -1,10 +1,14 @@
-
-
+"use client"
+import dynamic from 'next/dynamic';
 import * as React from 'react'
 import p5, { ANGLE_MODE } from 'p5';
-import { MyComp } from './backround';
 
 
+
+const DynamicComponentWithNoSSR = dynamic(
+  () => import("./ui/backround"),
+  { ssr: false }
+)
 
 
 export default function Page() {
@@ -13,7 +17,7 @@ export default function Page() {
       <p>View pictures</p>
  
       {/*  Works, since Carousel is a Client Component */}
-      <MyComp />
+      <DynamicComponentWithNoSSR />
     </div>
   )
 }

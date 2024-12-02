@@ -2,7 +2,7 @@
 import * as React from 'react'
 import p5 from 'p5';
 
-export const MyComp = () => {
+ const Backround = () => {
     if (typeof window !== 'undefined') 
         {const s = (s: p5) => {
             let width = 100
@@ -58,6 +58,9 @@ export const MyComp = () => {
             };
         };
         const myP5 = new p5(s);
-        myP5.remove;}
-        return(<div></div>)
+        myP5.remove;
+        return (<div></div>)
+    }
 }
+
+export default Backround
