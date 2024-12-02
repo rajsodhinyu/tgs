@@ -3,8 +3,7 @@ import * as React from 'react'
 import p5 from 'p5';
 
 const Backround = () => {
-    if (typeof window !== 'undefined') 
-        {const s = (s: p5) => {
+    const s = (s: p5) => {
             let width = 100
             let height = 100 * 0.86;
             let trueHeight = s.windowHeight;
@@ -35,8 +34,8 @@ const Backround = () => {
             }
             s.setup = () => {
                 s.createCanvas(width,height);
-                s.background(0);
-                s.frameRate(1);
+                s.background(255);
+
 
 
             };
@@ -59,9 +58,9 @@ const Backround = () => {
         };
         const myP5 = new p5(s);
         myP5.remove;
-        return (<div></div>)
+        return (<div id='test'></div>)
     }
-}
+
 
 export default Backround;
 

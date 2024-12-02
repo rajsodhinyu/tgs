@@ -7,7 +7,7 @@ import p5, { ANGLE_MODE } from 'p5';
 
 const DynamicComponentWithNoSSR = dynamic(
   () => import("../app/ui/backround"),
-  { ssr: false }
+  { ssr: false ,  loading: () => <p>Loading...</p> ,}
 )
 
 
@@ -16,7 +16,6 @@ export default function Page() {
     <div>
       <p>View pictures</p>
  
-      {/*  Works, since Carousel is a Client Component */}
       <DynamicComponentWithNoSSR />
     </div>
   )
