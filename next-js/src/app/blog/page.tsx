@@ -14,7 +14,7 @@ export default function Page() {
     <div className=""> {/* Right Side, Carousel + */} 
       <div className="">
         <a href="blog/post/welcome-to-the-blog">
-          <div><img src="https://cdn.sanity.io/images/fnvy29id/tgs/6f55436753924ff94fa5359d65eadc4084ec898f-1440x1080.png" alt="" /></div>
+          <div><img className="rounded-md"src="https://cdn.sanity.io/images/fnvy29id/tgs/6f55436753924ff94fa5359d65eadc4084ec898f-1440x1080.png" alt="" /></div>
         </a>
       <div className="grid grid-cols-3 pt-4 gap-4">
         <PlaylistCard title= 'GOOD SH*T WEEKLY' description='A weekly selection of our favorite tunes. Updated every Monday!' cover="https://cdn.sanity.io/images/fnvy29id/tgs/0444701d722139f1e6cfb9afc65427cc8a151ff0-2159x2159.jpg" url="https://open.spotify.com/playlist/67OMv1NpyxUTmUetPeTJ39"></PlaylistCard>
