@@ -27,7 +27,7 @@ export default function Page() {
         </div>
     </div>
     <div className="sm:w-[90vw] md:w-9/12 lg:w-8/12 xl:w-3/12 flex-col place-items-center justify-end rounded-xl"> {/* Left Side */}
-    <Sidebar items={3}></Sidebar>
+    <Sidebar items={6}></Sidebar>
     </div>
   </div>
   )

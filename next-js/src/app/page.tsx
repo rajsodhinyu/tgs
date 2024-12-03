@@ -39,25 +39,25 @@ export default function Page() {
         <DynamicComponentWithNoSSR />
       </div>
       <div className='absolute left-0 top-0'>{/* Logo */}
-        <Link href={'/'}>
+        <Link href={'/'}scroll={false} >
         <img className="h-16 md:m-10 m-2" src="https://cdn.sanity.io/images/fnvy29id/tgs/6e0d6fefaf95cf0e570f958d10c13cf66265735a-1266x750.png?h=200" alt="" />
         </Link>
 
       </div>
       <div className='absolute top-0 right-0'>{/* Blog */}
-        <Link href={'/blog'}>
+        <Link href={'/blog'}scroll={false} >
         <img className="h-16 md:m-10 m-2" src="https://cdn.sanity.io/images/fnvy29id/tgs/9a5244d1c770d1e667006b7f54f5738745847917-1533x846.png?h=200" alt="" />
         </Link>
 
       </div>
       <div className='absolute bottom-0 left-0'>{/* Events */}
-        <Link href={'/events'}>
+        <Link href={'/events'}scroll={false} >
         <img className="h-16 md:m-10 m-2" src="https://cdn.sanity.io/images/fnvy29id/tgs/a82c27d8c7dcd43014eaa1fdc852185942645f7e-2037x795.png?h=200" alt="" />
         </Link>
 
       </div>
       <div className='absolute bottom-0 right-0'>{/* Shop */}
-        <Link href={'/shop'}>
+        <Link href={'/shop'}scroll={false} >
         <img className="h-16 md:m-10 m-2" src="https://cdn.sanity.io/images/fnvy29id/tgs/7162c809beb7a870dfbb0127b72fc6359218b456-1874x954.png?h=200" alt="" />
         </Link>
       </div>

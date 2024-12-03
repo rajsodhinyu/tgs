@@ -120,7 +120,7 @@ export default async function Page({
         </div>
       </div>
       <div className="sm:w-screen md:w-4/12 lg:w-3/12 flex-col place-items-center justify-end rounded-xl"> {/* Left Side */}
-        <Sidebar items={3}></Sidebar>
+        <Sidebar items={4}></Sidebar>
       </div>
     </div>
   )

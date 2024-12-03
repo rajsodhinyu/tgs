@@ -26,7 +26,7 @@ const urlFor = (source: SanityImageSource) =>
 
 export default async function Page(){
 
-  const blogs = await sanityFetch<SanityDocument[]>({query: BLOGS_QUERY});
+const blogs = await sanityFetch<SanityDocument[]>({query: BLOGS_QUERY});
 function linkResolver(isYoutube:boolean,youtubeLink:string,slug:any) {
   if (isYoutube){
     return `${youtubeLink}`
