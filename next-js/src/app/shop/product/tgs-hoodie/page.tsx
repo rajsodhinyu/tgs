@@ -30,7 +30,7 @@ const HorizontalCarousel: React.FC<HorizontalCarouselProps> = ({ cards }) => {
     const scrollCarousel = (direction: "left" | "right") => {
         const container = document.querySelector(".carousel-container");
         if (container) {
-            const scrollAmount = direction === "left" ? -300 : 300;
+            const scrollAmount = direction === "left" ? -200 : 200;
             container.scrollBy({ left: scrollAmount, behavior: "smooth" });
         }
     };
