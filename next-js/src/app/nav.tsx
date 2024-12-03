@@ -11,7 +11,7 @@ export default function Nav() {
           {/*everything not inc SOTD?*/}
           <Link href="/">
             <img
-              className="min-h-12 max-h-16 min-w-12"
+              className="min-h-5 max-h-16 min-w-12"
               src="https://cdn.sanity.io/images/fnvy29id/tgs/6e0d6fefaf95cf0e570f958d10c13cf66265735a-1266x750.png?h=200"
             />
           </Link>
