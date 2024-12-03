@@ -38,7 +38,7 @@ export default function RootLayout({
         <title>ThatGoodSh*t!</title>
       </head>
       <body className={`${bitcount.variable} ${roc.variable} ${bitcount_fill.variable}`}>
-        
+      <audio loop id='myAudio' src="https://cdn.sanity.io/files/fnvy29id/tgs/16d2eea6de26ee3ab6aec3abc90492b2c3f7e854.mp3"></audio>
         <main>{children}</main>
       </body>
     </html>
