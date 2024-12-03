@@ -1,5 +1,5 @@
 import './globals.css'
-import Nav from './nav'
+
 import { Inter, Roboto_Mono } from 'next/font/google'
 import localFont from 'next/font/local'
 
@@ -24,7 +24,7 @@ const bitcount_fill = localFont({
 
 export const metadata = {
   title: 'ThatGoodSh*t',
-  description: 'Copyright Raj Sodhi',
+  description: 'Copyright Raj Sodhi 2024',
 }
 
 export default function RootLayout({
@@ -38,7 +38,6 @@ export default function RootLayout({
         <title>ThatGoodSh*t!</title>
       </head>
       <body className={`${bitcount.variable} ${roc.variable} ${bitcount_fill.variable}`}>
-        
         <main>{children}</main>
       </body>
     </html>
