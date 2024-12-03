@@ -9,7 +9,7 @@ import Link from 'next/link';
 
 const DynamicComponentWithNoSSR = dynamic(
   () => import("../app/ui/Backround"),
-  { ssr: false, loading: () => <p className='font-title' >You are about to experience ThatGoodSh*t</p>, }
+  { ssr: false, loading: () => <p className='font-title' >ThatGoodSh*t. 2024</p>, }
 )
 
 const Clear = dynamic(
