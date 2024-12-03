@@ -39,12 +39,24 @@ export default async function Sidebar({ items}: { items: number}) {
     }
     
   }
+
+  function tabResolver(isYoutube:boolean) {
+    if (isYoutube){
+      return `_blank`
+    }
+    else {
+      return `_self`
+    }
+    
+  }
+
+
   return (
     <div>
       <div className="tracking-wide font-bold decoration-tgs-purple text-black flex shrink text-3xl lg:text-4xl font-bit leading-10 ml-4 justify-center text-center"><p>Recent Posts</p></div>
       {truncatedBlogs.map((blog) => (
         <div key={blog.name}>
-          <Link href={`${linkResolver(blog.youtube,blog.youtubeURL,blog.slug)}`} target="_blank"><Image className="w-96 lg:w-full m-1 border-opacity-0 hover:border-opacity-100 hover:scale-95 border-2 xl:border-4 border-tgs-purple rounded-md" src={`${eventImage(blog)}`} alt={`${blog.name} Cover`} width={300} height={300}></Image></Link>
+          <Link href={`${linkResolver(blog.youtube,blog.youtubeURL,blog.slug)}`} target={tabResolver(blog.youtube)}><Image className="w-96 lg:w-full m-1 border-opacity-0 hover:border-opacity-100 hover:scale-95 border-2 xl:border-4 border-tgs-purple rounded-md" src={`${eventImage(blog)}`} alt={`${blog.name} Cover`} width={300} height={300}></Image></Link>
         </div>
       ))}
       <a className="tracking-wide font-bold hover:underline decoration-tgs-purple text-black flex shrink text-3xl lg:text-4xl font-bit leading-10 ml-4 justify-center text-center"href="/blog/archive">View All &gt; </a>
