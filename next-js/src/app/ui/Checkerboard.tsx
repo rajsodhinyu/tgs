@@ -211,7 +211,7 @@ const tight_coils = () => {
   return (<div id='test'></div>)
 }
 
-const Backround = spiral_nomouse
+const Backround = checkerboard
 
 export default Backround;
 
