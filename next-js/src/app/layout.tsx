@@ -35,7 +35,7 @@ export default function RootLayout({
   return (
     <html lang="en" >
       <head>
-        <title>That Good Sht Website</title>
+        <title>ThatGoodSh*t!</title>
       </head>
       <body className={`${bitcount.variable} ${roc.variable} ${bitcount_fill.variable}`}>
         
