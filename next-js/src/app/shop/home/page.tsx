@@ -7,10 +7,10 @@ export default async function Post() {
   
   return (<div >
     
-    <br />
 
-    <div ><img className="rounded-md" src="https://cdn.sanity.io/images/fnvy29id/tgs/521c9db6c56c0f895d9b5cdbbd7327bef264b5a6-2669x2130.jpg?" alt="" /></div>
-    <div className="grid gap-6 grid-cols-1 sm:grid-cols-3 mt-10">
+
+    <div ><img className="rounded-md mt-4" src="https://cdn.sanity.io/images/fnvy29id/tgs/521c9db6c56c0f895d9b5cdbbd7327bef264b5a6-2669x2130.jpg?" alt="" /></div>
+    <div className="grid gap-6 grid-cols-1 sm:grid-cols-3 mt-8">
       <div className="hover:underline decoration-tgs-purple">
         <ShopCard title='TGS HOODIE' description='top half of the TGS Lounge Set.' cover="https://cdn.sanity.io/images/fnvy29id/tgs/6be00cdfbf1be8e155c9551273be152650927d2a-1278x1278.jpg" url="/shop/product/tgs-hoodie"></ShopCard>
       </div>
