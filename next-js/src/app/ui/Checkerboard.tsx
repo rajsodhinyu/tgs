@@ -61,7 +61,7 @@ const s = (s: p5) => {
 };
 const myP5 = new p5(s);
 myP5.remove;
-return (<div id='test'>test</div>)
+return (<div id='checkerboard'>test</div>)
 }
 
 
