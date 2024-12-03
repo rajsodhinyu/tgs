@@ -63,9 +63,7 @@ export default function Page() {
       </div>
       <div onClick={catchClick}>
         <div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2  size-60 md:size-96'>
-        <button id="my-control"><img id ='disc' className = "" src="https://cdn.sanity.io/images/fnvy29id/tgs/a85e25b84a90b82c905130f525abd5c20aecf6ea-1700x1700.png?h=1000" alt="" />
-          <audio loop id='myAudio' src="https://cdn.sanity.io/files/fnvy29id/tgs/16d2eea6de26ee3ab6aec3abc90492b2c3f7e854.mp3"></audio>
-          </button>
+        <img id ='disc' className = "" src="https://cdn.sanity.io/images/fnvy29id/tgs/a85e25b84a90b82c905130f525abd5c20aecf6ea-1700x1700.png?h=1000" alt="" />
           </div>
       </div>
       <div>
