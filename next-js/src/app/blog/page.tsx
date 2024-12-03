@@ -14,7 +14,7 @@ export default function Page() {
     <div className=""> {/* Right Side, Carousel + */} 
       <div className="">
         <a href="blog/post/welcome-to-the-blog">
-          <div><img src="https://cdn.sanity.io/images/fnvy29id/tgs/a72fd5d0c723e3344aab5aeb213cde41dd4b5d38-1440x1080.jpg" alt="" /></div>
+          <div><img src="https://cdn.sanity.io/images/fnvy29id/tgs/6f55436753924ff94fa5359d65eadc4084ec898f-1440x1080.png" alt="" /></div>
         </a>
       <div className="grid grid-cols-3 pt-4 gap-4">
         <PlaylistCard title= 'GOOD SH*T WEEKLY' description='A weekly selection of our favorite tunes. Updated every Monday!' cover="https://cdn.sanity.io/images/fnvy29id/tgs/0444701d722139f1e6cfb9afc65427cc8a151ff0-2159x2159.jpg" url="https://open.spotify.com/playlist/67OMv1NpyxUTmUetPeTJ39"></PlaylistCard>
@@ -26,7 +26,7 @@ export default function Page() {
       </div>
         </div>
     </div>
-    <div className="sm:w-[90vw] md:w-9/12 lg:w-8/12 xl:w-5/12 flex-col place-items-center justify-end rounded-xl"> {/* Left Side */}
+    <div className="sm:w-[90vw] md:w-9/12 lg:w-8/12 xl:w-3/12 flex-col place-items-center justify-end rounded-xl"> {/* Left Side */}
     <Sidebar items={3}></Sidebar>
     </div>
   </div>

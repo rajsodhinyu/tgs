@@ -13,3 +13,10 @@
         scrollbar-width: none;  /* Firefox */
   }
 }
+.cd-disc-going {
+    animation: spin 9s linear infinite;
+}
+
+.cd-disc {
+    animation: spin 9s linear infinite paused;
+}

@@ -55,6 +55,7 @@ function stringifyDate(input:string) {
         <div className="hover:scale-[98%]" key={blog._id}>
           <Link className="hover:underline"
             href={`${linkResolver(blog.youtube,blog.youtubeURL,blog.slug)}`}>
+              
             <div className="text-white flex place-content-center">
               <div className="relative size-72">
                 <Image className=" object-contain rounded-md "

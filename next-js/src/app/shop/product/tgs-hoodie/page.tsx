@@ -153,10 +153,11 @@ export default function Post() {
                   {<ShopInfo cards2={cards}></ShopInfo>}
               </div>
         </div>
-        <div className="mt-5 text-center font-title font-bold
+        <br />
+        {/* <div className="mt-5 text-center font-title font-bold
           text-4xl md:text-5xl text-tgs-purple
         ">
                 Product Information
-        </div>
+        </div> */}
     </div>)
 }

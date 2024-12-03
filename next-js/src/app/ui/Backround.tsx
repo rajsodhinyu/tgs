@@ -81,6 +81,8 @@ const grid7 = () => {
       }
       s.windowResized = () =>{
         s.resizeCanvas(s.windowWidth, s.windowHeight);
+        width = s.windowWidth
+        height = s.windowHeight;
       }
       
       s.setup = () => {

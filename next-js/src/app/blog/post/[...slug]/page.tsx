@@ -68,14 +68,14 @@ const components: PortableTextComponents = {
     // Ex. 1: customizing common list types
     bullet: ({children}) => <li style={{listStyleType: 'disc'}}>{children}</li>,
     number: ({children}) => <li style={{listStyleType: 'decimal'}}>{children}</li>,
-
   },
   marks: {
     em: ({children}) => <em className="text-tgs-purple">{children} </em>,
+    
     link: ({children, value}) => {
       const rel = !value.href.startsWith('/') ? 'noreferrer noopener' : undefined
       return (
-        <a className = "underline text-tgs-purple" href={value.href} rel={rel}>
+        <a className = "underline text-pink-600" href={value.href} rel={rel}>
           {children}
         </a>
       )
@@ -114,8 +114,7 @@ export default async function Page({
           <div className="place-items-center mt-3 -mb-5"> {/* Spotify Embed */}
             {renderEmbed(post.playlistURL)}
           </div>
-          <div className="mx-5 text-sm lg:text-lg text-pretty text-justify pb-10 indent-8 first-letter:text-8xl first-letter:font-title first-letter:text-black
-  first-letter:mr-6 first-letter:float-start">
+          <div className="mx-5 text-sm lg:text-lg text-pretty text-justify pb-10 indent-8 first-letter:text-8xl first-letter:font-title first-letter:text-black ">
             <PortableText value={post.content} components={components}/>
           </div>
         </div>

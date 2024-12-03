@@ -125,7 +125,7 @@ export default async function Post() {
     <div className="text-4xl font-bold font-bit" key={'test'}>
       Your Order: 
 
-      <div className="border-dashed border-black border-2">
+      <div className="border-dashed border-black border-2" key={'border'}>
         {array?.map((node: any) => (
           <div key={node.id} className="mb-6 -mt-6 font-title flex-col text-lg md:text-4xl">
             <br />
@@ -135,20 +135,19 @@ export default async function Post() {
       </div>
       <br />
       <div className="font-bit font-bold flex justify-between -mt-8">
-        <div className="justify-start ">
+        <div className="justify-start">
           <form action={"/shop"}>
             <button className="" type="submit" name="action" value={"clear"}>
-              EMPTY
+              <div className="hover:underline decoration-from-font decoration-tgs-purple">EMPTY</div>
             </button>
           </form>
         </div>
         <div>
-          <a className="flex items-end" href={checkoutURL}>
+          <a className="flex items-end hover:underline decoration-from-font decoration-tgs-purple" href={checkoutURL}>
             CHECKOUT
           </a>
         </div>
       </div>
-
     </div>
   </div>)
 }
