@@ -13,7 +13,9 @@ export default function Page() {
   {/* Whole Site */}
     <div className=""> {/* Right Side, Carousel + */} 
       <div className="">
-        <div><img src="https://cdn.sanity.io/images/fnvy29id/tgs/a72fd5d0c723e3344aab5aeb213cde41dd4b5d38-1440x1080.jpg" alt="" /></div>
+        <a href="blog/post/welcome-to-the-blog">
+          <div><img src="https://cdn.sanity.io/images/fnvy29id/tgs/a72fd5d0c723e3344aab5aeb213cde41dd4b5d38-1440x1080.jpg" alt="" /></div>
+        </a>
       <div className="grid grid-cols-3 pt-4 gap-4">
         <PlaylistCard title= 'GOOD SH*T WEEKLY' description='A weekly selection of our favorite tunes. Updated every Monday!' cover="https://cdn.sanity.io/images/fnvy29id/tgs/0444701d722139f1e6cfb9afc65427cc8a151ff0-2159x2159.jpg" url="https://open.spotify.com/playlist/67OMv1NpyxUTmUetPeTJ39"></PlaylistCard>
         <PlaylistCard title= 'NEW RELEASES' description='Our pack of new releases. Updated weekly :)' cover="https://cdn.sanity.io/images/fnvy29id/tgs/a0d178e792cf32bc6bbdd2e295c41b6d020841cc-300x296.png" url="https://open.spotify.com/playlist/3pycLAhrd061WuEILO9ZWs"></PlaylistCard>

@@ -24,14 +24,15 @@ function eventImage(event: any) {
   return (thing)
 }
 
-function spotifyEmbed(playlist: string) {
-  let input = playlist;
-  if (input == null) {
-    input = "https://open.spotify.com/playlist/67OMv1NpyxUTmUetPeTJ39?si=05467d1c522d4b22"
-  };
-  const parts = input.split("/")
-  let i = 0;
-  return (`https://open.spotify.com/embed/${parts[3]}/${parts[4]}`)
+function renderEmbed(playlist: string) {
+  if (playlist == null) {
+    return (<div> <br /></div>)
+  }
+  else {
+    const parts = playlist.split("/")
+
+    return (<iframe src={`https://open.spotify.com/embed/${parts[3]}/${parts[4]}`} width="90%" height="200" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>)
+  }
 }
 
 
@@ -111,7 +112,7 @@ export default async function Page({
             {findWriter(post.writer._ref)}
           </div>
           <div className="place-items-center mt-3 -mb-5"> {/* Spotify Embed */}
-            <iframe src={`${spotifyEmbed(post.playlistURL)}`} width="90%" height="200" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+            {renderEmbed(post.playlistURL)}
           </div>
           <div className="mx-5 text-sm lg:text-lg text-pretty text-justify pb-10 indent-8 first-letter:text-8xl first-letter:font-title first-letter:text-black
   first-letter:mr-6 first-letter:float-start">
