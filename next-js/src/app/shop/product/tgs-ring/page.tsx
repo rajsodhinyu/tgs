@@ -3,7 +3,13 @@
 import { useEffect } from "react";
 
 const cards = [
-    "https://cdn.sanity.io/images/fnvy29id/tgs/3fcdb1608e9d8a639cd6c42a1371ff72f3a0efd0-1786x2233.jpg"
+    "https://cdn.sanity.io/images/fnvy29id/tgs/3fcdb1608e9d8a639cd6c42a1371ff72f3a0efd0-1786x2233.jpg",
+    "https://cdn.sanity.io/images/fnvy29id/tgs/f926d6430a94d4cc1d7b8a789fbe18766d84331e-2042x2552.jpg",
+    "https://cdn.sanity.io/images/fnvy29id/tgs/3fcdb1608e9d8a639cd6c42a1371ff72f3a0efd0-1786x2233.jpg",
+    "https://cdn.sanity.io/images/fnvy29id/tgs/f926d6430a94d4cc1d7b8a789fbe18766d84331e-2042x2552.jpg",
+    "https://cdn.sanity.io/images/fnvy29id/tgs/3fcdb1608e9d8a639cd6c42a1371ff72f3a0efd0-1786x2233.jpg",
+    "https://cdn.sanity.io/images/fnvy29id/tgs/f926d6430a94d4cc1d7b8a789fbe18766d84331e-2042x2552.jpg",
+    
 ];
 
 interface HorizontalCarouselProps {
@@ -18,7 +24,7 @@ const HorizontalCarousel: React.FC<HorizontalCarouselProps> = ({ cards }) => {
     const scrollCarousel = (direction: "left" | "right") => {
         const container = document.querySelector(".carousel-container");
         if (container) {
-            const scrollAmount = direction === "left" ? -200 : 200;
+            const scrollAmount = direction === "left" ? -300 : 300;
             container.scrollBy({ left: scrollAmount, behavior: "smooth" });
         }
     };
@@ -188,11 +194,11 @@ export default function Post() {
                   {<ShopInfo cards2={cards}></ShopInfo>}
               </div>
         </div>
-        <div className="mt-5 text-center font-title font-bold
+        {/* <div className="mt-5 text-center font-title font-bold
           text-4xl md:text-5xl text-tgs-purple
         ">
                 Product Information
-        </div>
+        </div> */}
 
     </div>)
 }

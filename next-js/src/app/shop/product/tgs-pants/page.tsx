@@ -29,7 +29,7 @@ const HorizontalCarousel: React.FC<HorizontalCarouselProps> = ({ cards }) => {
     const scrollCarousel = (direction: "left" | "right") => {
         const container = document.querySelector(".carousel-container");
         if (container) {
-            const scrollAmount = direction === "left" ? -200 : 200;
+            const scrollAmount = direction === "left" ? -300 : 300;
             container.scrollBy({ left: scrollAmount, behavior: "smooth" });
         }
     };
@@ -151,11 +151,11 @@ export default function Post() {
                   {<ShopInfo cards2={cards}></ShopInfo>}
               </div>
         </div>
-        <div className="mt-5 text-center font-title font-bold
+        {/* <div className="mt-5 text-center font-title font-bold
           text-4xl md:text-5xl text-tgs-purple
         ">
                 Product Information
-        </div>
+        </div> */}
 
     </div>)
 }
