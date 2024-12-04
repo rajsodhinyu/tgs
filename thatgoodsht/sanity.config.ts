@@ -11,14 +11,14 @@ import {media} from 'sanity-plugin-media'
 
 
 export default defineConfig({
-  name: 'default',
+  name: 'Backend',
   icon: myLogo,
-  title: "ThatGoodShit",
+  title: "ThatGoodSh*t!",
 
   projectId: 'fnvy29id',
   dataset: 'tgs',
 
-  plugins: [structureTool({structure}),media(),visionTool()],
+  plugins: [structureTool({structure}),media()],
   
 
   schema: {
