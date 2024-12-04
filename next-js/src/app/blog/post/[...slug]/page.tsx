@@ -38,7 +38,7 @@ function renderEmbed(playlist: string) {
 
 function bannerResolver(post: any) {
   if (post?.banner == undefined) {
-    return (urlFor(post?.thumb)?.fit('crop').width(300).height(300)?.url())
+    return (urlFor(post?.thumb)?.fit('crop').width(700).height(700)?.url())
   } 
   else {
     return (urlFor(post?.banner)?.height(720).width(1280)?.url())
@@ -93,8 +93,8 @@ export default async function Page({
   const SLUG_QUERY = `*[_type == "post" && slug.current == "${slug}"]`;
   const posts = await sanityFetch<SanityDocument[]>({ query: SLUG_QUERY });
   const post = posts[0];
-  return (<div className="font-roc text-lg text-balance max-md:mt-14">
-    <div className="place-items-center">
+  return (<div className="font-roc text-lg text-balance max-md:mt-14 w-full">
+    <div className="place-items-center size-72 w-full justify-center">
       <img className="rounded-md"
         src={`${bannerResolver(post)}`}
         alt={`${post.name}`}
