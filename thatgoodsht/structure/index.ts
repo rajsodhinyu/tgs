@@ -1,6 +1,5 @@
 import type {StructureResolver} from 'sanity/structure'
-import { BsCalendar2Heart, BsPerson, BsPencilSquare } from "react-icons/bs"
-import { FaBurst, FaCalendarDays,FaSpotify,FaRegUser,FaRadio, FaCalendarDay } from "react-icons/fa6";
+import { FaBurst,FaSpotify,FaRegUser,FaRadio, FaCalendarDay,FaUser } from "react-icons/fa6";
 
 
 export const structure: StructureResolver = (S) =>
@@ -10,7 +9,7 @@ export const structure: StructureResolver = (S) =>
     .items([
       S.documentTypeListItem('post').title('Blog').icon(FaBurst),
       S.documentTypeListItem('event').title('Events').icon(FaCalendarDay),
-      S.documentTypeListItem('writer').title('Writers').icon(FaRegUser),
+      S.documentTypeListItem('writer').title('Writers').icon(FaUser),
       S.divider(),
       S.documentTypeListItem('playlist').title('Playlists').icon(FaSpotify),
       S.documentTypeListItem('sotd').title('Songs Of The Day').icon(FaRadio),

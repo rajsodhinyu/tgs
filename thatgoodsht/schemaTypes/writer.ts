@@ -1,4 +1,5 @@
 import {defineField, defineType} from 'sanity'
+import { media, mediaAssetSource } from "sanity-plugin-media";
 
 export const writerType = defineType({
     name: 'writer',
@@ -14,7 +15,8 @@ export const writerType = defineType({
         defineField({
             name: 'image',
             title: 'Picture',
-            type: 'image'
+            type: 'image',
+            options: {sources: [mediaAssetSource], hotspot:true},
         }),
         defineField({
             name: 'track',

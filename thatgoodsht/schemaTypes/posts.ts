@@ -42,10 +42,18 @@ export const postType = defineType({
         defineField({
             name: 'thumb',
             title: 'Thumbnail',
-            description: 'Square image shown in the sidebar',
+            description: 'Must be cropped to a square before uploading!',
             type: 'image',
             options: {sources: [mediaAssetSource]},
             validation: rule => rule.required()
+        }),
+        defineField({
+            name: 'banner',
+            title: 'Banner',
+            description: 'Optional image, must be cropped to 16:9!',
+            type: 'image',
+            hidden: ({document}) => !(!document?.youtube), //hide the field if it is a Youtube Post
+            options: {sources: [mediaAssetSource], hotspot:true},
         }),
         defineField({
             name: 'writer',
@@ -63,14 +71,6 @@ export const postType = defineType({
               })
         }),
         defineField({
-            name: 'banner',
-            title: 'Banner',
-            description: 'Optional image that must be 16x9!',
-            type: 'image',
-            hidden: ({document}) => !(!document?.youtube), //hide the field if it is a Youtube Post
-            options: {hotspot: true},
-        }),
-        defineField({
             name: 'playlistURL',
             title: 'Spotify Embed',
             description: 'Optional',
@@ -79,11 +79,11 @@ export const postType = defineType({
         }),
         defineField({
             name: 'content',
-            title: 'Blog Text',
+            title: 'Article',
             type: 'array', 
             of: [{type: 'block'}],
             hidden: ({document}) => !(!document?.youtube), //hide the field if it is a Youtube Post
-            description: 'Paste here (Links must start with https://)',
+            description: 'All links must start with https:// and are pink, Italics are purple. Check formatting before posting. Enters and Shift-Enters are treated differently!',
             validation: rule => rule.custom((writer, context) => { // make required if blog post
                 if (!(context.document?.youtube) && (context.document?.content) == undefined) {
                   return 'Required'
