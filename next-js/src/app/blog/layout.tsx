@@ -4,7 +4,7 @@ import Sidebar from "./sidebar";
 export default function Layout({ children }: { children: React.ReactNode }) {
     return (<div>
         <Nav />
-        <div className="px-3 sm:flex-wrap gap-2.5  md:flex-nowrap md:inline-flex md:flex-row md:justify-between xl:w-screen "> 
+        <div className="px-3 sm:flex-wrap gap-2.5  md:flex-nowrap md:inline-flex md:flex-row md:justify-between xl:w-screen max-md:place-items-center "> 
   {/* Whole Site */}
     <div className="w-11/12"> {/* Right Side, Carousel + */} 
       {children}

@@ -8,7 +8,7 @@ import Sidebar from "./sidebar";
 
 export default function Page() {
   return (
-    <div className="place-items-center">
+    <div className="place-items-center max-md:mt-12">
     <a href="blog/post/welcome-to-the-blog">
       <div><img className="rounded-md "src="https://cdn.sanity.io/images/fnvy29id/tgs/6f55436753924ff94fa5359d65eadc4084ec898f-1440x1080.png" alt="" /></div>
     </a>
