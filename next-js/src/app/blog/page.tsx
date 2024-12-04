@@ -36,7 +36,7 @@ export default async function Page() {
       <div><img className="rounded-md "src="https://cdn.sanity.io/images/fnvy29id/tgs/6f55436753924ff94fa5359d65eadc4084ec898f-1440x1080.png" alt="" /></div>
     </a>
   <div className="grid xl:grid-cols-3 grid-cols-2 pt-4 gap-4">
-  {blogs.map((playlist) => (<PlaylistCard title={playlist.name} description={playlist.description} 
+  {blogs.map((playlist) => (<PlaylistCard key={playlist.name} title={playlist.name} description={playlist.description} 
   cover = {`${eventImage(playlist)}?h=700&w=700&fit=crop&crop=center`}
   url={playlist.playlistURL}></PlaylistCard>))}
     </div>
