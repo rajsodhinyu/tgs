@@ -6,22 +6,26 @@ export const playlistType = defineType({
     title: 'Playlist',
     type: 'document',
     initialValue: {
-        name: 'Untitled Playlist'
+        name: 'Unused Playlist',
       },
     fields: [
         defineField({
+            name: 'name',
+            title: 'Title',
+            type: 'string',
+            validation: rule => rule.required()
+        }),
+        defineField({
             name: 'title',
-            title: 'Admin - playlistID',
-
+            title: 'frontendID',
             type: 'string',
             validation: rule => rule.required(),
             hidden: true
-        }),
 
+        }),
         defineField({
             name: 'order',
             title: 'Admin - playlistOrder',
-
             type: 'number',
             validation: rule => rule.required(),
             hidden: true
@@ -34,13 +38,7 @@ export const playlistType = defineType({
             options: {sources: [mediaAssetSource], hotspot:true},
             validation: rule => rule.required()
         }),
-        defineField({
-            name: 'name',
-            title: 'Title',
-            description: 'Shown on site',
-            type: 'string',
-            validation: rule => rule.required()
-        }),
+        
         defineField({
             name: 'description',
             title: 'Playlist Description',
@@ -50,7 +48,7 @@ export const playlistType = defineType({
         }),
         defineField({
             name: 'playlistURL',
-            title: 'Spotify URL',
+            title: 'Spotify Playlist Link',
             description: 'Must start with https://',
             type: 'url',
             validation: rule => rule.required()
@@ -59,11 +57,19 @@ export const playlistType = defineType({
     ],
     orderings: [
         {
-          title: 'Publish Date, New',
+          title: 'Display Order',
           name: 'releaseDateDesc',
           by: [
-            {field: 'datetime', direction: 'desc'}
+            {field: 'order', direction: 'asc'}
           ]
         },
-    ]
+    ],
+    preview: {
+        select: {
+          title: 'name',
+          subtitle: 'description',
+          media: 'thumb'
+        }
+      }
 })
+
