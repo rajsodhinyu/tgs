@@ -96,7 +96,7 @@ export const postType = defineType({
             title: 'URL Generator',
             type: 'slug',
             options: {source: 'name'},
-            description: 'thatgoodshitmusic.com/blog/post/',
+            description: 'thatgoodsht.com/blog/post/',
             validation: rule => rule.required()
         }),
         defineField({
