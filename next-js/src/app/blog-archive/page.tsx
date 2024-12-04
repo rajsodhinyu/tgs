@@ -58,7 +58,7 @@ function stringifyDate(input:string) {
               <div className="relative size-72">
               <Link className="hover:underline decoration-tgs-purple"
             href={`${linkResolver(blog.youtube,blog.youtubeURL,blog.slug)}`}>
-                <Image className=" object-contain rounded-md ring-tgs-purple ring-0 hover:ring-4 hover:scale-[98%]"
+                <Image className=" object-contain rounded-md border-tgs-purple border-0 hover:border-4 hover:scale-[98%]"
                   src={`${eventImage(blog)}?h=700&w=700&fit=crop&crop=center`}
                   width={700}
                   height={700}
