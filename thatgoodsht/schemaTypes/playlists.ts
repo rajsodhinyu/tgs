@@ -56,5 +56,14 @@ export const playlistType = defineType({
             validation: rule => rule.required()
         }),
         
+    ],
+    orderings: [
+        {
+          title: 'Publish Date, New',
+          name: 'releaseDateDesc',
+          by: [
+            {field: 'datetime', direction: 'desc'}
+          ]
+        },
     ]
 })

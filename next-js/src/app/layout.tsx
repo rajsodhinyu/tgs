@@ -2,6 +2,12 @@ import './globals.css'
 import Nav from './nav'
 import { Inter, Roboto_Mono } from 'next/font/google'
 import localFont from 'next/font/local'
+import { sanityFetch } from './client'
+import { SanityDocument } from 'next-sanity'
+
+
+
+
 
 
 const bitcount = localFont({
@@ -27,18 +33,34 @@ export const metadata = {
   description: 'Copyright Raj Sodhi',
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+
+  let song = 'null'
+
+const SONG_QUERY3 = `*[_type == "sotd" && dateTime(datetime) < dateTime(now())] 
+  | order(datetime desc, _updatedAt desc)[0] {
+    file {
+      asset-> {
+        url
+      }
+    }
+  }
+`
+
+  const songs:any =  await sanityFetch<SanityDocument[]>({query: SONG_QUERY3}); 
+  song = `${songs.file.asset.url}`
+  console.log(song)
   return (
     <html lang="en" >
       <head>
         <title>ThatGoodSh*t!</title>
       </head>
       <body className={`${bitcount.variable} ${roc.variable} ${bitcount_fill.variable}`}>
-      <audio loop id='myAudio' src="https://cdn.sanity.io/files/fnvy29id/tgs/16d2eea6de26ee3ab6aec3abc90492b2c3f7e854.mp3"></audio>
+      <audio loop id='myAudio' src={song} ></audio>
         <main>{children}</main>
       </body>
     </html>

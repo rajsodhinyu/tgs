@@ -107,12 +107,28 @@ export const postType = defineType({
                 dateFormat: 'MMMM Do',},
             validation: rule => rule.required()
         }),
-        
         defineField({
             name: 'file',
             title: 'Audio file (optional)',
             type: 'file',
             hidden: true
         }),
-    ]
+    ],
+    orderings: [
+        {
+          title: 'Publish Date',
+          name: 'releaseDateDesc',
+          by: [
+            {field: 'date', direction: 'desc'}
+          ]
+        },
+    ],
+    preview: {
+        select: {
+          title: 'name',
+          subtitle: 'content',
+          media: 'thumb'
+        }
+      }
 })
+
