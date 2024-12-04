@@ -3,7 +3,7 @@ import Link from "next/link";
 import { SanityImageSource } from "@sanity/image-url/lib/types/types";
 import imageUrlBuilder from "@sanity/image-url";
 import { SanityDocument } from "next-sanity";
-import { sanityFetch } from "../../client";
+import { sanityFetch } from "../client";
 
 
 const projectId = 'fnvy29id';
@@ -32,7 +32,7 @@ function linkResolver(isYoutube:boolean,youtubeLink:string,slug:any) {
     return `${youtubeLink}`
   }
   else {
-    return `post/${slug.current}`
+    return `/blog/post/${slug.current}`
   }
   
 }
@@ -49,29 +49,30 @@ function stringifyDate(input:string) {
   return `${monthNames[(date.getUTCMonth()-1)]} ${date.getDate()}`;
 
 }
-  return (<div>
-    <div className="grid lg:grid-cols-4 xl:grid-cols-5 md:grid-cols-3 grid-cols-2 p-3 gap-2 md:-mt-10 sm:-mt-0-mt-10 ">
+  return (<div className="mt-10">
+    <div className="grid lg:grid-cols-4 gap-4 xl:grid-cols-5 md:grid-cols-3 grid-cols-2 md:-mt-10 ">
       {blogs.map((blog) => (
-        <div className="hover:scale-[98%]" key={blog._id}>
-          <Link className="hover:underline"
-            href={`${linkResolver(blog.youtube,blog.youtubeURL,blog.slug)}`}>
-              
+        <div className="" key={blog._id}>
+          
             <div className="text-white flex place-content-center">
               <div className="relative size-72">
-                <Image className=" object-contain rounded-md "
-                  src={`${eventImage(blog)}?h=700`}
-                  fill={true}
+              <Link className="hover:underline decoration-tgs-purple"
+            href={`${linkResolver(blog.youtube,blog.youtubeURL,blog.slug)}`}>
+                <Image className=" object-contain rounded-md ring-tgs-purple ring-0 hover:ring-4 hover:scale-[98%]"
+                  src={`${eventImage(blog)}?h=700&w=700&fit=crop&crop=center`}
+                  width={700}
+                  height={700}
                   alt={`${blog.name} Cover`}
-                  sizes="(max-width: 300px) 100vw"
+                  sizes="(max-width: 400px) 100vw"
                   quality={100}
-                />
+                /></Link>
               </div>
             </div>
-            <p className="text-center text-lg font-bit font-bold text-pretty leading-5  p-2">
+            <div className="text-center text-lg font-bit font-bold leading-5 pt-2">
               {blog.name}
-            </p>
+            </div>
             
-          </Link>
+          
         </div>
       ))}
     </div>
