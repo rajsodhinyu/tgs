@@ -1,7 +1,7 @@
 import Link from "next/link"
 
 export default function Post() {
-  return (<div className='font-title text-4xl text-center *:text-balance absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'>
+  return (<div className='font-title text-4xl text-center *:text-balance absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 mt-20 sm:mt-0'>
     <div className="text-2xl">
       No upcoming events for now!
       <br />

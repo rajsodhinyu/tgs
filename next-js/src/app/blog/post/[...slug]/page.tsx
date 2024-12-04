@@ -94,7 +94,7 @@ export default async function Page({
   const posts = await sanityFetch<SanityDocument[]>({ query: SLUG_QUERY });
   const post = posts[0];
   return (<div className="font-roc text-lg text-balance max-md:mt-14 w-full">
-    <div className="place-items-center size-72 w-full justify-center">
+    <div className="place-items-center ">
       <img className="rounded-md"
         src={`${bannerResolver(post)}`}
         alt={`${post.name}`}

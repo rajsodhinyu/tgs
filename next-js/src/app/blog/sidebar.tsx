@@ -52,7 +52,7 @@ export default async function Sidebar({ items}: { items: number}) {
 
 
   return (
-    <div className=" place-items-center">
+    <div className="">
       <div className=" font-bold hover:underline decoration-tgs-purple text-black flex shrink text-3xl  font-bit leading-10 ml-4 text-balance w-full justify-center"><a href="/blog-archive">Recent Posts &gt;</a></div>
       {truncatedBlogs.map((blog) => (
         <div key={blog.name}>
