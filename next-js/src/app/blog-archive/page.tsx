@@ -50,7 +50,7 @@ function stringifyDate(input:string) {
 
 }
   return (<div className="mt-10">
-    <div className="grid lg:grid-cols-4 gap-4 xl:grid-cols-5 md:grid-cols-3 grid-cols-2 md:-mt-10 ">
+    <div className="grid lg:grid-cols-4 gap-4 xl:grid-cols-5 md:grid-cols-3 sm:grid-cols-2 md:-mt-10 ">
       {blogs.map((blog) => (
         <div className="" key={blog._id}>
           
@@ -68,7 +68,7 @@ function stringifyDate(input:string) {
                 /></Link>
               </div>
             </div>
-            <div className="text-center text-lg font-bit font-bold leading-5 pt-2">
+            <div className="text-center text-lg font-bit font-bold leading-5 sm:pt-2">
               {blog.name}
             </div>
             
