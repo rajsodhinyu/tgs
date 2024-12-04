@@ -68,7 +68,7 @@ function stringifyDate(input:string) {
                 /></Link>
               </div>
             </div>
-            <div className="text-center text-lg font-bit font-bold leading-5 sm:pt-2">
+            <div className="text-center text-lg font-bit font-bold leading-5 pt-1 sm:pt-2">
               {blog.name}
             </div>
             
