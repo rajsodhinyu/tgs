@@ -8,14 +8,6 @@ const cards = [
     "https://cdn.sanity.io/images/fnvy29id/tgs/f128efa4d7545273800504eca5734c3da4a3eb4f-2048x2560.jpg",
     "https://cdn.sanity.io/images/fnvy29id/tgs/3b27f29561b621f8ae783c84688f3f52ea463efd-2048x2560.jpg",
     "https://cdn.sanity.io/images/fnvy29id/tgs/ba150eb896964bcba1cc41b2578bf679462055dd-2048x2560.jpg",
-    "https://cdn.sanity.io/images/fnvy29id/tgs/7486e4a90f1e3108c32966ffa1cd24d07394f6c8-2100x2628.jpg",
-    "https://cdn.sanity.io/images/fnvy29id/tgs/f128efa4d7545273800504eca5734c3da4a3eb4f-2048x2560.jpg",
-    "https://cdn.sanity.io/images/fnvy29id/tgs/3b27f29561b621f8ae783c84688f3f52ea463efd-2048x2560.jpg",
-    "https://cdn.sanity.io/images/fnvy29id/tgs/ba150eb896964bcba1cc41b2578bf679462055dd-2048x2560.jpg",
-    "https://cdn.sanity.io/images/fnvy29id/tgs/7486e4a90f1e3108c32966ffa1cd24d07394f6c8-2100x2628.jpg",
-    "https://cdn.sanity.io/images/fnvy29id/tgs/f128efa4d7545273800504eca5734c3da4a3eb4f-2048x2560.jpg",
-    "https://cdn.sanity.io/images/fnvy29id/tgs/3b27f29561b621f8ae783c84688f3f52ea463efd-2048x2560.jpg",
-    "https://cdn.sanity.io/images/fnvy29id/tgs/ba150eb896964bcba1cc41b2578bf679462055dd-2048x2560.jpg"
 ];
 
 interface HorizontalCarouselProps {
@@ -30,7 +22,7 @@ const HorizontalCarousel: React.FC<HorizontalCarouselProps> = ({ cards }) => {
     const scrollCarousel = (direction: "left" | "right") => {
         const container = document.querySelector(".carousel-container");
         var width = container?.clientWidth as number
-        console.log(`we have ${width}`);
+
         if (container) {
             const scrollAmount = direction === "left" ? -width : width;
             container.scrollBy({ left: scrollAmount, behavior: "smooth" });
@@ -133,8 +125,6 @@ const ShopInfo: React.FC<ShopInfoProps> = ({cards2}) => {
 
 export default function Post() {
   useEffect(() => {
-    console.log(`cart is ${localStorage.getItem("cart")}`)
-    console.log(document.cookie)
   }, []);
     return (<div>
 

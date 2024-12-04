@@ -26,7 +26,7 @@ export async function GET(request: Request) {
     const cookieStore = await cookies()
     let cartbool = cookieStore.has('cart')
     const action = request.url.split("?")[1]?.split("=")[1]
-    console.log(`action is ${action}`)
+
     if (action == 'clear' ) {
       cartbool = false;
       finalURL = 'shop/cart'
@@ -40,11 +40,11 @@ export async function GET(request: Request) {
             },
         });
         const newCartID = data.cartCreate.cart.id;
-        console.log(`new cart ${newCartID} `)
-        cookieStore.set('cart', `${newCartID}`)
+
+
         let currentCart = cookieStore.get('cart')
 
     }
-    console.log("EXITING SHOP/ HANDLER")
+
     redirect(finalURL)
 }

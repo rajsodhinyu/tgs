@@ -12,10 +12,7 @@ const cards = [
     "https://cdn.sanity.io/images/fnvy29id/tgs/cdda8edcd79708e431bfe24cc8c3db9b5ca3ddba-2048x2560.jpg",
     "https://cdn.sanity.io/images/fnvy29id/tgs/f926d6430a94d4cc1d7b8a789fbe18766d84331e-2042x2552.jpg",
     "https://cdn.sanity.io/images/fnvy29id/tgs/3429544fecca49f998925ac6cc8785eca30f344f-1278x1278.jpg?rect=250,250,800,1000",
-    "https://cdn.sanity.io/images/fnvy29id/tgs/cdda8edcd79708e431bfe24cc8c3db9b5ca3ddba-2048x2560.jpg",
-    "https://cdn.sanity.io/images/fnvy29id/tgs/f926d6430a94d4cc1d7b8a789fbe18766d84331e-2042x2552.jpg",
-    "https://cdn.sanity.io/images/fnvy29id/tgs/3429544fecca49f998925ac6cc8785eca30f344f-1278x1278.jpg?rect=250,250,800,1000"
-];
+    ];
 
 interface HorizontalCarouselProps {
     cards: string[]; // Array of image URLs
@@ -28,8 +25,9 @@ interface ShopInfoProps {
 const HorizontalCarousel: React.FC<HorizontalCarouselProps> = ({ cards }) => {
     const scrollCarousel = (direction: "left" | "right") => {
         const container = document.querySelector(".carousel-container");
+        var width = container?.clientWidth as number
         if (container) {
-            const scrollAmount = direction === "left" ? -300 : 300;
+            const scrollAmount = direction === "left" ? -width : width;
             container.scrollBy({ left: scrollAmount, behavior: "smooth" });
         }
     };
@@ -130,7 +128,7 @@ const ShopInfo: React.FC<ShopInfoProps> = ({cards2}) => {
 
 export default function Post() {
   useEffect(() => {
-    console.log(`cart is ${localStorage.getItem("cart")}`)
+
   }, []);
     
     return (<div >

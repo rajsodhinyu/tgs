@@ -15,12 +15,12 @@ const client = createStorefrontApiClient({
 export async function GET(request: Request) {
     const cookieStore = await cookies()
 
-    console.log(`received ${request.url}`)
+
     const action = request.url.split("&")[1].split("=")[1]
-    console.log(`action is ${action}`)
+
     const actionlessURL = request.url.split("&")[0]
     const product = `gid://shopify/ProductVariant/${actionlessURL.split("?")[1].split("=")[1]}`
-    console.log(`hoodie ${product} added to cart`);
+
 
 
 
@@ -78,11 +78,11 @@ export async function GET(request: Request) {
 
     let finalURL = '/shop'
 
-    console.log(cookieStore.getAll('cart'))
+
     const cartbool = cookieStore.has('cart')
-    console.log(cartbool)
+
     let currentCart = cookieStore.get('cart')
-    console.log(`current cart is ${currentCart?.value}`)
+
     if ((currentCart?.value == '') || (!cartbool) || (action == 'now')) { /* if there is no cart (very unlikely) */
         const { data } = await client.request(newCartwithItem, {
             variables: {
@@ -91,7 +91,7 @@ export async function GET(request: Request) {
         });
         const cart = data.cartCreate.cart.id
         const cartCookie = cookieStore.set('cart', cart)
-        console.log(`added new cart ${cart} to cookies`)
+
         finalURL = data.cartCreate.cart.checkoutUrl
     }
     else {

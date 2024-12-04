@@ -11,7 +11,7 @@ const client = createStorefrontApiClient({
 
 
 async function getSize(id: string) {
-  console.log(id)
+
   let query2 = `query MyQuery {
   node(
     id: "${id}"
@@ -36,7 +36,7 @@ async function getSize(id: string) {
 }
 
 async function getName(id: string) {
-  console.log(id)
+
   let query2 = `query MyQuery {
   node(
     id: "${id}"
@@ -56,16 +56,16 @@ async function getName(id: string) {
   }
 }`
   const unparsed = await client.request(query2)
-  console.log(unparsed.data.node.merchandise.title)
+
   return (unparsed.data.node.merchandise.product.title)
 }
 
 export default async function Post() {
   const cookieStore = await cookies()
-  console.log("ENTERING cookieStore.get('cart')?.value")
+
   let cartCookie = cookieStore.get('cart')?.value
-  console.log(`current cart is ${cartCookie}`)
-  console.log("exiting cookieStore.get('cart')?.value")
+
+
 
   {
     if ((cartCookie == null) || (cartCookie == '')) {

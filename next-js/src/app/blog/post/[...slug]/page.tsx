@@ -48,7 +48,7 @@ function bannerResolver(post: any) {
 async function findWriter(id:string) {
   const writerQ = `*[_type == "writer" && _id == "${id}"]{name}`
   const data:any = await sanityFetch({query:writerQ})
-  console.log(data)
+
   return (data[0].name)
 }
 
