@@ -29,8 +29,8 @@ const bitcount_fill = localFont({
 })
 
 export const metadata = {
-  title: 'ThatGoodSh*t',
-  description: 'Copyright Raj Sodhi',
+  title: 'That Good Sh*t',
+  description: 'Good Sh*t lives here.',
 }
 
 export default async function RootLayout({
@@ -57,7 +57,7 @@ const SONG_QUERY3 = `*[_type == "sotd" && dateTime(datetime) < dateTime(now())]
   return (
     <html lang="en" >
       <head>
-        <title>ThatGoodSh*t!</title>
+        <title>That Good Sh*t!</title>
       </head>
       <body className={`${bitcount.variable} ${roc.variable} ${bitcount_fill.variable}`}>
       <audio loop id='myAudio' src={song} ></audio>
