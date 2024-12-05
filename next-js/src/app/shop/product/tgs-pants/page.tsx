@@ -154,13 +154,15 @@ export default function Post() {
                   {<ShopInfo cards2={cards}></ShopInfo>}
               </div>
         </div>
-        <div className="mt-5 text-center font-title font-bold
-          text-4xl md:text-5xl text-tgs-purple">
-                Product Information
+        <div className="max-sm:w-72 place-items-center">
+          <div className="mt-5 text-center font-title font-bold
+            text-4xl md:text-5xl text-tgs-purple">
+                  Product Information
+          </div>
+          <div className="text-3xl font-bit font-bold text-pretty sm:w-5/6 text-center py-12">
+          The TGS Lounge Set is a two piece, mid-weight, fleece tracksuit featuring reverse appliqué artwork hand drawn by us.
+            </div>
         </div>
-        <div className="text-3xl font-bit font-bold text-pretty w-5/6 place-self-center text-center py-12">
-        The TGS Lounge Set is a two piece, mid-weight, fleece tracksuit featuring reverse appliqué artwork hand drawn by us. 
-          </div> 
 
     </div>)
 }
