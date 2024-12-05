@@ -3,8 +3,8 @@
 import { useEffect } from "react";
 
 const cards = [
-    "https://cdn.sanity.io/images/fnvy29id/tgs/3fcdb1608e9d8a639cd6c42a1371ff72f3a0efd0-1786x2233.jpg",
-    "https://cdn.sanity.io/images/fnvy29id/tgs/f926d6430a94d4cc1d7b8a789fbe18766d84331e-2042x2552.jpg",
+    "https://cdn.sanity.io/images/fnvy29id/tgs/752b435dd7941af6a65a754ec2f27b13d03952c4-800x1000.png",
+    "https://cdn.sanity.io/images/fnvy29id/tgs/6f00d0ca0c8bdb783cc4d4ad0e3e5ea1b20d3921-800x1000.png",
     
 ];
 
@@ -21,7 +21,7 @@ const HorizontalCarousel: React.FC<HorizontalCarouselProps> = ({ cards }) => {
         const container = document.querySelector(".carousel-container");
         var width = container?.clientWidth as number
         if (container) {
-            const scrollAmount = direction === "left" ? -width : width;
+            const scrollAmount = direction === "left" ? -width*1.25 : width*1.25;
             container.scrollBy({ left: scrollAmount, behavior: "smooth" });
         }
     };
@@ -191,11 +191,14 @@ export default function Post() {
                   {<ShopInfo cards2={cards}></ShopInfo>}
               </div>
         </div>
-        {/* <div className="mt-5 text-center font-title font-bold
-          text-4xl md:text-5xl text-tgs-purple
-        ">
+        <div className="mt-5 text-center font-title font-bold
+          text-4xl md:text-5xl text-tgs-purple">
                 Product Information
-        </div> */}
+        </div>
+        <div className="text-3xl font-bit font-bold text-pretty w-5/6 place-self-center text-center py-12">
+        Rep That Good Sh*t on your finger, in your choice of 14K Gold or 925K Sterling Silver.
+          </div> 
 
+       
     </div>)
 }

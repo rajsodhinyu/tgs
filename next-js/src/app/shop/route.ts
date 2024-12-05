@@ -23,14 +23,8 @@ mutation {
 
 export async function GET(request: Request) {
   let finalURL = '/shop/home'
-    const cookieStore = await cookies()
+  const cookieStore = await cookies()
     let cartbool = cookieStore.has('cart')
-    const action = request.url.split("?")[1]?.split("=")[1]
-
-    if (action == 'clear' ) {
-      cartbool = false;
-      finalURL = 'shop/cart'
-    }
     let currentCart = cookieStore.get('cart')
 
     if ((currentCart?.value == '')||(currentCart?.value == null)||(!cartbool)) {
@@ -40,7 +34,7 @@ export async function GET(request: Request) {
             },
         });
         const newCartID = data.cartCreate.cart.id;
-
+        cookieStore.set('cart',newCartID)
 
         let currentCart = cookieStore.get('cart')
 

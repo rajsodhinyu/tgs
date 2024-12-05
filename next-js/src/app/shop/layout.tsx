@@ -1,5 +1,6 @@
 import Nav from "../nav";
 export default function Layout({ children }: { children: React.ReactNode }) {
+    
     return (
         <div>
             <Nav />
@@ -8,7 +9,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                     <div className="hover:underline decoration-from-font decoration-tgs-purple"><a href="/shop">SHOP</a></div>
             
                     <div className="hover:underline decoration-from-font decoration-tgs-purple"><a href="/shop/cart">CART</a></div>
-            
+
                 </div>
                 <div >{children}</div>
             </div>

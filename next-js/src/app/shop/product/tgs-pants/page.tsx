@@ -9,9 +9,10 @@ import { useEffect } from "react";
 
 
 const cards = [
-    "https://cdn.sanity.io/images/fnvy29id/tgs/cdda8edcd79708e431bfe24cc8c3db9b5ca3ddba-2048x2560.jpg",
-    "https://cdn.sanity.io/images/fnvy29id/tgs/f926d6430a94d4cc1d7b8a789fbe18766d84331e-2042x2552.jpg",
-    "https://cdn.sanity.io/images/fnvy29id/tgs/3429544fecca49f998925ac6cc8785eca30f344f-1278x1278.jpg?rect=250,250,800,1000",
+    "https://cdn.sanity.io/images/fnvy29id/tgs/af4a48b28edc5b22dabedfc9a3950dd30c0959c1-800x1000.png",
+    "https://cdn.sanity.io/images/fnvy29id/tgs/f257ca192915a29bdd3dd0e9525a419bc1b348c4-800x1000.png",
+    "https://cdn.sanity.io/images/fnvy29id/tgs/6060cdd55e467e09f499ee923ad0d6196dc8af71-800x1000.png",
+    "https://cdn.sanity.io/images/fnvy29id/tgs/3907a5a1c363e8eab6b5cdbee014892da193a3fd-800x1000.png"
     ];
 
 interface HorizontalCarouselProps {
@@ -27,7 +28,7 @@ const HorizontalCarousel: React.FC<HorizontalCarouselProps> = ({ cards }) => {
         const container = document.querySelector(".carousel-container");
         var width = container?.clientWidth as number
         if (container) {
-            const scrollAmount = direction === "left" ? -width : width;
+            const scrollAmount = direction === "left" ?  -width*1.25 : width*1.25;
             container.scrollBy({ left: scrollAmount, behavior: "smooth" });
         }
     };
@@ -149,11 +150,13 @@ export default function Post() {
                   {<ShopInfo cards2={cards}></ShopInfo>}
               </div>
         </div>
-        {/* <div className="mt-5 text-center font-title font-bold
-          text-4xl md:text-5xl text-tgs-purple
-        ">
+        <div className="mt-5 text-center font-title font-bold
+          text-4xl md:text-5xl text-tgs-purple">
                 Product Information
-        </div> */}
+        </div>
+        <div className="text-3xl font-bit font-bold text-pretty w-5/6 place-self-center text-center py-12">
+        The TGS Lounge Set is a two piece, mid-weight, fleece tracksuit featuring reverse appliqué artwork hand drawn by us. 
+          </div> 
 
     </div>)
 }

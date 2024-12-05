@@ -14,10 +14,17 @@ const client = createStorefrontApiClient({
 
 export async function GET(request: Request) {
     const cookieStore = await cookies()
-
-
-    const action = request.url.split("&")[1].split("=")[1]
-
+    console.log('recieved')
+    console.log(request.url)
+    let action;
+    try {
+       action = `${request.url.split("&")[1].split("=")[1]}`
+    } catch {
+       action = `${request.url.split("?")[1].split("=")[1]}`
+       cookieStore.delete('cart')
+       redirect('/shop/cart/')
+    }
+    console.log(action)
     const actionlessURL = request.url.split("&")[0]
     const product = `gid://shopify/ProductVariant/${actionlessURL.split("?")[1].split("=")[1]}`
 
@@ -83,7 +90,7 @@ export async function GET(request: Request) {
 
     let currentCart = cookieStore.get('cart')
 
-    if ((currentCart?.value == '') || (!cartbool) || (action == 'now')) { /* if there is no cart (very unlikely) */
+    if ((currentCart?.value == '') || (!cartbool) || (action == 'now')|| (action == 'clear')) { /* if there is no cart (very unlikely) */
         const { data } = await client.request(newCartwithItem, {
             variables: {
                 handle: 'sample-product',
@@ -91,7 +98,6 @@ export async function GET(request: Request) {
         });
         const cart = data.cartCreate.cart.id
         const cartCookie = cookieStore.set('cart', cart)
-
         finalURL = data.cartCreate.cart.checkoutUrl
     }
     else {

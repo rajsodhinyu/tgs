@@ -4,10 +4,10 @@ import { useEffect } from "react";
 
 
 const cards = [
-    "https://cdn.sanity.io/images/fnvy29id/tgs/7486e4a90f1e3108c32966ffa1cd24d07394f6c8-2100x2628.jpg",
-    "https://cdn.sanity.io/images/fnvy29id/tgs/f128efa4d7545273800504eca5734c3da4a3eb4f-2048x2560.jpg",
-    "https://cdn.sanity.io/images/fnvy29id/tgs/3b27f29561b621f8ae783c84688f3f52ea463efd-2048x2560.jpg",
-    "https://cdn.sanity.io/images/fnvy29id/tgs/ba150eb896964bcba1cc41b2578bf679462055dd-2048x2560.jpg",
+    "https://cdn.sanity.io/images/fnvy29id/tgs/ceea4804b606a0e7de684e5e82ab36b10d04449b-800x1000.png",
+    "https://cdn.sanity.io/images/fnvy29id/tgs/074edb4f6440d1ea2d0357c9d2df57a0cb6d0259-800x1000.png",
+    "https://cdn.sanity.io/images/fnvy29id/tgs/e6eae2708b82e5b582ba4ecdb73163b198f552f9-800x1000.png",
+    "https://cdn.sanity.io/images/fnvy29id/tgs/9cb2a0b8636707c1f6d68524402abc273d8cfe29-800x1000.png",
 ];
 
 interface HorizontalCarouselProps {
@@ -24,7 +24,7 @@ const HorizontalCarousel: React.FC<HorizontalCarouselProps> = ({ cards }) => {
         var width = container?.clientWidth as number
 
         if (container) {
-            const scrollAmount = direction === "left" ? -width : width;
+            const scrollAmount = direction === "left" ? -width*1.25 : width*1.25;
             container.scrollBy({ left: scrollAmount, behavior: "smooth" });
         }
     };
@@ -146,10 +146,12 @@ export default function Post() {
               </div>
         </div>
         <br />
-        {/* <div className="mt-5 text-center font-title font-bold
-          text-4xl md:text-5xl text-tgs-purple
-        ">
+        <div className="mt-5 text-center font-title font-bold
+          text-4xl md:text-5xl text-tgs-purple">
                 Product Information
-        </div> */}
+        </div>
+        <div className="text-3xl font-bit font-bold text-pretty w-5/6 place-self-center text-center py-12">
+        The TGS Lounge Set is a two piece, mid-weight, fleece tracksuit featuring reverse appliqué artwork hand drawn by us. 
+          </div> 
     </div>)
 }
