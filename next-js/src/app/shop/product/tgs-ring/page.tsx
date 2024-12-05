@@ -197,11 +197,11 @@ export default function Post() {
         <div className="mt-5 text-center font-title font-bold
           text-4xl md:text-5xl text-tgs-purple">
                 Product Information
-        </div>
+        
         <div className="text-3xl font-bit font-bold text-pretty w-5/6 place-self-center text-center py-12">
         Rep That Good Sh*t on your finger, in your choice of 14K Gold or 925K Sterling Silver.
           </div> 
-
+          </div>
        
     </div>)
 }

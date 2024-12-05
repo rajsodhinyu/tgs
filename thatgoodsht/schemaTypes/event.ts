@@ -17,7 +17,8 @@ export const eventType = defineType({
     }),
     defineField({
         name: 'link',
-        title: 'Ticket Link',
+        title: 'Ticket/Instagram Link',
+        description:'Change to Instagram if a post exists!',
         initialValue: 'https://www.',
         type: 'url',
         validation: rule => rule.required()
