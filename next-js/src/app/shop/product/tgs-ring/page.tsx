@@ -71,7 +71,7 @@ const ShopInfo: React.FC<ShopInfoProps> = ({cards2}) => {
         <form className="" action={"/shop/cart/add"}>
           <div className="flex">
             <div className="w-full flex-none mt-2 order-1 text-4xl font-bold text-tgs-purple">
-              $79.00
+              $55.00
             </div>
           </div>
           <div className="flex place-items-center items-baseline mt-4 mb-6 pb-6 border-b border-tgs-purple place-content-center">
