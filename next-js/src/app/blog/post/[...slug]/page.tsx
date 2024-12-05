@@ -93,6 +93,7 @@ export default async function Page({
   const SLUG_QUERY = `*[_type == "post" && slug.current == "${slug}"]`;
   const posts = await sanityFetch<SanityDocument[]>({ query: SLUG_QUERY });
   const post = posts[0];
+  console.log(`View on [${post.name}]`)
   return (<div className="font-roc text-lg text-balance max-md:mt-14 max-sm:w-[90vw]">
     <div className="place-items-center ">
       <img className="rounded-md"
