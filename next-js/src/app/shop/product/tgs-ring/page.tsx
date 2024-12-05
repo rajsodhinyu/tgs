@@ -179,7 +179,7 @@ export default function Post() {
         
         <br />
         <div className="text-center font-title font-bold
-          text-4xl md:text-5xl text-tgs-purple max-sm:w-80
+          text-4xl md:text-5xl text-tgs-purple w-80 min-[340px]:w-full
         ">
                 THATGOODSH*T RING
         </div>
@@ -194,7 +194,7 @@ export default function Post() {
                   {<ShopInfo cards2={cards}></ShopInfo>}
               </div>
         </div>
-        <div className="max-sm:w-80 place-items-center">
+        <div className="w-80 min-[340px]:w-full place-items-center">
           <div className="mt-5 text-center font-title font-bold
             text-4xl md:text-5xl text-tgs-purple">
                   Product Information

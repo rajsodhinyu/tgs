@@ -133,7 +133,7 @@ export default function Post() {
 
         <br />
         <div className="text-center font-title font-bold
-          text-4xl md:text-5xl text-tgs-purple max-sm:w-80
+          text-4xl md:text-5xl text-tgs-purple max-[340px]:w-80 w-full
         ">
                 TGS Lounge Hoodie
         </div>
@@ -149,7 +149,8 @@ export default function Post() {
               </div>
         </div>
         <br />
-        <div className="max-sm:w-80 place-items-center">
+        <div className="w-80 min-[340px]:w-full
+        place-items-center">
           <div className="mt-5 text-center font-title font-bold
             text-4xl md:text-5xl text-tgs-purple">
                   Product Information
