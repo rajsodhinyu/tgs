@@ -22,9 +22,9 @@ const HorizontalCarousel: React.FC<HorizontalCarouselProps> = ({ cards }) => {
     const scrollCarousel = (direction: "left" | "right") => {
         const container = document.querySelector(".carousel-container");
         var width = container?.clientWidth as number
-
+        console.log(`container size is ${width}`)
         if (container) {
-            const scrollAmount = direction === "left" ? -width*1.25 : width*1.25;
+            const scrollAmount = direction === "left" ? -width : width;
             container.scrollBy({ left: scrollAmount, behavior: "smooth" });
         }
     };
