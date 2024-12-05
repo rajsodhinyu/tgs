@@ -14,8 +14,6 @@ const client = createStorefrontApiClient({
 
 export async function GET(request: Request) {
     const cookieStore = await cookies()
-    console.log('recieved')
-    console.log(request.url)
     let action;
     try {
        action = `${request.url.split("&")[1].split("=")[1]}`
@@ -24,7 +22,6 @@ export async function GET(request: Request) {
        cookieStore.delete('cart')
        redirect('/shop/cart/')
     }
-    console.log(action)
     const actionlessURL = request.url.split("&")[0]
     const product = `gid://shopify/ProductVariant/${actionlessURL.split("?")[1].split("=")[1]}`
 

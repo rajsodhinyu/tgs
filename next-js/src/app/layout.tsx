@@ -53,7 +53,6 @@ const SONG_QUERY3 = `*[_type == "sotd" && dateTime(datetime) < dateTime(now())]
 
   const songs:any =  await sanityFetch<SanityDocument[]>({query: SONG_QUERY3}); 
   song = `${songs.file.asset.url}`
-  console.log(song)
   return (
     <html lang="en" >
       <head>
