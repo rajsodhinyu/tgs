@@ -23,7 +23,16 @@ const urlFor = (source: SanityImageSource) =>
       let thing = pull ? urlFor(pull)?.url(): null;
       return (thing)
     }
-
+    function tabResolver(isYoutube:boolean) {
+      if (isYoutube){
+        return `_blank`
+      }
+      else {
+        return `_self`
+      }
+      
+    }
+  
 export default async function Page(){
 
 const blogs = await sanityFetch<SanityDocument[]>({query: BLOGS_QUERY});
@@ -49,7 +58,7 @@ function stringifyDate(input:string) {
   return `${monthNames[(date.getUTCMonth()-1)]} ${date.getDate()}`;
 
 }
-  return (<div className="mt-10">
+  return (<div className="my-10">
     <div className="grid lg:grid-cols-4 mx-3 gap-4 xl:grid-cols-5 md:grid-cols-3 sm:grid-cols-2 md:-mt-10 ">
       {blogs.map((blog) => (
         <div className="" key={blog._id}>
@@ -57,7 +66,9 @@ function stringifyDate(input:string) {
             <div className="text-white flex place-content-center">
               <div className="relative size-72">
               <Link className="hover:underline decoration-tgs-purple"
-            href={`${linkResolver(blog.youtube,blog.youtubeURL,blog.slug)}`}>
+            href={`${linkResolver(blog.youtube,blog.youtubeURL,blog.slug)}`}
+            target={tabResolver(blog.youtube)}
+            >
                 <Image className=" object-contain rounded-md border-tgs-purple border-0 hover:border-4 hover:scale-[98%]"
                   src={`${eventImage(blog)}?h=700&w=700&fit=crop&crop=center`}
                   width={700}
