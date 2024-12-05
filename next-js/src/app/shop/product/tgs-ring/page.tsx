@@ -5,6 +5,9 @@ import { useEffect } from "react";
 const cards = [
     "https://cdn.sanity.io/images/fnvy29id/tgs/752b435dd7941af6a65a754ec2f27b13d03952c4-800x1000.png",
     "https://cdn.sanity.io/images/fnvy29id/tgs/6f00d0ca0c8bdb783cc4d4ad0e3e5ea1b20d3921-800x1000.png",
+    "https://cdn.sanity.io/images/fnvy29id/tgs/752b435dd7941af6a65a754ec2f27b13d03952c4-800x1000.png",
+    "https://cdn.sanity.io/images/fnvy29id/tgs/6f00d0ca0c8bdb783cc4d4ad0e3e5ea1b20d3921-800x1000.png",
+    
     
 ];
 
@@ -21,7 +24,7 @@ const HorizontalCarousel: React.FC<HorizontalCarouselProps> = ({ cards }) => {
         const container = document.querySelector(".carousel-container");
         var width = container?.clientWidth as number
         if (container) {
-            const scrollAmount = direction === "left" ? -width*1.25 : width*1.25;
+            const scrollAmount = direction === "left" ? -width : width;
             container.scrollBy({ left: scrollAmount, behavior: "smooth" });
         }
     };

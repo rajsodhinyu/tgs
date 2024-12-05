@@ -12,6 +12,10 @@ const cards = [
     "https://cdn.sanity.io/images/fnvy29id/tgs/af4a48b28edc5b22dabedfc9a3950dd30c0959c1-800x1000.png",
     "https://cdn.sanity.io/images/fnvy29id/tgs/f257ca192915a29bdd3dd0e9525a419bc1b348c4-800x1000.png",
     "https://cdn.sanity.io/images/fnvy29id/tgs/6060cdd55e467e09f499ee923ad0d6196dc8af71-800x1000.png",
+    "https://cdn.sanity.io/images/fnvy29id/tgs/3907a5a1c363e8eab6b5cdbee014892da193a3fd-800x1000.png",
+    "https://cdn.sanity.io/images/fnvy29id/tgs/af4a48b28edc5b22dabedfc9a3950dd30c0959c1-800x1000.png",
+    "https://cdn.sanity.io/images/fnvy29id/tgs/f257ca192915a29bdd3dd0e9525a419bc1b348c4-800x1000.png",
+    "https://cdn.sanity.io/images/fnvy29id/tgs/6060cdd55e467e09f499ee923ad0d6196dc8af71-800x1000.png",
     "https://cdn.sanity.io/images/fnvy29id/tgs/3907a5a1c363e8eab6b5cdbee014892da193a3fd-800x1000.png"
     ];
 
@@ -28,7 +32,7 @@ const HorizontalCarousel: React.FC<HorizontalCarouselProps> = ({ cards }) => {
         const container = document.querySelector(".carousel-container");
         var width = container?.clientWidth as number
         if (container) {
-            const scrollAmount = direction === "left" ?  -width*1.25 : width*1.25;
+            const scrollAmount = direction === "left" ?  -width: width;
             container.scrollBy({ left: scrollAmount, behavior: "smooth" });
         }
     };
