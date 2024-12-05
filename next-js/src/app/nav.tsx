@@ -10,7 +10,7 @@ export default function Nav() {
       <div className="w-svh mx-3 mt-4 inset-0 h-24 flex items-baseline md:items-center flex-wrap md:justify-between md:flex-nowrap md:flex-row justify-around mb-3">
         {" "}
         {/*whole nav bar*/}
-        <div className="shrink h-12 flex gap-6 items-center lg:gap-8 justify-start ">
+        <div className="shrink h-12 flex gap-3 sm:gap-6 items-center lg:gap-8 justify-start ">
           {/*everything not inc SOTD?*/}
           <Link href="/">
             <img
