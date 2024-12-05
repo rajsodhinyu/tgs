@@ -5,6 +5,8 @@ import { sanityFetch } from "../client";
 import { SanityDocument } from "next-sanity";
 import { SanityImageSource } from "@sanity/image-url/lib/types/types";
 import imageUrlBuilder from "@sanity/image-url";
+import Link from "next/link";
+
 
 
 const projectId = 'fnvy29id';
@@ -32,9 +34,9 @@ export default async function Page() {
   const blogs = await sanityFetch<SanityDocument[]>({query: PLAYLIST_Q});
   return (
     <div className="place-items-center max-md:mt-12">
-    <a href="blog/post/welcome-to-the-blog">
+    <Link href="blog/post/welcome-to-the-blog">
       <div><img className="rounded-md "src="https://cdn.sanity.io/images/fnvy29id/tgs/6f55436753924ff94fa5359d65eadc4084ec898f-1440x1080.png" alt="" /></div>
-    </a>
+    </Link>
   <div className="grid xl:grid-cols-3 grid-cols-2 pt-4 gap-4">
   {blogs.map((playlist) => (<PlaylistCard key={playlist.name} title={playlist.name} description={playlist.description} 
   cover = {`${eventImage(playlist)}?h=700&w=700&fit=crop&crop=center`}

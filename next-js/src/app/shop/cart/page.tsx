@@ -1,6 +1,6 @@
 import { cookies } from "next/headers"
 import { createStorefrontApiClient } from '@shopify/storefront-api-client';
-
+import Link from "next/link";
 
 const client = createStorefrontApiClient({
   storeDomain: 'http://d83529-c9.myshopify.com',
@@ -143,9 +143,9 @@ export default async function Post() {
           </form>
         </div>
         <div>
-          <a className="flex items-end hover:underline decoration-from-font decoration-tgs-purple" href={checkoutURL}>
+          <Link className="flex items-end hover:underline decoration-from-font decoration-tgs-purple" href={checkoutURL}>
             CHECKOUT
-          </a>
+          </Link>
         </div>
       </div>
     </div>
