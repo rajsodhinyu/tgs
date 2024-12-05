@@ -139,7 +139,7 @@ export default function Post() {
     return (<div >
         <br />
         <div className="text-center font-title font-bold
-        text-2xl sm:text-3xl md:text-5xl text-tgs-purple
+          text-4xl md:text-5xl text-tgs-purple max-sm:w-80
         ">
                 Lounge Pant
         </div>
@@ -154,7 +154,7 @@ export default function Post() {
                   {<ShopInfo cards2={cards}></ShopInfo>}
               </div>
         </div>
-        <div className="max-sm:w-72 place-items-center">
+        <div className="max-sm:w-80 place-items-center">
           <div className="mt-5 text-center font-title font-bold
             text-4xl md:text-5xl text-tgs-purple">
                   Product Information
