@@ -59,17 +59,16 @@ function stringifyDate(input:string) {
 
 }
   return (<div className="my-10">
-    <div className="grid lg:grid-cols-4 mx-3 gap-4 xl:grid-cols-5 md:grid-cols-3 sm:grid-cols-2 md:-mt-10 ">
+    <div className="grid lg:grid-cols-4 mx-3 gap-4 xl:grid-cols-5 xl:gap-2 md:grid-cols-3 sm:grid-cols-2 md:-mt-10 ">
       {blogs.map((blog) => (
-        <div className="group" key={blog._id}>
-          
-            <div className="text-white flex place-content-center">
-              <div className="relative size-72">
+        <div className="group flex flex-col text-center justify-around" key={blog._id}>
+            <div className="text-white flex flex-col">
+              <div className="relative">
               <Link className="hover:underline decoration-tgs-purple"
             href={`${linkResolver(blog.youtube,blog.youtubeURL,blog.slug)}`}
             target={tabResolver(blog.youtube)}
             >
-                <Image className=" object-contain rounded-md border-tgs-purple border-0 hover:border-4 hover:scale-[98%]"
+                <Image className="object-contain rounded-md border-tgs-purple border-0 hover:border-4 hover:scale-[98%]"
                   src={`${eventImage(blog)}?h=700&w=700&fit=crop&crop=center`}
                   width={700}
                   height={700}
@@ -79,11 +78,9 @@ function stringifyDate(input:string) {
                 /></Link>
               </div>
             </div>
-            <div className="text-center text-lg font-bit font-bold leading-5 pt-1 sm:pt-2 group-hover:text-tgs-purple">
-              {blog.name}
+            <div className="flex flex-col text-center lg:text-base text-lg leading-tight font-bit font-bold group-hover:text-tgs-purple">
+              <div>{blog.name}</div>
             </div>
-            
-          
         </div>
       ))}
     </div>
