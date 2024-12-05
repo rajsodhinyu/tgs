@@ -155,7 +155,7 @@ export default function Post() {
             text-4xl md:text-5xl text-tgs-purple">
                   Product Information
           </div>
-          <div className="text-3xl font-bit font-bold text-pretty w-5/6 text-center py-12">
+          <div className="text-3xl font-bit font-bold text-pretty sm:w-5/6 text-center py-12">
           The TGS Lounge Set is a two piece, mid-weight, fleece tracksuit featuring reverse appliqué artwork hand drawn by us.
             </div>
         </div>
