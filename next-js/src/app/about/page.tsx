@@ -6,8 +6,10 @@ export default function Page() {
         </div>
         <div className="my-10 place-items-center">
             <img src="https://cdn.sanity.io/images/fnvy29id/tgs/b5cee228b7299f1fd664e36a34f48678a30cb3d0-1250x1000.jpg" alt="" />
-            <div className="pt-8 font-bit text-2xl font-bold decoration-tgs-purple text-center">
-                <a className="hover:underline" href="https://www.instagram.com/thatgoodsht">Instagram</a>&emsp;<a className="hover:underline" href="https://www.youtube.com/@thatgoodshtmusic">Youtube</a>&emsp;<a className="hover:underline" href="https://discord.gg/PTYgag2kxD">Discord</a>&emsp;
+            <div className="pt-8 font-bit text-2xl decoration-tgs-purple text-center ">
+                <a className="hover:underline hover:text-tgs-purple hover:font-bold" href="https://www.instagram.com/thatgoodsht">Instagram</a>&emsp;
+                <a className="hover:underline hover:text-tgs-purple hover:font-bold" href="https://www.youtube.com/@thatgoodshtmusic">Youtube</a>&emsp;
+                <a className="hover:underline hover:text-tgs-purple hover:font-bold" href="https://discord.gg/PTYgag2kxD">Discord</a>&emsp;
                 </div>
         </div>
         
