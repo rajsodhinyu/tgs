@@ -143,7 +143,7 @@ export default async function Post() {
           </form>
         </div>
         <div>
-          <a className="flex items-end hover:underline decoration-from-font decoration-tgs-purple" href={checkoutURL}>
+          <a className="flex items-end hover:underline decoration-from-font decoration-tgs-purple" href={checkoutURL} target="_blank">
             CHECKOUT
           </a>
         </div>
