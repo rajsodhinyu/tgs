@@ -149,14 +149,13 @@ export default function Post() {
               </div>
         </div>
         <br />
-        <div className="max-sm:w-svh place-items-center">
+        <div className="max-sm: place-items-center">
           <div className="mt-5 text-center font-title font-bold
             text-4xl md:text-5xl text-tgs-purple">
                   Product Information
-          
+          </div>
           <div className="text-3xl font-bit font-bold text-pretty sm:w-5/6 text-center py-12">
           The TGS Lounge Set is a two piece, mid-weight, fleece tracksuit featuring reverse appliqué artwork hand drawn by us.
-            </div>
             </div>
         </div>
     </div>)
