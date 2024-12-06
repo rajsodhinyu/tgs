@@ -144,5 +144,12 @@ export default async function Post() {
         </div>
       </div>
     </div>
+    <div className="mt-5 text-center font-title font-bold
+            text-4xl md:text-5xl text-tgs-purple">
+                  Shipping Information
+          </div>
+          <div className="text-3xl font-bit font-bold text-pretty text-center py-12">
+          Any orders placed after December 12th may experience delay in shipping due to the holidays.
+            </div>
   </div>)
 } 
