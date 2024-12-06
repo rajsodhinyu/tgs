@@ -131,11 +131,11 @@ export default async function Post() {
       <br />
       <div className="font-bit font-bold flex justify-between -mt-8">
         <div className="justify-start">
-          <Form action="/shop/cart/add">
+          <form action="/shop/cart/add">
             <button className="" type="submit" name="action" value={"clear"}>
               <div className="hover:underline decoration-from-font decoration-tgs-purple">EMPTY</div>
             </button>
-          </Form>
+          </form>
         </div>
         <div>
           <a className="flex items-end hover:underline decoration-from-font decoration-tgs-purple" href={checkoutURL} target="_blank">
