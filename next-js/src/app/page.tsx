@@ -69,7 +69,7 @@ export default function Page() {
       </Link>
       <div onClick={catchClick}>
         <div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2  size-60 md:size-96'>
-        <img id ='disc' className = "" src="https://cdn.sanity.io/images/fnvy29id/tgs/a85e25b84a90b82c905130f525abd5c20aecf6ea-1700x1700.png?h=1000" alt="" />
+        <img id ='disc' className = "" src="https://cdn.sanity.io/images/fnvy29id/tgs/15c6bd4e378be982f1db27707caf618c07fd5a39-2048x2048.png?h=1000" alt="" />
           </div>
       </div>
       <div>
