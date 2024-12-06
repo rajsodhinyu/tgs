@@ -115,7 +115,7 @@ export default async function Post() {
   const array = data?.cart.lines.edges
 
   return (<div>
-
+ 
     <br />
     <div className="text-4xl font-bold font-bit" key={'test'}>
       Your Order:
