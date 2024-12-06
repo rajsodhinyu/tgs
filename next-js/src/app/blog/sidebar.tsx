@@ -53,7 +53,7 @@ export default async function Sidebar({ items}: { items: number}) {
 
   return (
     <div className="">
-      <div className=" font-bold hover:underline decoration-tgs-purple text-black flex shrink text-3xl  font-bit leading-10 ml-4 text-balance w-full justify-center">
+      <div className=" font-bold hover:underline hover:text-tgs-purple decoration-tgs-purple text-black flex shrink text-3xl  font-bit leading-10 ml-4 text-balance w-full justify-center">
         <Link href="/blog-archive">Recent Posts &gt;</Link>
         </div>
       {truncatedBlogs.map((blog) => (

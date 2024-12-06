@@ -62,14 +62,9 @@ async function getName(id: string) {
 
 export default async function Post() {
   const cookieStore = await cookies()
-
   let cartCookie = cookieStore.get('cart')?.value
-
-
-
-  {
-    if ((cartCookie == null) || (cartCookie == '')) {
-      const newEmptyCart = `
+  if ((cartCookie == null) || (cartCookie == '')) {
+    const newEmptyCart = `
       mutation {
         cartCreate(input: {lines: []}) {
           cart {
@@ -77,15 +72,15 @@ export default async function Post() {
           }
         }
       }`
-      let { data } = await client.request(newEmptyCart, {
-        variables: {
-          handle: 'sample-product',
-        },
-      });
-      cartCookie = data.cartCreate.cart.id;
+    let { data } = await client.request(newEmptyCart, {
+      variables: {
+        handle: 'sample-product',
+      },
+    });
+    cartCookie = data.cartCreate.cart.id;
 
-    }
   }
+
 
   const findCart = `
     query {
@@ -119,11 +114,11 @@ export default async function Post() {
   }
   const array = data?.cart.lines.edges
 
-  return (<div >
+  return (<div>
 
     <br />
     <div className="text-4xl font-bold font-bit" key={'test'}>
-      Your Order: 
+      Your Order:
 
       <div className="border-dashed border-black border-2" key={'border'}>
         {array?.map((node: any) => (

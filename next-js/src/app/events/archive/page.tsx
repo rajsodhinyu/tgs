@@ -57,10 +57,10 @@ function stringifyDate(input:string) {
                 />
               </div>
             </div>
-            <p className="text-center text-xl font-bit font-black text-balance pt-1">
+            <p className="text-center text-xl font-bit font-black text-balance pt-1 leading-tight">
               {event.name}
             </p>
-            <p className="text-gray-500 text-center font-roc pb-4 -m-2">
+            <p className="text-gray-500 text-center font-roc py-2 -m-2">
               {stringifyDate(event.date)}
             </p>
             
