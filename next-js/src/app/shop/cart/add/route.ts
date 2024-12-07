@@ -23,7 +23,6 @@ export async function GET(request: Request) {
   const cookieStore = cookie
   let action
   action = request.url.split("&")[0].split("?")[1].split("=")[1]
-  console.log(action)
   let currentCart;
   if (action == 'clear') {
     cookieStore.delete('cart')
@@ -41,7 +40,7 @@ export async function GET(request: Request) {
       currentCart = cookieStore.get('cart')
       let cartbool = cookieStore.has('cart')
       if (cartbool) {
-        console.log(`found cart: ${currentCart}`)
+        console.log(`found ${currentCart?.value}`)
         const addItemtoCart = `mutation {
   cartLinesAdd(
     cartId: "${currentCart?.value}"
@@ -108,8 +107,9 @@ export async function GET(request: Request) {
               handle: 'sample-product',
           },
       });
-        currentCart = cookieStore.set('cart', data.cartCreate.cart.id)
-        console.log(`new cart: ${currentCart}`)
+        cookieStore.set('cart', data.cartCreate.cart.id)
+        currentCart = data.cartCreate.cart.id
+        console.log(`new cart: ${currentCart?.value}`)
       }
       redirect('/shop/cart/')
 
