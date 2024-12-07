@@ -30,7 +30,7 @@ const HorizontalCarousel: React.FC<HorizontalCarouselProps> = ({ cards }) => {
     };
 
     return (
-        <div className="flex flex-row items-center justify-start w-full md:w-96 relative">
+        <div className="flex flex-row items-center justify-start w-full md:w-96 relative ">
             {/* Left Button */}
             <button
                 className="absolute -left-8 z-10 bg-tgs-pink bg-opacity-100  text-white p-1 pb-2 rounded-full -ml-2"
@@ -68,14 +68,15 @@ const HorizontalCarousel: React.FC<HorizontalCarouselProps> = ({ cards }) => {
 
 const ShopInfo: React.FC<ShopInfoProps> = ({cards2}) => {
     return(<div className="flex font-title">
-        <Form className="" action={"/shop/cart/add"}>
+
+        <Form className="" action="/shop/cart/add">
           <div className="flex">
-            <div className="w-full flex-none mt-2 order-1 text-4xl font-bold text-tgs-purple">
+            <div className="w-full flex-none mt-2 order-1 text-4xl sm:text-5xl font-bold text-tgs-purple">
               $55.00
             </div>
           </div>
-          <div className="flex place-items-center items-baseline mt-4 pb-6 place-content-center">
-            <div className="space-x-2 flex *:place-items-center text-sm font-bold">
+          <div className="flex items-baseline mt-4 pb-6 place-content-center">
+            <div className="space-x-2 flex text-sm font-bold">
               <div className="">
                 <div className="mb-3 text-tgs-purple">SILVER</div>
                 <label>
@@ -157,7 +158,7 @@ const ShopInfo: React.FC<ShopInfoProps> = ({cards2}) => {
             </div>
           </div>
           <div className="flex space-x-4 mb-5 text-sm font-medium">
-          <div className="flex-auto flex space-x-4 place-content-center">
+            <div className="flex-auto flex space-x-4 place-content-center">
             <button className="h-10 px-6 rounded-full bg-tgs-purple text-white" type="submit">
                 ADD TO CART
               </button>
@@ -176,12 +177,12 @@ export default function Post() {
         
         <br />
         <div className="text-center font-title font-bold
-          text-4xl md:text-5xl text-tgs-purple w-80 min-[340px]:w-full
+          text-4xl md:text-5xl text-tgs-purple max-[340px]:w-80 w-full
         ">
                 THATGOODSH*T RING
         </div>
         <div className="w-full flex justify-around flex-col flex-wrap sm:flex-nowrap sm:flex-row">
-              <div className="flex mx-10 mt-5 w-60 md:w-fit place-self-center">
+              <div className="flex mx-10 mt-10 w-60 md:w-fit place-self-center">
                   {<HorizontalCarousel cards={cards}></HorizontalCarousel>}
                   <div>
                   </div>
@@ -191,7 +192,9 @@ export default function Post() {
                   {<ShopInfo cards2={cards}></ShopInfo>}
               </div>
         </div>
-        <div className="w-80 min-[340px]:w-full place-items-center">
+        <br />
+        <div className="w-80 min-[340px]:w-full
+        place-items-center">
           <div className="mt-5 text-center font-title font-bold
             text-4xl md:text-5xl text-tgs-purple">
                   Product Information

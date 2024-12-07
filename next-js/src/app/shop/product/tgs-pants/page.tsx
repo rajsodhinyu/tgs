@@ -1,9 +1,7 @@
 "use client";
 import Form from "next/form";
 
-if (typeof window !== 'undefined') {
-  
-}
+
 import { useEffect } from "react";
 
 
@@ -77,9 +75,10 @@ const HorizontalCarousel: React.FC<HorizontalCarouselProps> = ({ cards }) => {
 
 const ShopInfo: React.FC<ShopInfoProps> = ({cards2}) => {
     return(<div className="flex font-title">
-        <form className="" action={"/shop/cart/add"}>
+
+        <Form className="" action="/shop/cart/add">
           <div className="flex">
-            <div className="w-full flex-none mt-2 order-1 text-4xl font-bold text-tgs-purple">
+            <div className="w-full flex-none mt-2 order-1 text-4xl sm:text-5xl font-bold text-tgs-purple">
               $79.00
             </div>
           </div>
@@ -124,7 +123,7 @@ const ShopInfo: React.FC<ShopInfoProps> = ({cards2}) => {
               </button>
             </div>
           </div>
-        </form>
+        </Form>
       </div>
       )
 }
@@ -133,16 +132,16 @@ export default function Post() {
   useEffect(() => {
 
   }, []);
-    
-    return (<div >
+    return (<div>
+
         <br />
         <div className="text-center font-title font-bold
-          text-4xl md:text-5xl text-tgs-purple w-80 min-[340px]:w-full
+          text-4xl md:text-5xl text-tgs-purple max-[340px]:w-80 w-full
         ">
                 Lounge Pant
         </div>
         <div className="w-full flex justify-around flex-col flex-wrap sm:flex-nowrap sm:flex-row">
-              <div className="flex mx-10 mt-5 w-60 md:w-fit place-self-center">
+              <div className="flex mx-10 mt-10 w-60 md:w-fit place-self-center">
                   {<HorizontalCarousel cards={cards}></HorizontalCarousel>}
                   <div>
                   </div>
@@ -152,7 +151,9 @@ export default function Post() {
                   {<ShopInfo cards2={cards}></ShopInfo>}
               </div>
         </div>
-        <div className="w-80 min-[340px]:w-full place-items-center">
+        <br />
+        <div className="w-80 min-[340px]:w-full
+        place-items-center">
           <div className="mt-5 text-center font-title font-bold
             text-4xl md:text-5xl text-tgs-purple">
                   Product Information
@@ -161,6 +162,5 @@ export default function Post() {
           The TGS Lounge Set is a two piece, mid-weight, fleece tracksuit featuring reverse appliqué artwork hand drawn by us.
             </div>
         </div>
-
     </div>)
 }
