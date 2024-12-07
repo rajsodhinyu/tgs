@@ -33,7 +33,7 @@ const HorizontalCarousel: React.FC<HorizontalCarouselProps> = ({ cards }) => {
         <div className="flex flex-row items-center justify-start w-full md:w-96 relative">
             {/* Left Button */}
             <button
-                className="absolute -left-8 z-10 bg-tgs-pink bg-opacity-100  text-white p-1 pb-2 rounded-full"
+                className="absolute -left-8 z-10 bg-tgs-pink bg-opacity-100  text-white p-1 pb-2 rounded-full -ml-2"
                 onClick={() => scrollCarousel("left")}
             >
                 <div className="font-title text-3xl pl-1"> &lt; </div>
@@ -57,7 +57,7 @@ const HorizontalCarousel: React.FC<HorizontalCarouselProps> = ({ cards }) => {
 
             {/* Right Button */}
             <button
-                className="absolute -right-8 z-10 bg-tgs-pink bg-opacity-100 text-white p-1 pb-2 rounded-full flex"
+                className="absolute -right-8 z-10 bg-tgs-pink bg-opacity-100 text-white p-1 pb-2 rounded-full flex -mr-2"
                 onClick={() => scrollCarousel("right")}
             >
                 <div className="font-title text-3xl pl-1">&gt;</div>
@@ -74,82 +74,82 @@ const ShopInfo: React.FC<ShopInfoProps> = ({cards2}) => {
               $55.00
             </div>
           </div>
-          <div className="flex place-items-center items-baseline mt-4 mb-6 pb-6 border-b border-tgs-purple place-content-center">
-            <div className="space-x-2 flex place-items-center text-sm font-bold">
-              <div>
-                SILVER
+          <div className="flex place-items-center items-baseline mt-4 pb-6 place-content-center">
+            <div className="space-x-2 flex *:place-items-center text-sm font-bold">
+              <div className="">
+                <div className="mb-3 text-tgs-purple">SILVER</div>
                 <label>
                   <input className="sr-only peer" name="size" type="radio" value="49207529668930" defaultChecked />
-                  <div className="w-9 h-9 rounded-full flex items-center justify-center text-violet-400 peer-checked:bg-tgs-purple peer-checked:text-white">
+                  <div className="w-9 h-9 rounded-full flex items-center justify-center text-tgs-purple peer-checked:bg-tgs-purple peer-checked:text-white">
                     6
                   </div>
                 </label>
                 <label>
                   <input className="sr-only peer" name="size" type="radio" value="49207529734466" />
-                  <div className="w-9 h-9 rounded-full flex items-center justify-center text-violet-400 peer-checked:bg-tgs-purple peer-checked:text-white">
+                  <div className="w-9 h-9 rounded-full flex items-center justify-center text-tgs-purple peer-checked:bg-tgs-purple peer-checked:text-white">
                     7
                   </div>
                 </label>
                 <label>
                   <input className="sr-only peer" name="size" type="radio" value="49207529800002" />
-                  <div className="w-9 h-9 rounded-full flex items-center justify-center text-violet-400 peer-checked:bg-tgs-purple peer-checked:text-white">
+                  <div className="w-9 h-9 rounded-full flex items-center justify-center text-tgs-purple peer-checked:bg-tgs-purple peer-checked:text-white">
                     8
                   </div>
                 </label>
                 <label>
                   <input className="sr-only peer" name="size" type="radio" value="49207529865538" />
-                  <div className="w-9 h-9 rounded-full flex items-center justify-center text-violet-400 peer-checked:bg-tgs-purple peer-checked:text-white">
+                  <div className="w-9 h-9 rounded-full flex items-center justify-center text-tgs-purple peer-checked:bg-tgs-purple peer-checked:text-white">
                     9
                   </div>
                 </label>
                 <label>
                   <input className="sr-only peer" name="size" type="radio" value="49207529931074" />
-                  <div className="w-9 h-9 rounded-full flex items-center justify-center text-violet-400 peer-checked:bg-tgs-purple peer-checked:text-white">
+                  <div className="w-9 h-9 rounded-full flex items-center justify-center text-tgs-purple peer-checked:bg-tgs-purple peer-checked:text-white">
                     10
                   </div>
                 </label>
                 <label>
                   <input className="sr-only peer" name="size" type="radio" value="49207529996610" />
-                  <div className="w-9 h-9 rounded-full flex items-center justify-center text-violet-400 peer-checked:bg-tgs-purple peer-checked:text-white">
+                  <div className="w-9 h-9 rounded-full flex items-center justify-center text-tgs-purple peer-checked:bg-tgs-purple peer-checked:text-white">
                     11
                   </div>
                 </label>
               </div>
               <div>
-                GOLD
+              <div className="mb-3 text-tgs-purple">GOLD</div>
                 <label>
                   <input className="sr-only peer" name="size" type="radio" value="49207530291522"  />
-                  <div className="w-9 h-9 rounded-full flex items-center justify-center text-violet-400 peer-checked:bg-tgs-purple peer-checked:text-white">
+                  <div className="w-9 h-9 rounded-full flex items-center justify-center text-tgs-purple peer-checked:bg-tgs-purple peer-checked:text-white">
                     6
                   </div>
                 </label>
                 <label>
                   <input className="sr-only peer" name="size" type="radio" value="49207530389826"  />
-                  <div className="w-9 h-9 rounded-full flex items-center justify-center text-violet-400 peer-checked:bg-tgs-purple peer-checked:text-white">
+                  <div className="w-9 h-9 rounded-full flex items-center justify-center text-tgs-purple peer-checked:bg-tgs-purple peer-checked:text-white">
                     7
                   </div>
                 </label>
                 <label>
                   <input className="sr-only peer" name="size" type="radio" value="49207530455362"  />
-                  <div className="w-9 h-9 rounded-full flex items-center justify-center text-violet-400 peer-checked:bg-tgs-purple peer-checked:text-white">
+                  <div className="w-9 h-9 rounded-full flex items-center justify-center text-tgs-purple peer-checked:bg-tgs-purple peer-checked:text-white">
                     8
                   </div>
                 </label>
                 <label>
                   <input className="sr-only peer" name="size" type="radio" value="49207530520898"  />
-                  <div className="w-9 h-9 rounded-full flex items-center justify-center text-violet-400 peer-checked:bg-tgs-purple peer-checked:text-white">
+                  <div className="w-9 h-9 rounded-full flex items-center justify-center text-tgs-purple peer-checked:bg-tgs-purple peer-checked:text-white">
                     9
                   </div>
                 </label>
                 <label>
                   <input className="sr-only peer" name="size" type="radio" value="49207530586434"  />
-                  <div className="w-9 h-9 rounded-full flex items-center justify-center text-violet-400 peer-checked:bg-tgs-purple peer-checked:text-white">
+                  <div className="w-9 h-9 rounded-full flex items-center justify-center text-tgs-purple peer-checked:bg-tgs-purple peer-checked:text-white">
                     10
                   </div>
                 </label>
                 <label>
                   <input className="sr-only peer" name="size" type="radio" value="49207530651970"  />
-                  <div className="w-9 h-9 rounded-full flex items-center justify-center text-violet-400 peer-checked:bg-tgs-purple peer-checked:text-white">
+                  <div className="w-9 h-9 rounded-full flex items-center justify-center text-tgs-purple peer-checked:bg-tgs-purple peer-checked:text-white">
                     11
                   </div>
                 </label>
@@ -157,12 +157,9 @@ const ShopInfo: React.FC<ShopInfoProps> = ({cards2}) => {
             </div>
           </div>
           <div className="flex space-x-4 mb-5 text-sm font-medium">
-            <div className="flex-auto flex space-x-4 place-content-center">
-              <button className="h-10 px-6 rounded-full bg-tgs-purple text-white" type="submit" name="action" value={"now"}>
-                Buy now
-              </button>
-              <button className="h-10 px-6 rounded-full border border-tgs-purple text-tgs-purple" type="submit" name="action" value={"cart"}>
-                Add to cart
+          <div className="flex-auto flex space-x-4 place-content-center">
+            <button className="h-10 px-6 rounded-full bg-tgs-purple text-white" type="submit">
+                ADD TO CART
               </button>
             </div>
           </div>

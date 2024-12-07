@@ -114,28 +114,29 @@ export default async function Post() {
   }
   const array = data?.cart.lines.edges
 
-  return (<div>
+  return (<div className="">
  
     <br />
     <div className="text-4xl font-bold font-bit" key={'test'}>
-      Your Order:
+      Your Cart:
 
       <div className="border-dashed border-black border-2" key={'border'}>
         {array?.map((node: any) => (
           <div key={node.id} className="mb-6 -mt-6 font-title flex-col text-lg md:text-4xl">
             <br />
-            <div key={node.node.id} className="flex-col ">&ensp;[{node.node.quantity}] {getName(node.node.id)}, {getSize(node.node.id)}</div>
+            <div  className="flex-col ">&ensp;[{node.node.quantity}] {getName(node.node.id)}, {getSize(node.node.id)}</div>
           </div>
         ))}
       </div>
       <br />
-      <div className="font-bit font-bold flex justify-between -mt-8">
-        <div className="justify-start">
-          <form action="/shop/cart/add">
-            <button className="" type="submit" name="action" value={"clear"}>
-              <div className="hover:underline decoration-from-font decoration-tgs-purple">EMPTY</div>
-            </button>
-          </form>
+
+      <div className="font-bit font-bold flex justify-between -mt-8 sm:text-4xl text-xl">
+        <div className="justify-start ">
+          <Form action="/shop/cart/add" >
+          <input type="hidden" id="clear" name="size" value="clear" />
+          <button className='hover:underline decoration-from-font decoration-tgs-purple' type="submit">CLEAR</button>
+          </Form>
+
         </div>
         <div>
           <a className="flex items-end hover:underline decoration-from-font decoration-tgs-purple" href={checkoutURL} target="_blank">
@@ -143,13 +144,13 @@ export default async function Post() {
           </a>
         </div>
       </div>
-    </div>
-    <div className="mt-5 text-center font-title font-bold
-            text-4xl md:text-5xl text-tgs-purple">
+      <div className=" text-center font-title font-bold
+              text-tgs-purple sm:text-3xl text-xl mt-24">
                   Shipping Information
           </div>
-          <div className="text-3xl font-bit font-bold text-pretty text-center py-12">
+          <div className=" font-bit font-bold text-pretty text-center sm:py-5 text-xl">
           Any orders placed after December 12th may experience delay in shipping due to the holidays.
             </div>
+    </div>
   </div>)
 } 

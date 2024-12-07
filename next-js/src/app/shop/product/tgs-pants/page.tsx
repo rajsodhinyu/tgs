@@ -42,7 +42,7 @@ const HorizontalCarousel: React.FC<HorizontalCarouselProps> = ({ cards }) => {
         <div className="flex flex-row items-center justify-start w-full md:w-96 relative">
             {/* Left Button */}
             <button
-                className="absolute -left-8 z-10 bg-tgs-pink bg-opacity-100  text-white p-1 pb-2 rounded-full"
+                className="absolute -left-8 z-10 bg-tgs-pink bg-opacity-100  text-white p-1 pb-2 rounded-full -ml-2"
                 onClick={() => scrollCarousel("left")}
             >
                 <div className="font-title text-3xl pl-1"> &lt; </div>
@@ -66,7 +66,7 @@ const HorizontalCarousel: React.FC<HorizontalCarouselProps> = ({ cards }) => {
 
             {/* Right Button */}
             <button
-                className="absolute -right-8 z-10 bg-tgs-pink bg-opacity-100 text-white p-1 pb-2 rounded-full flex"
+                className="absolute -right-8 z-10 bg-tgs-pink bg-opacity-100 text-white p-1 pb-2 rounded-full flex -mr-2"
                 onClick={() => scrollCarousel("right")}
             >
                 <div className="font-title text-3xl pl-1">&gt;</div>
@@ -83,7 +83,7 @@ const ShopInfo: React.FC<ShopInfoProps> = ({cards2}) => {
               $79.00
             </div>
           </div>
-          <div className="flex items-baseline mt-4 mb-6 pb-6 border-b border-tgs-purple place-content-center">
+          <div className="flex items-baseline mt-4 pb-6 place-content-centercenter">
             <div className="space-x-2 flex text-sm font-bold">
               <label>
                 <input className="sr-only peer" name="size" type="radio" value="49911677157698" defaultChecked />
@@ -118,12 +118,9 @@ const ShopInfo: React.FC<ShopInfoProps> = ({cards2}) => {
             </div>
           </div>
           <div className="flex space-x-4 mb-5 text-sm font-medium">
-            <div className="flex-auto flex space-x-4 place-content-center">
-            <button className="h-10 px-6 rounded-full bg-tgs-purple text-white" type="submit" name="action" value={"now"}>
-                Buy now
-              </button>
-              <button className="h-10 px-6 rounded-full border border-tgs-purple text-tgs-purple" type="submit" name="action" value={"cart"}>
-                Add to cart
+          <div className="flex-auto flex space-x-4 place-content-center">
+            <button className="h-10 px-6 rounded-full bg-tgs-purple text-white" type="submit">
+                ADD TO CART
               </button>
             </div>
           </div>
