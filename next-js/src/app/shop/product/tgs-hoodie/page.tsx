@@ -78,7 +78,7 @@ const ShopInfo: React.FC<ShopInfoProps> = ({cards2}) => {
               $89.00
             </div>
           </div>
-          <div className="flex items-baseline mt-4 mb-6 pb-6 border-b border-tgs-purple place-content-center">
+          <div className="flex items-baseline mt-4 pb-6 place-content-centercenter">
             <div className="space-x-2 flex text-sm font-bold">
               <label>
                 <input className="sr-only peer" name="size" type="radio" value="49911676600642" defaultChecked />
@@ -115,7 +115,7 @@ const ShopInfo: React.FC<ShopInfoProps> = ({cards2}) => {
           <div className="flex space-x-4 mb-5 text-sm font-medium">
             <div className="flex-auto flex space-x-4 place-content-center">
             <button className="h-10 px-6 rounded-full bg-tgs-purple text-white" type="submit">
-                Add to cart
+                ADD TO CART
               </button>
             </div>
           </div>

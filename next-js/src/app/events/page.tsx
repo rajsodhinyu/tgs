@@ -8,7 +8,7 @@ export default function Post() {
       <Link className="hover:underline" href="sms:+18055002436">Text +1-(805)-500-2436 to be the first to know...</Link>
     </div>
     <br />
-    <div className="text-center  hover:underline"><Link href="/events/archive">Check out the Events Archive &gt;</Link></div>
+    <div className="text-center hover:text-tgs-purple hover:underline"><Link href="/events/archive">Check out the Events Archive &gt;</Link></div>
     
   </div>)
 }

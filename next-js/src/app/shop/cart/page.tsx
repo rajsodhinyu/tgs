@@ -118,7 +118,7 @@ export default async function Post() {
  
     <br />
     <div className="text-4xl font-bold font-bit" key={'test'}>
-      Your Order:
+      Your Cart:
 
       <div className="border-dashed border-black border-2" key={'border'}>
         {array?.map((node: any) => (
@@ -130,10 +130,10 @@ export default async function Post() {
       </div>
       <br />
       <div className="font-bit font-bold flex justify-between -mt-8">
-        <div className="justify-start hover:underline decoration-from-font decoration-tgs-purple">
+        <div className="justify-start ">
           <Form action="/shop/cart/add" >
           <input type="hidden" id="clear" name="size" value="clear" />
-          <button type="submit">CLEAR</button>
+          <button className='hover:underline decoration-from-font decoration-tgs-purple' type="submit">CLEAR</button>
           </Form>
         </div>
         <div>
