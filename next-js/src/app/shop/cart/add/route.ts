@@ -21,7 +21,6 @@ const newEmptyCart = `
 export async function GET(request: Request) {
   const cookie = await cookies()
   const cookieStore = cookie
-  console.log(request.url)
   let action
   action = request.url.split("&")[0].split("?")[1].split("=")[1]
   console.log(action)
@@ -39,12 +38,8 @@ export async function GET(request: Request) {
   }
   
       const product = `gid://shopify/ProductVariant/${action}`
-      console.log(product)
       currentCart = cookieStore.get('cart')
-      console.log(currentCart?.value)
       let cartbool = cookieStore.has('cart')
-      console.log(cartbool)
-      console.log(cookieStore.toString())
       if (cartbool) {
         console.log(`found cart: ${currentCart}`)
         const addItemtoCart = `mutation {
@@ -114,9 +109,8 @@ export async function GET(request: Request) {
           },
       });
         currentCart = cookieStore.set('cart', data.cartCreate.cart.id)
-
+        console.log(`new cart: ${currentCart}`)
       }
-      console.log(currentCart)
       redirect('/shop/cart/')
 
   

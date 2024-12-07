@@ -35,7 +35,6 @@ function stringifyDate(input:string) {
     day: 'numeric',
   };
   let str = date.toDateString();
-  console.log(str)
   const monthNames = ["January", "February", "March", "April", "June", "July", "August", "September", "October", "December","13"];
   return `${monthNames[(date.getMonth())]} ${date.getDate()}`;
 
@@ -60,7 +59,6 @@ function stringifyDate(input:string) {
             </div>
             <p className="text-center text-xl font-bit font-black text-balance pt-1 leading-tight group-hover:underline group-hover:text-tgs-purple">
               {event.name}
-              {console.log(event.name)}
             </p>
             <p className="text-gray-500 text-center font-roc py-2 -m-2 group-hover:text-tgs-purple">
               {stringifyDate(event.date)}
