@@ -72,6 +72,7 @@ const HorizontalCarousel: React.FC<HorizontalCarouselProps> = ({ cards }) => {
 
 const ShopInfo: React.FC<ShopInfoProps> = ({cards2}) => {
     return(<div className="flex font-title">
+
         <Form className="" action="/shop/cart/add">
           <div className="flex">
             <div className="w-full flex-none mt-2 order-1 text-4xl sm:text-5xl font-bold text-tgs-purple">
