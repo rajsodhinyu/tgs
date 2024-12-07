@@ -157,11 +157,8 @@ const ShopInfo: React.FC<ShopInfoProps> = ({cards2}) => {
             </div>
           </div>
           <div className="flex space-x-4 mb-5 text-sm font-medium">
-            <div className="flex-auto flex space-x-4 place-content-center">
-              <button className="h-10 px-6 rounded-full bg-tgs-purple text-white" type="submit" name="action" value={"now"}>
-                Buy now
-              </button>
-              <button className="h-10 px-6 rounded-full border border-tgs-purple text-tgs-purple" type="submit" name="action" value={"cart"}>
+          <div className="flex-auto flex space-x-4 place-content-center">
+            <button className="h-10 px-6 rounded-full bg-tgs-purple text-white" type="submit">
                 Add to cart
               </button>
             </div>
