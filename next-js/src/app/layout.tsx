@@ -57,7 +57,7 @@ const SONG_QUERY3 = `*[_type == "sotd" && dateTime(datetime) < dateTime(now())]
     <html lang="en" >
       <head>
         <title>That Good Sh*t!</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
+        <meta name="viewport" content="width=device-width, initial-scale=0.9"></meta>
       </head>
       <body className={`${bitcount.variable} ${roc.variable} ${bitcount_fill.variable}`}>
       <audio loop id='myAudio' src={song} ></audio>
