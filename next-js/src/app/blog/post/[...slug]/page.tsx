@@ -94,7 +94,7 @@ export default async function Page({
   const posts = await sanityFetch<SanityDocument[]>({ query: SLUG_QUERY });
   const post = posts[0];
   console.log(`View [${post.name}]`)
-  return (<div className="font-roc text-lg text-balance max-md:mt-14 *:max-[300px]:w-80">
+  return (<div className="font-roc text-lg text-balance max-md:mt-14 max-[300px]:w-80">
     <div className="place-items-center ">
       <img className="rounded-md"
         src={`${bannerResolver(post)}`}
@@ -107,7 +107,7 @@ export default async function Page({
     <div className="xl:text-2xl text-xl font-bit text-center"> {/* Title */}
       {findWriter(post.writer._ref)}
     </div>
-    <div className="place-self-center mt-3 -mb-5"> {/* Spotify Embed */}
+    <div className="place-items-center mt-3 -mb-5"> {/* Spotify Embed */}
       {renderEmbed(post.playlistURL)}
     </div>
     <div className="ml-5 mr-3 text-sm lg:text-lg text-pretty text-justify pb-10 indent-8 first-letter:text-8xl first-letter:font-title first-letter:text-black ">
