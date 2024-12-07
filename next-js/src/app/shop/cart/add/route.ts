@@ -30,8 +30,8 @@ export async function GET(request: Request) {
     redirect('/shop/cart/')
   }
   let currentCart;
-  if (action.charAt(0) == '4')
-  {
+
+
       const product = `gid://shopify/ProductVariant/${action}`
       console.log(product)
       currentCart = cookieStore.get('cart')
@@ -112,8 +112,6 @@ export async function GET(request: Request) {
       }
       console.log(currentCart)
       redirect('/shop/cart/')
-    } 
-  else {
-    console.log(request.url)
-    redirect('/error')}
+
+  
 }
