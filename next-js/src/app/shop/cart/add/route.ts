@@ -113,5 +113,7 @@ export async function GET(request: Request) {
       console.log(currentCart)
       redirect('/shop/cart/')
     } 
-  else {redirect('/error')}
+  else {
+    console.log(request.url)
+    redirect('/error')}
 }
