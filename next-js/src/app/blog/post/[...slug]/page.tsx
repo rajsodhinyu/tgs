@@ -31,7 +31,7 @@ function renderEmbed(playlist: string) {
   else {
     const parts = playlist.split("/")
 
-    return (<iframe src={`https://open.spotify.com/embed/${parts[3]}/${parts[4]}`} width="90%" height="200" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>)
+    return (<iframe src={`https://open.spotify.com/embed/${parts[3]}/${parts[4]}`} width="100%" height="200" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>)
   }
 }
 
