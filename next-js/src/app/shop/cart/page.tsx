@@ -130,12 +130,10 @@ export default async function Post() {
       </div>
       <br />
       <div className="font-bit font-bold flex justify-between -mt-8">
-        <div className="justify-start">
-          <Form action="/shop/cart/add">
-          
-            <button className="" type="submit" name="action" value={"clear"}>
-              <div className="hover:underline decoration-from-font decoration-tgs-purple">EMPTY</div>
-            </button>
+        <div className="justify-start hover:underline decoration-from-font decoration-tgs-purple">
+          <Form action="/shop/cart/add" >
+          <input type="hidden" id="clear" name="size" value="clear" />
+          <button type="submit">CLEAR</button>
           </Form>
         </div>
         <div>
