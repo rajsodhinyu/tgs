@@ -114,7 +114,7 @@ export default async function Post() {
   }
   const array = data?.cart.lines.edges
 
-  return (<div>
+  return (<div className="">
  
     <br />
     <div className="text-4xl font-bold font-bit" key={'test'}>
@@ -129,7 +129,7 @@ export default async function Post() {
         ))}
       </div>
       <br />
-      <div className="font-bit font-bold flex justify-between -mt-8">
+      <div className="font-bit font-bold flex justify-between -mt-8 sm:text-4xl text-xl">
         <div className="justify-start ">
           <Form action="/shop/cart/add" >
           <input type="hidden" id="clear" name="size" value="clear" />
@@ -142,6 +142,13 @@ export default async function Post() {
           </a>
         </div>
       </div>
+      <div className=" text-center font-title font-bold
+              text-tgs-purple sm:text-3xl text-xl mt-24">
+                  Shipping Information
+          </div>
+          <div className=" font-bit font-bold text-pretty text-center sm:py-5 text-xl">
+          Any orders placed after December 12th may experience delay in shipping due to the holidays.
+            </div>
     </div>
   </div>)
 } 
