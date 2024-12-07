@@ -107,7 +107,7 @@ export default async function Page({
     <div className="xl:text-2xl text-xl font-bit text-center"> {/* Title */}
       {findWriter(post.writer._ref)}
     </div>
-    <div className="place-items-center mt-3 -mb-5"> {/* Spotify Embed */}
+    <div className="place-items-center mt-3 -mb-5 max-sm:ml-2"> {/* Spotify Embed */}
       {renderEmbed(post.playlistURL)}
     </div>
     <div className="ml-5 mr-3 text-sm lg:text-lg text-pretty text-justify pb-10 indent-8 first-letter:text-8xl first-letter:font-title first-letter:text-black ">
