@@ -25,13 +25,19 @@ export async function GET(request: Request) {
   let action
   action = request.url.split("&")[0].split("?")[1].split("=")[1]
   console.log(action)
+  let currentCart;
   if (action == 'clear') {
     cookieStore.delete('cart')
+    const { data } = await client.request(newEmptyCart, {
+      variables: {
+          handle: 'sample-product',
+      },
+  });
+    currentCart = cookieStore.set('cart', data.cartCreate.cart.id)
+
     redirect('/shop/cart/')
   }
-  let currentCart;
-
-
+  
       const product = `gid://shopify/ProductVariant/${action}`
       console.log(product)
       currentCart = cookieStore.get('cart')
