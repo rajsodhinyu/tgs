@@ -48,7 +48,7 @@ function stringifyDate(input:string) {
             href={`${event.link}`}>
             <div className="text-white flex place-content-center">
               <div className="relative lg:size-72 sm:size-44 size-80">
-                <Image className="object-contain rounded-md border-tgs-purple border-0 hover:border-4 hover:scale-[98%]"
+                <Image className="object-contain rounded-md border-tgs-purple border-0 group-hover:border-4 group-hover:scale-[98%]"
                   src={`${eventImage(event)}`}
                   fill={true}
                   alt={`${event.name}`}
