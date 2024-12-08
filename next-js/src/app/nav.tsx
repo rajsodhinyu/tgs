@@ -24,7 +24,8 @@ export default function Nav() {
               src="https://cdn.sanity.io/images/fnvy29id/tgs/2db78d790b6062d7cb293b895f1d8cd3748353ef-1786x755.png?h=200"
             />
           </Link>
-          <Link href="/blog">
+          <Link href="/blog"
+          scroll={false}>
             <img
               className="min-h-5 max-h-16 min-w-10"
               src="https://cdn.sanity.io/images/fnvy29id/tgs/9a5244d1c770d1e667006b7f54f5738745847917-1533x846.png?h=200"
@@ -37,7 +38,7 @@ export default function Nav() {
             />
           </Link>
           <Link href="/shop"
-          scroll={false}
+          scroll={true}
           >
             <img
               className="min-h-5 max-h-16 min-w-12"
