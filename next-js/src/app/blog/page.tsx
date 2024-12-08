@@ -37,7 +37,10 @@ export default async function Page() {
     <Link href="blog/post/welcome-to-the-blog">
       <div><img className="rounded-md "src="https://cdn.sanity.io/images/fnvy29id/tgs/6f55436753924ff94fa5359d65eadc4084ec898f-1440x1080.png" alt="" /></div>
     </Link>
-  <div className="grid xl:grid-cols-3 grid-cols-2 pt-4 gap-4">
+    <div className="text-2xl md:text-4xl font-bold hover:underline hover:text-tgs-purple decoration-tgs-purple text-black flex shrink mt-2  font-bit leading-10 text-balance w-full justify-center">
+        <Link href="https://open.spotify.com/user/annabelle816">OUR PLAYLISTS &gt;</Link>
+        </div>
+  <div className="grid lg:grid-cols-3 grid-cols-2 pt-4 gap-4">
   {blogs.map((playlist) => (<PlaylistCard key={playlist.name} title={playlist.name} description={playlist.description} 
   cover = {`${eventImage(playlist)}?h=700&w=700&fit=crop&crop=center`}
   url={playlist.playlistURL}></PlaylistCard>))}

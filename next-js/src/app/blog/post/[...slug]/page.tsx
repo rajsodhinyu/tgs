@@ -7,6 +7,7 @@ import { PortableText, PortableTextComponents, SanityDocument } from "next-sanit
 import { SanityImageSource } from "@sanity/image-url/lib/types/types";
 import imageUrlBuilder from "@sanity/image-url";
 import { writer } from "repl";
+import Link from "next/link";
 
 
 
@@ -30,8 +31,11 @@ function renderEmbed(playlist: string) {
   }
   else {
     const parts = playlist.split("/")
+    return (<div className="w-full">
 
-    return (<iframe src={`https://open.spotify.com/embed/${parts[3]}/${parts[4]}`} width="100%" height="200" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>)
+      <iframe src={`https://open.spotify.com/embed/${parts[3]}/${parts[4]}`} width="100%" height="200" allow=" clipboard-write; encrypted-media; fullscreen; picture-in-picture" ></iframe>
+
+    </div>)
   }
 }
 

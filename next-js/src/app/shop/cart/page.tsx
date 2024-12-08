@@ -122,9 +122,9 @@ export default async function Post() {
 
       <div className="border-dashed border-black border-2" key={'border'}>
         {array?.map((node: any) => (
-          <div key={node.id} className="mb-6 -mt-6 font-title flex-col text-lg md:text-4xl">
+          <div  className="mb-6 -mt-6 font-title flex-col text-lg md:text-4xl">
             <br />
-            <div  className="flex-col ">&ensp;[{node.node.quantity}] {getName(node.node.id)}, {getSize(node.node.id)}</div>
+            <div key={node.id} className="flex-col ">&ensp;[{node.node.quantity}] {getName(node.node.id)}, {getSize(node.node.id)}</div>
           </div>
         ))}
       </div>

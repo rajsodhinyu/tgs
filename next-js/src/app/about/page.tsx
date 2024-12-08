@@ -1,7 +1,7 @@
 
 export default function Page() {
-    return (<div className="mt-20 bg-gradient-to-r sm:px-40 px-20">
-        <div className="text-lg font-black font-bit text-pretty text-center sm:text-balance">
+    return (<div className="mt-20 sm:px-40 mx-8">
+        <div className="md:text-lg text-sm font-black font-bit text-pretty text-center sm:text-balance">
             <p> That Good Sh*t! because good music transcends genre! Our mission is to build community around shared love of music. Through artist interviews, curated live events, playlists, and more, TGS is your go-to source for keeping up with the most important and innovative music of today!</p>
         </div>
         <div className="my-10 place-items-center">
