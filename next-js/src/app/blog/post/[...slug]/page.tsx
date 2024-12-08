@@ -27,14 +27,14 @@ function eventImage(event: any) {
 
 function renderEmbed(playlist: string) {
   if (playlist == null) {
-    return (<div> <br /></div>)
+    return (<div className="-my-4"></div>)
   }
   else {
     const parts = playlist.split("/")
     return (<div className="w-full">
-
-      <iframe src={`https://open.spotify.com/embed/${parts[3]}/${parts[4]}`} width="100%" height="200" allow=" clipboard-write; encrypted-media; fullscreen; picture-in-picture" ></iframe>
-
+      <div className="place-items-center mt-3 -mb-8 max-sm:ml-2">
+      <iframe src={`https://open.spotify.com/embed/${parts[3]}/${parts[4]}`} width="100%" height="180" allow=" clipboard-write; encrypted-media; fullscreen; picture-in-picture" ></iframe>
+      </div>
     </div>)
   }
 }
@@ -99,7 +99,7 @@ export default async function Page({
   const post = posts[0];
   console.log(`View [${post.name}]`)
   return (<div className="font-roc text-lg text-balance max-md:mt-14 max-[300px]:w-80">
-    <div className="place-items-center ">
+    <div className="place-items-center">
       <img className="rounded-md"
         src={`${bannerResolver(post)}`}
         alt={`${post.name}`}
@@ -111,9 +111,11 @@ export default async function Page({
     <div className="xl:text-2xl text-xl font-bit text-center"> {/* Title */}
       {findWriter(post.writer._ref)}
     </div>
-    <div className="place-items-center mt-3 -mb-5 max-sm:ml-2"> {/* Spotify Embed */}
+     {/* Spotify Embed */}
+      <div>
       {renderEmbed(post.playlistURL)}
-    </div>
+      </div>
+
     <div className="ml-5 mr-3 text-sm lg:text-lg text-pretty text-justify pb-10 indent-8 first-letter:text-8xl first-letter:font-title first-letter:text-black ">
       <PortableText value={post.content} components={components}/>
     </div>

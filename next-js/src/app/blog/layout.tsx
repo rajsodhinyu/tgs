@@ -6,7 +6,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <Nav />
         <div className="w-full px-3 sm:flex-wrap gap-2.5 md:flex-nowrap md:inline-flex md:flex-row md:justify-between xl:w-screen max-md:place-items-center "> 
   {/* Whole Site */}
-    <div className="w-fit"> {/* Right Side, Carousel + */} 
+    <div className="w-full"> {/* Right Side, Carousel + */} 
       {children}
     </div>
     <div className="w-fit xl:w-3/12 flex-col md:justify-center max-md:place-items-center rounded-xl"> {/* Left Side */}
