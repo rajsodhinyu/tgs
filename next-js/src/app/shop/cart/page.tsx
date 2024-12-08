@@ -113,7 +113,7 @@ export default async function Post() {
     checkoutURL = null
   }
   const array = data?.cart.lines.edges
-
+  let i =0
   return (<div className="">
  
     <br />
@@ -122,7 +122,7 @@ export default async function Post() {
 
       <div className="border-dashed border-black border-2" key={'border'}>
         {array?.map((node: any) => (
-          <div  className="mb-6 -mt-6 font-title flex-col text-lg md:text-4xl">
+          <div key={`item ${i}`} className="mb-6 -mt-6 font-title flex-col text-lg md:text-4xl">
             <br />
             <div key={node.id} className="flex-col ">&ensp;[{node.node.quantity}] {getName(node.node.id)}, {getSize(node.node.id)}</div>
           </div>
@@ -134,7 +134,7 @@ export default async function Post() {
         <div className="justify-start ">
           <Form action="/shop/cart/add" >
           <input type="hidden" id="clear" name="size" value="clear" />
-          <button className='hover:underline decoration-from-font decoration-tgs-purple' type="submit">CLEAR</button>
+          <button className='hover:underline decoration-from-font decoration-tgs-purple' type="submit">EMPTY</button>
           </Form>
 
         </div>
