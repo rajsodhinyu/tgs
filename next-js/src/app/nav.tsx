@@ -36,7 +36,9 @@ export default function Nav() {
               src="https://cdn.sanity.io/images/fnvy29id/tgs/a82c27d8c7dcd43014eaa1fdc852185942645f7e-2037x795.png?h=200"
             />
           </Link>
-          <Link href="/shop">
+          <Link href="/shop"
+          scroll={false}
+          >
             <img
               className="min-h-5 max-h-16 min-w-12"
               src="https://cdn.sanity.io/images/fnvy29id/tgs/7162c809beb7a870dfbb0127b72fc6359218b456-1874x954.png?h=200"
