@@ -4,7 +4,7 @@ import { Inter, Roboto_Mono } from 'next/font/google'
 import localFont from 'next/font/local'
 import { sanityFetch } from './client'
 import { SanityDocument } from 'next-sanity'
-
+import { Analytics } from '@vercel/analytics/next';
 
 
 
@@ -62,6 +62,7 @@ const SONG_QUERY3 = `*[_type == "sotd" && dateTime(datetime) < dateTime(now())]
       <body className={`${bitcount.variable} ${roc.variable} ${bitcount_fill.variable}`}>
       <audio loop id='myAudio' src={song} ></audio>
         <main>{children}</main>
+        <Analytics />
       </body>
     </html>
   )

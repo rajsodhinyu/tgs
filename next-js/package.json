@@ -17,6 +17,7 @@
     "@p5-wrapper/react": "^4.4.2",
     "@sanity/image-url": "^1.1.0",
     "@shopify/storefront-api-client": "^1.0.3",
+    "@vercel/analytics": "^1.4.1",
     "konva": "^9.3.16",
     "next": "15.0.1",
     "next-sanity": "^9.8.19",
