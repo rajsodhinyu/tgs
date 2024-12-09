@@ -103,6 +103,7 @@ export default async function Page({
       <img className="rounded-md"
         src={`${bannerResolver(post)}`}
         alt={`${post.name}`}
+        fetchPriority="high"
       />
     </div>
     <div className="xl:text-4xl text-3xl font-bold font-bit text-center"> {/* Title */}
