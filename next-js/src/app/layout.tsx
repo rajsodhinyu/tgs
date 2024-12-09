@@ -5,6 +5,7 @@ import localFont from 'next/font/local'
 import { sanityFetch } from './client'
 import { SanityDocument } from 'next-sanity'
 import { Analytics } from '@vercel/analytics/next';
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 
 
@@ -63,6 +64,7 @@ const SONG_QUERY3 = `*[_type == "sotd" && dateTime(datetime) < dateTime(now())]
       <audio loop id='myAudio' src={song} ></audio>
         <main>{children}</main>
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   )
