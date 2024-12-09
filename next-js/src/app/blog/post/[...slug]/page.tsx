@@ -104,7 +104,8 @@ export default async function Page({
         src={`${bannerResolver(post)}`}
         alt={`${post.name}`}
         priority = {true}
-        fill = {true}
+        width={1280}
+        height={720}
       />
     </div>
     <div className="xl:text-4xl text-3xl font-bold font-bit text-center"> {/* Title */}
