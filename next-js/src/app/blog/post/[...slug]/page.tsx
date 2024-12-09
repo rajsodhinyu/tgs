@@ -100,10 +100,11 @@ export default async function Page({
   console.log(`View [${post.name}]`)
   return (<div className="font-roc text-lg text-balance max-md:mt-14 max-[300px]:w-80">
     <div className="place-items-center">
-      <img className="rounded-md"
+      <Image className="rounded-md"
         src={`${bannerResolver(post)}`}
         alt={`${post.name}`}
-        fetchPriority="high"
+        priority = {true}
+        fill = {true}
       />
     </div>
     <div className="xl:text-4xl text-3xl font-bold font-bit text-center"> {/* Title */}
