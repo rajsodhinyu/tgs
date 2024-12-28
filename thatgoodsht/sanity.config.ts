@@ -18,10 +18,15 @@ export default defineConfig({
   projectId: 'fnvy29id',
   dataset: 'tgs',
 
-  plugins: [structureTool({structure}),media(),visionTool()],
-  
+  plugins: [structureTool({structure}),media()],
 
   schema: {
     types: schemaTypes,
+  },
+
+  document: {
+    comments: {
+      enabled: false,
+    },
   },
 })
