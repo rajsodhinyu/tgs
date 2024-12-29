@@ -67,7 +67,8 @@ export const albumType = defineType({
     preview: {
         select: {
           title: 'name',
-          subtitle: 'artist'
+          subtitle: 'artist',
+          media: 'thumb'
         },
       }
 })
