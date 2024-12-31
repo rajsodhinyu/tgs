@@ -175,10 +175,10 @@ export default async function Page({
         </Link>
 
       </div>
-      <div className="text-md font-bold font-title text-center -mb-8 mt-4"> {/* Title */}
+      <div className="text-md font-bold font-title text-center -mb-8 mt-2 md:mt-4"> {/* Title */}
         {stringifyDate(post.datetime)}
       </div>
-      <div className="mx-14 text-lg lg:text-2xl text-pretty text-justify pt-10 px-4 md:p-10 indent-8 ">
+      <div className="mx-14 text-lg lg:text-2xl text-pretty text-justify pt-10 sm:p-10 indent-8 ">
        <PortableText value={post.content} components={components}/> 
       <div className=" mb-6 xl:text-2xl text-xl font-bit text-right"> {/* Title */}
       -{post.writer}
