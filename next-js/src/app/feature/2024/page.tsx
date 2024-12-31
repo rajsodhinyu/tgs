@@ -45,8 +45,8 @@ export default async function Page(){
 const blogs = await sanityFetch<SanityDocument[]>({query: ALBUMS_Q});
 
 
-  return (<div className="mt-16 md:mt-14">
-    <div className="grid md:grid-cols-5 mx-3 gap-2 grid-cols-2 md:-mt-10 ">
+  return (<div className="mt-16 md:mt-14 pb-3">
+    <div className="grid md:grid-cols-5 mx-3 gap-2 grid-cols-2 md:-mt-10">
       {blogs.map((blog) => (
         <div className="group flex flex-col text-center justify-around" key={blog._id}>
             <div className="text-white flex flex-col">  
@@ -64,9 +64,6 @@ const blogs = await sanityFetch<SanityDocument[]>({query: ALBUMS_Q});
                 /></Link>
               </div>
             </div>
-            {/* <div className="flex flex-col text-center text-sm leading-tight font-bit font-bold group-hover:text-tgs-purple">
-              <div>{blog.name}</div>
-            </div> */}
         </div>
       ))}
     </div>

@@ -155,34 +155,38 @@ export default async function Page({
     <div className="flex justify-center">
       
 
-        <Link href={`/feature/2024/${prevPostslug}`} className="mx-2 md:mx-10 self-center justify-items-center font-title text-5xl">
+        <Link href={`/feature/2024/${prevPostslug}`} className="mx-2 md:mx-10 self-center justify-items-start font-title text-5xl ">
           &lt;
-          <div className="text-sm font-bit hidden lg:block">{prevPost.artist}</div>
+          <div className="text-sm font-bit hidden text-center">{prevPost.artist}</div>
         </Link>
 
-        <div className="rounded-md size-80 md:size-3/6">
+        <div className="rounded-md size-80 md:size-3/6 flex-none">
           <Link href={post.URL} >
-          <img className="place-self-center"
-            src={`${eventImage(post)}`}
+          <img className="place-self-center rounded-md"
+            src={`${eventImage(post)}?h=700&w=700`}
             alt={`{post.name}`}
             loading="eager"
           /></Link>
         </div>
 
-        <Link href={`/feature/2024/${nextPostslug}`} className="mx-2 md:mx-10 self-center justify-items-center font-title text-5xl">
+        <Link href={`/feature/2024/${nextPostslug}`} className="mx-2 md:mx-10 self-center justify-items-end font-title text-5xl ">
           &gt;
-          <div className="text-sm font-bit hidden lg:block place-self-end">{nextPost.artist}</div>
+          <div className="text-sm font-bit hidden text-center place-self-end">{nextPost.artist}</div>
         </Link>
 
       </div>
       <div className="text-md font-bold font-title text-center -mb-8 mt-2 md:mt-4"> {/* Title */}
         {stringifyDate(post.datetime)}
       </div>
-      <div className="md:mx-14 mx-2 text-lg lg:text-2xl text-pretty text-justify pt-10 sm:p-10 indent-8 ">
+      <div className="md:mx-14 mx-8 text-lg lg:text-2xl text-pretty text-justified pt-10 sm:p-10 indent-8 ">
        <PortableText value={post.content} components={components}/> 
-      <div className=" mb-6 xl:text-2xl text-xl font-bit text-right"> {/* Title */}
+       
+      <div className=" xl:text-2xl text-xl font-bit text-right"> {/* Title */}
       -{post.writer}
     </div>
+    <Link className="mb-6 xl:text-2xl text-xl indent-0 font-bit hover:underline self-center" href={"/feature/2024"}> {/* Title */}
+    &lt; Top 50 Albums
+      </Link>
     </div>
   </div>)
 }
