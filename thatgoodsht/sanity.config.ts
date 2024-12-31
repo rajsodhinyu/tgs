@@ -18,7 +18,7 @@ export default defineConfig({
   projectId: 'fnvy29id',
   dataset: 'tgs',
 
-  plugins: [structureTool({structure}),media()],
+  plugins: [structureTool({structure}),media(),visionTool()],
 
   schema: {
     types: schemaTypes,

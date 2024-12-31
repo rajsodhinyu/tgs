@@ -48,6 +48,14 @@ export const albumType = defineType({
             validation: rule => rule.required()
         }),
         defineField({
+          name: 'slug',
+          title: 'URL Generator',
+          type: 'slug',
+          options: {source: 'name'},
+          description: 'thatgoodsht.com/feature/2024/',
+          validation: rule => rule.required()
+      }),
+        defineField({
                     name: 'content',
                     title: 'Review',
                     type: 'array', 
@@ -57,12 +65,19 @@ export const albumType = defineType({
     ],
     orderings: [
         {
-          title: 'Release Date, New',
+          title: 'January to December',
           name: 'releaseDateDesc',
           by: [
-            {field: 'datetime', direction: 'desc'}
+            {field: 'datetime', direction: 'asc'}
           ]
         },
+        {
+            title: 'Artist A-Z',
+            name: 'artistAlpha',
+            by: [
+              {field: 'artist', direction: 'asc'}
+            ]
+          },
     ],
     preview: {
         select: {
