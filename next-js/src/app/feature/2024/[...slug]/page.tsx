@@ -181,11 +181,11 @@ export default async function Page({
       <div className="md:mx-14 mx-8 text-lg lg:text-2xl text-pretty text-justify pt-10 indent-8">
       <PortableText value={post.content} components={components}/> 
        
-      <div className=" xl:text-2xl text-xl font-bit text-left flex justify-between place-items-center"> {/* Title */}
+      <div className=" xl:text-2xl text-lg font-bit text-left flex justify-between place-items-center"> {/* Title */}
       <Link className=" hover:underline self-start indent-0" href={"/feature/2024"}> {/* Title */}
       &lt; Top 50 Albums
       </Link>
-      <div className="text-left ">-{post.writer}</div>
+      <div className="text-right">-{post.writer}</div>
     </div>
     </div>
   </div>)
