@@ -158,7 +158,7 @@ export default async function Page({
           <div className="text-sm font-bit hidden text-center">{prevPost.artist}</div>
         </Link>
 
-        <div className="rounded-md size-[400px] flex-none">
+        <div className="rounded-md size-72 md:size-[400px] flex-none">
           <Link href={post.URL} >
           <Image className="place-self-center rounded-md"
             src={`${eventImage(post)}?h=640&w=640`}
