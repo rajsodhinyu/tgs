@@ -154,12 +154,12 @@ export default async function Page({
     </div>
     <div className="flex justify-center">
       
-        <div className="size-1/6 self-center text-center font-title text-5xl">
-        <Link href={`/feature/2024/${prevPostslug}`}>
+
+        <Link href={`/feature/2024/${prevPostslug}`} className="mx-10 self-center justify-items-center font-title text-5xl">
           &lt;
-          <div className="text-sm font-bit invisible md:visible">{prevPost.artist}</div>
-          </Link>
-          </div>
+          <div className="text-sm font-bit hidden lg:block">{prevPost.artist}</div>
+        </Link>
+
       
         <img className="rounded-md size-80 md:size-3/6"
           src={`${eventImage(post)}`}
@@ -167,9 +167,9 @@ export default async function Page({
           loading="eager"
         />
 
-        <Link href={`/feature/2024/${nextPostslug}`} className="size-1/6 self-center justify-items-center font-title text-5xl">
+        <Link href={`/feature/2024/${nextPostslug}`} className="mx-10 self-center justify-items-center font-title text-5xl">
           &gt;
-          <div className="text-sm font-bit invisible md:visible">{nextPost.artist}</div>
+          <div className="text-sm font-bit hidden lg:block place-self-end">{nextPost.artist}</div>
         </Link>
 
       </div>
