@@ -54,8 +54,8 @@ function stringifyDate(input:string) {
     day: 'numeric',
   };
   let str = date.toDateString();
-  const monthNames = ["January", "February", "March", "April", "June", "July", "August", "September", "October", "December"];
-  return `${monthNames[(date.getUTCMonth()-1)]} ${date.getDate()}`;
+  const monthNames = ["January", "February", "March", "April","May", "June", "July", "August", "September", "October", "November","December"];
+  return `${monthNames[(date.getMonth())]} ${date.getDate()}`;
 
 }
   return (<div className="my-10">

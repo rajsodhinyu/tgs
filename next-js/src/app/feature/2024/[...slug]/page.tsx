@@ -31,8 +31,9 @@ function stringifyDate(input:string) {
     day: 'numeric',
   };
   let str = date.toDateString();
-  const monthNames = ["January", "February", "March", "April", "June", "July", "August", "September", "October", "December"];
-  return `${monthNames[(date.getUTCMonth()-1)]} ${date.getDate()}`;
+  const monthNames = ["January", "February", "March", "April","May", "June", "July", "August", "September", "October", "November","December"];
+  return `${monthNames[(date.getUTCMonth())]} ${date.getUTCDate()}`;
+
 }
 function renderEmbed(playlist: string) {
   if (playlist == null) {
@@ -145,7 +146,7 @@ export default async function Page({
   return (<div className="font-roc text-lg text-balance max-md:mt-14 max-[300px]:w-80 text-white">
     <div className="m-5 mb-4">
       <div className="text-2xl md:text-4xl font-bold font-title text-center"> {/* Title */}
-        {post.name}
+        <Link href={post.URL}>{post.name}</Link>
       </div>
       <div className="text-xl md:text-2xl font-bold font-bit text-center"> {/* Title */}
         {post.artist}
@@ -175,7 +176,7 @@ export default async function Page({
       <div className="text-md font-bold font-title text-center -mb-8 mt-4"> {/* Title */}
         {stringifyDate(post.datetime)}
       </div>
-      <div className="mx-14 text-lg lg:text-2xl text-pretty text-justify pt-10 px-4 md:p-10 indent-6 ">
+      <div className="mx-14 text-lg lg:text-2xl text-pretty text-justify pt-10 px-4 md:p-10 indent-8 ">
        <PortableText value={post.content} components={components}/> 
       <div className="xl:text-2xl text-xl font-bit text-right"> {/* Title */}
       -{post.writer}

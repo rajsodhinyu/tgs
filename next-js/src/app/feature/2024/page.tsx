@@ -44,19 +44,7 @@ export default async function Page(){
 
 const blogs = await sanityFetch<SanityDocument[]>({query: ALBUMS_Q});
 
-function stringifyDate(input:string) {
-  let date = new Date(input);
-  const options = {
-    weekday: 'long',
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  };
-  let str = date.toDateString();
-  const monthNames = ["January", "February", "March", "April", "June", "July", "August", "September", "October", "December"];
-  return `${monthNames[(date.getUTCMonth()-1)]} ${date.getDate()}`;
 
-}
   return (<div className="mt-16 md:mt-14">
     <div className="grid md:grid-cols-5 mx-3 gap-2 grid-cols-2 md:-mt-10 ">
       {blogs.map((blog) => (
