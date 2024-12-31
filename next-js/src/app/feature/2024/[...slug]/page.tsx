@@ -161,8 +161,8 @@ export default async function Page({
         </Link>
 
         <div className="rounded-md size-80 md:size-3/6">
-          <Link href={post.URL}>
-          <img
+          <Link href={post.URL} >
+          <img className="place-self-center"
             src={`${eventImage(post)}`}
             alt={`{post.name}`}
             loading="eager"
