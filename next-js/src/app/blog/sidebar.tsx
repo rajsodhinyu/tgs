@@ -52,7 +52,7 @@ export default async function Sidebar({ items}: { items: number}) {
 
 
   return (
-    <div className="*:m-1 max-[300px]:w-dvw">
+    <div className="*:m-1 *:max-sm:w-screen">
       <div className=" font-bold hover:underline hover:text-tgs-purple decoration-tgs-purple text-black flex shrink text-4xl font-bit leading-10 text-nowrap justify-center">
         <Link href="/blog-archive">BLOG POSTS&gt;</Link>
         </div>
