@@ -155,7 +155,7 @@ export default async function Page({
     <div className="flex justify-center">
       
 
-        <Link href={`/feature/2024/${prevPostslug}`} className="mx-10 self-center justify-items-center font-title text-5xl">
+        <Link href={`/feature/2024/${prevPostslug}`} className="mx-2 md:mx-10 self-center justify-items-center font-title text-5xl">
           &lt;
           <div className="text-sm font-bit hidden lg:block">{prevPost.artist}</div>
         </Link>
@@ -169,7 +169,7 @@ export default async function Page({
           /></Link>
         </div>
 
-        <Link href={`/feature/2024/${nextPostslug}`} className="mx-10 self-center justify-items-center font-title text-5xl">
+        <Link href={`/feature/2024/${nextPostslug}`} className="mx-2 md:mx-10 self-center justify-items-center font-title text-5xl">
           &gt;
           <div className="text-sm font-bit hidden lg:block place-self-end">{nextPost.artist}</div>
         </Link>
