@@ -33,7 +33,7 @@ const urlFor = (source: SanityImageSource) =>
 export default async function Page() {
   const blogs = await sanityFetch<SanityDocument[]>({query: PLAYLIST_Q});
   return (
-    <div className="place-items-center max-md:mt-12">
+    <div className="place-items-center max-md:mt-16">
     <Link href={'/feature/2024'}> {/*  */}
       <div><Image className="rounded-md" priority={true} src="https://cdn.sanity.io/images/fnvy29id/tgs/b4d65f8eb2ea79b4e10f7e48993f3a5b97875dc0-1440x1080.png" /* https://cdn.sanity.io/images/fnvy29id/tgs/b4d65f8eb2ea79b4e10f7e48993f3a5b97875dc0-1440x1080.png */alt="" width={1440} height={1080} /></div>
     </Link>
