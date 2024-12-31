@@ -146,7 +146,7 @@ export default async function Page({
   return (<div className="font-roc text-lg text-balance max-md:mt-14 max-[300px]:w-80 text-white">
     <div className="m-5 mb-4">
       <div className="text-2xl md:text-4xl font-bold font-title text-center"> {/* Title */}
-        <Link href={post.URL}>{post.name}</Link>
+        {post.name}
       </div>
       <div className="text-xl md:text-2xl font-bold font-bit text-center"> {/* Title */}
         {post.artist}
@@ -160,12 +160,14 @@ export default async function Page({
           <div className="text-sm font-bit hidden lg:block">{prevPost.artist}</div>
         </Link>
 
-      
-        <img className="rounded-md size-80 md:size-3/6"
-          src={`${eventImage(post)}`}
-          alt={`{post.name}`}
-          loading="eager"
-        />
+        <div className="rounded-md size-80 md:size-3/6">
+          <Link href={post.URL}>
+          <img
+            src={`${eventImage(post)}`}
+            alt={`{post.name}`}
+            loading="eager"
+          /></Link>
+        </div>
 
         <Link href={`/feature/2024/${nextPostslug}`} className="mx-10 self-center justify-items-center font-title text-5xl">
           &gt;
@@ -178,7 +180,7 @@ export default async function Page({
       </div>
       <div className="mx-14 text-lg lg:text-2xl text-pretty text-justify pt-10 px-4 md:p-10 indent-8 ">
        <PortableText value={post.content} components={components}/> 
-      <div className="xl:text-2xl text-xl font-bit text-right"> {/* Title */}
+      <div className=" mb-6 xl:text-2xl text-xl font-bit text-right"> {/* Title */}
       -{post.writer}
     </div>
     </div>
