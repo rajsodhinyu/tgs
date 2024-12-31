@@ -9,7 +9,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     <div className="w-full"> {/* Right Side, Carousel + */} 
       {children}
     </div>
-    <div className="w-auto xl:w-3/12 flex-col md:justify-center max-md:place-items-center rounded-xl"> {/* Left Side */}
+    <div className="w-fit xl:w-3/12 flex-col md:justify-center max-md:place-items-center rounded-xl"> {/* Left Side */}
     <Sidebar items={6}></Sidebar>
     </div>
   </div>
