@@ -56,11 +56,13 @@ export default async function Sidebar({ items}: { items: number}) {
       <div className="font-bold hover:underline hover:text-tgs-purple decoration-tgs-purple text-black flex shrink text-4xl font-bit leading-10 text-nowrap justify-center">
         <Link href="/blog-archive">BLOG POSTS&gt;</Link>
         </div>
-      {truncatedBlogs.map((blog) => (
-        <div key={blog.name}>
-          <Link href={`${linkResolver(blog.youtube,blog.youtubeURL,blog.slug)}`} target={tabResolver(blog.youtube)}><Image className="lg:w-fit  border-opacity-0 hover:border-opacity-100 hover:scale-95 border-2 xl:border-4 border-tgs-purple rounded-md" src={`${eventImage(blog)}`} alt={`${blog.name} Cover`} width={400} height={400}></Image></Link>
-        </div>
-      ))}
+      <div className="justify-items-center">
+        {truncatedBlogs.map((blog) => (
+          <div key={blog.name}>
+            <Link href={`${linkResolver(blog.youtube,blog.youtubeURL,blog.slug)}`} target={tabResolver(blog.youtube)}><Image className="lg:w-fit  border-opacity-0 hover:border-opacity-100 hover:scale-95 border-2 xl:border-4 border-tgs-purple rounded-md" src={`${eventImage(blog)}`} alt={`${blog.name} Cover`} width={400} height={400}></Image></Link>
+          </div>
+        ))}
+      </div>
        <div className="font-bold hover:underline hover:text-tgs-purple decoration-tgs-purple text-black flex shrink text-4xl font-bit leading-10 text-nowrap justify-center">
         <Link href="/blog-archive">VIEW ALL&gt;</Link>
         </div>
