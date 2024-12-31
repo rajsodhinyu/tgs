@@ -10,7 +10,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       {children}
     </div>
     <div className=""> {/* Left Side */}
-    <Sidebar items={6}></Sidebar>
+    <Sidebar items={5}></Sidebar>
     </div>
   </div>
     </div>

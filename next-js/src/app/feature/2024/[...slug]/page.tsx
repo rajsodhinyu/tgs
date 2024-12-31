@@ -84,12 +84,12 @@ const components: PortableTextComponents = {
     number: ({children}) => <li style={{listStyleType: 'decimal'}}>{children}</li>,
   },
   marks: {
-    em: ({children}) => <em className="text-tgs-dark-purple">{children} </em>,
+    em: ({children}) => <em className="text-tgs-pink ">{children} </em>,
     
     link: ({children, value}) => {
       const rel = !value.href.startsWith('/') ? 'noreferrer noopener' : undefined
       return (
-        <a className = "underline text-tgs-dark-purple" href={value.href} rel={rel}>
+        <a className = "underline text-tgs-pink" href={value.href} rel={rel}>
           {children}
         </a>
       )
@@ -144,8 +144,8 @@ export default async function Page({
   const post = posts[0];
 
   return (<div className="font-roc text-lg text-balance max-md:mt-14 max-[300px]:w-80 text-white">
-    <div className="m-5 mb-4">
-      <div className="text-2xl md:text-4xl font-bold font-title text-center"> {/* Title */}
+    <div className="m-5 ">
+      <div className="text-4xl  font-bold font-title text-center"> {/* Title */}
         {post.name}
       </div>
       <div className="text-xl md:text-2xl font-bold font-bit text-center"> {/* Title */}
@@ -178,15 +178,15 @@ export default async function Page({
       <div className="text-md font-bold font-title text-center -mb-8 mt-2 md:mt-4"> {/* Title */}
         {stringifyDate(post.datetime)}
       </div>
-      <div className="md:mx-14 mx-8 text-lg lg:text-2xl text-pretty text-justified pt-10 sm:p-10 indent-8 ">
-       <PortableText value={post.content} components={components}/> 
+      <div className="md:mx-14 mx-8 text-lg lg:text-2xl text-pretty text-justify pt-10 indent-8">
+      <PortableText value={post.content} components={components}/> 
        
-      <div className=" xl:text-2xl text-xl font-bit text-right"> {/* Title */}
-      -{post.writer}
-    </div>
-    <Link className="mb-6 xl:text-2xl text-xl indent-0 font-bit hover:underline self-center" href={"/feature/2024"}> {/* Title */}
-    &lt; Top 50 Albums
+      <div className=" xl:text-2xl text-xl font-bit text-left flex justify-between place-items-center"> {/* Title */}
+      <Link className=" hover:underline self-start indent-0" href={"/feature/2024"}> {/* Title */}
+      &lt; Top 50 Albums
       </Link>
+      <div className="text-left ">-{post.writer}</div>
+    </div>
     </div>
   </div>)
 }
