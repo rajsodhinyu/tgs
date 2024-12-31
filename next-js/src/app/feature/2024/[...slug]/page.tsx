@@ -153,19 +153,20 @@ export default async function Page({
       </div>
     </div>
     <div className="flex justify-center">
-      
-
         <Link href={`/feature/2024/${prevPostslug}`} className="mx-2 md:mx-10 self-center justify-items-start font-title text-5xl ">
           &lt;
           <div className="text-sm font-bit hidden text-center">{prevPost.artist}</div>
         </Link>
 
-        <div className="rounded-md size-80 md:size-3/6 flex-none">
+        <div className="rounded-md size-[400px] flex-none">
           <Link href={post.URL} >
-          <img className="place-self-center rounded-md"
-            src={`${eventImage(post)}?h=700&w=700`}
-            alt={`{post.name}`}
-            loading="eager"
+          <Image className="place-self-center rounded-md"
+            src={`${eventImage(post)}?h=640&w=640`}
+            alt={post.name}
+            priority={true}
+            width={640}
+            height={640}
+            sizes="(max-width: 400px) 100vw"
           /></Link>
         </div>
 

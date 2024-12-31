@@ -55,9 +55,9 @@ const blogs = await sanityFetch<SanityDocument[]>({query: ALBUMS_Q});
             href={linkResolver(blog.slug)}
             >
                 <Image className="object-contain rounded-md border-tgs-purple border-0 hover:border-4 hover:scale-[98%]"
-                  src={`${eventImage(blog)}?h=700&w=700&fit=crop&crop=center`}
-                  width={700}
-                  height={700}
+                  src={`${eventImage(blog)}?h=300&w=300&fit=crop&crop=center`}
+                  width={300}
+                  height={300}
                   alt={`${blog.name} Cover`}
                   sizes="(max-width: 400px) 100vw"
                   quality={100}
