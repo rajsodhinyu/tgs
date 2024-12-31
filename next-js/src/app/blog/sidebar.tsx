@@ -52,14 +52,17 @@ export default async function Sidebar({ items}: { items: number}) {
 
 
   return (
-    <div className="*:m-1 *:max-sm:w-screen">
+    <div className="*:m-1 min-w-80">
       <div className=" font-bold hover:underline hover:text-tgs-purple decoration-tgs-purple text-black flex shrink text-4xl font-bit leading-10 text-nowrap justify-center">
         <Link href="/blog-archive">BLOG POSTS&gt;</Link>
         </div>
-      <div>
+      <div className="flex-col">
         {truncatedBlogs.map((blog) => (
           <div key={blog.name} className="">
-            <Link href={`${linkResolver(blog.youtube,blog.youtubeURL,blog.slug)}`} target={tabResolver(blog.youtube)}><Image className="w-80 lg:w-fit place-self-center border-opacity-0 hover:border-opacity-100 hover:scale-95 border-2 xl:border-4 border-tgs-purple rounded-md" src={`${eventImage(blog)}`} alt={`${blog.name} Cover`} width={400} height={400}></Image></Link>
+            <Link className="" href={`${linkResolver(blog.youtube,blog.youtubeURL,blog.slug)}`} target={tabResolver(blog.youtube)}>
+              <Image className="w-full lg:w-fit border-opacity-0 hover:border-opacity-100  hover:scale-95 border-2 xl:border-4 border-tgs-purple rounded-md" 
+              src={`${eventImage(blog)}`} alt={`${blog.name} Cover`} width={400} height={400}></Image>
+            </Link>
           </div>
       
       ))}
