@@ -166,6 +166,7 @@ export default async function Page({
             priority={true}
             width={640}
             height={640}
+            quality={100}
             sizes="(max-width: 400px) 100vw"
           /></Link>
         </div>
