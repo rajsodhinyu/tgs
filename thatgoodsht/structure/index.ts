@@ -8,11 +8,10 @@ export const structure: StructureResolver = (S) =>
     .title('thatgoodsht.com')
     .items([
       S.documentTypeListItem('post').title('Blog').icon(FaBurst),
+      S.documentTypeListItem('sotd').title('Song of the Day').icon(FaRadio),
       S.documentTypeListItem('event').title('Events').icon(FaCalendarDay),
-      S.documentTypeListItem('writer').title('Writers').icon(FaUser),
-      S.divider(),
-      S.documentTypeListItem('albums').title('2024 Top 50').icon(FaListCheck),
       S.documentTypeListItem('playlist').title('Playlists').icon(FaSpotify),
-      S.documentTypeListItem('sotd').title('Songs Of The Day').icon(FaRadio),
-      
+      S.divider(),
+      S.documentTypeListItem('writer').title('Writers').icon(FaUser),
+      S.documentTypeListItem('albums').title('2024 Recap').icon(FaListCheck),
     ])
