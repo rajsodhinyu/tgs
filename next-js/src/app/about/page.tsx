@@ -10,7 +10,7 @@ Our mission is to build community around shared love of music. With authenticity
 Join our growing community by keeping up with our artist interviews, curated live events, playlists, blog, and more.</p>
         </div>
         <div className="my-10 place-items-center">
-            <Image width={1250} height={1000} className="w-full" src="https://cdn.sanity.io/images/fnvy29id/tgs/b5cee228b7299f1fd664e36a34f48678a30cb3d0-1250x1000.jpg" alt="" />
+            <Image width={1250} height={1000} quality={100} className="w-full" src="https://cdn.sanity.io/images/fnvy29id/tgs/b5cee228b7299f1fd664e36a34f48678a30cb3d0-1250x1000.jpg" alt="" />
             <div className="pt-8 font-bit text-2xl decoration-tgs-purple text-center ">
                 <a className="hover:underline hover:text-tgs-purple hover:font-bold" href="https://www.instagram.com/thatgoodsht">Instagram</a>&emsp;
                 <a className="hover:underline hover:text-tgs-purple hover:font-bold" href="https://www.youtube.com/@thatgoodshtmusic">Youtube</a>&emsp;
