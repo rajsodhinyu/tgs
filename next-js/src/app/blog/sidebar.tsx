@@ -61,7 +61,7 @@ export default async function Sidebar({ items}: { items: number}) {
           <div key={blog.name} className="pt-3">
             <Link className="" href={`${linkResolver(blog.youtube,blog.youtubeURL,blog.slug)}`} target={tabResolver(blog.youtube)}>
               <Image className="w-full lg:w-fit border-opacity-0 hover:border-opacity-100  hover:scale-95 border-2 xl:border-4 border-tgs-purple rounded-md" 
-              src={`${eventImage(blog)}`} alt={`${blog.name} Cover`} width={400} height={400}> quality={100}</Image>
+              src={`${eventImage(blog)}`} alt={`${blog.name} Cover`} width={400} height={400} quality={100} />
             </Link>
           </div>
       
