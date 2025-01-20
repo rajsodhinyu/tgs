@@ -56,8 +56,25 @@ export const eventType = defineType({
         type: 'array', 
         of: [{type: 'block'}]
       })
-  ],
-preview: {
+    ],
+    orderings: [
+      {
+        title: 'Newest Events',
+        name: 'releaseDateDesc',
+        by: [
+          {field: 'date', direction: 'desc'}
+        ]
+      },
+      {
+          title: 'Oldest Events',
+          name: 'releaseDateAsc',
+          by: [
+            {field: 'date', direction: 'asc'}
+          ]
+        },
+        
+    ],
+    preview: {
     select: {
       name: 'name',
       address: 'address',

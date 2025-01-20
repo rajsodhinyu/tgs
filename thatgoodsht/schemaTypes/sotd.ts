@@ -78,7 +78,7 @@ export const sotdType = defineType({
                 'July', 'August', 'September', 'October', 'November', 'December'
               ];
             return {
-              title: `${title} by ${artist}`,
+              title: `${title} - ${artist}`,
               subtitle: `${months[dateObj.getMonth()]} ${dateObj.getDate()}`
             }
           }
