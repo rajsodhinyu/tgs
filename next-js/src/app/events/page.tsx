@@ -44,7 +44,7 @@ function stringifyDate(input:string) {
 }
 
   return (<div>
-    <div className="text-2xl min-[340px]:text-4xl font-bold hover:underline hover:text-tgs-purple decoration-tgs-purple text-black font-bit leading-10 text-balance w-full justify-center text-center pt-12">
+    <div className="text-2xl min-[340px]:text-4xl font-bold decoration-tgs-purple text-black font-bit leading-10 text-balance w-full justify-center text-center pt-12 md:mb-3 md:pt-0">
          ALL EVENTS
         </div>
     <div className="grid lg:grid-cols-5 sm:grid-cols-4 grid-cols-2 max-sm:mx-3 md:p-2 pt-4 gap-2">
