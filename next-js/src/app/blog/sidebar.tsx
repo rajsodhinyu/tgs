@@ -54,11 +54,11 @@ export default async function Sidebar({ items}: { items: number}) {
   return (
     <div className="*:m-1 min-w-80">
       <div className=" font-bold hover:underline hover:text-tgs-purple decoration-tgs-purple text-black flex shrink text-4xl font-bit leading-10 text-nowrap justify-center">
-        <Link href="/blog-archive">BLOG POSTS&gt;</Link>
+        <Link href="/blog-archive">BLOG POSTS &gt;</Link>
         </div>
       <div className="flex-col">
         {truncatedBlogs.map((blog) => (
-          <div key={blog.name} className="">
+          <div key={blog.name} className="pt-3">
             <Link className="" href={`${linkResolver(blog.youtube,blog.youtubeURL,blog.slug)}`} target={tabResolver(blog.youtube)}>
               <Image className="w-full lg:w-fit border-opacity-0 hover:border-opacity-100  hover:scale-95 border-2 xl:border-4 border-tgs-purple rounded-md" 
               src={`${eventImage(blog)}`} alt={`${blog.name} Cover`} width={400} height={400}></Image>
@@ -68,7 +68,7 @@ export default async function Sidebar({ items}: { items: number}) {
       ))}
       </div>
        <div className=" font-bold hover:underline hover:text-tgs-purple decoration-tgs-purple text-black flex shrink text-4xl font-bit leading-10 text-nowrap justify-center">
-        <Link href="/blog-archive">VIEW ALL&gt;</Link>
+        <Link href="/blog-archive">VIEW ALL &gt;</Link>
         </div>
     </div>
    

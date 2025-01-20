@@ -37,7 +37,7 @@ export default async function Page() {
     <Link href={'/feature/2024'}> {/*  */}
       <div><Image className="rounded-md" priority={true} src="https://cdn.sanity.io/images/fnvy29id/tgs/b4d65f8eb2ea79b4e10f7e48993f3a5b97875dc0-1440x1080.png" /* https://cdn.sanity.io/images/fnvy29id/tgs/b4d65f8eb2ea79b4e10f7e48993f3a5b97875dc0-1440x1080.png */alt="" width={1440} height={1080} /></div>
     </Link>
-    <div className="text-4xl md:text-4xl font-bold hover:underline hover:text-tgs-purple decoration-tgs-purple text-black flex shrink mt-2  font-bit leading-10 text-balance w-full justify-center">
+    <div className="text-2xl min-[340px]:text-4xl font-bold hover:underline hover:text-tgs-purple decoration-tgs-purple text-black flex shrink mt-2 font-bit leading-10 text-balance w-full justify-center text-center">
         <Link href="https://open.spotify.com/user/annabelle816">OUR PLAYLISTS &gt;</Link>
         </div>
   <div className="grid lg:grid-cols-3 grid-cols-2 pt-4 gap-4">
