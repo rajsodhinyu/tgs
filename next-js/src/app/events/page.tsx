@@ -79,19 +79,3 @@ function stringifyDate(input:string) {
   </div>
   )
 } 
-
-/* 
-No events for now!
-export default function Post() {
-  return (<div className='font-title sm:text-4xl text-center *:text-balance absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 mt-20 sm:mt-0'>
-    <div className="text-2xl">
-      No upcoming events for now!
-      <br />
-      <Link className="hover:underline" href="sms:+18055002436">Text +1-(805)-500-2436 to be the first to know...</Link>
-    </div>
-    <br />
-    <div className="text-center hover:text-tgs-purple hover:underline"><Link href="/events/archive">Check out the Events Archive &gt;</Link></div>
-    
-  </div>)
-}
- */

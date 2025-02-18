@@ -1,15 +1,5 @@
 import {defineType, defineArrayMember} from 'sanity'
 
-/**
- * This is the schema definition for the rich text fields used for
- * for this blog studio. When you import it in schemas.js it can be
- * reused in other parts of the studio with:
- *  {
- *    name: 'someName',
- *    title: 'Some title',
- *    type: 'blockContent'
- *  }
- */
 export default defineType({
   title: 'Block Content',
   name: 'blockContent',
@@ -18,10 +8,6 @@ export default defineType({
     defineArrayMember({
       title: 'Block',
       type: 'block',
-      // Styles let you set what your user can mark up blocks with. These
-      // correspond with HTML tags, but you can set any title or value
-      // you want and decide how you want to deal with it where you want to
-      // use your content.
       styles: [
         {title: 'Normal', value: 'normal'},
         {title: 'H1', value: 'h1'},

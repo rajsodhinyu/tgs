@@ -58,8 +58,11 @@ function stringifyDate(input:string) {
   return `${monthNames[(date.getMonth())]} ${date.getDate()}`;
 
 }
-  return (<div className="my-10">
-    <div className="grid lg:grid-cols-4 mx-3 gap-4 xl:grid-cols-5 xl:gap-2 md:grid-cols-3 grid-cols-2 md:-mt-10 ">
+  return (<div>
+    <div className="text-2xl min-[340px]:text-4xl font-bold decoration-tgs-purple text-black font-bit leading-10 text-balance w-full justify-center text-center pt-12 md:mb-3 md:pt-0">
+         ALL POSTS
+        </div>
+    <div className="grid lg:grid-cols-5 sm:grid-cols-4 grid-cols-2 mx-3 md:p-2 pt-4 gap-2">
       {blogs.map((blog) => (
         <div className="group flex flex-col text-center justify-around" key={blog._id}>
             <div className="text-white flex flex-col">
@@ -78,7 +81,7 @@ function stringifyDate(input:string) {
                 /></Link>
               </div>
             </div>
-            <div className="flex flex-col text-center lg:text-base text-lg leading-tight font-bit font-bold group-hover:text-tgs-purple">
+            <div className="flex flex-col text-center lg:text-sm text-md leading-tight font-bit font-bold group-hover:text-tgs-purple">
               <div>{blog.name}</div>
             </div>
         </div>
