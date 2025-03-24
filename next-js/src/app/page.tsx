@@ -7,7 +7,7 @@ import Link from "next/link";
 const DynamicComponentWithNoSSR = dynamic(() => import("../app/ui/Backround"), {
   ssr: false,
   loading: () => (
-    <p className="font-title text-xl absolute top-1/4 left-1/2 transform -translate-x-1/2 +translate-y-3/4">
+    <p className="font-title text-xl absolute top-1/4 left-1/2 transform -translate-x-1/2 +translate-y-3/4 text-tgs-purple">
       Loading That Good Sh*t...
     </p>
   ),
@@ -33,6 +33,11 @@ function catchClick() {
 
 export default function Page() {
   const sotdata = useSotData();
+  const todayDate = new Date().toLocaleDateString("en-US", {
+    timeZone: "America/New_York",
+    month: "long",
+    day: "numeric",
+  });
   return (
     <div>
       <div>
@@ -108,7 +113,7 @@ export default function Page() {
               className="
               sm:text-xl text-sm"
             >
-              March 24
+              {`${todayDate}`}
             </div>
             {`"${sotdata.name}"`}
             <div

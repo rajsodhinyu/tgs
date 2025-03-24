@@ -59,7 +59,8 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <head>
-        <title>{`${songs.name} - ${songs.artist}`}</title>
+        {/* Song of the day - "Maluco" - Sango */}
+        <title>{`ThatGoodSh*t: "${songs.name}" - ${songs.artist}`}</title>
         <meta
           name="viewport"
           content="width=device-width, initial-scale=0.99"
