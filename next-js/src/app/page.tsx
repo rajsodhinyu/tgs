@@ -94,7 +94,7 @@ export default function Page() {
       <div>
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2  translate-y-44 sm:translate-y-52 lg:translate-y-64  text-center w-fit rounded-md font-title backdrop-blur-lg text-white">
           <div className="p-1 sm:p-2 sm:px-3 w-max sm:text-3xl text-lg">
-            {`${sotdata.artist || "null"}`}
+            {`${sotdata.artist}`}
             <div className="sm:text-2xl text-md"> {`${sotdata.name}`}</div>
           </div>
         </div>
