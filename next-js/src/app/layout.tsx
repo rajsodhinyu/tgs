@@ -55,7 +55,6 @@ export default async function RootLayout({
   });
   song = `${songs.file?.asset.url}`;
   const sotdata = { artist: songs.artist, name: songs.name };
-  console.log(`this is layout, we have ${sotdata.artist} - ${sotdata.name}`);
 
   return (
     <html lang="en">
