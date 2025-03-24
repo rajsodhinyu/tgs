@@ -43,7 +43,7 @@ export default function Page() {
       <Link className="" href={"/"} scroll={false}>
         <div className="absolute left-0 top-0">
           <img
-            className="h-10 md:h-16 md:m-10 m-2"
+            className="h-10 md:h-16 md:m-10 m-2 "
             src="https://cdn.sanity.io/images/fnvy29id/tgs/6e0d6fefaf95cf0e570f958d10c13cf66265735a-1266x750.png?h=200"
             alt=""
           />
