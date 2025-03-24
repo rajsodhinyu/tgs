@@ -92,10 +92,26 @@ export default function Page() {
       </div>
       {/* Song Title and Artist */}
       <div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2  translate-y-44 sm:translate-y-52 lg:translate-y-64  text-center w-fit rounded-md font-title backdrop-blur-lg text-white">
-          <div className="py-2 px-7 md:py-5 md:px-12 w-max sm:text-4xl text-xl">
-            {`${sotdata.name}`}
-            <div className="sm:text-3xl text-lg"> {`${sotdata.artist}`}</div>
+        <div
+          className="absolute top-1/2 left-1/2 transform -translate-x-1/2  translate-y-44 sm:translate-y-52 lg:translate-y-64  text-center w-fit rounded-md font-title
+
+          bg-tgs-dark-purple
+
+          text-white"
+        >
+          <div
+            className="py-2 px-7 md:py-3 md:px-9
+            w-max
+            sm:text-4xl text-xl"
+          >
+            {`"${sotdata.name}"`}
+            <div
+              className="
+              sm:text-3xl text-lg"
+            >
+              {" "}
+              {`${sotdata.artist}`}
+            </div>
           </div>
         </div>
       </div>
