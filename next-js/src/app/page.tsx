@@ -96,7 +96,7 @@ export default function Page() {
           className="absolute top-1/2 left-1/2 transform -translate-x-1/2  translate-y-44 sm:translate-y-52 lg:translate-y-64  text-center w-fit rounded-md font-title
 
           bg-tgs-dark-purple
-
+          ring ring-white
           text-white"
         >
           <div
@@ -104,12 +104,17 @@ export default function Page() {
             w-max
             sm:text-4xl text-xl"
           >
+            <div
+              className="
+              sm:text-xl text-sm"
+            >
+              March 24
+            </div>
             {`"${sotdata.name}"`}
             <div
               className="
               sm:text-3xl text-lg"
             >
-              {" "}
               {`${sotdata.artist}`}
             </div>
           </div>
