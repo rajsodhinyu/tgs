@@ -15,22 +15,22 @@ const config: Config = {
     },
     extend: {
       fontFamily: {
-        bit: ['var(--font-bitcount)'],
-        roc: ['var(--font-roc)'],
-        title: ['var(--font-bitcount-filled)']
+        bit: ["var(--font-bitcount)"],
+        roc: ["var(--font-roc)"],
+        title: ["var(--font-bitcount-filled)"],
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
-      colors :{
-        'regal-blue': '#243c5a',
-        'tgs-pink': '#ed9df9',
-        'tgs-purple': '#6c5cbe',
-        'tgs-dark-purple': '#3D3564',
-        
-      }
+      colors: {
+        "regal-blue": "#243c5a",
+        "tgs-pink": "#ed9df9",
+        "tgs-purple": "#6c5cbe",
+        "tgs-dark-purple": "#3D3564",
+        "tgs-gray": "#DBDBDB",
+      },
     },
   },
   plugins: [],
