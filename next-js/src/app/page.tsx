@@ -98,7 +98,7 @@ export default function Page() {
       {/* Song Title and Artist */}
       <div>
         <div
-          className="absolute top-1/2 left-1/2 transform -translate-x-1/2  translate-y-44 sm:translate-y-52 lg:translate-y-64  text-center w-fit rounded-md font-title
+          className="absolute top-1/2 left-1/2 transform -translate-x-1/2  translate-y-44 sm:translate-y-52 lg:translate-y-64  text-center  rounded-md font-title flex w-2/5
 
           bg-tgs-dark-purple
           ring ring-white
@@ -106,7 +106,7 @@ export default function Page() {
         >
           <div
             className="py-2 px-7 md:py-3 md:px-9
-            w-max
+            min-w-0 truncate
             sm:text-4xl text-xl"
           >
             <div

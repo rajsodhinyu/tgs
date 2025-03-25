@@ -2,8 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 import Sotd from "./ui/Sotd";
 
-
-
 export default function Nav() {
   return (
     <main>
@@ -12,20 +10,21 @@ export default function Nav() {
         <div className="shrink h-12 flex gap-3 sm:gap-6 items-center lg:gap-8 justify-start ">
           {/*everything not inc SOTD?*/}
           <Link href="/" className="group">
-          <img
+            <img
               className="z-40 max-h-16 lg:invisible"
               src="https://cdn.sanity.io/images/fnvy29id/tgs/6e0d6fefaf95cf0e570f958d10c13cf66265735a-1266x750.png?h=200"
-            
             />
             <img
               className="z-40 max-h-16 absolute left-3 top-6 max-lg:invisible"
               src="https://cdn.sanity.io/images/fnvy29id/tgs/6e0d6fefaf95cf0e570f958d10c13cf66265735a-1266x750.png?h=200"
-            
             />
             <Image
               className="z-0 sm:hidden group-hover:block absolute -left-2 -top-2 max-lg:invisible"
               src="https://cdn.sanity.io/images/fnvy29id/tgs/409cbc55ba676a991fd6d75f8ba242ad7dc08cd1-240x192.gif?"
-              width={165} height={150} alt="animatedTGS" quality={100}
+              width={165}
+              height={150}
+              alt="animatedTGS"
+              quality={100}
             />
           </Link>
           <Link href="/about">
@@ -46,16 +45,14 @@ export default function Nav() {
               src="https://cdn.sanity.io/images/fnvy29id/tgs/a82c27d8c7dcd43014eaa1fdc852185942645f7e-2037x795.png?h=200"
             />
           </Link>
-          <Link href="/shop"
-          scroll={true}
-          >
+          <Link href="/shop" scroll={true}>
             <img
               className="min-h-5 max-h-16 min-w-12"
               src="https://cdn.sanity.io/images/fnvy29id/tgs/7162c809beb7a870dfbb0127b72fc6359218b456-1874x954.png?h=200"
             />
           </Link>
         </div>
-        
+
         <Sotd></Sotd>
       </div>
     </main>
