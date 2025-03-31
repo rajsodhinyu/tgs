@@ -136,7 +136,7 @@ export default async function Page({
       {/* Spotify Embed */}
       <div>{renderEmbed(post.playlistURL)}</div>
 
-      <div className="ml-5 mr-3 text-sm lg:text-lg text-pretty text-justify pb-10 indent-2 md:indent-8 first-letter:text-8xl first-letter:font-title first-letter:text-black ">
+      <div className="ml-5 mr-3 text-sm lg:text-lg text-pretty text-justify pb-10 indent-4 md:indent-6 first-letter:text-8xl first-letter:font-title first-letter:text-black ">
         <PortableText value={post.content} components={components} />
       </div>
     </div>
