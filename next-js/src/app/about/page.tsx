@@ -40,7 +40,7 @@ export default function Page() {
           &emsp;
           <a
             className="hover:underline hover:text-tgs-purple hover:font-bold"
-            href="https://www.twitter.com/imadeuaplaylist"
+            href="https://www.twitter.com/thatgoodsh_t"
           >
             Twitter
           </a>

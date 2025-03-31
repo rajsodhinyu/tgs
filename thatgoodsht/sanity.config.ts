@@ -6,24 +6,19 @@ import {structure} from './structure'
 import {myLogo} from './components/MyLogo'
 import {media} from 'sanity-plugin-media'
 
-
-
-
-
 export default defineConfig({
   name: 'Backend',
   icon: myLogo,
-  title: "ThatGoodSh*t!",
+  title: 'ThatGoodSh*t!',
 
   projectId: 'fnvy29id',
   dataset: 'tgs',
 
-  plugins: [structureTool({structure}),media(),visionTool()],
+  plugins: [structureTool({structure}), media(), visionTool()],
 
   schema: {
     types: schemaTypes,
   },
-
   document: {
     comments: {
       enabled: false,
