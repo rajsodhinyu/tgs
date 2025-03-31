@@ -7,7 +7,7 @@ import Link from "next/link";
 const DynamicComponentWithNoSSR = dynamic(() => import("../app/ui/Backround"), {
   ssr: false,
   loading: () => (
-    <p className="font-title text-xl absolute top-1/4 left-1/2 transform -translate-x-1/2 +translate-y-3/4 text-tgs-purple">
+    <p className="font-title text-xl absolute top-1/4 left-1/2 transform -translate-x-1/2 +translate-y-3/4 text-tgs-dark-purple">
       Loading That Good Sh*t...
     </p>
   ),
