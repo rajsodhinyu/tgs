@@ -21,21 +21,20 @@ export default function Sotd() {
       </div>
       <div>
         <div
-          className="invisible group-hover:visible absolute transform translate-x-4 text-center w-72 h-20 flex rounded-md font-title
-
+          className="invisible group-hover:visible absolute z-10 transform md:translate-x-4 text-center w-72 h-20 flex rounded-md font-title
           bg-tgs-dark-purple
           ring ring-white
           text-white"
         >
           <div
-            className="py-2 px-7 md:py-3 md:px-9
+            className="w-full mt-2
             min-w-7 truncate
-            sm:text-2xl text-xl"
+            text-2xl"
           >
             {`"${sotdata.name}"`}
             <div
               className="
-              sm:text-xl text-lg"
+              text-xl"
             >
               {`${sotdata.artist}`}
             </div>

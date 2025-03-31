@@ -98,7 +98,7 @@ export default function Page() {
       {/* Song Title and Artist */}
       <div>
         <div
-          className="absolute top-1/2 left-1/2 transform -translate-x-1/2  translate-y-44 sm:translate-y-52 lg:translate-y-64  text-center  rounded-md font-title flex w-2/5
+          className="absolute top-1/2 left-1/2 transform -translate-x-1/2  translate-y-44 md:translate-y-52 lg:translate-y-64  text-center  rounded-md font-title flex max-w-72 md:max-w-96 lg:max-w-fit
 
           bg-tgs-dark-purple
           ring ring-white
@@ -107,18 +107,18 @@ export default function Page() {
           <div
             className="py-2 px-7 md:py-3 md:px-9
             min-w-0 truncate
-            sm:text-4xl text-xl"
+            md:text-4xl text-xl"
           >
             <div
               className="
-              sm:text-xl text-sm"
+              md:text-xl text-sm"
             >
               {`${todayDate}`}
             </div>
             {`"${sotdata.name}"`}
             <div
               className="
-              sm:text-3xl text-lg"
+              md:text-3xl text-lg"
             >
               {`${sotdata.artist}`}
             </div>
