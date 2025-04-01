@@ -1,6 +1,5 @@
 import type {StructureResolver} from 'sanity/structure'
-import { FaBurst,FaSpotify,FaListCheck,FaRadio, FaCalendarDay,FaUser } from "react-icons/fa6";
-
+import {FaBurst, FaSpotify, FaListCheck, FaRadio, FaCalendarDay, FaUser} from 'react-icons/fa6'
 
 export const structure: StructureResolver = (S) =>
   S.list()
@@ -8,10 +7,8 @@ export const structure: StructureResolver = (S) =>
     .title('thatgoodsht.com')
     .items([
       S.documentTypeListItem('post').title('Blog').icon(FaBurst),
-      S.documentTypeListItem('sotd').title('Song of the Day').icon(FaRadio),
+
       S.documentTypeListItem('event').title('Events').icon(FaCalendarDay),
       S.documentTypeListItem('playlist').title('Playlists').icon(FaSpotify),
-      S.divider(),
-      S.documentTypeListItem('writer').title('Writers').icon(FaUser),
-      S.documentTypeListItem('albums').title('2024 Recap').icon(FaListCheck),
+      S.documentTypeListItem('sotd').title('Song of the Day').icon(FaRadio),
     ])

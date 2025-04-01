@@ -1,6 +1,8 @@
 import {defineField, defineType} from 'sanity'
 import {mediaAssetSource} from 'sanity-plugin-media'
 
+// CHANGE NAME AND RUN TO DELETE
+// sanity documents query "*[_type == 'sotd' && name != 'NAME']._id" | cut -d\" -f2 | xargs -I {} sanity documents delete {}
 export const sotdType = defineType({
   name: 'sotd',
   title: 'Songs Of The Day',
