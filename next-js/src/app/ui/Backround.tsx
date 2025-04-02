@@ -247,8 +247,8 @@ const dials = () => {
               s.sin(s.frameCount * 0.01),
               -1,
               1,
+              0.01,
               0.1,
-              0.02,
               true,
             );
             // s.frameCount * 0.01 * 0.05
