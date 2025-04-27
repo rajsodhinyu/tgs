@@ -80,7 +80,7 @@ const ShopInfo: React.FC<ShopInfoProps> = ({ cards2 }) => {
                 className="sr-only peer"
                 name="size"
                 type="radio"
-                value="49911676600642"
+                value="50553810092354"
                 defaultChecked
               />
               <div className="w-9 h-9 rounded-full flex items-center justify-center text-violet-400 peer-checked:bg-tgs-purple peer-checked:text-white">
@@ -92,7 +92,7 @@ const ShopInfo: React.FC<ShopInfoProps> = ({ cards2 }) => {
                 className="sr-only peer"
                 name="size"
                 type="radio"
-                value="49911676633410"
+                value="50553810125122"
               />
               <div className="w-9 h-9 rounded-full flex items-center justify-center text-violet-400 peer-checked:bg-tgs-purple peer-checked:text-white">
                 2
@@ -103,10 +103,21 @@ const ShopInfo: React.FC<ShopInfoProps> = ({ cards2 }) => {
                 className="sr-only peer"
                 name="size"
                 type="radio"
-                value="49911676666178"
+                value="50553810157890"
               />
               <div className="w-9 h-9 rounded-full flex items-center justify-center text-violet-400 peer-checked:bg-tgs-purple peer-checked:text-white">
                 3
+              </div>
+            </label>
+            <label>
+              <input
+                className="sr-only peer"
+                name="size"
+                type="radio"
+                value="50553810190658"
+              />
+              <div className="w-9 h-9 rounded-full flex items-center justify-center text-violet-400 peer-checked:bg-tgs-purple peer-checked:text-white">
+                4
               </div>
             </label>
           </div>

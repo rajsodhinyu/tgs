@@ -70,7 +70,7 @@ const ShopInfo: React.FC<ShopInfoProps> = ({ cards2 }) => {
       <Form className="" action="/shop/cart/add">
         <div className="flex">
           <div className="w-full flex-none mt-2 order-1 text-4xl sm:text-5xl font-bold text-tgs-purple">
-            $89.00
+            $IDK
           </div>
         </div>
         <div className="flex items-baseline mt-4 pb-6 place-content-center">
@@ -80,11 +80,11 @@ const ShopInfo: React.FC<ShopInfoProps> = ({ cards2 }) => {
                 className="sr-only peer"
                 name="size"
                 type="radio"
-                value="49911676600642"
+                value="50553812058434"
                 defaultChecked
               />
               <div className="w-9 h-9 rounded-full flex items-center justify-center text-violet-400 peer-checked:bg-tgs-purple peer-checked:text-white">
-                S
+                1
               </div>
             </label>
             <label>
@@ -92,10 +92,10 @@ const ShopInfo: React.FC<ShopInfoProps> = ({ cards2 }) => {
                 className="sr-only peer"
                 name="size"
                 type="radio"
-                value="49911676633410"
+                value="50553812091202"
               />
               <div className="w-9 h-9 rounded-full flex items-center justify-center text-violet-400 peer-checked:bg-tgs-purple peer-checked:text-white">
-                M
+                2
               </div>
             </label>
             <label>
@@ -103,10 +103,10 @@ const ShopInfo: React.FC<ShopInfoProps> = ({ cards2 }) => {
                 className="sr-only peer"
                 name="size"
                 type="radio"
-                value="49911676666178"
+                value="50553812123970"
               />
               <div className="w-9 h-9 rounded-full flex items-center justify-center text-violet-400 peer-checked:bg-tgs-purple peer-checked:text-white">
-                L
+                3
               </div>
             </label>
             <label>
@@ -114,21 +114,10 @@ const ShopInfo: React.FC<ShopInfoProps> = ({ cards2 }) => {
                 className="sr-only peer"
                 name="size"
                 type="radio"
-                value="49911676698946"
+                value="50553812156738"
               />
               <div className="w-9 h-9 rounded-full flex items-center justify-center text-violet-400 peer-checked:bg-tgs-purple peer-checked:text-white">
-                XL
-              </div>
-            </label>
-            <label>
-              <input
-                className="sr-only peer"
-                name="size"
-                type="radio"
-                value="49911676731714"
-              />
-              <div className="w-9 h-9 rounded-full flex items-center justify-center text-violet-400 peer-checked:bg-tgs-purple peer-checked:text-white">
-                2XL
+                4
               </div>
             </label>
           </div>
