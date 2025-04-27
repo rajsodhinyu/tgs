@@ -1,8 +1,7 @@
 "use client";
 
-import { useEffect } from "react";
 import Form from "next/form";
-
+//TODO ADD PICS
 const cards = [
   "https://place-hold.it/800x1000.jpeg",
   "https://place-hold.it/800x1000.jpeg",
@@ -11,11 +10,11 @@ const cards = [
 ];
 
 interface HorizontalCarouselProps {
-  cards: string[]; // Array of image URLs
+  cards: string[];
 }
 
 interface ShopInfoProps {
-  cards2: string[]; //
+  cards2: string[];
 }
 
 const HorizontalCarousel: React.FC<HorizontalCarouselProps> = ({ cards }) => {
@@ -37,7 +36,6 @@ const HorizontalCarousel: React.FC<HorizontalCarouselProps> = ({ cards }) => {
         <div className="font-title text-3xl pl-1"> &lt; </div>
       </button>
 
-      {/* Carousel container */}
       <div className="carousel-container flex overflow-x-scroll snap-both snap-mandatory no-scrollbar rounded-lg">
         {cards.map((data, index) => (
           <section
@@ -53,7 +51,6 @@ const HorizontalCarousel: React.FC<HorizontalCarouselProps> = ({ cards }) => {
         ))}
       </div>
 
-      {/* Right Button */}
       <button
         className="absolute -right-8 z-10 bg-tgs-pink bg-opacity-100 text-white p-1 pb-2 rounded-full flex -mr-2"
         onClick={() => scrollCarousel("right")}
@@ -70,55 +67,19 @@ const ShopInfo: React.FC<ShopInfoProps> = ({ cards2 }) => {
       <Form className="" action="/shop/cart/add">
         <div className="flex">
           <div className="w-full flex-none mt-2 order-1 text-4xl sm:text-5xl font-bold text-tgs-purple">
-            $IDK
+            $120.00
           </div>
         </div>
         <div className="flex items-baseline mt-4 pb-6 place-content-center">
           <div className="space-x-2 flex text-sm font-bold">
             <label>
               <input
-                className="sr-only peer"
+                className="sr-only peer hidden"
                 name="size"
                 type="radio"
-                value="50553810092354"
+                value="50553851576642"
                 defaultChecked
               />
-              <div className="w-9 h-9 rounded-full flex items-center justify-center text-violet-400 peer-checked:bg-tgs-purple peer-checked:text-white">
-                1
-              </div>
-            </label>
-            <label>
-              <input
-                className="sr-only peer"
-                name="size"
-                type="radio"
-                value="50553810125122"
-              />
-              <div className="w-9 h-9 rounded-full flex items-center justify-center text-violet-400 peer-checked:bg-tgs-purple peer-checked:text-white">
-                2
-              </div>
-            </label>
-            <label>
-              <input
-                className="sr-only peer"
-                name="size"
-                type="radio"
-                value="50553810157890"
-              />
-              <div className="w-9 h-9 rounded-full flex items-center justify-center text-violet-400 peer-checked:bg-tgs-purple peer-checked:text-white">
-                3
-              </div>
-            </label>
-            <label>
-              <input
-                className="sr-only peer"
-                name="size"
-                type="radio"
-                value="50553810190658"
-              />
-              <div className="w-9 h-9 rounded-full flex items-center justify-center text-violet-400 peer-checked:bg-tgs-purple peer-checked:text-white">
-                4
-              </div>
             </label>
           </div>
         </div>
@@ -144,9 +105,9 @@ export default function Post() {
       <div
         className="text-center font-title font-bold
           text-4xl md:text-5xl text-tgs-purple max-[340px]:w-80 w-full
-        "
+        " //TODO ADD TITLE
       >
-        Ria Printt (IDK)
+        PRINT NAME HERE
       </div>
       <div className="w-full flex justify-around flex-col flex-wrap sm:flex-nowrap sm:flex-row">
         <div className="flex mx-10 mt-10 w-60 md:w-fit place-self-center">
@@ -169,8 +130,10 @@ export default function Post() {
         >
           Product Information
         </div>
-        <div className="text-3xl font-bit font-bold text-pretty sm:w-5/6 text-center py-12">
-          RIA IDK WHAT TO PUT HERE
+        <div
+          className="text-3xl font-bit font-bold text-pretty sm:w-5/6 text-center py-12" //TODO ADD DESC
+        >
+          add description here
         </div>
       </div>
     </div>

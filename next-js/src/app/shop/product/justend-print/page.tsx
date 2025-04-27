@@ -77,7 +77,7 @@ const ShopInfo: React.FC<ShopInfoProps> = ({ cards2 }) => {
                 className="sr-only peer hidden"
                 name="size"
                 type="radio"
-                value="50553851806018"
+                value="50553851511106"
                 defaultChecked
               />
             </label>
