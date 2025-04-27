@@ -37,26 +37,26 @@ export default async function Post() {
         </div>
         <div>
           <ShopCard
-            title="TGS HOODIE"
-            description="top half of the TGS Lounge Set."
-            cover="https://cdn.sanity.io/images/fnvy29id/tgs/6be00cdfbf1be8e155c9551273be152650927d2a-1278x1278.jpg"
-            url="/shop/product/tgs-hoodie"
+            title="RIA PRINT"
+            description="RIA IDK WHAT TO PUT HERE"
+            cover="https://cdn.sanity.io/images/fnvy29id/tgs/b265ded676519d40d1f1b356aa154b3592881c9a-1049x1049.png"
+            url="/shop/product/ria-print"
           />
         </div>
         <div>
           <ShopCard
-            title="THATGOODSH*T RING"
-            description="your choice of gold or silver."
-            cover="https://cdn.sanity.io/images/fnvy29id/tgs/b2ccd1a84eaa0665a4f9369271063210f81e90bf-1278x1278.jpg"
-            url="/shop/product/tgs-ring"
+            title="QUINTARO"
+            description="quincy idk what to "
+            cover="https://cdn.sanity.io/images/fnvy29id/tgs/b4b61698e2bb56c3fb92b6d284a612a7e8ab94a0-3000x3000.jpg?h=1300&w=1300"
+            url="/shop/product/quintaro"
           />
         </div>
         <div>
           <ShopCard
-            title="TGS PANTS"
-            description="bottom half of the TGS Lounge Set."
-            cover="https://cdn.sanity.io/images/fnvy29id/tgs/3429544fecca49f998925ac6cc8785eca30f344f-1278x1278.jpg"
-            url="/shop/product/tgs-pants"
+            title="QUINCY PRINT"
+            description="qyincyyyyyyy help"
+            cover="https://place-hold.it/500.jpeg"
+            url="/shop/product/quincy-print"
           />
         </div>
       </div>

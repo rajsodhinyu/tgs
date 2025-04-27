@@ -1,25 +1,21 @@
 "use client";
 
-import { useEffect } from "react";
+import { useState } from "react";
 import Form from "next/form";
 
 const cards = [
-  "https://cdn.sanity.io/images/fnvy29id/tgs/ceea4804b606a0e7de684e5e82ab36b10d04449b-800x1000.png",
-  "https://cdn.sanity.io/images/fnvy29id/tgs/074edb4f6440d1ea2d0357c9d2df57a0cb6d0259-800x1000.png",
-  "https://cdn.sanity.io/images/fnvy29id/tgs/e6eae2708b82e5b582ba4ecdb73163b198f552f9-800x1000.png",
-  "https://cdn.sanity.io/images/fnvy29id/tgs/9cb2a0b8636707c1f6d68524402abc273d8cfe29-800x1000.png",
-  "https://cdn.sanity.io/images/fnvy29id/tgs/ceea4804b606a0e7de684e5e82ab36b10d04449b-800x1000.png",
-  "https://cdn.sanity.io/images/fnvy29id/tgs/074edb4f6440d1ea2d0357c9d2df57a0cb6d0259-800x1000.png",
-  "https://cdn.sanity.io/images/fnvy29id/tgs/e6eae2708b82e5b582ba4ecdb73163b198f552f9-800x1000.png",
-  "https://cdn.sanity.io/images/fnvy29id/tgs/9cb2a0b8636707c1f6d68524402abc273d8cfe29-800x1000.png",
+  "https://place-hold.it/800x1000.jpeg",
+  "https://place-hold.it/800x1000.jpeg",
+  "https://place-hold.it/800x1000.jpeg",
+  "https://place-hold.it/800x1000.jpeg",
 ];
 
 interface HorizontalCarouselProps {
-  cards: string[]; // Array of image URLs
+  cards: string[];
 }
 
 interface ShopInfoProps {
-  cards2: string[]; //
+  cards2: string[];
 }
 
 const HorizontalCarousel: React.FC<HorizontalCarouselProps> = ({ cards }) => {
@@ -34,7 +30,6 @@ const HorizontalCarousel: React.FC<HorizontalCarouselProps> = ({ cards }) => {
 
   return (
     <div className="flex flex-row items-center justify-start w-full md:w-96 relative ">
-      {/* Left Button */}
       <button
         className="absolute -left-8 z-10 bg-tgs-pink bg-opacity-100  text-white p-1 pb-2 rounded-full -ml-2"
         onClick={() => scrollCarousel("left")}
@@ -69,13 +64,16 @@ const HorizontalCarousel: React.FC<HorizontalCarouselProps> = ({ cards }) => {
   );
 };
 
-const ShopInfo: React.FC<ShopInfoProps> = () => {
+const ShopInfo: React.FC<ShopInfoProps> = ({ cards2 }) => {
+  const [isDVD, setIsDVD] = useState(true);
+  const price = isDVD ? 40 : 30; // DVD is 40, CD is 30
+
   return (
     <div className="flex font-title">
       <Form className="" action="/shop/cart/add">
         <div className="flex">
           <div className="w-full flex-none mt-2 order-1 text-4xl sm:text-5xl font-bold text-tgs-purple">
-            $89.00
+            ${price}
           </div>
         </div>
         <div className="flex items-baseline mt-4 pb-6 place-content-center">
@@ -85,11 +83,12 @@ const ShopInfo: React.FC<ShopInfoProps> = () => {
                 className="sr-only peer"
                 name="size"
                 type="radio"
-                value="49911676600642"
-                defaultChecked
+                value="50552794710338"
+                checked={isDVD}
+                onChange={() => setIsDVD(true)}
               />
               <div className="w-9 h-9 rounded-full flex items-center justify-center text-violet-400 peer-checked:bg-tgs-purple peer-checked:text-white">
-                S
+                DVD
               </div>
             </label>
             <label>
@@ -97,32 +96,12 @@ const ShopInfo: React.FC<ShopInfoProps> = () => {
                 className="sr-only peer"
                 name="size"
                 type="radio"
-                value="49911676666178"
+                value="50552803623234"
+                checked={!isDVD}
+                onChange={() => setIsDVD(false)}
               />
               <div className="w-9 h-9 rounded-full flex items-center justify-center text-violet-400 peer-checked:bg-tgs-purple peer-checked:text-white">
-                L
-              </div>
-            </label>
-            <label>
-              <input
-                className="sr-only peer"
-                name="size"
-                type="radio"
-                value="49911676698946"
-              />
-              <div className="w-9 h-9 rounded-full flex items-center justify-center text-violet-400 peer-checked:bg-tgs-purple peer-checked:text-white">
-                XL
-              </div>
-            </label>
-            <label>
-              <input
-                className="sr-only peer"
-                name="size"
-                type="radio"
-                value="49911676731714"
-              />
-              <div className="w-9 h-9 rounded-full flex items-center justify-center text-violet-400 peer-checked:bg-tgs-purple peer-checked:text-white">
-                2XL
+                CD
               </div>
             </label>
           </div>
@@ -143,7 +122,6 @@ const ShopInfo: React.FC<ShopInfoProps> = () => {
 };
 
 export default function Post() {
-  useEffect(() => {}, []);
   return (
     <div>
       <br />
@@ -152,7 +130,7 @@ export default function Post() {
           text-4xl md:text-5xl text-tgs-purple max-[340px]:w-80 w-full
         "
       >
-        TGS Lounge Hoodie
+        Quintaro
       </div>
       <div className="w-full flex justify-around flex-col flex-wrap sm:flex-nowrap sm:flex-row">
         <div className="flex mx-10 mt-10 w-60 md:w-fit place-self-center">
@@ -176,8 +154,7 @@ export default function Post() {
           Product Information
         </div>
         <div className="text-3xl font-bit font-bold text-pretty sm:w-5/6 text-center py-12">
-          The TGS Lounge Set is a two piece, mid-weight, fleece tracksuit
-          featuring reverse appliqué artwork hand drawn by us.
+          yeah bruh idk what to put here
         </div>
       </div>
     </div>

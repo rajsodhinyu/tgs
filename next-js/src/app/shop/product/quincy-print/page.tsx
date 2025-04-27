@@ -4,14 +4,10 @@ import { useEffect } from "react";
 import Form from "next/form";
 
 const cards = [
-  "https://cdn.sanity.io/images/fnvy29id/tgs/ceea4804b606a0e7de684e5e82ab36b10d04449b-800x1000.png",
-  "https://cdn.sanity.io/images/fnvy29id/tgs/074edb4f6440d1ea2d0357c9d2df57a0cb6d0259-800x1000.png",
-  "https://cdn.sanity.io/images/fnvy29id/tgs/e6eae2708b82e5b582ba4ecdb73163b198f552f9-800x1000.png",
-  "https://cdn.sanity.io/images/fnvy29id/tgs/9cb2a0b8636707c1f6d68524402abc273d8cfe29-800x1000.png",
-  "https://cdn.sanity.io/images/fnvy29id/tgs/ceea4804b606a0e7de684e5e82ab36b10d04449b-800x1000.png",
-  "https://cdn.sanity.io/images/fnvy29id/tgs/074edb4f6440d1ea2d0357c9d2df57a0cb6d0259-800x1000.png",
-  "https://cdn.sanity.io/images/fnvy29id/tgs/e6eae2708b82e5b582ba4ecdb73163b198f552f9-800x1000.png",
-  "https://cdn.sanity.io/images/fnvy29id/tgs/9cb2a0b8636707c1f6d68524402abc273d8cfe29-800x1000.png",
+  "https://place-hold.it/800x1000.jpeg",
+  "https://place-hold.it/800x1000.jpeg",
+  "https://place-hold.it/800x1000.jpeg",
+  "https://place-hold.it/800x1000.jpeg",
 ];
 
 interface HorizontalCarouselProps {
@@ -34,7 +30,6 @@ const HorizontalCarousel: React.FC<HorizontalCarouselProps> = ({ cards }) => {
 
   return (
     <div className="flex flex-row items-center justify-start w-full md:w-96 relative ">
-      {/* Left Button */}
       <button
         className="absolute -left-8 z-10 bg-tgs-pink bg-opacity-100  text-white p-1 pb-2 rounded-full -ml-2"
         onClick={() => scrollCarousel("left")}
@@ -69,7 +64,7 @@ const HorizontalCarousel: React.FC<HorizontalCarouselProps> = ({ cards }) => {
   );
 };
 
-const ShopInfo: React.FC<ShopInfoProps> = () => {
+const ShopInfo: React.FC<ShopInfoProps> = ({ cards2 }) => {
   return (
     <div className="flex font-title">
       <Form className="" action="/shop/cart/add">
@@ -90,6 +85,17 @@ const ShopInfo: React.FC<ShopInfoProps> = () => {
               />
               <div className="w-9 h-9 rounded-full flex items-center justify-center text-violet-400 peer-checked:bg-tgs-purple peer-checked:text-white">
                 S
+              </div>
+            </label>
+            <label>
+              <input
+                className="sr-only peer"
+                name="size"
+                type="radio"
+                value="49911676633410"
+              />
+              <div className="w-9 h-9 rounded-full flex items-center justify-center text-violet-400 peer-checked:bg-tgs-purple peer-checked:text-white">
+                M
               </div>
             </label>
             <label>
@@ -143,7 +149,6 @@ const ShopInfo: React.FC<ShopInfoProps> = () => {
 };
 
 export default function Post() {
-  useEffect(() => {}, []);
   return (
     <div>
       <br />
@@ -152,7 +157,7 @@ export default function Post() {
           text-4xl md:text-5xl text-tgs-purple max-[340px]:w-80 w-full
         "
       >
-        TGS Lounge Hoodie
+        Quincy Printt (IDK)
       </div>
       <div className="w-full flex justify-around flex-col flex-wrap sm:flex-nowrap sm:flex-row">
         <div className="flex mx-10 mt-10 w-60 md:w-fit place-self-center">
@@ -176,8 +181,7 @@ export default function Post() {
           Product Information
         </div>
         <div className="text-3xl font-bit font-bold text-pretty sm:w-5/6 text-center py-12">
-          The TGS Lounge Set is a two piece, mid-weight, fleece tracksuit
-          featuring reverse appliqué artwork hand drawn by us.
+          Quincy.. IDK WHAT TO PUT HERE
         </div>
       </div>
     </div>
