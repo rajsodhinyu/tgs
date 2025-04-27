@@ -66,7 +66,7 @@ const HorizontalCarousel: React.FC<HorizontalCarouselProps> = ({ cards }) => {
 
 const ShopInfo: React.FC<ShopInfoProps> = ({ cards2 }) => {
   const [isDVD, setIsDVD] = useState(true);
-  const price = isDVD ? 40 : 30; // DVD is 40, CD is 30
+  const price = isDVD ? 20 : 14;
 
   return (
     <div className="flex font-title">
