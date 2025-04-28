@@ -107,7 +107,7 @@ export default function Post() {
           text-4xl md:text-5xl text-tgs-purple max-[340px]:w-80 w-full
         " //TODO ADD TITLE
       >
-        PRINT NAME HERE
+        Product Title
       </div>
       <div className="w-full flex justify-around flex-col flex-wrap sm:flex-nowrap sm:flex-row">
         <div className="flex mx-10 mt-10 w-60 md:w-fit place-self-center">
@@ -133,7 +133,7 @@ export default function Post() {
         <div
           className="text-3xl font-bit font-bold text-pretty sm:w-5/6 text-center py-12" //TODO ADD DESC
         >
-          add description here
+          product information
         </div>
       </div>
     </div>
