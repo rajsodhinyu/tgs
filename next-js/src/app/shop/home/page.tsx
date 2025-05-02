@@ -31,7 +31,7 @@ export default async function Post() {
         />
         <ShopCard
           title="Quintaro"
-          description="quincy idk what to "
+          description="DVD + CD"
           cover="https://cdn.sanity.io/images/fnvy29id/tgs/b4b61698e2bb56c3fb92b6d284a612a7e8ab94a0-3000x3000.jpg?h=1300&w=1300"
           url="/shop/product/quintaro"
         />
