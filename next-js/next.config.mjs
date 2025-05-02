@@ -8,6 +8,12 @@ const nextConfig = {
         port: "",
         pathname: "/images/fnvy29id/tgs/**",
       },
+      {
+        protocol: "https",
+        hostname: "place-hold.it",
+        port: "",
+        pathname: "/**",
+      },
     ],
   },
 };

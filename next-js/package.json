@@ -13,31 +13,27 @@
     "script eject": "react-scripts eject"
   },
   "dependencies": {
-    "@p5-wrapper/next": "^1.0.3",
-    "@p5-wrapper/react": "^4.4.2",
     "@sanity/image-url": "^1.1.0",
-    "@shopify/storefront-api-client": "^1.0.3",
-    "@vercel/analytics": "^1.4.1",
-    "@vercel/speed-insights": "^1.1.0",
-    "konva": "^9.3.16",
+    "@shopify/storefront-api-client": "^1.0.7",
+    "@vercel/analytics": "^1.5.0",
+    "@vercel/speed-insights": "^1.2.0",
     "next": "15.0.1",
-    "next-sanity": "^9.8.19",
-    "p5": "^1.11.2",
-    "pixi.js": "^8.6.2",
+    "next-sanity": "^9.10.2",
+    "p5": "^1.11.5",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-konva": "^18.2.10",
     "react-scripts": "^5.0.1"
   },
   "devDependencies": {
-    "@types/node": "^20.17.9",
+    "@types/node": "^20.17.31",
     "@types/p5": "^1.7.6",
-    "@types/react": "^18.3.12",
-    "@types/react-dom": "^18.3.1",
+    "@types/react": "^18.3.20",
+    "@types/react-dom": "^18.3.6",
     "eslint": "^8.57.1",
     "eslint-config-next": "14.2.5",
-    "postcss": "^8.4.49",
-    "tailwindcss": "^3.4.15",
-    "typescript": "^5.7.2"
+    "postcss": "^8.5.3",
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5.8.3"
   }
 }

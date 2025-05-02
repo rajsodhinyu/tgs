@@ -15,12 +15,12 @@ export default function Nav() {
               src="https://cdn.sanity.io/images/fnvy29id/tgs/6e0d6fefaf95cf0e570f958d10c13cf66265735a-1266x750.png?h=200"
             />
             <img
-              className="z-40 max-h-16 absolute left-3 top-6 max-lg:invisible"
+              className="z-40 max-h-16 w-auto absolute left-3 top-6 max-lg:invisible"
               src="https://cdn.sanity.io/images/fnvy29id/tgs/6e0d6fefaf95cf0e570f958d10c13cf66265735a-1266x750.png?h=200"
             />
             <Image
               className="z-0 sm:hidden group-hover:block absolute -left-2 -top-2 max-lg:invisible"
-              src="https://cdn.sanity.io/images/fnvy29id/tgs/409cbc55ba676a991fd6d75f8ba242ad7dc08cd1-240x192.gif?"
+              src="https://cdn.sanity.io/images/fnvy29id/tgs/409cbc55ba676a991fd6d75f8ba242ad7dc08cd1-240x192.gif"
               width={165}
               height={150}
               alt="animatedTGS"
