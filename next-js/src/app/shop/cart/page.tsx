@@ -150,16 +150,6 @@ export default async function Post() {
             </a>
           </div>
         </div>
-        <div
-          className=" text-center font-title font-bold
-              text-tgs-purple sm:text-3xl text-xl mt-24"
-        >
-          Shipping Information
-        </div>
-        <div className=" font-bit font-bold text-pretty text-center sm:py-5 text-xl">
-          Any orders placed after December 12th may experience delay in shipping
-          due to the holidays.
-        </div>
       </div>
     </div>
   );
