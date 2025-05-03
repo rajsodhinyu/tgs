@@ -45,7 +45,7 @@ export default async function Sidebar() {
       <div className="font-bold hover:underline hover:text-tgs-purple decoration-tgs-purple text-black flex shrink text-4xl font-bit leading-10 text-nowrap justify-center">
         <Link href="/blog-archive">ALL POSTS &gt;</Link>
       </div>
-      <div className="flex-col h-[160vw] lg:h-[125vw] overflow-y-auto">
+      <div className="flex-col h-[160vw] lg:h-[125vw] min-w-80 overflow-y-auto">
         {blogs.map((blog) => (
           <div key={blog._id} className="pt-3">
             <Link
