@@ -54,7 +54,7 @@ export default async function Sidebar() {
               target={tabResolver(blog.youtube)}
             >
               <Image
-                className="w-full lg:w-fit border-opacity-0 hover:border-opacity-100 hover:scale-95 border-4 border-tgs-purple rounded-md"
+                className="w-full h-auto object-cover border-opacity-0 hover:border-opacity-100 hover:scale-95 border-4 border-tgs-purple rounded-md"
                 src={`${eventImage(blog)}`}
                 alt={`${blog.name} Cover`}
                 width={400}
