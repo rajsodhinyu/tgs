@@ -57,8 +57,8 @@ export default async function Sidebar() {
                 className="w-full h-auto object-cover border-opacity-0 hover:border-opacity-100 hover:scale-95 border-4 border-tgs-purple rounded-md"
                 src={`${eventImage(blog)}`}
                 alt={`${blog.name} Cover`}
-                width={400}
-                height={400}
+                width={300}
+                height={300}
                 quality={100}
               />
             </Link>
