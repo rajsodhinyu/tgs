@@ -122,7 +122,7 @@ export default async function Page({
           alt={`${post.name}`}
         />
       </div>
-      <div className="xl:text-4xl text-3xl font-bold font-bit text-center">
+      <div className="xl:text-4xl text-3xl font-bold font-bit mt-4 text-center">
         {" "}
         {/* Title */}
         {post.name}

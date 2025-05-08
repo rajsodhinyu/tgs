@@ -7,107 +7,109 @@ const client = createStorefrontApiClient({
   apiVersion: "2024-04",
   publicAccessToken: "78a95c5656c69f0b57bec27d59a4e799",
 });
+
 const newEmptyCart = `
-    mutation {
-  cartCreate(input: {lines: []}) {
-    cart {
-      id
+  mutation {
+    cartCreate(input: {lines: []}) {
+      cart {
+        id
+      }
     }
   }
-}`;
+`;
 
 export async function GET(request: Request) {
-  const cookie = await cookies();
-  const cookieStore = cookie;
-  let action;
-  action = request.url.split("&")[0].split("?")[1].split("=")[1];
-  console.log(action);
-  let currentCart;
-  if (action == "clear") {
-    cookieStore.delete("cart");
-    const { data } = await client.request(newEmptyCart, {
-      variables: {
-        handle: "sample-product",
-      },
-    });
-    currentCart = cookieStore.set("cart", data.cartCreate.cart.id);
-
-    redirect("/shop/cart/");
-  }
-
-  const product = `gid://shopify/ProductVariant/${action}`;
-  currentCart = cookieStore.get("cart");
-  let cartbool = cookieStore.has("cart");
-  if (cartbool) {
-    console.log(`found ${currentCart?.value}`);
-    const addItemtoCart = `mutation {
-  cartLinesAdd(
-    cartId: "${currentCart?.value}"
-    lines: {merchandiseId: "${product}"}
-  ) {
-    cart {
-      id
-      checkoutUrl
+  try {
+    const cookieStore = await cookies();
+    const url = new URL(request.url);
+    const action = url.searchParams.get("size");
+    
+    if (!action) {
+      throw new Error("No action specified");
     }
-  }
-}`;
-    await client.request(addItemtoCart, {
-      variables: {
-        handle: "sample-product",
-      },
-    });
-  } else {
-    console.log("building new cart");
-    const newCartwithItem = `mutation {
+
+    if (action === "clear") {
+      // Clear the cart
+      cookieStore.delete("cart");
+      const { data } = await client.request(newEmptyCart);
+      if (!data?.cartCreate?.cart?.id) {
+        throw new Error("Failed to create new cart");
+      }
+      cookieStore.set("cart", data.cartCreate.cart.id);
+      redirect("/shop/cart/");
+    }
+
+    const product = `gid://shopify/ProductVariant/${action}`;
+    const currentCart = cookieStore.get("cart");
+    
+    if (currentCart?.value) {
+      // Try to add item to existing cart
+      const addItemtoCart = `
+        mutation {
+          cartLinesAdd(
+            cartId: "${currentCart.value}"
+            lines: {merchandiseId: "${product}"}
+          ) {
+            cart {
+              id
+              checkoutUrl
+            }
+          }
+        }
+      `;
+      
+      try {
+        await client.request(addItemtoCart);
+      } catch (error) {
+        // If adding to cart fails, create a new cart
+        console.error("Failed to add to existing cart:", error);
+        const { data } = await client.request(newEmptyCart);
+        if (!data?.cartCreate?.cart?.id) {
+          throw new Error("Failed to create new cart");
+        }
+        cookieStore.set("cart", data.cartCreate.cart.id);
+        // Try adding the item to the new cart
+        const newCartAdd = `
+          mutation {
+            cartLinesAdd(
+              cartId: "${data.cartCreate.cart.id}"
+              lines: {merchandiseId: "${product}"}
+            ) {
+              cart {
+                id
+                checkoutUrl
+              }
+            }
+          }
+        `;
+        await client.request(newCartAdd);
+      }
+    } else {
+      // Create new cart with item
+      const newCartwithItem = `
+        mutation {
           cartCreate(
             input: {lines: [{quantity: 1, merchandiseId: "${product}"}]}
           ) {
             cart {
               id
-              createdAt
-              updatedAt
-              lines(first: 10) {
-                edges {
-                  node {
-                    id
-                    merchandise {
-                      ... on ProductVariant {
-                        id
-                      }
-                    }
-                  }
-                }
-              }
-              cost {
-                totalAmount {
-                  amount
-                  currencyCode
-                }
-                subtotalAmount {
-                  amount
-                  currencyCode
-                }
-                totalTaxAmount {
-                  amount
-                  currencyCode
-                }
-                totalDutyAmount {
-                  amount
-                  currencyCode
-                }
-              }
               checkoutUrl
             }
           }
-        }`;
-    const { data } = await client.request(newCartwithItem, {
-      variables: {
-        handle: "sample-product",
-      },
-    });
-    cookieStore.set("cart", data.cartCreate.cart.id);
-    currentCart = data.cartCreate.cart.id;
-    console.log(`new cart: ${currentCart?.value}`);
+        }
+      `;
+      
+      const { data } = await client.request(newCartwithItem);
+      if (!data?.cartCreate?.cart?.id) {
+        throw new Error("Failed to create new cart");
+      }
+      cookieStore.set("cart", data.cartCreate.cart.id);
+    }
+    
+    redirect("/shop/cart/");
+  } catch (error) {
+    console.error("Cart operation error:", error);
+    // Redirect to cart page even on error - the cart page will handle the error state
+    redirect("/shop/cart/");
   }
-  redirect("/shop/cart/");
 }

@@ -66,101 +66,113 @@ const newEmptyCart = `
   }`;
 
 export default async function Post() {
-  const cookieStore = await cookies();
-  let cartCookie = cookieStore.get("cart")?.value;
-  if (cartCookie == null || cartCookie == "") {
-    console.log("cart is empty?");
-    let { data } = await client.request(newEmptyCart, {});
-    cartCookie = await data.cartCreate.cart.id;
-  }
-  const findCart = `
-    query {
-    cart(
-      id: "${cartCookie}"
-    ) {
-      checkoutUrl
-      totalQuantity
-      lines(first: 10) {
-        edges {
-          node {
-            id
-            quantity
+  try {
+    const cookieStore = await cookies();
+    let cartCookie = cookieStore.get("cart")?.value;
+    
+    // If no cart cookie exists or it's empty, create a new cart
+    if (!cartCookie) {
+      const { data } = await client.request(newEmptyCart);
+      if (!data?.cartCreate?.cart?.id) {
+        throw new Error("Failed to create new cart");
+      }
+      cartCookie = data.cartCreate.cart.id;
+    }
+
+    const findCart = `
+      query {
+        cart(id: "${cartCookie}") {
+          checkoutUrl
+          totalQuantity
+          lines(first: 10) {
+            edges {
+              node {
+                id
+                quantity
+              }
+            }
           }
         }
       }
-    }
-    }
     `;
 
-  const { data } = await client.request(findCart, {
-    variables: {
-      handle: "sample-product",
-    },
-  });
+    let cartData = await client.request(findCart);
+    
+    // If cart doesn't exist in Shopify, create a new one
+    if (!cartData?.data?.cart) {
+      const { data: newCartData } = await client.request(newEmptyCart);
+      if (!newCartData?.cartCreate?.cart?.id) {
+        throw new Error("Failed to create new cart");
+      }
+      cartCookie = newCartData.cartCreate.cart.id;
+      // Re-fetch the cart data
+      const refreshedData = await client.request(findCart);
+      if (!refreshedData?.data?.cart) {
+        throw new Error("Failed to fetch cart data");
+      }
+      cartData = refreshedData;
+    }
 
-  let checkoutURL = data?.cart?.checkoutUrl;
-  if (data?.cart?.totalQuantity == 0) {
-    checkoutURL = null;
-  }
-  const array = data?.cart.lines.edges;
-  {
-    console.log();
-    console.log("cart", cartCookie);
-    console.log();
-  }
-  return (
-    <div className="">
-      <br />
-      <div className="text-4xl font-bold font-bit" key={"test"}>
-        Your Cart:
-        <div className="border-dashed border-black border-2" key={"border"}>
-          {array?.map((node: any) => (
-            <div
-              key={`item ${node.node.id}`}
-              className="mb-6 -mt-6 font-title flex-col text-lg md:text-4xl"
-            >
-              <br />
-              <div key={node.id} className="flex-col ">
-                &ensp;[{node.node.quantity}] {getName(node.node.id)}
-                {getSize(node.node.id)}
-              </div>
-            </div>
-          ))}
-        </div>
+    let checkoutURL = cartData.data.cart?.checkoutUrl;
+    if (cartData.data.cart?.totalQuantity === 0) {
+      checkoutURL = null;
+    }
+    
+    const array = cartData.data.cart?.lines?.edges || [];
+    
+    return (
+      <div className="">
         <br />
-        <div className="font-bit font-bold flex justify-between -mt-8 sm:text-4xl text-xl">
-          <div className="justify-start ">
-            <Form action="/shop/cart/add">
-              <input type="hidden" id="clear" name="size" value="clear" />
-              <button
-                className="hover:underline decoration-from-font decoration-tgs-purple"
-                type="submit"
+        <div className="text-4xl font-bold font-bit" key={"test"}>
+          Your Cart:
+          <div className="border-dashed border-black border-2" key={"border"}>
+            {array.map((node: any) => (
+              <div
+                key={`item ${node.node.id}`}
+                className="mb-6 -mt-6 font-title flex-col text-lg md:text-4xl"
               >
-                EMPTY
-              </button>
-            </Form>
+                <br />
+                <div key={node.id} className="flex-col ">
+                  &ensp;[{node.node.quantity}] {getName(node.node.id)}
+                  {getSize(node.node.id)}
+                </div>
+              </div>
+            ))}
           </div>
-          <div>
-            <a
-              className="flex items-end hover:underline decoration-from-font decoration-tgs-purple"
-              href={checkoutURL}
-              target="_blank"
-            >
-              CHECKOUT
-            </a>
+          <br />
+          <div className="font-bit font-bold flex justify-between -mt-8 sm:text-4xl text-xl">
+            <div className="justify-start ">
+              <Form action="/shop/cart/add">
+                <input type="hidden" id="clear" name="size" value="clear" />
+                <button
+                  className="hover:underline decoration-from-font decoration-tgs-purple"
+                  type="submit"
+                >
+                  EMPTY
+                </button>
+              </Form>
+            </div>
+            <div>
+              {checkoutURL && (
+                <a
+                  className="flex items-end hover:underline decoration-from-font decoration-tgs-purple"
+                  href={checkoutURL}
+                  target="_blank"
+                >
+                  CHECKOUT
+                </a>
+              )}
+            </div>
           </div>
-        </div>
-        <div
-          className=" text-center font-title font-bold
-              text-tgs-purple sm:text-3xl text-xl mt-24"
-        >
-          Shipping Information
-        </div>
-        <div className=" font-bit font-bold text-pretty text-center sm:py-5 text-xl">
-          Any orders placed after December 12th may experience delay in shipping
-          due to the holidays.
         </div>
       </div>
-    </div>
-  );
+    );
+  } catch (error) {
+    console.error("Cart error:", error);
+    return (
+      <div className="text-4xl font-bold font-bit">
+        <p>There was an error loading your cart. Please try again.</p>
+      </div>
+    );
+  }
 }
