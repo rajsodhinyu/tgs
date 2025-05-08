@@ -1,12 +1,8 @@
 "use client";
 
 import Form from "next/form";
-//TODO ADD PICS
 const cards = [
-  "https://place-hold.it/800x1000.jpeg",
-  "https://place-hold.it/800x1000.jpeg",
-  "https://place-hold.it/800x1000.jpeg",
-  "https://place-hold.it/800x1000.jpeg",
+  "https://cdn.sanity.io/images/fnvy29id/tgs/5412a8ab860da900087faca78cb611e199d128f3-1499x1499.png?w=700&h=1000&fit=fillmax&bg=ffffff",
 ];
 
 interface HorizontalCarouselProps {
@@ -105,9 +101,9 @@ export default function Post() {
       <div
         className="text-center font-title font-bold
           text-4xl md:text-5xl text-tgs-purple max-[340px]:w-80 w-full
-        " //TODO ADD TITLE
+        "
       >
-        Product Title
+        &quot;The Eagle&quot; by Quincy Davis
       </div>
       <div className="w-full flex justify-around flex-col flex-wrap sm:flex-nowrap sm:flex-row">
         <div className="flex mx-10 mt-10 w-60 md:w-fit place-self-center">
@@ -131,9 +127,9 @@ export default function Post() {
           Product Information
         </div>
         <div
-          className="text-3xl font-bit font-bold text-pretty sm:w-5/6 text-center py-12" //TODO ADD DESC
+          className="text-3xl font-bit font-bold text-pretty sm:w-5/6 text-center py-12"
         >
-          product information
+          20 x 24 inch print on Moab Luster paper
         </div>
       </div>
     </div>
