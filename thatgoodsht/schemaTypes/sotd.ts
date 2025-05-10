@@ -25,7 +25,7 @@ export const sotdType = defineType({
       title: 'Date and time to release',
       description: 'Pick a date with calendar button, time is in military.',
       type: 'datetime',
-      initialValue: '2024-12-01T13:00:00Z',
+      initialValue: '2025-05-12T12:00:00Z',
       validation: (rule) => rule.required().min('2024-12-01T13:00:00Z'),
       options: {
         dateFormat: 'dddd, MMMM Do',
