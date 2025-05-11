@@ -9,7 +9,7 @@ import { sanityFetch } from "../client";
 const projectId = "fnvy29id";
 const dataset = "tgs";
 
-const BLOGS_QUERY = `*[_type == "post"]{_id, name, youtube,youtubeURL, thumb, writer, banner,playlistURL, content, slug, date}|order(date desc)`;
+const BLOGS_QUERY = `*[_type == "post"]{_id, name, youtube,youtubeURL, thumb, writer, banner,playlistURL, content, slug, date, description}|order(date desc)`;
 const urlFor = (source: SanityImageSource) =>
   projectId && dataset
     ? imageUrlBuilder({ projectId, dataset }).image(source)
@@ -25,19 +25,13 @@ export default async function Sidebar() {
   const blogs = await sanityFetch<SanityDocument[]>({ query: BLOGS_QUERY });
 
   function linkResolver(isYoutube: boolean, youtubeLink: string, slug: any) {
-    if (isYoutube) {
-      return `${youtubeLink}`;
-    } else {
-      return `/blog/post/${slug.current}`;
-    }
+    // Always return local URL for both regular and YouTube posts
+    return `/blog/post/${slug.current}`;
   }
 
   function tabResolver(isYoutube: boolean) {
-    if (isYoutube) {
-      return `_blank`;
-    } else {
-      return `_self`;
-    }
+    // Always open in same tab since we're not redirecting to YouTube anymore
+    return `_self`;
   }
 
   return (
