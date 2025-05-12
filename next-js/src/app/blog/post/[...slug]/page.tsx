@@ -91,9 +91,12 @@ function renderBanner(post: any) {
     return renderYoutubeEmbed(post.youtubeURL);
   } else {
     return (
-      <img
+      <Image
         className="rounded-md"
         src={`${bannerResolver(post)}`}
+        priority={true}
+        width={1920}
+        height={1080}
         alt={`${post.name}`}
       />
     );
@@ -164,14 +167,12 @@ export default async function Page({
     <div className="font-roc text-lg text-balance max-md:mt-14 max-[300px]:w-80">
       <div className="place-items-center">{renderBanner(post)}</div>
       <div className="xl:text-4xl text-2xl font-bold font-bit mt-4 text-center">
-        {" "}
         {/* Title */}
         {post.name}
       </div>
       <div className="xl:text-2xl text-xl font-bit text-center">
-        {" "}
         {/* Writer */}
-        {post.writer && `${await findWriter(post.writer)} · `}
+        {post.writer && `${await findWriter(post.writer)} • `}
         {post.date &&
           new Date(post.date).toLocaleDateString(undefined, {
             year: "numeric",
