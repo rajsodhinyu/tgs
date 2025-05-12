@@ -35,32 +35,34 @@ export default async function Sidebar() {
   }
 
   return (
-    <div className="*:m-1 min-w-80">
-      <div className="font-bold hover:underline hover:text-tgs-purple decoration-tgs-purple text-black flex shrink text-4xl font-bit leading-10 text-nowrap justify-center">
-        <Link href="/blog-archive">ALL POSTS &gt;</Link>
-      </div>
-      <div className="flex-col h-[160vw] lg:h-[125vw] min-w-80 overflow-y-auto">
-        {blogs.map((blog) => (
-          <div key={blog._id} className="pt-3">
-            <Link
-              className=""
-              href={`${linkResolver(blog.youtube, blog.youtubeURL, blog.slug)}`}
-              target={tabResolver(blog.youtube)}
-            >
-              <Image
-                className="h-auto object-cover w-80 border-opacity-0 hover:border-opacity-100 hover:scale-95 border-4 border-tgs-purple rounded-md"
-                src={`${eventImage(blog)}`}
-                alt={`${blog.name} Cover`}
-                width={300}
-                height={300}
-                quality={100}
-              />
-            </Link>
-          </div>
-        ))}
-      </div>
-      <div className="font-bold hover:underline hover:text-tgs-purple decoration-tgs-purple text-black flex text-4xl font-bit leading-10 text-nowrap justify-center">
-        <Link href="/blog-archive">VIEW ALL &gt;</Link>
+    <div className="flex flex-col items-center w-full">
+      <div className="*:m-1 w-80">
+        <div className="font-bold hover:underline hover:text-tgs-purple decoration-tgs-purple text-black flex shrink text-4xl font-bit leading-10 text-nowrap justify-center">
+          <Link href="/blog-archive">ALL POSTS &gt;</Link>
+        </div>
+        <div className="flex-col h-[140vw] lg:h-[125vw] overflow-y-auto w-full">
+          {blogs.map((blog) => (
+            <div key={blog._id} className="pt-3 flex justify-center">
+              <Link
+                className=""
+                href={`${linkResolver(blog.youtube, blog.youtubeURL, blog.slug)}`}
+                target={tabResolver(blog.youtube)}
+              >
+                <Image
+                  className="h-auto object-cover w-80 border-opacity-0 hover:border-opacity-100 hover:scale-95 border-4 border-tgs-purple rounded-md"
+                  src={`${eventImage(blog)}`}
+                  alt={`${blog.name} Cover`}
+                  width={300}
+                  height={300}
+                  quality={100}
+                />
+              </Link>
+            </div>
+          ))}
+        </div>
+        <div className="font-bold hover:underline hover:text-tgs-purple decoration-tgs-purple text-black flex text-4xl font-bit leading-10 text-nowrap justify-center">
+          <Link href="/blog-archive">VIEW ALL &gt;</Link>
+        </div>
       </div>
     </div>
   );
