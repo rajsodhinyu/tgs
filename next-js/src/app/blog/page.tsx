@@ -28,14 +28,15 @@ export default async function Page() {
   const blogs = await sanityFetch<SanityDocument[]>({ query: PLAYLIST_Q });
   return (
     <div className="place-items-center max-md:mt-16 ">
-      <Link href={"https://www.youtube.com/watch?v=3HpYVOrtnIo"}>
+      <Link href={"/blog/post/the-niontay-interview"}>
         <div>
           <Image
             className="rounded-md border-opacity-0 hover:scale-[0.98] hover:border-opacity-100 border-tgs-purple border-4"
             priority={true}
-            src="https://cdn.sanity.io/images/fnvy29id/tgs/dd7cb91d83125a3ce7057ad454479d8b1e128d6b-1440x1080.png"
+            src="https://cdn.sanity.io/images/fnvy29id/tgs/07cbfd36f3999b49d663837dec4a203c00f33701-1440x1080.png"
             alt=""
             width={1440}
+            quality={100}
             height={1080}
           />
         </div>
