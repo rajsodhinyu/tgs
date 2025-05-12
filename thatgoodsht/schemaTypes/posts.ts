@@ -40,6 +40,19 @@ export const postType = defineType({
               })
         }),
         defineField({
+            name: 'description',
+            title: 'Video Description',
+            description: 'A brief description of the YouTube video that will appear on the post page',
+            type: 'text',
+            hidden: ({document}) => !document?.youtube, //only show for YouTube posts
+            validation: rule => rule.custom((description, context) => { 
+                if ((context.document?.youtube) && (context.document?.description) == undefined) {
+                        return 'Please add a description for the YouTube video'
+                }
+                return true
+              })
+        }),
+        defineField({
             name: 'thumb',
             title: 'Thumbnail',
             description: 'Must be cropped to a square before uploading!',
