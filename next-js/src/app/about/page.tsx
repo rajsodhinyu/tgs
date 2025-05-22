@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export default function Page() {
   return (
-    <div className="mt-20 sm:px-40 mx-8">
+    <div className="md:mt-10 mt-20 sm:px-40 mx-8">
       <div className="md:text-lg text-sm font-black font-bit text-pretty text-center sm:text-balance">
         <p>
           {" "}
