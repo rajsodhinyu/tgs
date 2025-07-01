@@ -161,7 +161,7 @@ const components: PortableTextComponents = {
         <div className="my-6">
           <Image
             className="rounded-md w-full"
-            src={urlFor(value).url() || ""}
+            src={urlFor(value)?.url() || ""}
             alt={value.alt || ""}
             width={1200}
             height={800}
