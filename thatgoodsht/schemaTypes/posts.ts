@@ -75,8 +75,8 @@ export const postType = defineType({
     }),
     defineField({
       name: 'playlistURL',
-      title: 'Spotify Embed',
-      description: 'Optional',
+      title: 'Primary Spotify Embed',
+      description: 'Will go underneath the title!',
       type: 'url',
     }),
     defineField({
@@ -85,10 +85,9 @@ export const postType = defineType({
       type: 'array',
       of: [{type: 'block'}],
       description:
-        'All links must start with https:// and are pink, Italics are purple. Check formatting before posting. Enters and Shift-Enters are treated differently!',
+        'Links must start with https:// and are pink, Italics are purple. Enters and Shift-Enters are treated differently! Check formatting before posting.',
       validation: (rule) =>
         rule.custom((writer, context) => {
-          // make required if blog post
           if (!context.document?.youtube && context.document?.content == undefined) {
             return 'Required'
           }
