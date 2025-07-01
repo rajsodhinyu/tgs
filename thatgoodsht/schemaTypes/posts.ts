@@ -1,5 +1,6 @@
 import {defineField, defineType} from 'sanity'
 import {media, mediaAssetSource} from 'sanity-plugin-media'
+import blockContent from './blockContent'
 
 export const postType = defineType({
   name: 'post',
@@ -82,8 +83,7 @@ export const postType = defineType({
     defineField({
       name: 'content',
       title: 'Article',
-      type: 'array',
-      of: [{type: 'block'}],
+      type: 'blockContent',
       description:
         'Links must start with https:// and are pink, Italics are purple. Enters and Shift-Enters are treated differently! Check formatting before posting.',
       validation: (rule) =>

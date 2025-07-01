@@ -152,6 +152,52 @@ const components: PortableTextComponents = {
       );
     },
   },
+  types: {
+    image: ({ value }) => {
+      if (!value?.asset?._ref) {
+        return null;
+      }
+      return (
+        <div className="my-6">
+          <Image
+            className="rounded-md w-full"
+            src={urlFor(value).url() || ""}
+            alt={value.alt || ""}
+            width={1200}
+            height={800}
+            style={{ width: "100%", height: "auto" }}
+          />
+        </div>
+      );
+    },
+    spotifyEmbed: ({ value }) => {
+      if (!value?.url) {
+        return null;
+      }
+
+      const parts = value.url.split("/");
+      if (parts.length < 5) {
+        return <div>Invalid Spotify URL</div>;
+      }
+
+      return (
+        <div className="w-full my-6">
+          <iframe
+            src={`https://open.spotify.com/embed/${parts[3]}/${parts[4]}`}
+            width="100%"
+            height="180"
+            allow="clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+            className="rounded-md"
+          ></iframe>
+          {value.caption && (
+            <p className="text-sm text-gray-600 mt-2 text-center">
+              {value.caption}
+            </p>
+          )}
+        </div>
+      );
+    },
+  },
 };
 
 export default async function Page({
