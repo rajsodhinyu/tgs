@@ -1,4 +1,5 @@
 import {defineType, defineArrayMember} from 'sanity'
+import {PlayIcon, ImageIcon} from '@sanity/icons'
 
 export default defineType({
   title: 'Block Content',
@@ -42,12 +43,48 @@ export default defineType({
         ],
       },
     }),
-    // You can add additional types here. Note that you can't use
-    // primitive types such as 'string' and 'number' in the same array
-    // as a block type.
     defineArrayMember({
       type: 'image',
       options: {hotspot: true},
+      icon: ImageIcon,
+    }),
+    defineArrayMember({
+      title: 'Spotify',
+      name: 'spotifyEmbed',
+      icon: PlayIcon,
+      type: 'object',
+      fields: [
+        {
+          title: 'Spotify URL',
+          name: 'url',
+          type: 'url',
+          description: 'Paste the Spotify playlist, album, or track URL',
+          validation: (Rule) =>
+            Rule.required()
+              .uri({
+                scheme: ['https'],
+                allowRelative: false,
+              })
+              .custom((url) => {
+                if (!url?.includes('spotify.com')) {
+                  return 'URL must be a valid Spotify link'
+                }
+                return true
+              }),
+        },
+      ],
+      preview: {
+        select: {
+          title: 'url',
+          subtitle: 'caption',
+        },
+        prepare({title, subtitle}) {
+          return {
+            title: 'Spotify Embed',
+            subtitle: subtitle || title,
+          }
+        },
+      },
     }),
   ],
 })
