@@ -123,6 +123,9 @@ const components: PortableTextComponents = {
         {children} <br />
       </p>
     ),
+    blockquote: ({ children }) => (
+      <div className="text-sm text-center -mt-4 font-thin ">{children}</div>
+    ),
   },
   list: {
     // Ex. 1: customizing common list types
@@ -181,7 +184,7 @@ const components: PortableTextComponents = {
       }
 
       return (
-        <div className="w-full my-6">
+        <div className="w-full">
           <iframe
             src={`https://open.spotify.com/embed/${parts[3]}/${parts[4]}`}
             width="100%"
