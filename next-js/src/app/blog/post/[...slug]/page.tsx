@@ -116,7 +116,7 @@ const components: PortableTextComponents = {
   block: {
     // Ex. 1: customizing common block types
     h1: ({ children }) => (
-      <h1 className="text-2xl text-blue-800">{children}</h1>
+      <h1 className="text-center text-2xl font-bit">{children}</h1>
     ),
     normal: ({ children }) => (
       <p>
@@ -124,7 +124,7 @@ const components: PortableTextComponents = {
       </p>
     ),
     blockquote: ({ children }) => (
-      <div className="text-sm text-center -mt-4 font-thin ">{children}</div>
+      <div className="text-sm text-center font-thin ">{children}</div>
     ),
   },
   list: {
@@ -161,7 +161,7 @@ const components: PortableTextComponents = {
         return null;
       }
       return (
-        <div className="my-6">
+        <div className="my-2">
           <Image
             className="rounded-md w-full"
             src={urlFor(value)?.url() || ""}
@@ -184,7 +184,7 @@ const components: PortableTextComponents = {
       }
 
       return (
-        <div className="w-full">
+        <div className="w-full -mb-4">
           <iframe
             src={`https://open.spotify.com/embed/${parts[3]}/${parts[4]}`}
             width="100%"
