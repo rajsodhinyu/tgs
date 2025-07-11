@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "https://cdn.sanity.io/images/fnvy29id/tgs/07cbfd36f3999b49d663837dec4a203c00f33701-1440x1080.png",
+        url: "https://cdn.sanity.io/images/fnvy29id/tgs/0b9d054b926dab0bdeed1ebe7427de303ccaec98-2880x2160.png",
         width: 1440,
         height: 1080,
         alt: "That Good Sh*t! Blog",
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
     description:
       "That Good Sh*t! because good music transcends genre. Our mission is to build community around shared love of music.",
     images: [
-      "https://cdn.sanity.io/images/fnvy29id/tgs/07cbfd36f3999b49d663837dec4a203c00f33701-1440x1080.png",
+      "https://cdn.sanity.io/images/fnvy29id/tgs/0b9d054b926dab0bdeed1ebe7427de303ccaec98-2880x2160.png",
     ],
   },
 };
@@ -58,12 +58,16 @@ export default async function Page() {
   const blogs = await sanityFetch<SanityDocument[]>({ query: PLAYLIST_Q });
   return (
     <div className="place-items-center max-md:mt-16 ">
-      <Link href={"/blog/post/the-niontay-interview"}>
+      <Link
+        href={
+          "/blog/post/our-first-live-interview-event-w-mavi-adidas-originals"
+        }
+      >
         <div>
           <Image
             className="rounded-md border-opacity-0 hover:scale-[0.98] hover:border-opacity-100 border-tgs-purple border-4"
             priority={true}
-            src="https://cdn.sanity.io/images/fnvy29id/tgs/07cbfd36f3999b49d663837dec4a203c00f33701-1440x1080.png"
+            src="https://cdn.sanity.io/images/fnvy29id/tgs/0b9d054b926dab0bdeed1ebe7427de303ccaec98-2880x2160.png"
             alt=""
             width={1440}
             quality={100}
