@@ -12,6 +12,7 @@ import { SanityImageSource } from "@sanity/image-url/lib/types/types";
 import imageUrlBuilder from "@sanity/image-url";
 import { writer } from "repl";
 import Link from "next/link";
+import { Metadata } from "next";
 
 const projectId = "fnvy29id";
 const dataset = "tgs";
@@ -202,6 +203,98 @@ const components: PortableTextComponents = {
     },
   },
 };
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const slug = (await params).slug;
+  const SLUG_QUERY = `*[_type == "post" && slug.current == "${slug}"]{_id, name, youtube, youtubeURL, thumb, writer, banner, playlistURL, content, slug, date, description}`;
+  const posts = await sanityFetch<SanityDocument[]>({ query: SLUG_QUERY });
+  const post = posts[0];
+
+  if (!post) {
+    return {
+      title: "Post Not Found",
+      description: "The requested blog post could not be found.",
+    };
+  }
+
+  // Get the image URL for OpenGraph
+  const getImageUrl = () => {
+    if (post.youtube && post.youtubeURL) {
+      // For YouTube videos, use the YouTube thumbnail
+      const getYoutubeID = (url: string) => {
+        const regExp =
+          /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
+        const match = url.match(regExp);
+        return match && match[7].length === 11 ? match[7] : null;
+      };
+      const videoID = getYoutubeID(post.youtubeURL);
+      if (videoID) {
+        return `https://img.youtube.com/vi/${videoID}/maxresdefault.jpg`;
+      }
+    }
+
+    // Use banner if available, otherwise use thumb
+    if (post.thumb) {
+      return urlFor(post.thumb)?.fit("crop").width(700).height(700)?.url();
+    }
+
+    return null;
+  };
+
+  const imageUrl = getImageUrl();
+  const writerName = post.writer ? await findWriter(post.writer) : null;
+  const formattedDate = post.date
+    ? new Date(post.date).toLocaleDateString(undefined, {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        timeZone: "UTC",
+      })
+    : null;
+
+  const title = post.name || "Blog Post";
+  const description =
+    post.description ||
+    `${writerName ? `By ${writerName}` : ""}${writerName && formattedDate ? " • " : ""}${formattedDate || ""}`;
+
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      type: "article",
+      ...(imageUrl && {
+        images: [
+          {
+            url: imageUrl,
+            width: post.youtube ? 1280 : post.banner ? 1280 : 700,
+            height: post.youtube ? 720 : post.banner ? 720 : 700,
+            alt: title,
+          },
+        ],
+      }),
+      ...(post.date && {
+        publishedTime: new Date(post.date).toISOString(),
+      }),
+      ...(writerName && {
+        authors: [writerName],
+      }),
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      ...(imageUrl && {
+        images: [imageUrl],
+      }),
+    },
+  };
+}
 
 export default async function Page({
   params,
