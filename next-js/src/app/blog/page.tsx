@@ -6,6 +6,36 @@ import { SanityDocument } from "next-sanity";
 import { SanityImageSource } from "@sanity/image-url/lib/types/types";
 import imageUrlBuilder from "@sanity/image-url";
 import Link from "next/link";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "That Good Sh*t!",
+  description:
+    "That Good Sh*t! because good music transcends genre. Our mission is to build community around shared love of music.",
+  openGraph: {
+    title: "That Good Sh*t!",
+    description:
+      "That Good Sh*t! because good music transcends genre. Our mission is to build community around shared love of music.",
+    type: "website",
+    images: [
+      {
+        url: "https://cdn.sanity.io/images/fnvy29id/tgs/07cbfd36f3999b49d663837dec4a203c00f33701-1440x1080.png",
+        width: 1440,
+        height: 1080,
+        alt: "That Good Sh*t! Blog",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "That Good Sh*t!",
+    description:
+      "That Good Sh*t! because good music transcends genre. Our mission is to build community around shared love of music.",
+    images: [
+      "https://cdn.sanity.io/images/fnvy29id/tgs/07cbfd36f3999b49d663837dec4a203c00f33701-1440x1080.png",
+    ],
+  },
+};
 
 const projectId = "fnvy29id";
 const dataset = "tgs";

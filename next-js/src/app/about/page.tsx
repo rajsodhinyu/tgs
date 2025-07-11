@@ -1,4 +1,34 @@
 import Image from "next/image";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "About - That Good Sh*t!",
+  description:
+    "That Good Sh*t! because good music transcends genre. Our mission is to build community around shared love of music.",
+  openGraph: {
+    title: "About - That Good Sh*t!",
+    description:
+      "That Good Sh*t! because good music transcends genre. Our mission is to build community around shared love of music.",
+    type: "website",
+    images: [
+      {
+        url: "https://cdn.sanity.io/images/fnvy29id/tgs/b5cee228b7299f1fd664e36a34f48678a30cb3d0-1250x1000.jpg",
+        width: 1250,
+        height: 1000,
+        alt: "That Good Sh*t! Team",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "About - That Good Sh*t!",
+    description:
+      "That Good Sh*t! because good music transcends genre. Our mission is to build community around shared love of music.",
+    images: [
+      "https://cdn.sanity.io/images/fnvy29id/tgs/b5cee228b7299f1fd664e36a34f48678a30cb3d0-1250x1000.jpg",
+    ],
+  },
+};
 
 export default function Page() {
   return (
