@@ -125,14 +125,16 @@ function shuffleArray(array) {
  */
 function assignReleaseDates(mp3Data, options = {}) {
   const {
-    startDate = config.import.startDate,
+    startDate,
     interval = config.import.daysInterval,
     randomizeDates = false, // Changed from 'randomize' to be clearer
     randomizeOrder = true, // New: randomize song order by default
     timeOfDay = config.import.releaseTimeOfDay,
   } = options;
 
-  const baseDate = parseISO(startDate);
+  // Use config default if startDate is null/undefined
+  const finalStartDate = startDate || config.import.startDate;
+  const baseDate = parseISO(finalStartDate);
 
   // Shuffle the song order by default (unless explicitly disabled)
   const orderedData = randomizeOrder ? shuffleArray(mp3Data) : mp3Data;

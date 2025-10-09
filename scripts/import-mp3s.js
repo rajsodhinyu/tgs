@@ -22,7 +22,7 @@ function showUsage() {
     "  --keep-order       Keep original file order (don't shuffle songs)",
   );
   console.log(
-    "  --start-date       Starting date for releases (ISO format, default: 2025-01-15T08:00:00Z)",
+    "  --start-date       Starting date for releases (ISO format, default: Oct 9, change in config.js)",
   );
   console.log(
     "  --dry-run          Generate files but don't run Sanity import",
