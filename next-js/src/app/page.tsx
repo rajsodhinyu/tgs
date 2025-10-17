@@ -105,17 +105,26 @@ export default function TourPage() {
         >
           <img src="/portland2.png" alt="Portland" className="w-auto h-16" />
         </a>
+
         <img
           src="/signup.png"
           alt="Sign Up"
           className="w-auto invisible h-[70px]"
         />
-        <img src="/signup.png" alt="Sign Up" className="w-auto h-20" />
-        <img
-          src="/signup.png"
-          alt="Sign Up"
-          className="w-auto invisible h-[30px]"
-        />
+
+        <a
+          href="https://laylo.com/tgs"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <img src="/signup.png" alt="Sign Up" className="w-auto h-20" />
+
+          <img
+            src="/signup.png"
+            alt="Sign Up"
+            className="w-auto invisible h-[30px]"
+          />
+        </a>
         <a
           href="https://www.ticketweb.com/event/maxo-annabelle-igwe-aka-quincy-brick-and-mortar-music-hall-tickets/14624133?pl=bnm"
           target="_blank"
@@ -127,7 +136,11 @@ export default function TourPage() {
 
       {/* Mobile tour stop images - bottom left */}
       <div className="sm:hidden absolute bottom-20 right-0 z-30 flex flex-col items-end p-4 space-y-2">
-        <a href="https://www.pi.fyi/" target="_blank" rel="noopener noreferrer">
+        <a
+          href="https://www.pi.fyi/event/cmgu7f29i01q0p53tiugwis2l"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           <img
             src="/neapolishit.png"
             alt="Neapolishit"
@@ -145,12 +158,13 @@ export default function TourPage() {
 
       {/* Desktop tour stop images - positioned individually */}
       {/* Sign up - top right */}
-      <img
-        src="/signup-desktop.png"
-        alt="Sign Up"
-        className="max-sm:hidden absolute top-0 right-0 z-30 w-auto h-32 lg:h-40 xl:h-64 "
-      />
-
+      <a href="https://laylo.com/tgs" target="_blank" rel="noopener noreferrer">
+        <img
+          src="/signup-desktop.png"
+          alt="Sign Up"
+          className="max-sm:hidden absolute top-0 right-0 z-30 w-auto h-32 lg:h-40 xl:h-64 "
+        />
+      </a>
       {/* Seattle - top, quarter from right */}
       <a
         href="https://www.axs.com/events/1183946/wynne-tickets?skin=barboza"
@@ -195,7 +209,7 @@ export default function TourPage() {
 
       {/* Neapolishit - bottom right area */}
       <a
-        href="https://www.pi.fyi/"
+        href="https://www.pi.fyi/event/cmgu7f29i01q0p53tiugwis2l"
         target="_blank"
         rel="noopener noreferrer"
         className="max-sm:hidden absolute bottom-36 xl:bottom-28 right-5 z-30"
@@ -212,7 +226,7 @@ export default function TourPage() {
         href="https://www.ticketmaster.com/event/0900634F3A568A8C"
         target="_blank"
         rel="noopener noreferrer"
-        className="max-sm:hidden absolute bottom-12 xl:bottom-0 right-5 z-30"
+        className="hidden absolute bottom-12 xl:bottom-0 right-5 z-30"
       >
         <img src="/la.png" alt="LA" className="w-auto  h-20 xl:h-24" />
       </a>
