@@ -109,7 +109,7 @@ export default function TourPage() {
         <img
           src="/signup.png"
           alt="Sign Up"
-          className="w-auto invisible h-[70px]"
+          className="w-auto invisible h-[30px]"
         />
 
         <a
@@ -117,12 +117,12 @@ export default function TourPage() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          <img src="/signup.png" alt="Sign Up" className="w-auto h-20" />
+          <img src="/signup.png" alt="Sign Up" className="w-auto h-24" />
 
           <img
             src="/signup.png"
             alt="Sign Up"
-            className="w-auto invisible h-[30px]"
+            className="w-auto invisible h-[20px]"
           />
         </a>
         <a
@@ -130,21 +130,21 @@ export default function TourPage() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          <img src="/sf2.png" alt="San Francisco" className="w-auto h-16" />
+          <img src="/sf2.png" alt="San Francisco" className="w-auto h-20" />
         </a>
       </div>
 
       {/* Mobile tour stop images - bottom left */}
-      <div className="sm:hidden absolute bottom-20 right-0 z-30 flex flex-col items-end p-4 space-y-2">
+      <div className="sm:hidden absolute bottom-28 right-0 z-30 flex flex-col items-end p-4 space-y-6">
         <a
           href="https://www.pi.fyi/event/cmgu7f29i01q0p53tiugwis2l"
           target="_blank"
           rel="noopener noreferrer"
         >
           <img
-            src="/neapolishit.png"
+            src="/neapolishit2.png"
             alt="Neapolishit"
-            className="w-auto w-[300px]"
+            className="w-[350px]"
           />
         </a>
         <a
@@ -152,7 +152,7 @@ export default function TourPage() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          <img src="/la.png" alt="LA" className="w-auto w-[330px] hidden" />
+          <img src="/la2.png" alt="LA" className="w-[270px]" />
         </a>
       </div>
 
@@ -203,7 +203,7 @@ export default function TourPage() {
         <img
           src="/sf-desktop.png"
           alt="San Francisco"
-          className="w-auto h-20 xl:h-24"
+          className="w-auto h-14 lg:h-20 xl:h-24"
         />
       </a>
 
@@ -212,12 +212,12 @@ export default function TourPage() {
         href="https://www.pi.fyi/event/cmgu7f29i01q0p53tiugwis2l"
         target="_blank"
         rel="noopener noreferrer"
-        className="max-sm:hidden absolute bottom-36 xl:bottom-28 right-5 z-30"
+        className="max-sm:hidden absolute bottom-36 xl:bottom-44 right-5 z-30"
       >
         <img
-          src="/neapolishit.png"
+          src="/neapolishit2.png"
           alt="Neapolishit"
-          className="w-auto h-20 xl:h-24"
+          className="w-auto h-14 lg:h-20 xl:h-24"
         />
       </a>
 
@@ -226,9 +226,9 @@ export default function TourPage() {
         href="https://www.ticketmaster.com/event/0900634F3A568A8C"
         target="_blank"
         rel="noopener noreferrer"
-        className="hidden absolute bottom-12 xl:bottom-0 right-5 z-30"
+        className=" absolute bottom-12  right-5 z-30"
       >
-        <img src="/la.png" alt="LA" className="w-auto  h-20 xl:h-24" />
+        <img src="/la2.png" alt="LA" className="w-auto  h-14 lg:h-20 xl:h-24" />
       </a>
 
       {/* Van animated along path - Desktop */}
