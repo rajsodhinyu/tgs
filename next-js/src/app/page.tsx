@@ -59,7 +59,7 @@ export default function TourPage() {
           className="absolute inset-0 w-full h-full object-cover xl:object-contain max-sm:hidden"
         />
         <img
-          src="/tour-map-mobile2.png"
+          src="/tour-map-mobile4.png"
           alt="West Coast Tour Map Mobile"
           className="absolute inset-0 w-full h-full object-cover sm:hidden pointer-events-none"
         />
