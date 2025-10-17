@@ -54,7 +54,7 @@ export default function TourPage() {
       {/* Image */}
       <div className="absolute inset-0 z-20 overflow-visible">
         <img
-          src="/tour-map4.png"
+          src="/tour-map5.png"
           alt="West Coast Tour Map"
           className="absolute inset-0 w-full h-full object-cover xl:object-contain max-sm:hidden"
         />
@@ -231,7 +231,7 @@ export default function TourPage() {
         </defs>
         <g>
           <image
-            href="/van.png"
+            href="/van2.png"
             width="100"
             height="100"
             x="-30"
@@ -260,7 +260,7 @@ export default function TourPage() {
         </defs>
         <g>
           <image
-            href="/van.png"
+            href="/van2.png"
             width="80"
             height="80"
             x="-20"
