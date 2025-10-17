@@ -152,7 +152,7 @@ export default function TourPage() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          <img src="/la.png" alt="LA" className="w-auto w-[330px]" />
+          <img src="/la.png" alt="LA" className="w-auto w-[330px] hidden" />
         </a>
       </div>
 
