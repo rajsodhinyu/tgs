@@ -226,7 +226,7 @@ export default function TourPage() {
         href="https://www.ticketmaster.com/event/0900634F3A568A8C"
         target="_blank"
         rel="noopener noreferrer"
-        className=" absolute bottom-12  right-5 z-30"
+        className=" max-sm:hidden absolute bottom-12  right-5 z-30"
       >
         <img src="/la2.png" alt="LA" className="w-auto  h-14 lg:h-20 xl:h-24" />
       </a>
