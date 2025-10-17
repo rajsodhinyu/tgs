@@ -9,7 +9,7 @@ export default function Nav() {
         {/*whole nav bar*/}
         <div className="shrink h-12 flex gap-3 sm:gap-6 items-center lg:gap-8 justify-start ">
           {/*everything not inc SOTD?*/}
-          <Link href="/" className="group">
+          <Link href="/home" className="group">
             <img
               className="z-40 max-h-16 lg:invisible"
               src="https://cdn.sanity.io/images/fnvy29id/tgs/6e0d6fefaf95cf0e570f958d10c13cf66265735a-1266x750.png?h=200"
@@ -27,10 +27,17 @@ export default function Nav() {
               quality={100}
             />
           </Link>
+
           <Link href="/about">
             <img
               className="min-h-5 max-h-16 min-w-12"
               src="https://cdn.sanity.io/images/fnvy29id/tgs/2db78d790b6062d7cb293b895f1d8cd3748353ef-1786x755.png?h=200"
+            />
+          </Link>
+          <Link href="/">
+            <img
+              className="min-h-6 max-h-16 min-w-16"
+              src="https://cdn.sanity.io/images/fnvy29id/tgs/1736eb5623483e4b3bb14cdc0e21adca468dfc92-396x184.png?h=200"
             />
           </Link>
           <Link href="/blog">
@@ -39,12 +46,7 @@ export default function Nav() {
               src="https://cdn.sanity.io/images/fnvy29id/tgs/9a5244d1c770d1e667006b7f54f5738745847917-1533x846.png?h=200"
             />
           </Link>
-          <Link href="/events">
-            <img
-              className="min-h-6 max-h-16 min-w-16"
-              src="https://cdn.sanity.io/images/fnvy29id/tgs/a82c27d8c7dcd43014eaa1fdc852185942645f7e-2037x795.png?h=200"
-            />
-          </Link>
+
           <Link href="/shop" scroll={true}>
             <img
               className="min-h-5 max-h-16 min-w-12"

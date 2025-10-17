@@ -35,7 +35,7 @@ const dials = () => {
       s.background(26, 27, 35); // Black background
       let path = s.getURLPath();
       s.text(path.toString(), width / 2, height / 2);
-      if (path.toString() == "") {
+      if (path.toString() == "home") {
         // Loop through the grid
         for (let i = 0; i < cols; i++) {
           for (let j = 0; j < rows; j++) {
