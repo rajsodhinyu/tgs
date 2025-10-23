@@ -152,7 +152,7 @@ export default function TourPage() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          <img src="/la2.png" alt="LA" className="w-[270px]" />
+          <img src="/la3.png" alt="LA" className="w-[270px]" />
         </a>
       </div>
 
@@ -228,7 +228,7 @@ export default function TourPage() {
         rel="noopener noreferrer"
         className=" max-sm:hidden absolute bottom-12  right-5 z-30"
       >
-        <img src="/la2.png" alt="LA" className="w-auto  h-14 lg:h-20 xl:h-24" />
+        <img src="/la3.png" alt="LA" className="w-auto  h-14 lg:h-20 xl:h-24" />
       </a>
 
       {/* Van animated along path - Desktop */}
