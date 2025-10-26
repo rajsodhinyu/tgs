@@ -39,7 +39,7 @@ export default function TourPage() {
   }, []);
 
   return (
-    <div className="w-screen h-screen overflow-hidden relative">
+    <div className="w-screen h-dvh overflow-hidden relative">
       {/* Background with angled split */}
       <div className="absolute inset-0">
         <div className="absolute inset-0 bg-[#08A0EF]"></div>
@@ -135,7 +135,7 @@ export default function TourPage() {
       </div>
 
       {/* Mobile tour stop images - bottom left */}
-      <div className="sm:hidden absolute bottom-28 right-0 z-30 flex flex-col items-end p-4 space-y-6">
+      <div className="sm:hidden absolute bottom-0 right-0 z-30 flex flex-col items-end p-4 space-y-0">
         <a
           href="https://www.pi.fyi/event/cmgu7f29i01q0p53tiugwis2l"
           target="_blank"
@@ -144,7 +144,7 @@ export default function TourPage() {
           <img
             src="/neapolishit2.png"
             alt="Neapolishit"
-            className="w-[350px]"
+            className="w-full"
           />
         </a>
         <a
@@ -152,7 +152,7 @@ export default function TourPage() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          <img src="/la3.png" alt="LA" className="w-[270px]" />
+          <img src="/la3.png" alt="LA" className="w-full" />
         </a>
       </div>
 
