@@ -135,7 +135,7 @@ export default function TourPage() {
       </div>
 
       {/* Mobile tour stop images - bottom left */}
-      <div className="sm:hidden absolute bottom-24 right-0 z-30 flex flex-col items-end p-4 space-y-0">
+      <div className="sm:hidden absolute bottom-48 right-0 z-30 flex flex-col items-end p-4 space-y-0">
         <a
           href="https://www.pi.fyi/event/cmgu7f29i01q0p53tiugwis2l"
           target="_blank"
