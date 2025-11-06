@@ -137,7 +137,7 @@ export default function TourPage() {
       {/* Mobile tour stop images - bottom left */}
       <div className="sm:hidden absolute bottom-48 right-0 z-30 flex flex-col items-end p-4 space-y-0">
         <a
-          href="https://www.pi.fyi/event/cmgu7f29i01q0p53tiugwis2l"
+          href="https://posh.vip/e/neapolishit"
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -209,7 +209,7 @@ export default function TourPage() {
 
       {/* Neapolishit - bottom right area */}
       <a
-        href="https://www.pi.fyi/event/cmgu7f29i01q0p53tiugwis2l"
+        href="https://posh.vip/e/neapolishit"
         target="_blank"
         rel="noopener noreferrer"
         className="max-sm:hidden absolute bottom-36 xl:bottom-44 right-5 z-30"
