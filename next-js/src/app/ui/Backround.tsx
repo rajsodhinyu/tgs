@@ -1,41 +1,37 @@
 "use client";
 import * as React from "react";
+import { useEffect, useRef } from "react";
 import p5 from "p5";
-let img = (
-  <img
-    className="h-16 md:h-28 min-w-10"
-    src="https://cdn.sanity.io/images/fnvy29id/tgs/6e0d6fefaf95cf0e570f958d10c13cf66265735a-1266x750.png?h=200"
-  />
-);
 
-const dials = () => {
-  const s = (s: p5) => {
-    let width = s.windowWidth;
-    let height = s.windowHeight;
+const Backround = () => {
+  const p5InstanceRef = useRef<p5 | null>(null);
 
-    let gridSize = 30; // Size of each grid cell
-    let cols = width / gridSize;
-    let rows = height / gridSize;
-    let elasticity = 35; // Factor for mouse movement influence
+  useEffect(() => {
+    const s = (s: p5) => {
+      let width = s.windowWidth;
+      let height = s.windowHeight;
 
-    s.preload = () => {};
-    s.windowResized = () => {
-      s.resizeCanvas(s.windowWidth, s.windowHeight);
-      width = s.windowWidth;
-      height = s.windowHeight;
-    };
+      let gridSize = 30; // Size of each grid cell
+      let cols = width / gridSize;
+      let rows = height / gridSize;
 
-    s.setup = () => {
-      s.createCanvas(width, height);
-      s.background(0);
-      s.noStroke();
-    };
+      s.preload = () => {};
+      s.windowResized = () => {
+        s.resizeCanvas(s.windowWidth, s.windowHeight);
+        width = s.windowWidth;
+        height = s.windowHeight;
+        cols = width / gridSize;
+        rows = height / gridSize;
+      };
 
-    s.draw = () => {
-      s.background(26, 27, 35); // Black background
-      let path = s.getURLPath();
-      s.text(path.toString(), width / 2, height / 2);
-      if (path.toString() == "home") {
+      s.setup = () => {
+        s.createCanvas(width, height);
+        s.background(0);
+        s.noStroke();
+      };
+
+      s.draw = () => {
+        s.background(26, 27, 35); // Black background
         // Loop through the grid
         for (let i = 0; i < cols; i++) {
           for (let j = 0; j < rows; j++) {
@@ -51,8 +47,6 @@ const dials = () => {
             // Offset based on elasticity
             let offsetX = s.atan(s.frameCount * 0.01 + dist);
             let offsetY = s.tan(s.frameCount * 0.01 + dist);
-            //let offsetX = s.atan(s.frameCount * 0.01 + dist * 0.1);
-            // let offsetY = s.tan(s.frameCount * 0.001 + dist * 0.03);
 
             // Alternate colors
             if ((i + j) % 5 === 0) {
@@ -70,20 +64,24 @@ const dials = () => {
               0.1,
               true,
             );
-            // s.frameCount * 0.01 * 0.05
             s.rect(x + offsetX, y + offsetY, gridSize * dial, gridSize);
           }
         }
-      } else {
-        s.remove();
+      };
+    };
+
+    p5InstanceRef.current = new p5(s);
+
+    // Cleanup function to remove p5 instance when component unmounts
+    return () => {
+      if (p5InstanceRef.current) {
+        p5InstanceRef.current.remove();
+        p5InstanceRef.current = null;
       }
     };
-  };
-  const myP5 = new p5(s);
-  myP5.remove;
+  }, []);
+
   return <div id="test"></div>;
 };
-
-const Backround = dials;
 
 export default Backround;
