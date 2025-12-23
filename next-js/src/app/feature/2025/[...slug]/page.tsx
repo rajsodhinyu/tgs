@@ -5,6 +5,7 @@ import { PortableText, PortableTextComponents, SanityDocument } from "next-sanit
 import { SanityImageSource } from "@sanity/image-url/lib/types/types";
 import imageUrlBuilder from "@sanity/image-url";
 import Link from "next/link";
+import { Metadata } from "next";
 
 
 
@@ -97,6 +98,51 @@ const components: PortableTextComponents = {
   }
 }
 
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const slug = (await params).slug;
+  const SLUG_QUERY = `*[_type == "albums" && slug.current == "${slug}" && year == 2025]{name, artist, thumb}`;
+  const posts = await sanityFetch<SanityDocument[]>({ query: SLUG_QUERY });
+  const post = posts[0];
+
+  if (!post) {
+    return {
+      title: "Album Not Found",
+      description: "The requested album could not be found.",
+    };
+  }
+
+  const imageUrl = urlFor(post.thumb)?.width(1000).height(1000)?.url();
+  const title = `That Good Sh*t: ${post.name}`;
+  const description = `${post.artist} - ${post.name}. TGS Top 50 Albums of 2025.`;
+
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      type: "article",
+      images: [
+        {
+          url: imageUrl,
+          width: 1000,
+          height: 1000,
+          alt: title,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [imageUrl],
+    },
+  };
+}
 
 export default async function Page({
   params,

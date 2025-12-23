@@ -5,6 +5,7 @@ import { SanityImageSource } from "@sanity/image-url/lib/types/types";
 import imageUrlBuilder from "@sanity/image-url";
 import { SanityDocument } from "next-sanity";
 import { sanityFetch } from "../../client";
+import { Metadata } from "next";
 
 
 const projectId = 'fnvy29id';
@@ -33,13 +34,38 @@ const urlFor = (source: SanityImageSource) =>
       
     }
     function linkResolver(slug:any) {
-        
+
         if (slug?.current == undefined){
           return '/feature/2024'
         }
         return `/feature/2024/${slug.current}`
-      
+
     }
+
+export const metadata: Metadata = {
+  title: "That Good Sh*t: Top 50 Albums of 2024",
+  description: "TGS Top 50 Albums of 2024. Curated album reviews and recommendations.",
+  openGraph: {
+    title: "That Good Sh*t: Top 50 Albums of 2024",
+    description: "TGS Top 50 Albums of 2024. Curated album reviews and recommendations.",
+    type: "website",
+    images: [
+      {
+        url: "https://cdn.sanity.io/images/fnvy29id/tgs/4522c0ed77190763f1d85445d4cd67d4b9f7fb7c-1080x1080.png?w=1000&h=1000",
+        width: 1000,
+        height: 1000,
+        alt: "TGS Top 50 Albums of 2024",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "That Good Sh*t: Top 50 Albums of 2024",
+    description: "TGS Top 50 Albums of 2024. Curated album reviews and recommendations.",
+    images: ["https://cdn.sanity.io/images/fnvy29id/tgs/4522c0ed77190763f1d85445d4cd67d4b9f7fb7c-1080x1080.png?w=1000&h=1000"],
+  },
+};
+
 export default async function Page(){
 
 const blogs = await sanityFetch<SanityDocument[]>({query: ALBUMS_Q});
