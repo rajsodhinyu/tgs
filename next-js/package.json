@@ -17,6 +17,7 @@
     "@shopify/storefront-api-client": "^1.0.7",
     "@vercel/analytics": "^1.5.0",
     "@vercel/speed-insights": "^1.2.0",
+    "framer-motion": "^12.23.26",
     "next": "15.0.7",
     "next-sanity": "^9.10.2",
     "p5": "^1.11.5",
