@@ -11,7 +11,7 @@ const projectId = 'fnvy29id';
 const dataset = 'tgs'
 
 
-const ALBUMS_Q = `*[_type == "albums"]{_id, name, artist, thumb, writer, datetime, slug}|order(datetime asc)`;
+const ALBUMS_Q = `*[_type == "albums" && year == 2024]{_id, name, artist, thumb, writer, datetime, slug}|order(datetime asc)`;
 
 const urlFor = (source: SanityImageSource) =>
   projectId && dataset

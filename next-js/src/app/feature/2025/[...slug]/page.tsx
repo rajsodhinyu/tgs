@@ -16,7 +16,7 @@ const urlFor = (source: SanityImageSource) =>
     ? imageUrlBuilder({ projectId, dataset }).image(source)
     : null;
 
-    
+
 function eventImage(event: any) {
   let pull = event.thumb.asset._ref;
   let thing = pull ? urlFor(pull)?.url() : null;
@@ -53,7 +53,7 @@ function renderEmbed(playlist: string) {
 function bannerResolver(post: any) {
   if (post?.banner == undefined) {
     return (urlFor(post?.thumb)?.fit('crop').width(700).height(700)?.url())
-  } 
+  }
   else {
     return (urlFor(post?.banner)?.height(720).width(1280)?.url())
   }
@@ -71,7 +71,7 @@ const components: PortableTextComponents = {
     // Ex. 1: customizing common block types
     h1: ({children}) => <h1 className="text-2xl text-blue-800">{children}</h1>,
     normal: ({children}) => <p>{children} <br /></p>
-    
+
   },
   list: {
     // Ex. 1: customizing common list types
@@ -85,7 +85,7 @@ const components: PortableTextComponents = {
   },
   marks: {
     em: ({children}) => <em className="text-tgs-pink ">{children} </em>,
-    
+
     link: ({children, value}) => {
       const rel = !value.href.startsWith('/') ? 'noreferrer noopener' : undefined
       return (
@@ -104,24 +104,12 @@ export default async function Page({
   params: Promise<{ slug: string }>
 }) {
   const slug = (await params).slug
-  
-  const ALBUMS_Q = `*[_type == "albums" && year == 2024]{slug, datetime, artist}|order(datetime asc)`;
+
+  const ALBUMS_Q = `*[_type == "albums" && year == 2025]{slug, datetime, artist}|order(datetime asc)`;
   const albums = await sanityFetch<SanityDocument[]>({ query: ALBUMS_Q });
   let previousSlug, nextSlug,prevPostslug,nextPostslug = '';
   for (let index = 0; index < albums.length; index++) {
     const element = albums[index];
-    if (slug == 'two-star-and-the-dream-police'){
-      previousSlug = 'the-skeleton-key'
-      nextSlug = 'blue-lips'
-
-      break
-    }
-    if (slug == 'the-skeleton-key'){
-      previousSlug = 'maybe-in-nirvana'
-      nextSlug = 'two-star-and-the-dream-police'
-
-      break
-    }
     if (element.slug.current == slug) {
       previousSlug = albums[index-1]?.slug.current
       nextSlug = albums[index+1]?.slug.current
@@ -129,17 +117,17 @@ export default async function Page({
     }
   }
 
-  const PREV_SLUG_QUERY = `*[_type == "albums" && slug.current == "${previousSlug}" && year == 2024]`;
+  const PREV_SLUG_QUERY = `*[_type == "albums" && slug.current == "${previousSlug}" && year == 2025]`;
   const prevPosts = await sanityFetch<SanityDocument[]>({ query: PREV_SLUG_QUERY});
   const prevPost = prevPosts[0];
-  prevPostslug = prevPost.slug.current;
+  prevPostslug = prevPost?.slug.current;
 
-  const NEXT_SLUG_QUERY = `*[_type == "albums" && slug.current == "${nextSlug}" && year == 2024]`;
+  const NEXT_SLUG_QUERY = `*[_type == "albums" && slug.current == "${nextSlug}" && year == 2025]`;
   const nextPosts = await sanityFetch<SanityDocument[]>({ query: NEXT_SLUG_QUERY});
   const nextPost = nextPosts[0];
-  nextPostslug = nextPost.slug.current;
+  nextPostslug = nextPost?.slug.current;
 
-  const SLUG_QUERY = `*[_type == "albums" && slug.current == "${slug}" && year == 2024]`;
+  const SLUG_QUERY = `*[_type == "albums" && slug.current == "${slug}" && year == 2025]`;
   const posts = await sanityFetch<SanityDocument[]>({ query: SLUG_QUERY });
   const post = posts[0];
 
@@ -147,7 +135,7 @@ export default async function Page({
     <div className="m-5 ">
       <div className="flex items-center justify-between mb-1">
         <div className="xl:text-2xl text-lg font-bit">
-          <Link className="hover:underline max-md:text-6xl" href={"/feature/2024"}>
+          <Link className="hover:underline max-md:text-6xl" href={"/feature/2025"}>
             &lt;<span className="max-md:hidden"> Top 50 Albums</span>
           </Link>
         </div>
@@ -163,10 +151,16 @@ export default async function Page({
       </div>
     </div>
     <div className="flex justify-center">
-        <Link href={`/feature/2024/${prevPostslug}`} className="mx-2 md:mx-10 self-center justify-items-start font-title text-5xl ">
-          &lt;
-          <div className="text-sm font-bit hidden text-center">{prevPost.artist}</div>
-        </Link>
+        {prevPost ? (
+          <Link href={`/feature/2025/${prevPostslug}`} className="mx-2 md:mx-10 self-center justify-items-start font-title text-5xl ">
+            &lt;
+            <div className="text-sm font-bit hidden text-center">{prevPost.artist}</div>
+          </Link>
+        ) : (
+          <div className="mx-2 md:mx-10 self-center justify-items-start font-title text-5xl invisible">
+            &lt;
+          </div>
+        )}
 
         <div className="rounded-md size-72 md:size-[400px] flex-none">
           <Link href={post.URL} >
@@ -181,18 +175,24 @@ export default async function Page({
           /></Link>
         </div>
 
-        <Link href={`/feature/2024/${nextPostslug}`} className="mx-2 md:mx-10 self-center justify-items-end font-title text-5xl ">
-          &gt;
-          <div className="text-sm font-bit hidden text-center place-self-end">{nextPost.artist}</div>
-        </Link>
+        {nextPost ? (
+          <Link href={`/feature/2025/${nextPostslug}`} className="mx-2 md:mx-10 self-center justify-items-end font-title text-5xl ">
+            &gt;
+            <div className="text-sm font-bit hidden text-center place-self-end">{nextPost.artist}</div>
+          </Link>
+        ) : (
+          <div className="mx-2 md:mx-10 self-center justify-items-end font-title text-5xl invisible">
+            &gt;
+          </div>
+        )}
 
       </div>
       <div className="text-md font-bold font-title text-center -mb-8 mt-2 md:mt-4"> {/* Title */}
         {stringifyDate(post.datetime)}
       </div>
       <div className="md:mx-14 mx-8 text-lg lg:text-2xl text-pretty text-justify pt-10 indent-8">
-      <PortableText value={post.content} components={components}/> 
-       
+      <PortableText value={post.content} components={components}/>
+
       <div className=" xl:text-2xl text-lg font-bit text-right"> {/* Title */}
       <div>-{post.writer}</div>
     </div>

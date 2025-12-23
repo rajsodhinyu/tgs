@@ -43,8 +43,9 @@ export const albumType = defineType({
     }),
     defineField({
       name: 'URL',
-      title: 'Spotify URL',
+      title: 'URL',
       type: 'url',
+      validation: (rule) => rule.required(),
     }),
     defineField({
       name: 'thumb',
