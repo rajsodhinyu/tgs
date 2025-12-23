@@ -37,10 +37,12 @@ function linkResolver(slug: any) {
 
 export const metadata: Metadata = {
   title: "That Good Sh*t: Top 50 Albums of 2025",
-  description: "TGS Top 50 Albums of 2025. Curated album reviews and recommendations.",
+  description:
+    "TGS Top 50 Albums of 2025. Curated album reviews and recommendations.",
   openGraph: {
     title: "That Good Sh*t: Top 50 Albums of 2025",
-    description: "TGS Top 50 Albums of 2025. Curated album reviews and recommendations.",
+    description:
+      "TGS Top 50 Albums of 2025. Curated album reviews and recommendations.",
     type: "website",
     images: [
       {
@@ -54,8 +56,11 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "That Good Sh*t: Top 50 Albums of 2025",
-    description: "TGS Top 50 Albums of 2025. Curated album reviews and recommendations.",
-    images: ["https://cdn.sanity.io/images/fnvy29id/tgs/0cc8d3c5e30f8a5bf22beaece940c1f1c30e677e-4219x4219.png?w=1000&h=1000"],
+    description:
+      "TGS Top 50 Albums of 2025. Curated album reviews and recommendations.",
+    images: [
+      "https://cdn.sanity.io/images/fnvy29id/tgs/0cc8d3c5e30f8a5bf22beaece940c1f1c30e677e-4219x4219.png?w=1000&h=1000",
+    ],
   },
 };
 
@@ -63,8 +68,20 @@ export default async function Page() {
   const blogs = await sanityFetch<SanityDocument[]>({ query: ALBUMS_Q });
 
   return (
-    <div className="mt-16 md:mt-14 pb-3">
-      <div className="grid md:grid-cols-5 mx-3 gap-2 grid-cols-2 md:-mt-10">
+    <div className="mt-8 md:mt-6 pb-3">
+      <div className="flex justify-between items-center mx-3 mb-8 pt-16 md:pt-0">
+        <Link
+          href="/feature/2024"
+          className="text-lg md:text-xl font-bit text-white hover:underline"
+        >
+          &lt; 2024
+        </Link>
+        <h1 className="text-lg text-center sm:text-2xl lg:text-4xl font-bold font-title text-white absolute left-1/2 transform uppercase -translate-x-1/2">
+          50 faves of 2025
+        </h1>
+        <div className="text-lg md:text-xl invisible">&lt; 2024</div>
+      </div>
+      <div className="grid md:grid-cols-5 mx-3 gap-2 grid-cols-2">
         {blogs.map((blog) => (
           <div
             className="group flex flex-col text-center justify-around"
