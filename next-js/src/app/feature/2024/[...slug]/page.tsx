@@ -115,7 +115,7 @@ export async function generateMetadata({
     };
   }
 
-  const imageUrl = urlFor(post.thumb)?.width(1000).height(1000)?.url();
+  const imageUrl = urlFor(post.thumb)?.width(1000).height(1000)?.url() || "https://cdn.sanity.io/images/fnvy29id/tgs/4522c0ed77190763f1d85445d4cd67d4b9f7fb7c-1080x1080.png?w=1000&h=1000";
   const title = `That Good Sh*t: ${post.name}`;
   const description = `${post.artist} - ${post.name}. TGS Top 50 Albums of 2024.`;
 
