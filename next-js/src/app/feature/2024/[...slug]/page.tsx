@@ -1,4 +1,3 @@
-import Image from "next/image"
 import React from "react";
 import { sanityFetch } from "@/app/client";
 import { PortableText, PortableTextComponents, SanityDocument } from "next-sanity";
@@ -6,6 +5,7 @@ import { SanityImageSource } from "@sanity/image-url/lib/types/types";
 import imageUrlBuilder from "@sanity/image-url";
 import Link from "next/link";
 import { Metadata } from "next";
+import SwipeableAlbum from "./SwipeableAlbum";
 
 
 

@@ -1,4 +1,3 @@
-import Image from "next/image"
 import React from "react";
 import { sanityFetch } from "@/app/client";
 import { PortableText, PortableTextComponents, SanityDocument } from "next-sanity";
@@ -6,6 +5,7 @@ import { SanityImageSource } from "@sanity/image-url/lib/types/types";
 import imageUrlBuilder from "@sanity/image-url";
 import Link from "next/link";
 import { Metadata } from "next";
+import SwipeableAlbum from "./SwipeableAlbum";
 
 
 
@@ -196,43 +196,15 @@ export default async function Page({
         {post.artist}
       </div>
     </div>
-    <div className="flex justify-center">
-        {prevPost ? (
-          <Link href={`/feature/2025/${prevPostslug}`} className="mx-2 md:mx-10 self-center justify-items-start font-title text-5xl ">
-            &lt;
-            <div className="text-sm font-bit hidden text-center">{prevPost.artist}</div>
-          </Link>
-        ) : (
-          <div className="mx-2 md:mx-10 self-center justify-items-start font-title text-5xl invisible">
-            &lt;
-          </div>
-        )}
-
-        <div className="rounded-md size-72 md:size-[400px] flex-none">
-          <Link href={post.URL} >
-          <Image className="place-self-center rounded-md border-2 border-transparent hover:border-white"
-            src={`${eventImage(post)}?h=640&w=640`}
-            alt={post.name}
-            priority={true}
-            width={640}
-            height={640}
-            quality={100}
-            sizes="(max-width: 400px) 100vw"
-          /></Link>
-        </div>
-
-        {nextPost ? (
-          <Link href={`/feature/2025/${nextPostslug}`} className="mx-2 md:mx-10 self-center justify-items-end font-title text-5xl ">
-            &gt;
-            <div className="text-sm font-bit hidden text-center place-self-end">{nextPost.artist}</div>
-          </Link>
-        ) : (
-          <div className="mx-2 md:mx-10 self-center justify-items-end font-title text-5xl invisible">
-            &gt;
-          </div>
-        )}
-
-      </div>
+    <SwipeableAlbum
+        imageUrl={`${eventImage(post)}?h=640&w=640`}
+        albumName={post.name}
+        spotifyUrl={post.URL}
+        prevSlug={prevPostslug || null}
+        nextSlug={nextPostslug || null}
+        prevArtist={prevPost?.artist || null}
+        nextArtist={nextPost?.artist || null}
+      />
       <div className="text-md font-bold font-title text-center -mb-8 mt-2 md:mt-4"> {/* Title */}
         {stringifyDate(post.datetime)}
       </div>
