@@ -201,6 +201,45 @@ const components: PortableTextComponents = {
         </div>
       );
     },
+    appleMusicEmbed: ({ value }) => {
+      if (!value?.url) {
+        return null;
+      }
+
+      // Transform: https://music.apple.com/... -> https://embed.music.apple.com/...
+      // Add required query params for proper embed display
+      const baseEmbedUrl = value.url.replace(
+        "https://music.apple.com",
+        "https://embed.music.apple.com",
+      );
+      const separator = baseEmbedUrl.includes("?") ? "&" : "?";
+      const embedUrl = `${baseEmbedUrl}${separator}app=music&theme=light`;
+
+      return (
+        <div className="w-full">
+          <iframe
+            src={embedUrl}
+            width="100%"
+            height="175"
+            title="Apple Music Player"
+            allow="autoplay *; encrypted-media *; clipboard-write"
+            sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-top-navigation-by-user-activation"
+            style={{
+              border: 0,
+              borderRadius: "12px",
+              width: "100%",
+              height: "175px",
+              maxWidth: "660px",
+            }}
+          ></iframe>
+          {value.caption && (
+            <p className="text-sm text-gray-600 mt-2 text-center">
+              {value.caption}
+            </p>
+          )}
+        </div>
+      );
+    },
   },
 };
 

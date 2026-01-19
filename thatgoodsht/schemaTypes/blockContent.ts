@@ -86,5 +86,43 @@ export default defineType({
         },
       },
     }),
+    defineArrayMember({
+      title: 'Apple Music',
+      name: 'appleMusicEmbed',
+      icon: PlayIcon,
+      type: 'object',
+      fields: [
+        {
+          title: 'Apple Music URL',
+          name: 'url',
+          type: 'url',
+          description: 'Paste an Apple Music Song Url (Copy Link)',
+          validation: (Rule) =>
+            Rule.required()
+              .uri({
+                scheme: ['https'],
+                allowRelative: false,
+              })
+              .custom((url) => {
+                if (!url?.includes('music.apple.com')) {
+                  return 'URL must be a valid Apple Music link'
+                }
+                return true
+              }),
+        },
+      ],
+      preview: {
+        select: {
+          title: 'url',
+          subtitle: 'caption',
+        },
+        prepare({title, subtitle}) {
+          return {
+            title: 'Apple Music Embed',
+            subtitle: subtitle || title,
+          }
+        },
+      },
+    }),
   ],
 })
