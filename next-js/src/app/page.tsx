@@ -3,7 +3,6 @@ import dynamic from "next/dynamic";
 import * as React from "react";
 import { useSotData } from "./context/SotDataContext";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 
 const DynamicComponentWithNoSSR = dynamic(() => import("./ui/Backround"), {
   ssr: false,
@@ -33,13 +32,6 @@ function catchClick() {
 }
 
 export default function Page() {
-  const router = useRouter();
-
-  // Temporary redirect to /feature/2025
-  React.useEffect(() => {
-    router.push("/feature/2025");
-  }, [router]);
-
   const sotdata = useSotData();
   const todayDate = new Date().toLocaleDateString("en-US", {
     timeZone: "America/New_York",
