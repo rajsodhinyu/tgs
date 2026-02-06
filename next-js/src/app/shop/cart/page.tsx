@@ -1,4 +1,5 @@
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 import { createStorefrontApiClient } from "@shopify/storefront-api-client";
 import Form from "next/form";
 
@@ -56,63 +57,42 @@ async function getName(id: string) {
   return unparsed.data.node.merchandise.product.title;
 }
 
-const newEmptyCart = `
-  mutation {
-    cartCreate(input: {lines: []}) {
-      cart {
-        id
-      }
-    }
-  }`;
-
 export default async function Post() {
-  try {
-    const cookieStore = await cookies();
-    let cartCookie = cookieStore.get("cart")?.value;
-    
-    // If no cart cookie exists or it's empty, create a new cart
-    if (!cartCookie) {
-      const { data } = await client.request(newEmptyCart);
-      if (!data?.cartCreate?.cart?.id) {
-        throw new Error("Failed to create new cart");
-      }
-      cartCookie = data.cartCreate.cart.id;
-    }
+  const cookieStore = await cookies();
+  const cartCookie = cookieStore.get("cart")?.value;
 
-    const findCart = `
-      query {
-        cart(id: "${cartCookie}") {
-          checkoutUrl
-          totalQuantity
-          lines(first: 10) {
-            edges {
-              node {
-                id
-                quantity
-              }
+  // Server Components can't set cookies — redirect to the /shop route
+  // handler which creates a cart and sets the cookie properly
+  if (!cartCookie) {
+    redirect("/shop?returnTo=/shop/cart");
+  }
+
+  const findCart = `
+    query {
+      cart(id: "${cartCookie}") {
+        checkoutUrl
+        totalQuantity
+        lines(first: 10) {
+          edges {
+            node {
+              id
+              quantity
             }
           }
         }
       }
-    `;
-
-    let cartData = await client.request(findCart);
-    
-    // If cart doesn't exist in Shopify, create a new one
-    if (!cartData?.data?.cart) {
-      const { data: newCartData } = await client.request(newEmptyCart);
-      if (!newCartData?.cartCreate?.cart?.id) {
-        throw new Error("Failed to create new cart");
-      }
-      cartCookie = newCartData.cartCreate.cart.id;
-      // Re-fetch the cart data
-      const refreshedData = await client.request(findCart);
-      if (!refreshedData?.data?.cart) {
-        throw new Error("Failed to fetch cart data");
-      }
-      cartData = refreshedData;
     }
+  `;
 
+  const cartData = await client.request(findCart);
+
+  // Cart expired or invalid in Shopify — redirect to /shop to
+  // create a fresh cart and set a valid cookie
+  if (!cartData?.data?.cart) {
+    redirect("/shop?returnTo=/shop/cart");
+  }
+
+  try {
     let checkoutURL = cartData.data.cart?.checkoutUrl;
     if (cartData.data.cart?.totalQuantity === 0) {
       checkoutURL = null;

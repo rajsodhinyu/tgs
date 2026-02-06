@@ -22,23 +22,17 @@ mutation {
 }`
 
 export async function GET(request: Request) {
-  let finalURL = '/shop/home'
+  const url = new URL(request.url);
+  const returnTo = url.searchParams.get('returnTo');
+  const finalURL = returnTo?.startsWith('/shop') ? returnTo : '/shop/home';
+
   const cookieStore = await cookies()
-    let cartbool = cookieStore.has('cart')
-    let currentCart = cookieStore.get('cart')
+  const currentCart = cookieStore.get('cart')
 
-    if ((currentCart?.value == '')||(currentCart?.value == null)||(!cartbool)) {
-        const { data } = await client.request(newEmptyCart, {
-            variables: {
-                handle: 'sample-product',
-            },
-        });
-        const newCartID = data.cartCreate.cart.id;
-        cookieStore.set('cart',newCartID)
+  if (!currentCart?.value || returnTo) {
+      const { data } = await client.request(newEmptyCart);
+      cookieStore.set('cart', data.cartCreate.cart.id)
+  }
 
-        let currentCart = cookieStore.get('cart')
-
-    }
-
-    redirect(finalURL)
+  redirect(finalURL)
 }
