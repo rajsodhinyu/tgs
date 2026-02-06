@@ -60,6 +60,10 @@ export async function GET(request: Request) {
       redirect("/shop/cart/");
     }
 
+    if (!/^\d+$/.test(action)) {
+      throw new Error("Invalid variant ID");
+    }
+
     const merchandiseId = `gid://shopify/ProductVariant/${action}`;
     const currentCart = cookieStore.get("cart");
 

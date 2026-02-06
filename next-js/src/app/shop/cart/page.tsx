@@ -22,19 +22,14 @@ const CART_LINE_DETAILS = `
   }
 `;
 
-async function getSize(id: string) {
+async function getCartLineInfo(id: string) {
   const unparsed = await client.request(CART_LINE_DETAILS, {
     variables: { id },
   });
-  const title = unparsed.data.node.merchandise.title;
-  return title == "Default Title" ? "" : `, ${title}`;
-}
-
-async function getName(id: string) {
-  const unparsed = await client.request(CART_LINE_DETAILS, {
-    variables: { id },
-  });
-  return unparsed.data.node.merchandise.product.title;
+  const variant = unparsed.data.node.merchandise;
+  const name = variant.product.title;
+  const size = variant.title === "Default Title" ? "" : `, ${variant.title}`;
+  return { name, size };
 }
 
 export default async function Post() {
@@ -80,23 +75,30 @@ export default async function Post() {
       checkoutURL = null;
     }
     
-    const array = cartData.data.cart?.lines?.edges || [];
-    
+    const edges = cartData.data.cart?.lines?.edges || [];
+
+    const items = await Promise.all(
+      edges.map(async (edge: any) => {
+        const info = await getCartLineInfo(edge.node.id);
+        return { ...edge.node, ...info };
+      })
+    );
+
     return (
       <div className="">
         <br />
         <div className="text-4xl font-bold font-bit" key={"test"}>
           Your Cart:
           <div className="border-dashed border-black border-2" key={"border"}>
-            {array.map((node: any) => (
+            {items.map((item) => (
               <div
-                key={`item ${node.node.id}`}
+                key={`item ${item.id}`}
                 className="mb-6 -mt-6 font-title flex-col text-lg md:text-4xl"
               >
                 <br />
-                <div key={node.id} className="flex-col ">
-                  &ensp;[{node.node.quantity}] {getName(node.node.id)}
-                  {getSize(node.node.id)}
+                <div className="flex-col ">
+                  &ensp;[{item.quantity}] {item.name}
+                  {item.size}
                 </div>
               </div>
             ))}
