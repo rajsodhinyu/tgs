@@ -72,7 +72,7 @@ export default async function Page() {
             perseverance through daydreams. The visualizer for this album is a
             biking edit, a surrealistic glitch collage, a multi-multi-media
             piece created by Quincy Davis and Raj Sodhi. The DVD was made for
-            you to put into your Playstation when you're on your couch or with
+            you to put into your Playstation when you&apos;re on your couch or with
             the homies while you work or relax.
           </p>
           <p>
