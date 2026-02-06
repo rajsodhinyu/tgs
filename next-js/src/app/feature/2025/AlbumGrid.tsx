@@ -68,6 +68,7 @@ export default function AlbumGrid({ albums }: AlbumGridProps) {
       default:
         return albumsCopy;
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [albums, sortType, randomSeed]);
 
   const handleSortChange = (type: SortType) => {
