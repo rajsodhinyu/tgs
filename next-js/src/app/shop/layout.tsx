@@ -16,7 +16,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         </div>
         <div>{children}</div>
         <div className=" font-bit font-bold text-pretty text-center sm:py-5 text-xl hover:underline decoration-tgs-purple">
-          <a href="mailto:thatgoodshtshop@gmail.com?subject=TGS%20Shop%20Issue">
+          <a href="mailto:raj@thatgoodsht.com?subject=TGS%20Shop%20Issue">
             Having issues with your order?
           </a>
         </div>

@@ -1,12 +1,6 @@
 import { redirect } from "next/navigation";
-import { createStorefrontApiClient } from "@shopify/storefront-api-client";
 import { cookies } from "next/headers";
-
-const client = createStorefrontApiClient({
-  storeDomain: "http://d83529-c9.myshopify.com",
-  apiVersion: "2024-04",
-  publicAccessToken: "78a95c5656c69f0b57bec27d59a4e799",
-});
+import { shopifyClient as client } from '@/lib/shopify';
 
 const newEmptyCart = `
   mutation {

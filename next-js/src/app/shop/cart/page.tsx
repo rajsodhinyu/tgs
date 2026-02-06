@@ -1,13 +1,7 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { createStorefrontApiClient } from "@shopify/storefront-api-client";
+import { shopifyClient as client } from '@/lib/shopify';
 import Form from "next/form";
-
-const client = createStorefrontApiClient({
-  storeDomain: "http://d83529-c9.myshopify.com",
-  apiVersion: "2024-04",
-  publicAccessToken: "78a95c5656c69f0b57bec27d59a4e799",
-});
 
 async function getSize(id: string) {
   let query2 = `query MyQuery {
