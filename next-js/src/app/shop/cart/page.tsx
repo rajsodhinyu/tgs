@@ -3,51 +3,37 @@ import { redirect } from "next/navigation";
 import { shopifyClient as client } from '@/lib/shopify';
 import Form from "next/form";
 
-async function getSize(id: string) {
-  let query2 = `query MyQuery {
-  node(
-    id: "${id}"
-  ) {
-    ... on CartLine {
-      id
-      merchandise {
-        ... on ProductVariant {
-          id
-          title
-          product {
+const CART_LINE_DETAILS = `
+  query CartLineDetails($id: ID!) {
+    node(id: $id) {
+      ... on CartLine {
+        id
+        merchandise {
+          ... on ProductVariant {
+            id
             title
+            product {
+              title
+            }
           }
         }
       }
     }
   }
-}`;
-  const unparsed = await client.request(query2);
+`;
+
+async function getSize(id: string) {
+  const unparsed = await client.request(CART_LINE_DETAILS, {
+    variables: { id },
+  });
   const title = unparsed.data.node.merchandise.title;
   return title == "Default Title" ? "" : `, ${title}`;
 }
 
 async function getName(id: string) {
-  let query2 = `query MyQuery {
-  node(
-    id: "${id}"
-  ) {
-    ... on CartLine {
-      id
-      merchandise {
-        ... on ProductVariant {
-          id
-          title
-          product {
-            title
-          }
-        }
-      }
-    }
-  }
-}`;
-  const unparsed = await client.request(query2);
-
+  const unparsed = await client.request(CART_LINE_DETAILS, {
+    variables: { id },
+  });
   return unparsed.data.node.merchandise.product.title;
 }
 
@@ -61,9 +47,9 @@ export default async function Post() {
     redirect("/shop?returnTo=/shop/cart");
   }
 
-  const findCart = `
-    query {
-      cart(id: "${cartCookie}") {
+  const FIND_CART = `
+    query FindCart($cartId: ID!) {
+      cart(id: $cartId) {
         checkoutUrl
         totalQuantity
         lines(first: 10) {
@@ -78,7 +64,9 @@ export default async function Post() {
     }
   `;
 
-  const cartData = await client.request(findCart);
+  const cartData = await client.request(FIND_CART, {
+    variables: { cartId: cartCookie },
+  });
 
   // Cart expired or invalid in Shopify — redirect to /shop to
   // create a fresh cart and set a valid cookie

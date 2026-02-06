@@ -2,11 +2,38 @@ import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 import { shopifyClient as client } from '@/lib/shopify';
 
-const newEmptyCart = `
-  mutation {
+const NEW_EMPTY_CART = `
+  mutation CreateEmptyCart {
     cartCreate(input: {lines: []}) {
       cart {
         id
+      }
+    }
+  }
+`;
+
+const ADD_TO_CART = `
+  mutation AddToCart($cartId: ID!, $merchandiseId: ID!) {
+    cartLinesAdd(
+      cartId: $cartId
+      lines: { merchandiseId: $merchandiseId }
+    ) {
+      cart {
+        id
+        checkoutUrl
+      }
+    }
+  }
+`;
+
+const CREATE_CART_WITH_ITEM = `
+  mutation CreateCartWithItem($merchandiseId: ID!) {
+    cartCreate(
+      input: { lines: [{ quantity: 1, merchandiseId: $merchandiseId }] }
+    ) {
+      cart {
+        id
+        checkoutUrl
       }
     }
   }
@@ -17,7 +44,7 @@ export async function GET(request: Request) {
     const cookieStore = await cookies();
     const url = new URL(request.url);
     const action = url.searchParams.get("size");
-    
+
     if (!action) {
       throw new Error("No action specified");
     }
@@ -25,7 +52,7 @@ export async function GET(request: Request) {
     if (action === "clear") {
       // Clear the cart
       cookieStore.delete("cart");
-      const { data } = await client.request(newEmptyCart);
+      const { data } = await client.request(NEW_EMPTY_CART);
       if (!data?.cartCreate?.cart?.id) {
         throw new Error("Failed to create new cart");
       }
@@ -33,77 +60,52 @@ export async function GET(request: Request) {
       redirect("/shop/cart/");
     }
 
-    const product = `gid://shopify/ProductVariant/${action}`;
+    const merchandiseId = `gid://shopify/ProductVariant/${action}`;
     const currentCart = cookieStore.get("cart");
-    
+
     if (currentCart?.value) {
       // Try to add item to existing cart
-      const addItemtoCart = `
-        mutation {
-          cartLinesAdd(
-            cartId: "${currentCart.value}"
-            lines: {merchandiseId: "${product}"}
-          ) {
-            cart {
-              id
-              checkoutUrl
-            }
-          }
-        }
-      `;
-      
       try {
-        await client.request(addItemtoCart);
+        await client.request(ADD_TO_CART, {
+          variables: {
+            cartId: currentCart.value,
+            merchandiseId,
+          },
+        });
       } catch (error) {
         // If adding to cart fails, create a new cart
         console.error("Failed to add to existing cart:", error);
-        const { data } = await client.request(newEmptyCart);
+        const { data } = await client.request(NEW_EMPTY_CART);
         if (!data?.cartCreate?.cart?.id) {
           throw new Error("Failed to create new cart");
         }
         cookieStore.set("cart", data.cartCreate.cart.id);
         // Try adding the item to the new cart
-        const newCartAdd = `
-          mutation {
-            cartLinesAdd(
-              cartId: "${data.cartCreate.cart.id}"
-              lines: {merchandiseId: "${product}"}
-            ) {
-              cart {
-                id
-                checkoutUrl
-              }
-            }
-          }
-        `;
-        await client.request(newCartAdd);
+        await client.request(ADD_TO_CART, {
+          variables: {
+            cartId: data.cartCreate.cart.id,
+            merchandiseId,
+          },
+        });
       }
     } else {
       // Create new cart with item
-      const newCartwithItem = `
-        mutation {
-          cartCreate(
-            input: {lines: [{quantity: 1, merchandiseId: "${product}"}]}
-          ) {
-            cart {
-              id
-              checkoutUrl
-            }
-          }
-        }
-      `;
-      
-      const { data } = await client.request(newCartwithItem);
+      const { data } = await client.request(CREATE_CART_WITH_ITEM, {
+        variables: { merchandiseId },
+      });
       if (!data?.cartCreate?.cart?.id) {
         throw new Error("Failed to create new cart");
       }
       cookieStore.set("cart", data.cartCreate.cart.id);
     }
-    
+
     redirect("/shop/cart/");
   } catch (error) {
+    // Re-throw redirect errors — Next.js uses thrown errors for redirects
+    if (error instanceof Error && error.message === "NEXT_REDIRECT") {
+      throw error;
+    }
     console.error("Cart operation error:", error);
-    // Redirect to cart page even on error - the cart page will handle the error state
     redirect("/shop/cart/");
   }
 }
