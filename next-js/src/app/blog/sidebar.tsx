@@ -10,7 +10,7 @@ import SidebarList from "./SidebarList";
 const projectId = "fnvy29id";
 const dataset = "tgs";
 
-const BLOGS_QUERY = `*[_type == "post"]{_id, name, youtube,youtubeURL, thumb, writer, banner,playlistURL, content, slug, date, description}|order(date desc)`;
+const BLOGS_QUERY = `*[_type == "post" && private != true]{_id, name, youtube,youtubeURL, thumb, writer, banner,playlistURL, content, slug, date, description}|order(date desc)`;
 const urlFor = (source: SanityImageSource) =>
   projectId && dataset
     ? imageUrlBuilder({ projectId, dataset }).image(source)

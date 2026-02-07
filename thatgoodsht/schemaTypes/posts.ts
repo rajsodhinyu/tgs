@@ -112,6 +112,17 @@ export const postType = defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
+      name: 'private',
+      title: 'Keep post hidden',
+      description:
+        'Hide this post from site? Direct link will still work. Use direct link to preview your post before launching, then uncheck to post on site.',
+      type: 'boolean',
+      initialValue: true,
+      options: {
+        layout: 'checkbox',
+      },
+    }),
+    defineField({
       name: 'file',
       title: 'Audio file (optional)',
       type: 'file',
