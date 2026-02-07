@@ -5,6 +5,11 @@ import styled from 'styled-components'
 
 type View = 'calendar' | 'list'
 
+// Module-level audio state so it survives component remounts
+let globalAudio: HTMLAudioElement | null = null
+let globalPlayingId: string | null = null
+let globalPaused = false
+
 interface SotdDoc {
   _id: string
   name: string
@@ -79,6 +84,11 @@ const Header = styled.div`
   align-items: center;
   justify-content: space-between;
   margin-bottom: 1.25rem;
+  position: sticky;
+  top: 0;
+  background: inherit;
+  z-index: 2;
+  padding: 0.5rem 0;
 `
 
 const SwapToggle = styled.button<{$active: boolean}>`
@@ -337,6 +347,20 @@ const LoadButton = styled.button`
   }
 `
 
+const AZButton = styled.button<{$active: boolean}>`
+  background: ${(p) => (p.$active ? '#6c5cbe' : 'transparent')};
+  border: 1px solid ${(p) => (p.$active ? '#6c5cbe' : '#d0d0d0')};
+  color: ${(p) => (p.$active ? '#fff' : '#666')};
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.65rem;
+  font-weight: 600;
+  &:hover {
+    background: ${(p) => (p.$active ? '#5a4aad' : '#f0f0f0')};
+  }
+`
+
 const ShowPastButton = styled.button`
   background: none;
   border: none;
@@ -412,10 +436,23 @@ export function SotdCalendar() {
   const [songs, setSongs] = useState<SotdDoc[]>([])
   const [allSongs, setAllSongs] = useState<SotdDoc[]>([])
   const [showPast, setShowPast] = useState(false)
+  const [sortByArtist, setSortByArtist] = useState(false)
+  const [sidebarSortByArtist, setSidebarSortByArtist] = useState(false)
   const [publishedIds, setPublishedIds] = useState<Set<string>>(new Set())
   const [loading, setLoading] = useState(true)
-  const [playingId, setPlayingId] = useState<string | null>(null)
-  const audioRef = useRef<HTMLAudioElement | null>(null)
+  const [playingId, _setPlayingId] = useState<string | null>(globalPlayingId)
+  const [paused, _setPaused] = useState(globalPaused)
+  const audioRef = useRef<HTMLAudioElement | null>(globalAudio)
+
+  const setPlayingId = useCallback((id: string | null) => {
+    globalPlayingId = id
+    _setPlayingId(id)
+  }, [])
+
+  const setPaused = useCallback((p: boolean) => {
+    globalPaused = p
+    _setPaused(p)
+  }, [])
   const [swapMode, setSwapMode] = useState(false)
   const [draggedSong, setDraggedSong] = useState<SotdDoc | null>(null)
   const [dragOverKey, setDragOverKey] = useState<string | null>(null)
@@ -523,9 +560,21 @@ export function SotdCalendar() {
   }, [])
 
   const visibleSongs = useMemo(() => {
-    if (showPast) return allSongs
-    return allSongs.filter((s) => !s.datetime || new Date(s.datetime).getTime() >= todayStart)
-  }, [allSongs, showPast, todayStart])
+    const filtered = showPast
+      ? allSongs
+      : allSongs.filter((s) => !s.datetime || new Date(s.datetime).getTime() >= todayStart)
+    if (sortByArtist) {
+      return [...filtered].sort((a, b) => (a.artist || '').localeCompare(b.artist || ''))
+    }
+    return filtered
+  }, [allSongs, showPast, todayStart, sortByArtist])
+
+  const sortedUnscheduled = useMemo(() => {
+    if (sidebarSortByArtist) {
+      return [...unscheduledSongs].sort((a, b) => (a.artist || '').localeCompare(b.artist || ''))
+    }
+    return unscheduledSongs
+  }, [unscheduledSongs, sidebarSortByArtist])
 
   const pastCount = useMemo(() => {
     return allSongs.filter((s) => s.datetime && new Date(s.datetime).getTime() < todayStart).length
@@ -562,20 +611,40 @@ export function SotdCalendar() {
       if (!song.fileUrl) return
       if (playingId === song._id) {
         audioRef.current?.pause()
+        globalAudio = null
         setPlayingId(null)
+        setPaused(false)
         return
       }
       if (audioRef.current) {
         audioRef.current.pause()
       }
       const audio = new Audio(song.fileUrl)
-      audio.onended = () => setPlayingId(null)
+      audio.onended = () => {
+        globalAudio = null
+        setPlayingId(null)
+        setPaused(false)
+      }
       audio.play()
       audioRef.current = audio
+      globalAudio = audio
       setPlayingId(song._id)
+      setPaused(false)
     },
-    [playingId],
+    [playingId, setPlayingId, setPaused],
   )
+
+  const handleGlobalPlayPause = useCallback(() => {
+    if (playingId && audioRef.current) {
+      if (paused) {
+        audioRef.current.play()
+        setPaused(false)
+      } else {
+        audioRef.current.pause()
+        setPaused(true)
+      }
+    }
+  }, [playingId, paused])
 
   const handleDragScroll = useCallback((e: React.DragEvent) => {
     const wrapper = wrapperRef.current
@@ -628,16 +697,13 @@ export function SotdCalendar() {
     [draggedSong, songsByKey, client],
   )
 
-  const handleUnschedule = useCallback(
-    async () => {
-      if (!draggedSong || !draggedSong.datetime) return
-      await client.patch(draggedSong._id).unset(['datetime']).commit()
-      setDraggedSong(null)
-      setDragOverSidebar(false)
-      setFetchKey((k) => k + 1)
-    },
-    [draggedSong, client],
-  )
+  const handleUnschedule = useCallback(async () => {
+    if (!draggedSong || !draggedSong.datetime) return
+    await client.patch(draggedSong._id).unset(['datetime']).commit()
+    setDraggedSong(null)
+    setDragOverSidebar(false)
+    setFetchKey((k) => k + 1)
+  }, [draggedSong, client])
 
   const todayYear = today.getFullYear()
   const todayMonth = today.getMonth()
@@ -654,11 +720,18 @@ export function SotdCalendar() {
           ) : (
             <div />
           )}
-          {view === 'calendar' && (
-            <SwapToggle $active={swapMode} onClick={() => setSwapMode((v) => !v)}>
-              {swapMode ? 'Done' : 'SWAP'}
-            </SwapToggle>
-          )}
+          <div style={{display: 'flex', alignItems: 'center', gap: '0.5rem'}}>
+            {view === 'calendar' && (
+              <SwapToggle $active={swapMode} onClick={() => setSwapMode((v) => !v)}>
+                {swapMode ? 'Done' : 'SWAP'}
+              </SwapToggle>
+            )}
+            {playingId && (
+              <PlayButton $playing onClick={handleGlobalPlayPause}>
+                {paused ? '\u25B6' : '\u25A0'}
+              </PlayButton>
+            )}
+          </div>
           <ViewToggle>
             <ViewToggleButton $active={view === 'calendar'} onClick={() => setView('calendar')}>
               Calendar
@@ -783,13 +856,25 @@ export function SotdCalendar() {
 
         {view === 'list' && !loading && (
           <>
-            {pastCount > 0 && (
-              <ShowPastButton onClick={() => setShowPast((v) => !v)}>
-                {showPast
-                  ? 'Hide past songs'
-                  : `Show ${pastCount} past song${pastCount === 1 ? '' : 's'}`}
-              </ShowPastButton>
-            )}
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.75rem',
+                marginBottom: '0.5rem',
+              }}
+            >
+              {pastCount > 0 && (
+                <ShowPastButton style={{margin: 0}} onClick={() => setShowPast((v) => !v)}>
+                  {showPast
+                    ? 'Hide past songs'
+                    : `Show ${pastCount} past song${pastCount === 1 ? '' : 's'}`}
+                </ShowPastButton>
+              )}
+              <AZButton $active={sortByArtist} onClick={() => setSortByArtist((v) => !v)}>
+                A-Z
+              </AZButton>
+            </div>
             <ListContainer>
               {visibleSongs.map((song) => (
                 <ListRow key={song._id} onClick={() => handleSongClick(song)}>
@@ -838,8 +923,18 @@ export function SotdCalendar() {
               : undefined
           }
         >
-          <SidebarHeader>Unscheduled ({unscheduledSongs.length})</SidebarHeader>
-          {unscheduledSongs.map((song) => (
+          <SidebarHeader>
+            <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
+              Unscheduled
+              <AZButton
+                $active={sidebarSortByArtist}
+                onClick={() => setSidebarSortByArtist((v) => !v)}
+              >
+                A-Z
+              </AZButton>
+            </div>
+          </SidebarHeader>
+          {sortedUnscheduled.map((song) => (
             <SidebarItem
               key={song._id}
               $isDragging={!!draggedSong && draggedSong._id === song._id}
