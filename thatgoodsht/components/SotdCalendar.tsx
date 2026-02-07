@@ -591,6 +591,15 @@ export function SotdCalendar() {
     [router],
   )
 
+  const handleCreateUnscheduled = useCallback(async () => {
+    const id = crypto.randomUUID()
+    await client.createIfNotExists({
+      _id: `drafts.${id}`,
+      _type: 'sotd',
+    })
+    router.navigateIntent('edit', {id, type: 'sotd'})
+  }, [client, router])
+
   const handleEmptyDayDoubleClick = useCallback(
     async (y: number, m: number, d: number) => {
       const datetime = new Date(Date.UTC(y, m, d, 12, 0, 0)).toISOString()
@@ -926,12 +935,17 @@ export function SotdCalendar() {
           <SidebarHeader>
             <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
               Unscheduled
-              <AZButton
-                $active={sidebarSortByArtist}
-                onClick={() => setSidebarSortByArtist((v) => !v)}
-              >
-                A-Z
-              </AZButton>
+              <div style={{display: 'flex', alignItems: 'center', gap: '4px'}}>
+                <AddButton style={{opacity: 1}} onClick={handleCreateUnscheduled}>
+                  +
+                </AddButton>
+                <AZButton
+                  $active={sidebarSortByArtist}
+                  onClick={() => setSidebarSortByArtist((v) => !v)}
+                >
+                  A-Z
+                </AZButton>
+              </div>
             </div>
           </SidebarHeader>
           {sortedUnscheduled.map((song) => (
