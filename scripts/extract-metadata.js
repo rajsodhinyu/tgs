@@ -127,8 +127,7 @@ function assignReleaseDates(mp3Data, options = {}) {
   const {
     startDate,
     interval = config.import.daysInterval,
-    randomizeDates = false, // Changed from 'randomize' to be clearer
-    randomizeOrder = true, // New: randomize song order by default
+    randomizeOrder = true,
     timeOfDay = config.import.releaseTimeOfDay,
   } = options;
 
@@ -140,16 +139,8 @@ function assignReleaseDates(mp3Data, options = {}) {
   const orderedData = randomizeOrder ? shuffleArray(mp3Data) : mp3Data;
 
   return orderedData.map((item, index) => {
-    let releaseDate;
-
-    if (randomizeDates) {
-      // Random dates starting from baseDate within next 365 days
-      const daysOffset = Math.floor(Math.random() * 365);
-      releaseDate = addDays(baseDate, daysOffset);
-    } else {
-      // Sequential dates (one per day)
-      releaseDate = addDays(baseDate, index * interval);
-    }
+    // Sequential dates (one per day)
+    let releaseDate = addDays(baseDate, index * interval);
 
     // Set time of day in UTC (8am = 08:00 UTC)
     const [hours, minutes] = timeOfDay.split(":");
@@ -173,12 +164,7 @@ async function processMP3Directory(directoryPath, options = {}) {
     chalk.gray(`Start Date: ${options.startDate || config.import.startDate}`),
   );
   console.log(
-    chalk.gray(`Song Order: ${options.keepOrder ? "Original" : "Randomized"}`),
-  );
-  console.log(
-    chalk.gray(
-      `Date Assignment: ${options.randomizeDates ? "Random dates" : "Sequential (daily)"}\n`,
-    ),
+    chalk.gray(`Song Order: ${options.keepOrder ? "Original" : "Randomized"}\n`),
   );
 
   try {
@@ -199,8 +185,7 @@ async function processMP3Directory(directoryPath, options = {}) {
     // Assign dates (with order randomization by default)
     const withDates = assignReleaseDates(mp3Data, {
       ...options,
-      randomizeDates: options.randomizeDates || false,
-      randomizeOrder: !options.keepOrder, // Randomize order unless --keep-order is specified
+      randomizeOrder: !options.keepOrder,
     });
 
     // Sort by date (they should already be in order for sequential dates)
@@ -271,7 +256,6 @@ if (require.main === module) {
 
   const directoryPath = args[0];
   const options = {
-    randomizeDates: args.includes("--random-dates"),
     keepOrder: args.includes("--keep-order"),
   };
 

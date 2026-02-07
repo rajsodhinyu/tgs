@@ -16,9 +16,6 @@ function showUsage() {
   console.log("  node import-mp3s.js <mp3-directory> [options]\n");
   console.log(chalk.yellow("Options:"));
   console.log(
-    "  --random-dates     Assign random dates instead of sequential daily releases",
-  );
-  console.log(
     "  --keep-order       Keep original file order (don't shuffle songs)",
   );
   console.log(
@@ -36,9 +33,6 @@ function showUsage() {
   console.log(
     "  node import-mp3s.js /path/to/mp3s --keep-order              # Keep order, daily releases",
   );
-  console.log(
-    "  node import-mp3s.js ./mp3s --random-dates                   # Shuffle songs, random dates",
-  );
   console.log("  node import-mp3s.js ./mp3s --start-date 2025-02-01T08:00:00Z");
   console.log("  node import-mp3s.js ./mp3s --dry-run\n");
   console.log(
@@ -54,7 +48,6 @@ function showUsage() {
 function parseArgs(args) {
   const options = {
     directory: null,
-    randomizeDates: false,
     keepOrder: false,
     startDate: null,
     dryRun: false,
@@ -67,8 +60,6 @@ function parseArgs(args) {
     if (arg === "--help") {
       showUsage();
       process.exit(0);
-    } else if (arg === "--random-dates") {
-      options.randomizeDates = true;
     } else if (arg === "--keep-order") {
       options.keepOrder = true;
     } else if (arg === "--dry-run") {
@@ -211,7 +202,6 @@ async function main() {
     console.log(chalk.gray("━".repeat(40)));
 
     const mp3Data = await processMP3Directory(options.directory, {
-      randomizeDates: options.randomizeDates,
       keepOrder: options.keepOrder,
       startDate: options.startDate,
     });

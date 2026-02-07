@@ -1,13 +1,6 @@
 import type {StructureResolver} from 'sanity/structure'
-import {
-  FaBurst,
-  FaSpotify,
-  FaListCheck,
-  FaRadio,
-  FaCalendarDay,
-  FaClipboardList,
-  FaUser,
-} from 'react-icons/fa6'
+import {FaBurst, FaSpotify, FaRadio, FaCalendarDay} from 'react-icons/fa6'
+import {SotdCalendar} from '../components/SotdCalendar'
 
 export const structure: StructureResolver = (S) =>
   S.list()
@@ -17,5 +10,8 @@ export const structure: StructureResolver = (S) =>
       S.documentTypeListItem('post').title('Blog').icon(FaBurst),
       S.documentTypeListItem('event').title('Events').icon(FaCalendarDay),
       S.documentTypeListItem('playlist').title('Playlists').icon(FaSpotify),
-      S.documentTypeListItem('sotd').title('Song of the Day').icon(FaRadio),
+      S.listItem()
+        .title('SOTD Programming')
+        .icon(FaRadio)
+        .child(S.component(SotdCalendar).title('Song of the Day').id('sotd-calendar')),
     ])
