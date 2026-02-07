@@ -25,6 +25,9 @@ function showUsage() {
     "  --dry-run          Generate files but don't run Sanity import",
   );
   console.log("  --no-backup        Skip creating backup of existing data");
+  console.log(
+    "  --no-date          Import songs without dates (unscheduled)",
+  );
   console.log("  --help             Show this help message\n");
   console.log(chalk.yellow("Examples:"));
   console.log(
@@ -52,6 +55,7 @@ function parseArgs(args) {
     startDate: null,
     dryRun: false,
     noBackup: false,
+    noDate: false,
   };
 
   for (let i = 0; i < args.length; i++) {
@@ -66,6 +70,8 @@ function parseArgs(args) {
       options.dryRun = true;
     } else if (arg === "--no-backup") {
       options.noBackup = true;
+    } else if (arg === "--no-date") {
+      options.noDate = true;
     } else if (arg === "--start-date" && i + 1 < args.length) {
       options.startDate = args[++i];
     } else if (!arg.startsWith("--")) {
@@ -204,6 +210,7 @@ async function main() {
     const mp3Data = await processMP3Directory(options.directory, {
       keepOrder: options.keepOrder,
       startDate: options.startDate,
+      noDate: options.noDate,
     });
 
     if (mp3Data.length === 0) {

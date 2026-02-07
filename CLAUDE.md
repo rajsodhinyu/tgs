@@ -96,6 +96,7 @@ This runs the full pipeline: extract metadata → generate NDJSON → backup exi
 - `--random-dates` — Assign random dates instead of sequential daily releases
 - `--dry-run` — Generate files but skip the actual Sanity import
 - `--no-backup` — Skip backing up existing Sanity data before import
+- `--no-date` — Import songs without dates (unscheduled, visible in the SOTD calendar sidebar)
 
 **Examples:**
 ```bash
@@ -103,6 +104,7 @@ node import-mp3s.js ../assets/mp3s/                          # Shuffle songs, da
 node import-mp3s.js ./mp3s --keep-order                       # Keep file order
 node import-mp3s.js ./mp3s --start-date 2025-02-01T08:00:00Z  # Custom start date
 node import-mp3s.js ./mp3s --dry-run                          # Preview without importing
+node import-mp3s.js ./mp3s --no-date                          # Import as unscheduled
 ```
 
 ### Step-by-step (manual pipeline)
@@ -110,7 +112,7 @@ If you want to inspect/edit between steps:
 
 1. **Extract metadata** — reads ID3 tags, shuffles order, assigns daily release dates, writes `mp3-data.json`:
    ```bash
-   node extract-metadata.js <mp3-directory> [--keep-order] [--random-dates] [--start-date <ISO>]
+   node extract-metadata.js <mp3-directory> [--keep-order] [--random-dates] [--start-date <ISO>] [--no-date]
    ```
 
 2. **Generate NDJSON** — converts `mp3-data.json` into `import.ndjson` (Sanity import format with `sotd` document type and file asset references):

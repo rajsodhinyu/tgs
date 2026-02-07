@@ -9,17 +9,20 @@ function convertToSanityDocument(mp3Item) {
   // Get absolute path for the file
   const absolutePath = path.resolve(mp3Item.filePath);
 
-  return {
+  const doc = {
     _id: mp3Item._id,
     _type: "sotd",
     name: mp3Item.title,
     artist: mp3Item.artist,
-    datetime: mp3Item.datetime,
     file: {
       _type: "file",
       _sanityAsset: `file@file://${absolutePath}`,
     },
   };
+  if (mp3Item.datetime) {
+    doc.datetime = mp3Item.datetime;
+  }
+  return doc;
 }
 
 /**
@@ -54,7 +57,7 @@ function generateNDJSON(mp3Data, outputPath = "import.ndjson") {
       console.log(`  ID: ${doc._id}`);
       console.log(`  Artist: ${doc.artist}`);
       console.log(`  Title: ${doc.name}`);
-      console.log(`  Date: ${doc.datetime.split("T")[0]}`);
+      console.log(`  Date: ${doc.datetime ? doc.datetime.split("T")[0] : "Unscheduled"}`);
       console.log(
         `  File: ${path.basename(doc.file._sanityAsset.replace("file@file://", ""))}`,
       );
@@ -90,9 +93,6 @@ function validateMP3Data(mp3Data) {
       warnings.push(
         `Item ${index}: Missing artist (will use 'Unknown Artist')`,
       );
-    }
-    if (!item.datetime) {
-      errors.push(`Item ${index}: Missing datetime`);
     }
     if (!item.filePath) {
       errors.push(`Item ${index}: Missing filePath`);

@@ -182,23 +182,36 @@ async function processMP3Directory(directoryPath, options = {}) {
       return [];
     }
 
-    // Assign dates (with order randomization by default)
-    const withDates = assignReleaseDates(mp3Data, {
-      ...options,
-      randomizeOrder: !options.keepOrder,
-    });
+    // Assign dates (or skip if noDate)
+    let withDates;
+    if (options.noDate) {
+      withDates = mp3Data.map((item) => ({
+        ...item,
+        _id: uuidv4(),
+        datetime: null,
+      }));
+    } else {
+      withDates = assignReleaseDates(mp3Data, {
+        ...options,
+        randomizeOrder: !options.keepOrder,
+      });
 
-    // Sort by date (they should already be in order for sequential dates)
-    withDates.sort((a, b) => new Date(a.datetime) - new Date(b.datetime));
+      // Sort by date (they should already be in order for sequential dates)
+      withDates.sort((a, b) => new Date(a.datetime) - new Date(b.datetime));
+    }
 
     // Display summary
     console.log(chalk.green("\n✅ Processing complete!\n"));
     console.log(chalk.cyan("Summary:"));
     console.log(`  • Total files: ${withDates.length}`);
-    console.log(`  • First release: ${withDates[0].datetime.split("T")[0]}`);
-    console.log(
-      `  • Last release: ${withDates[withDates.length - 1].datetime.split("T")[0]}`,
-    );
+    if (options.noDate) {
+      console.log(`  • Dates: None (unscheduled)`);
+    } else {
+      console.log(`  • First release: ${withDates[0].datetime.split("T")[0]}`);
+      console.log(
+        `  • Last release: ${withDates[withDates.length - 1].datetime.split("T")[0]}`,
+      );
+    }
 
     // Show first few entries
     console.log(chalk.cyan("\nFirst 5 entries:"));
@@ -206,7 +219,11 @@ async function processMP3Directory(directoryPath, options = {}) {
       console.log(
         `  ${i + 1}. ${chalk.yellow(item.artist)} - ${chalk.white(item.title)}`,
       );
-      console.log(`     Date: ${item.datetime.split("T")[0]}`);
+      if (item.datetime) {
+        console.log(`     Date: ${item.datetime.split("T")[0]}`);
+      } else {
+        console.log(`     Date: Unscheduled`);
+      }
     });
 
     return withDates;
@@ -247,6 +264,9 @@ if (require.main === module) {
     );
     console.log(chalk.gray("  --start-date      Starting date (ISO format)"));
     console.log(
+      chalk.gray("  --no-date         Import songs without dates (unscheduled)"),
+    );
+    console.log(
       chalk.gray(
         "\nDefault behavior: Shuffle songs, assign sequential daily releases",
       ),
@@ -257,6 +277,7 @@ if (require.main === module) {
   const directoryPath = args[0];
   const options = {
     keepOrder: args.includes("--keep-order"),
+    noDate: args.includes("--no-date"),
   };
 
   // Check for --start-date argument

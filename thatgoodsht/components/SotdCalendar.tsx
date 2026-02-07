@@ -9,7 +9,7 @@ interface SotdDoc {
   _id: string
   name: string
   artist: string
-  datetime: string
+  datetime: string | null
   fileUrl: string | null
 }
 
@@ -60,12 +60,18 @@ function nextYearMonth(ym: YearMonth): YearMonth {
   return ym.month === 11 ? {year: ym.year + 1, month: 0} : {year: ym.year, month: ym.month + 1}
 }
 
+const OuterWrapper = styled.div`
+  display: flex;
+  height: 100%;
+  color: #000;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+`
+
 const Wrapper = styled.div`
   padding: 1.5rem;
-  color: #000;
-  height: 100%;
+  flex: 1;
+  min-width: 0;
   overflow-y: auto;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 `
 
 const Header = styled.div`
@@ -344,6 +350,56 @@ const ShowPastButton = styled.button`
   }
 `
 
+const Sidebar = styled.div<{$dragOver?: boolean}>`
+  width: 220px;
+  flex-shrink: 0;
+  border-left: 1px solid #d0d0d0;
+  background: ${(p) => (p.$dragOver ? '#e0d5f0' : '#fafafa')};
+  overflow-y: auto;
+  transition: background 0.15s;
+`
+
+const SidebarHeader = styled.div`
+  position: sticky;
+  top: 0;
+  background: #f5f5f5;
+  padding: 0.75rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border-bottom: 1px solid #d0d0d0;
+  z-index: 1;
+`
+
+const SidebarItem = styled.div<{$isDragging?: boolean}>`
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid #e8e8e8;
+  cursor: pointer;
+  opacity: ${(p) => (p.$isDragging ? 0.5 : 1)};
+  transition:
+    background 0.15s,
+    opacity 0.15s;
+  &:hover {
+    background: #f0edf8;
+  }
+`
+
+const SidebarArtist = styled.div`
+  color: #6c5cbe;
+  font-weight: 600;
+  font-size: 0.7rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`
+
+const SidebarSongTitle = styled.div`
+  color: #333;
+  font-size: 0.65rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`
+
 export function SotdCalendar() {
   const client = useClient({apiVersion: '2024-04-01'})
   const router = useRouter()
@@ -364,6 +420,8 @@ export function SotdCalendar() {
   const [draggedSong, setDraggedSong] = useState<SotdDoc | null>(null)
   const [dragOverKey, setDragOverKey] = useState<string | null>(null)
   const [fetchKey, setFetchKey] = useState(0)
+  const [unscheduledSongs, setUnscheduledSongs] = useState<SotdDoc[]>([])
+  const [dragOverSidebar, setDragOverSidebar] = useState(false)
   const bottomRef = useRef<HTMLDivElement | null>(null)
   const wrapperRef = useRef<HTMLDivElement | null>(null)
 
@@ -392,6 +450,16 @@ export function SotdCalendar() {
       })
       .catch(() => setLoading(false))
   }, [client, rangeStart, rangeEnd, view, fetchKey])
+
+  // Fetch unscheduled songs (no datetime)
+  useEffect(() => {
+    client
+      .fetch<SotdDoc[]>(
+        `*[_type == 'sotd' && !defined(datetime)] | order(_updatedAt asc) { _id, name, artist, datetime, "fileUrl": file.asset->url }`,
+      )
+      .then((docs) => setUnscheduledSongs(docs))
+      .catch(() => {})
+  }, [client, fetchKey])
 
   // Fetch all songs for list view
   useEffect(() => {
@@ -441,6 +509,7 @@ export function SotdCalendar() {
   const songsByKey = useMemo(() => {
     const map: Record<string, SotdDoc> = {}
     for (const song of songs) {
+      if (!song.datetime) continue
       const d = new Date(song.datetime)
       map[dayKey(d.getFullYear(), d.getMonth(), d.getDate())] = song
     }
@@ -455,11 +524,11 @@ export function SotdCalendar() {
 
   const visibleSongs = useMemo(() => {
     if (showPast) return allSongs
-    return allSongs.filter((s) => new Date(s.datetime).getTime() >= todayStart)
+    return allSongs.filter((s) => !s.datetime || new Date(s.datetime).getTime() >= todayStart)
   }, [allSongs, showPast, todayStart])
 
   const pastCount = useMemo(() => {
-    return allSongs.filter((s) => new Date(s.datetime).getTime() < todayStart).length
+    return allSongs.filter((s) => s.datetime && new Date(s.datetime).getTime() < todayStart).length
   }, [allSongs, todayStart])
 
   const loadPrevMonth = useCallback(() => {
@@ -528,18 +597,27 @@ export function SotdCalendar() {
       if (targetSong && targetSong._id === draggedSong._id) return
 
       const [ty, tm, td] = targetKey.split('-').map(Number)
-      const sourceDate = new Date(draggedSong.datetime)
-      const targetDate = new Date(
-        Date.UTC(ty, tm, td, sourceDate.getUTCHours(), sourceDate.getUTCMinutes(), 0),
-      ).toISOString()
+      const fromSidebar = !draggedSong.datetime
+      const hour = fromSidebar ? 12 : new Date(draggedSong.datetime!).getUTCHours()
+      const minute = fromSidebar ? 0 : new Date(draggedSong.datetime!).getUTCMinutes()
+      const targetDate = new Date(Date.UTC(ty, tm, td, hour, minute, 0)).toISOString()
 
-      if (targetSong) {
+      if (targetSong && fromSidebar) {
+        // Sidebar → occupied cell: assign date to dragged, unschedule displaced
         await client
           .transaction()
           .patch(draggedSong._id, (p) => p.set({datetime: targetDate}))
-          .patch(targetSong._id, (p) => p.set({datetime: draggedSong.datetime}))
+          .patch(targetSong._id, (p) => p.unset(['datetime']))
+          .commit()
+      } else if (targetSong) {
+        // Calendar → occupied cell: swap dates
+        await client
+          .transaction()
+          .patch(draggedSong._id, (p) => p.set({datetime: targetDate}))
+          .patch(targetSong._id, (p) => p.set({datetime: draggedSong.datetime!}))
           .commit()
       } else {
+        // Any → empty cell: just assign date
         await client.patch(draggedSong._id).set({datetime: targetDate}).commit()
       }
 
@@ -550,180 +628,267 @@ export function SotdCalendar() {
     [draggedSong, songsByKey, client],
   )
 
+  const handleUnschedule = useCallback(
+    async () => {
+      if (!draggedSong || !draggedSong.datetime) return
+      await client.patch(draggedSong._id).unset(['datetime']).commit()
+      setDraggedSong(null)
+      setDragOverSidebar(false)
+      setFetchKey((k) => k + 1)
+    },
+    [draggedSong, client],
+  )
+
   const todayYear = today.getFullYear()
   const todayMonth = today.getMonth()
   const todayDate = today.getDate()
 
   return (
-    <Wrapper ref={wrapperRef} onDragOver={swapMode ? handleDragScroll : undefined}>
-      <Header>
-        {view === 'calendar' ? (
-          <LoadButton onClick={loadPrevMonth}>
-            Load {MONTH_NAMES[prevYearMonth(visibleMonths[0]).month]}
-          </LoadButton>
-        ) : (
-          <div />
-        )}
-        {view === 'calendar' && (
-          <SwapToggle $active={swapMode} onClick={() => setSwapMode((v) => !v)}>
-            {swapMode ? 'Done' : 'SWAP'}
-          </SwapToggle>
-        )}
-        <ViewToggle>
-          <ViewToggleButton $active={view === 'calendar'} onClick={() => setView('calendar')}>
-            Calendar
-          </ViewToggleButton>
-          <ViewToggleButton $active={view === 'list'} onClick={() => setView('list')}>
-            List
-          </ViewToggleButton>
-        </ViewToggle>
-      </Header>
+    <OuterWrapper>
+      <Wrapper ref={wrapperRef} onDragOver={swapMode ? handleDragScroll : undefined}>
+        <Header>
+          {view === 'calendar' ? (
+            <LoadButton onClick={loadPrevMonth}>
+              Load {MONTH_NAMES[prevYearMonth(visibleMonths[0]).month]}
+            </LoadButton>
+          ) : (
+            <div />
+          )}
+          {view === 'calendar' && (
+            <SwapToggle $active={swapMode} onClick={() => setSwapMode((v) => !v)}>
+              {swapMode ? 'Done' : 'SWAP'}
+            </SwapToggle>
+          )}
+          <ViewToggle>
+            <ViewToggleButton $active={view === 'calendar'} onClick={() => setView('calendar')}>
+              Calendar
+            </ViewToggleButton>
+            <ViewToggleButton $active={view === 'list'} onClick={() => setView('list')}>
+              List
+            </ViewToggleButton>
+          </ViewToggle>
+        </Header>
 
-      {loading && (
-        <div style={{textAlign: 'center', padding: '2rem', color: '#666'}}>Loading...</div>
-      )}
+        {loading && (
+          <div style={{textAlign: 'center', padding: '2rem', color: '#666'}}>Loading...</div>
+        )}
+
+        {view === 'calendar' && (
+          <>
+            {visibleMonths.map((m) => {
+              const totalDays = getMonthDays(m.year, m.month)
+              const firstDay = getFirstDayOfWeek(m.year, m.month)
+              const isCurrMonth = m.year === todayYear && m.month === todayMonth
+
+              return (
+                <MonthSection key={`${m.year}-${m.month}`}>
+                  <MonthTitle>
+                    {MONTH_NAMES[m.month]} {m.year}
+                  </MonthTitle>
+                  <Grid>
+                    {DAYS_OF_WEEK.map((d) => (
+                      <DayHeader key={d}>{d}</DayHeader>
+                    ))}
+                    {Array.from({length: firstDay}).map((_, i) => (
+                      <DayCell key={`pad-${i}`} $empty />
+                    ))}
+                    {Array.from({length: totalDays}).map((_, i) => {
+                      const day = i + 1
+                      const key = dayKey(m.year, m.month, day)
+                      const song = songsByKey[key]
+                      const isToday = isCurrMonth && day === todayDate
+                      return (
+                        <DayCell
+                          key={day}
+                          $hasSong={!!song}
+                          $isToday={isToday}
+                          $isDragOver={dragOverKey === key}
+                          $isDragging={!!draggedSong && draggedSong._id === song?._id}
+                          draggable={swapMode && !!song}
+                          onClick={!swapMode && song ? () => handleSongClick(song) : undefined}
+                          onDragStart={
+                            swapMode && song
+                              ? (e) => {
+                                  e.dataTransfer.effectAllowed = 'move'
+                                  setDraggedSong(song)
+                                }
+                              : undefined
+                          }
+                          onDragOver={
+                            swapMode
+                              ? (e) => {
+                                  e.preventDefault()
+                                  setDragOverKey(key)
+                                }
+                              : undefined
+                          }
+                          onDragLeave={swapMode ? () => setDragOverKey(null) : undefined}
+                          onDrop={
+                            swapMode
+                              ? (e) => {
+                                  e.preventDefault()
+                                  handleSwapDates(key)
+                                }
+                              : undefined
+                          }
+                          onDragEnd={
+                            swapMode
+                              ? () => {
+                                  setDraggedSong(null)
+                                  setDragOverKey(null)
+                                  setDragOverSidebar(false)
+                                }
+                              : undefined
+                          }
+                        >
+                          <div style={{display: 'flex', alignItems: 'center', gap: '4px'}}>
+                            <DayNumber $isToday={isToday}>{day}</DayNumber>
+                            {song?.fileUrl ? (
+                              <PlayButton
+                                $playing={playingId === song._id}
+                                onClick={(e) => handlePlay(e, song)}
+                              >
+                                {playingId === song._id ? '\u25A0' : '\u25B6'}
+                              </PlayButton>
+                            ) : !song ? (
+                              <AddButton
+                                onClick={(e) => {
+                                  e.stopPropagation()
+                                  handleEmptyDayDoubleClick(m.year, m.month, day)
+                                }}
+                              >
+                                +
+                              </AddButton>
+                            ) : null}
+                            {song && !song.artist && <Dot $color="#f1c40f" />}
+                            {song && isPublished(song._id) && <PublishedDot />}
+                          </div>
+                          {song && (
+                            <SongInfo>
+                              <Artist>{song.artist}</Artist>
+                              <SongTitle>{song.name}</SongTitle>
+                            </SongInfo>
+                          )}
+                        </DayCell>
+                      )
+                    })}
+                  </Grid>
+                </MonthSection>
+              )
+            })}
+
+            <div ref={bottomRef} style={{height: '50vh'}} />
+          </>
+        )}
+
+        {view === 'list' && !loading && (
+          <>
+            {pastCount > 0 && (
+              <ShowPastButton onClick={() => setShowPast((v) => !v)}>
+                {showPast
+                  ? 'Hide past songs'
+                  : `Show ${pastCount} past song${pastCount === 1 ? '' : 's'}`}
+              </ShowPastButton>
+            )}
+            <ListContainer>
+              {visibleSongs.map((song) => (
+                <ListRow key={song._id} onClick={() => handleSongClick(song)}>
+                  <ListDate>{song.datetime ? formatDate(song.datetime) : 'Unscheduled'}</ListDate>
+                  {song.fileUrl && (
+                    <PlayButton
+                      $playing={playingId === song._id}
+                      onClick={(e) => handlePlay(e, song)}
+                    >
+                      {playingId === song._id ? '\u25A0' : '\u25B6'}
+                    </PlayButton>
+                  )}
+                  {isPublished(song._id) && <PublishedDot />}
+                  <ListArtist>{song.artist}</ListArtist>
+                  <ListSongTitle>{song.name}</ListSongTitle>
+                </ListRow>
+              ))}
+              {visibleSongs.length === 0 && (
+                <div style={{padding: '2rem', textAlign: 'center', color: '#666'}}>
+                  No songs found
+                </div>
+              )}
+            </ListContainer>
+          </>
+        )}
+      </Wrapper>
 
       {view === 'calendar' && (
-        <>
-          {visibleMonths.map((m) => {
-            const totalDays = getMonthDays(m.year, m.month)
-            const firstDay = getFirstDayOfWeek(m.year, m.month)
-            const isCurrMonth = m.year === todayYear && m.month === todayMonth
-
-            return (
-              <MonthSection key={`${m.year}-${m.month}`}>
-                <MonthTitle>
-                  {MONTH_NAMES[m.month]} {m.year}
-                </MonthTitle>
-                <Grid>
-                  {DAYS_OF_WEEK.map((d) => (
-                    <DayHeader key={d}>{d}</DayHeader>
-                  ))}
-                  {Array.from({length: firstDay}).map((_, i) => (
-                    <DayCell key={`pad-${i}`} $empty />
-                  ))}
-                  {Array.from({length: totalDays}).map((_, i) => {
-                    const day = i + 1
-                    const key = dayKey(m.year, m.month, day)
-                    const song = songsByKey[key]
-                    const isToday = isCurrMonth && day === todayDate
-                    return (
-                      <DayCell
-                        key={day}
-                        $hasSong={!!song}
-                        $isToday={isToday}
-                        $isDragOver={dragOverKey === key}
-                        $isDragging={!!draggedSong && draggedSong._id === song?._id}
-                        draggable={swapMode && !!song}
-                        onClick={!swapMode && song ? () => handleSongClick(song) : undefined}
-                        onDragStart={
-                          swapMode && song
-                            ? (e) => {
-                                e.dataTransfer.effectAllowed = 'move'
-                                setDraggedSong(song)
-                              }
-                            : undefined
-                        }
-                        onDragOver={
-                          swapMode
-                            ? (e) => {
-                                e.preventDefault()
-                                setDragOverKey(key)
-                              }
-                            : undefined
-                        }
-                        onDragLeave={swapMode ? () => setDragOverKey(null) : undefined}
-                        onDrop={
-                          swapMode
-                            ? (e) => {
-                                e.preventDefault()
-                                handleSwapDates(key)
-                              }
-                            : undefined
-                        }
-                        onDragEnd={
-                          swapMode
-                            ? () => {
-                                setDraggedSong(null)
-                                setDragOverKey(null)
-                              }
-                            : undefined
-                        }
-                      >
-                        <div style={{display: 'flex', alignItems: 'center', gap: '4px'}}>
-                          <DayNumber $isToday={isToday}>{day}</DayNumber>
-                          {song?.fileUrl ? (
-                            <PlayButton
-                              $playing={playingId === song._id}
-                              onClick={(e) => handlePlay(e, song)}
-                            >
-                              {playingId === song._id ? '\u25A0' : '\u25B6'}
-                            </PlayButton>
-                          ) : !song ? (
-                            <AddButton
-                              onClick={(e) => {
-                                e.stopPropagation()
-                                handleEmptyDayDoubleClick(m.year, m.month, day)
-                              }}
-                            >
-                              +
-                            </AddButton>
-                          ) : null}
-                          {song && !song.artist && <Dot $color="#f1c40f" />}
-                          {song && isPublished(song._id) && <PublishedDot />}
-                        </div>
-                        {song && (
-                          <SongInfo>
-                            <Artist>{song.artist}</Artist>
-                            <SongTitle>{song.name}</SongTitle>
-                          </SongInfo>
-                        )}
-                      </DayCell>
-                    )
-                  })}
-                </Grid>
-              </MonthSection>
-            )
-          })}
-
-          <div ref={bottomRef} style={{height: '50vh'}} />
-        </>
-      )}
-
-      {view === 'list' && !loading && (
-        <>
-          {pastCount > 0 && (
-            <ShowPastButton onClick={() => setShowPast((v) => !v)}>
-              {showPast
-                ? 'Hide past songs'
-                : `Show ${pastCount} past song${pastCount === 1 ? '' : 's'}`}
-            </ShowPastButton>
-          )}
-          <ListContainer>
-            {visibleSongs.map((song) => (
-              <ListRow key={song._id} onClick={() => handleSongClick(song)}>
-                <ListDate>{formatDate(song.datetime)}</ListDate>
-                {song.fileUrl && (
+        <Sidebar
+          $dragOver={dragOverSidebar}
+          onDragOver={
+            swapMode
+              ? (e) => {
+                  e.preventDefault()
+                  setDragOverSidebar(true)
+                }
+              : undefined
+          }
+          onDragLeave={swapMode ? () => setDragOverSidebar(false) : undefined}
+          onDrop={
+            swapMode
+              ? (e) => {
+                  e.preventDefault()
+                  handleUnschedule()
+                }
+              : undefined
+          }
+        >
+          <SidebarHeader>Unscheduled ({unscheduledSongs.length})</SidebarHeader>
+          {unscheduledSongs.map((song) => (
+            <SidebarItem
+              key={song._id}
+              $isDragging={!!draggedSong && draggedSong._id === song._id}
+              draggable={swapMode}
+              onClick={!swapMode ? () => handleSongClick(song) : undefined}
+              onDragStart={
+                swapMode
+                  ? (e) => {
+                      e.dataTransfer.effectAllowed = 'move'
+                      setDraggedSong(song)
+                    }
+                  : undefined
+              }
+              onDragEnd={
+                swapMode
+                  ? () => {
+                      setDraggedSong(null)
+                      setDragOverKey(null)
+                      setDragOverSidebar(false)
+                    }
+                  : undefined
+              }
+            >
+              <div style={{display: 'flex', alignItems: 'center', gap: '6px'}}>
+                {song.fileUrl ? (
                   <PlayButton
                     $playing={playingId === song._id}
                     onClick={(e) => handlePlay(e, song)}
+                    style={{fontSize: '0.45rem', padding: '0.1rem 0.3rem'}}
                   >
                     {playingId === song._id ? '\u25A0' : '\u25B6'}
                   </PlayButton>
+                ) : (
+                  <div style={{width: '18px', flexShrink: 0}} />
                 )}
-                {isPublished(song._id) && <PublishedDot />}
-                <ListArtist>{song.artist}</ListArtist>
-                <ListSongTitle>{song.name}</ListSongTitle>
-              </ListRow>
-            ))}
-            {visibleSongs.length === 0 && (
-              <div style={{padding: '2rem', textAlign: 'center', color: '#666'}}>
-                No songs found
+                <div style={{minWidth: 0}}>
+                  <SidebarArtist>{song.artist || 'Unknown Artist'}</SidebarArtist>
+                  <SidebarSongTitle>{song.name || 'Untitled'}</SidebarSongTitle>
+                </div>
               </div>
-            )}
-          </ListContainer>
-        </>
+            </SidebarItem>
+          ))}
+          {unscheduledSongs.length === 0 && (
+            <div style={{padding: '1rem 0.75rem', color: '#999', fontSize: '0.7rem'}}>
+              No unscheduled songs
+            </div>
+          )}
+        </Sidebar>
       )}
-    </Wrapper>
+    </OuterWrapper>
   )
 }
