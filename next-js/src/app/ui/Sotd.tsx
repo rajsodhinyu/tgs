@@ -21,7 +21,7 @@ export default function Sotd() {
       </div>
       <div>
         <div
-          className="invisible group-hover:visible absolute z-10 transform md:translate-x-4 text-center w-72 h-20 flex rounded-md font-title
+          className="invisible group-hover:visible absolute z-20 transform md:translate-x-4 text-center w-72 h-20 flex rounded-md font-title
           bg-tgs-dark-purple
           ring ring-white
           text-white"
