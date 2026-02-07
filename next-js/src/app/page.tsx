@@ -1,6 +1,7 @@
 "use client";
 import dynamic from "next/dynamic";
 import * as React from "react";
+import { useEffect, useRef } from "react";
 import { useSotData } from "./context/SotDataContext";
 import Link from "next/link";
 
@@ -13,8 +14,6 @@ const DynamicComponentWithNoSSR = dynamic(() => import("./ui/Backround"), {
   ),
 });
 
-let sotdata = { artist: "artist", name: "name" };
-
 const Clear = dynamic(() => import("./ui/Clear"), {
   ssr: false,
   loading: () => <p>clearing...</p>,
@@ -23,16 +22,36 @@ const Clear = dynamic(() => import("./ui/Clear"), {
 function catchClick() {
   let audio = document.getElementById("myAudio") as HTMLAudioElement;
   if (audio.paused) {
-    document.getElementById("disc")!.className = "cd-disc-going animate-spin";
     audio.play();
   } else {
-    document.getElementById("disc")!.className = "cd-disc";
     audio.pause();
   }
 }
 
 export default function Page() {
   const sotdata = useSotData();
+  const discRef = useRef<HTMLImageElement>(null);
+
+  useEffect(() => {
+    const audio = document.getElementById("myAudio") as HTMLAudioElement;
+    if (!audio) return;
+
+    const syncDisc = () => {
+      if (!discRef.current) return;
+      discRef.current.className = audio.paused
+        ? "cd-disc"
+        : "cd-disc-going animate-spin";
+    };
+
+    syncDisc();
+    audio.addEventListener("play", syncDisc);
+    audio.addEventListener("pause", syncDisc);
+    return () => {
+      audio.removeEventListener("play", syncDisc);
+      audio.removeEventListener("pause", syncDisc);
+    };
+  }, []);
+
   const todayDate = new Date().toLocaleDateString("en-US", {
     timeZone: "America/New_York",
     month: "long",
@@ -88,8 +107,8 @@ export default function Page() {
       <div onClick={catchClick}>
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 size-60 md:size-96">
           <img
-            id="disc"
-            className=""
+            ref={discRef}
+            className="cd-disc"
             src="https://cdn.sanity.io/images/fnvy29id/tgs/15c6bd4e378be982f1db27707caf618c07fd5a39-2048x2048.png?h=1000"
             alt=""
           />
