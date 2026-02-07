@@ -5,6 +5,7 @@ import { SanityImageSource } from "@sanity/image-url/lib/types/types";
 import imageUrlBuilder from "@sanity/image-url";
 import { SanityDocument } from "next-sanity";
 import { sanityFetch } from "../client";
+import SidebarList from "./SidebarList";
 
 const projectId = "fnvy29id";
 const dataset = "tgs";
@@ -24,44 +25,45 @@ function eventImage(event: any) {
 export default async function Sidebar() {
   const blogs = await sanityFetch<SanityDocument[]>({ query: BLOGS_QUERY });
 
-  function linkResolver(isYoutube: boolean, youtubeLink: string, slug: any) {
-    // Always return local URL for both regular and YouTube posts
-    return `/blog/post/${slug.current}`;
-  }
-
-  function tabResolver(isYoutube: boolean) {
-    // Always open in same tab since we're not redirecting to YouTube anymore
-    return `_self`;
-  }
+  const blogsForClient = blogs.map((blog) => ({
+    _id: blog._id,
+    name: blog.name,
+    slug: blog.slug,
+    youtube: blog.youtube,
+    youtubeURL: blog.youtubeURL,
+    imageUrl: eventImage(blog) || "",
+  }));
 
   return (
     <div className="flex flex-col items-center w-full">
       <div className="*:m-1 w-80">
-        <div className="font-bold hover:underline hover:text-tgs-purple decoration-tgs-purple text-black flex shrink text-4xl font-bit leading-10 text-nowrap justify-center">
-          <Link href="/blog-archive">ALL POSTS &gt;</Link>
+        <div className="sticky top-0 z-10 bg-white  font-bold hover:underline hover:text-tgs-purple decoration-tgs-purple text-black flex shrink text-4xl font-bit  text-nowrap justify-center ">
+          <Link href="/blog-archive">BLOG &gt;</Link>
         </div>
-        <div className="flex-col h-[140vw] lg:h-[125vw] overflow-y-auto w-full">
-          {blogs.map((blog) => (
-            <div key={blog._id} className="pt-3 flex justify-center">
-              <Link
-                className=""
-                href={`${linkResolver(blog.youtube, blog.youtubeURL, blog.slug)}`}
-                target={tabResolver(blog.youtube)}
-              >
-                <Image
-                  className="h-auto object-cover w-80 border-opacity-0 hover:border-opacity-100 hover:scale-95 border-4 border-tgs-purple rounded-md"
-                  src={`${eventImage(blog)}`}
-                  alt={`${blog.name} Cover`}
-                  width={300}
-                  height={300}
-                  quality={100}
-                />
-              </Link>
-            </div>
-          ))}
+
+        {/* Mobile: infinite scroll, no fixed height */}
+        <div className="md:hidden">
+          <SidebarList blogs={blogsForClient} />
         </div>
-        <div className="font-bold hover:underline hover:text-tgs-purple decoration-tgs-purple text-black flex text-4xl font-bit leading-10 text-nowrap justify-center">
-          <Link href="/blog-archive">VIEW ALL &gt;</Link>
+
+        {/* Desktop: fixed-height scrollable container */}
+        <div className="hidden md:block">
+          <div className="flex-col w-full">
+            {blogs.map((blog) => (
+              <div key={blog._id} className="flex justify-center">
+                <Link href={`/blog/post/${blog.slug.current}`} target="_self">
+                  <Image
+                    className="h-auto object-cover w-80 border-opacity-0 hover:border-opacity-100 hover:scale-95 border-4 border-tgs-purple rounded-md"
+                    src={`${eventImage(blog)}`}
+                    alt={`${blog.name} Cover`}
+                    width={300}
+                    height={300}
+                    quality={100}
+                  />
+                </Link>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>

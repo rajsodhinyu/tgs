@@ -453,7 +453,7 @@ export function SotdCalendar() {
     globalPaused = p
     _setPaused(p)
   }, [])
-  const [swapMode, setSwapMode] = useState(false)
+  const [swapMode, setSwapMode] = useState(true)
   const [draggedSong, setDraggedSong] = useState<SotdDoc | null>(null)
   const [dragOverKey, setDragOverKey] = useState<string | null>(null)
   const [fetchKey, setFetchKey] = useState(0)
@@ -714,6 +714,16 @@ export function SotdCalendar() {
     setFetchKey((k) => k + 1)
   }, [draggedSong, client])
 
+  const playingSong = useMemo(() => {
+    if (!playingId) return null
+    return (
+      songs.find((s) => s._id === playingId) ||
+      unscheduledSongs.find((s) => s._id === playingId) ||
+      allSongs.find((s) => s._id === playingId) ||
+      null
+    )
+  }, [playingId, songs, unscheduledSongs, allSongs])
+
   const todayYear = today.getFullYear()
   const todayMonth = today.getMonth()
   const todayDate = today.getDate()
@@ -730,15 +740,37 @@ export function SotdCalendar() {
             <div />
           )}
           <div style={{display: 'flex', alignItems: 'center', gap: '0.5rem'}}>
-            {view === 'calendar' && (
-              <SwapToggle $active={swapMode} onClick={() => setSwapMode((v) => !v)}>
-                {swapMode ? 'Done' : 'SWAP'}
-              </SwapToggle>
-            )}
             {playingId && (
-              <PlayButton $playing onClick={handleGlobalPlayPause}>
-                {paused ? '\u25B6' : '\u25A0'}
-              </PlayButton>
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '4px',
+                  maxWidth: '200px',
+                }}
+              >
+                {playingSong && (
+                  <span
+                    style={{
+                      fontSize: '0.65rem',
+                      backgroundColor: '#6c5cbe',
+                      color: '#fff',
+                      fontWeight: 600,
+                      whiteSpace: 'nowrap',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      border: '1px 1px 1px 1px solid #6c5cbe',
+                      borderRadius: '4px',
+                      padding: '2px 4px',
+                    }}
+                  >
+                    <PlayButton $playing onClick={handleGlobalPlayPause}>
+                      {paused ? '\u25B6' : '\u25A0'}
+                    </PlayButton>
+                    {playingSong.name}
+                  </span>
+                )}
+              </div>
             )}
           </div>
           <ViewToggle>
@@ -787,7 +819,7 @@ export function SotdCalendar() {
                           $isDragOver={dragOverKey === key}
                           $isDragging={!!draggedSong && draggedSong._id === song?._id}
                           draggable={swapMode && !!song}
-                          onClick={!swapMode && song ? () => handleSongClick(song) : undefined}
+                          onClick={song ? () => handleSongClick(song) : undefined}
                           onDragStart={
                             swapMode && song
                               ? (e) => {
@@ -953,7 +985,7 @@ export function SotdCalendar() {
               key={song._id}
               $isDragging={!!draggedSong && draggedSong._id === song._id}
               draggable={swapMode}
-              onClick={!swapMode ? () => handleSongClick(song) : undefined}
+              onClick={() => handleSongClick(song)}
               onDragStart={
                 swapMode
                   ? (e) => {
