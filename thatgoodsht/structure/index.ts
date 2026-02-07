@@ -11,7 +11,7 @@ export const structure: StructureResolver = (S) =>
       S.documentTypeListItem('event').title('Events').icon(FaCalendarDay),
       S.documentTypeListItem('playlist').title('Playlists').icon(FaSpotify),
       S.listItem()
-        .title('SOTD Programming')
+        .title('Songs of the Day')
         .icon(FaRadio)
-        .child(S.component(SotdCalendar).title('Song of the Day').id('sotd-calendar')),
+        .child(S.component(SotdCalendar).id('sotd-calendar')),
     ])

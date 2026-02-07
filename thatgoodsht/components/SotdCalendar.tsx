@@ -13,6 +13,11 @@ interface SotdDoc {
   fileUrl: string | null
 }
 
+interface YearMonth {
+  year: number
+  month: number
+}
+
 const DAYS_OF_WEEK = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 
 function getMonthDays(year: number, month: number) {
@@ -38,9 +43,21 @@ const MONTH_NAMES = [
   'December',
 ]
 
+function dayKey(year: number, month: number, day: number) {
+  return `${year}-${month}-${day}`
+}
+
 function formatDate(iso: string) {
   const d = new Date(iso)
   return `${MONTH_NAMES[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`
+}
+
+function prevYearMonth(ym: YearMonth): YearMonth {
+  return ym.month === 0 ? {year: ym.year - 1, month: 11} : {year: ym.year, month: ym.month - 1}
+}
+
+function nextYearMonth(ym: YearMonth): YearMonth {
+  return ym.month === 11 ? {year: ym.year + 1, month: 0} : {year: ym.year, month: ym.month + 1}
 }
 
 const Wrapper = styled.div`
@@ -58,37 +75,17 @@ const Header = styled.div`
   margin-bottom: 1.25rem;
 `
 
-const MonthTitle = styled.h2`
-  margin: 0;
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: #000;
-  min-width: 200px;
-  text-align: center;
-`
-
-const NavButton = styled.button`
-  background: #f0f0f0;
-  border: 1px solid #d0d0d0;
-  color: #000;
-  padding: 0.4rem 0.75rem;
+const SwapToggle = styled.button<{$active: boolean}>`
+  background: ${(p) => (p.$active ? '#6c5cbe' : '#f0f0f0')};
+  border: 1px solid ${(p) => (p.$active ? '#6c5cbe' : '#d0d0d0')};
+  color: ${(p) => (p.$active ? '#fff' : '#000')};
+  padding: 0.35rem 0.6rem;
   border-radius: 4px;
   cursor: pointer;
-  font-size: 0.875rem;
+  font-size: 0.75rem;
   &:hover {
-    background: #e0e0e0;
+    background: ${(p) => (p.$active ? '#5a4aad' : '#e0e0e0')};
   }
-`
-
-const TodayButtonHidden = styled(NavButton)`
-  font-size: 0.75rem;
-  padding: 0.3rem 0.6rem;
-  visibility: hidden;
-`
-
-const TodayButton = styled(NavButton)`
-  font-size: 0.75rem;
-  padding: 0.3rem 0.6rem;
 `
 
 const ViewToggle = styled.div`
@@ -113,9 +110,20 @@ const ViewToggleButton = styled.button<{$active: boolean}>`
   }
 `
 
+const MonthSection = styled.div`
+  margin-bottom: 2rem;
+`
+
+const MonthTitle = styled.h3`
+  margin: 0 0 0.5rem 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #000;
+`
+
 const Grid = styled.div`
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
+  grid-template-columns: repeat(7, minmax(0, 1fr));
   gap: 1px;
   background: #d0d0d0;
   border: 1px solid #d0d0d0;
@@ -133,15 +141,47 @@ const DayHeader = styled.div`
   text-transform: uppercase;
 `
 
-const DayCell = styled.div<{$empty?: boolean; $hasSong?: boolean; $isToday?: boolean}>`
+const AddButton = styled.button`
+  background: #f0f0f0;
+  border: 1px solid #d0d0d0;
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 0.15rem 0.4rem;
+  font-size: 0.5rem;
+  color: #333;
+  flex-shrink: 0;
+  opacity: 0;
+  transition: opacity 0.15s;
+  &:hover {
+    background: #e0e0e0;
+  }
+`
+
+const DayCell = styled.div<{
+  $empty?: boolean
+  $hasSong?: boolean
+  $isToday?: boolean
+  $isDragOver?: boolean
+  $isDragging?: boolean
+}>`
   min-height: 90px;
   padding: 0.4rem;
-  background: ${(p) => (p.$empty ? '#fafafa' : p.$hasSong ? '#f0edf8' : '#fff')};
-  cursor: ${(p) => (p.$empty ? 'default' : 'pointer')};
-  border: ${(p) => (p.$isToday ? '2px solid #6c5cbe' : 'none')};
-  transition: background 0.15s;
+  overflow: hidden;
+  background: ${(p) =>
+    p.$isDragOver ? '#e0d5f0' : p.$empty ? '#fafafa' : p.$hasSong ? '#f0edf8' : '#fff'};
+  cursor: ${(p) => (p.$isDragging ? 'grabbing' : p.$empty ? 'default' : 'pointer')};
+  border: ${(p) =>
+    p.$isDragOver ? '2px dashed #6c5cbe' : p.$isToday ? '2px solid #6c5cbe' : 'none'};
+  opacity: ${(p) => (p.$isDragging ? 0.5 : 1)};
+  transition:
+    background 0.15s,
+    opacity 0.15s;
   &:hover {
-    background: ${(p) => (p.$empty ? '#fafafa' : p.$hasSong ? '#e6e0f3' : '#f5f5f5')};
+    background: ${(p) =>
+      p.$isDragOver ? '#e0d5f0' : p.$empty ? '#fafafa' : p.$hasSong ? '#e6e0f3' : '#f5f5f5'};
+  }
+  &:hover ${AddButton} {
+    opacity: 1;
   }
 `
 
@@ -245,12 +285,12 @@ const PublishedDotWrapper = styled.span`
   }
 `
 
-const Dot = styled.span`
+const Dot = styled.span<{$color?: string}>`
   display: inline-block;
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: #2ecc40;
+  background: ${(p) => p.$color || '#2ecc40'};
 `
 
 const Tooltip = styled.span`
@@ -278,6 +318,19 @@ function PublishedDot() {
   )
 }
 
+const LoadButton = styled.button`
+  background: #f0f0f0;
+  border: 1px solid #d0d0d0;
+  color: #000;
+  padding: 0.35rem 0.6rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.75rem;
+  &:hover {
+    background: #e0e0e0;
+  }
+`
+
 const ShowPastButton = styled.button`
   background: none;
   border: none;
@@ -296,8 +349,10 @@ export function SotdCalendar() {
   const router = useRouter()
   const today = new Date()
   const [view, setView] = useState<View>('calendar')
-  const [year, setYear] = useState(today.getFullYear())
-  const [month, setMonth] = useState(today.getMonth())
+  const [visibleMonths, setVisibleMonths] = useState<YearMonth[]>(() => {
+    const first = {year: today.getFullYear(), month: today.getMonth()}
+    return [first, nextYearMonth(first), nextYearMonth(nextYearMonth(first))]
+  })
   const [songs, setSongs] = useState<SotdDoc[]>([])
   const [allSongs, setAllSongs] = useState<SotdDoc[]>([])
   const [showPast, setShowPast] = useState(false)
@@ -305,24 +360,38 @@ export function SotdCalendar() {
   const [loading, setLoading] = useState(true)
   const [playingId, setPlayingId] = useState<string | null>(null)
   const audioRef = useRef<HTMLAudioElement | null>(null)
+  const [swapMode, setSwapMode] = useState(false)
+  const [draggedSong, setDraggedSong] = useState<SotdDoc | null>(null)
+  const [dragOverKey, setDragOverKey] = useState<string | null>(null)
+  const [fetchKey, setFetchKey] = useState(0)
+  const bottomRef = useRef<HTMLDivElement | null>(null)
+  const wrapperRef = useRef<HTMLDivElement | null>(null)
 
-  // Fetch songs for calendar month view
+  const rangeStart = useMemo(() => {
+    const first = visibleMonths[0]
+    return new Date(first.year, first.month, 1).toISOString()
+  }, [visibleMonths])
+
+  const rangeEnd = useMemo(() => {
+    const last = visibleMonths[visibleMonths.length - 1]
+    return new Date(last.year, last.month + 1, 1).toISOString()
+  }, [visibleMonths])
+
+  // Fetch songs for visible range
   useEffect(() => {
     if (view !== 'calendar') return
     setLoading(true)
-    const start = new Date(year, month, 1).toISOString()
-    const end = new Date(year, month + 1, 1).toISOString()
     client
       .fetch<SotdDoc[]>(
         `*[_type == 'sotd' && datetime >= $start && datetime < $end] | order(datetime asc) { _id, name, artist, datetime, "fileUrl": file.asset->url }`,
-        {start, end},
+        {start: rangeStart, end: rangeEnd},
       )
       .then((docs) => {
         setSongs(docs)
         setLoading(false)
       })
       .catch(() => setLoading(false))
-  }, [client, year, month, view])
+  }, [client, rangeStart, rangeEnd, view, fetchKey])
 
   // Fetch all songs for list view
   useEffect(() => {
@@ -347,16 +416,33 @@ export function SotdCalendar() {
       .catch(() => {})
   }, [client, songs, allSongs])
 
+  // Auto-load next month when scrolling to bottom
+  useEffect(() => {
+    if (view !== 'calendar') return
+    const el = bottomRef.current
+    if (!el) return
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setVisibleMonths((prev) => [...prev, nextYearMonth(prev[prev.length - 1])])
+        }
+      },
+      {threshold: 0.1},
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [view, visibleMonths])
+
   const isPublished = useCallback(
     (id: string) => publishedIds.has(id) || publishedIds.has(id.replace('drafts.', '')),
     [publishedIds],
   )
 
-  const songsByDay = useMemo(() => {
-    const map: Record<number, SotdDoc> = {}
+  const songsByKey = useMemo(() => {
+    const map: Record<string, SotdDoc> = {}
     for (const song of songs) {
       const d = new Date(song.datetime)
-      map[d.getDate()] = song
+      map[dayKey(d.getFullYear(), d.getMonth(), d.getDate())] = song
     }
     return map
   }, [songs])
@@ -376,28 +462,9 @@ export function SotdCalendar() {
     return allSongs.filter((s) => new Date(s.datetime).getTime() < todayStart).length
   }, [allSongs, todayStart])
 
-  const prevMonth = useCallback(() => {
-    if (month === 0) {
-      setMonth(11)
-      setYear((y) => y - 1)
-    } else {
-      setMonth((m) => m - 1)
-    }
-  }, [month])
-
-  const nextMonth = useCallback(() => {
-    if (month === 11) {
-      setMonth(0)
-      setYear((y) => y + 1)
-    } else {
-      setMonth((m) => m + 1)
-    }
-  }, [month])
-
-  const goToToday = useCallback(() => {
-    setYear(today.getFullYear())
-    setMonth(today.getMonth())
-  }, [today])
+  const loadPrevMonth = useCallback(() => {
+    setVisibleMonths((prev) => [prevYearMonth(prev[0]), ...prev])
+  }, [])
 
   const handleSongClick = useCallback(
     (song: SotdDoc) => {
@@ -407,8 +474,8 @@ export function SotdCalendar() {
   )
 
   const handleEmptyDayDoubleClick = useCallback(
-    async (day: number) => {
-      const datetime = new Date(Date.UTC(year, month, day, 12, 0, 0)).toISOString()
+    async (y: number, m: number, d: number) => {
+      const datetime = new Date(Date.UTC(y, m, d, 12, 0, 0)).toISOString()
       const id = crypto.randomUUID()
       await client.createIfNotExists({
         _id: `drafts.${id}`,
@@ -417,7 +484,7 @@ export function SotdCalendar() {
       })
       router.navigateIntent('edit', {id, type: 'sotd'})
     },
-    [client, router, year, month],
+    [client, router],
   )
 
   const handlePlay = useCallback(
@@ -441,37 +508,75 @@ export function SotdCalendar() {
     [playingId],
   )
 
-  const totalDays = getMonthDays(year, month)
-  const firstDay = getFirstDayOfWeek(year, month)
-  const isCurrentMonth = year === today.getFullYear() && month === today.getMonth()
+  const handleDragScroll = useCallback((e: React.DragEvent) => {
+    const wrapper = wrapperRef.current
+    if (!wrapper) return
+    const rect = wrapper.getBoundingClientRect()
+    const edge = 140
+    const speed = 12
+    if (e.clientY - rect.top < edge) {
+      wrapper.scrollTop -= speed
+    } else if (rect.bottom - e.clientY < edge) {
+      wrapper.scrollTop += speed
+    }
+  }, [])
+
+  const handleSwapDates = useCallback(
+    async (targetKey: string) => {
+      if (!draggedSong) return
+      const targetSong = songsByKey[targetKey]
+      if (targetSong && targetSong._id === draggedSong._id) return
+
+      const [ty, tm, td] = targetKey.split('-').map(Number)
+      const sourceDate = new Date(draggedSong.datetime)
+      const targetDate = new Date(
+        Date.UTC(ty, tm, td, sourceDate.getUTCHours(), sourceDate.getUTCMinutes(), 0),
+      ).toISOString()
+
+      if (targetSong) {
+        await client
+          .transaction()
+          .patch(draggedSong._id, (p) => p.set({datetime: targetDate}))
+          .patch(targetSong._id, (p) => p.set({datetime: draggedSong.datetime}))
+          .commit()
+      } else {
+        await client.patch(draggedSong._id).set({datetime: targetDate}).commit()
+      }
+
+      setDraggedSong(null)
+      setDragOverKey(null)
+      setFetchKey((k) => k + 1)
+    },
+    [draggedSong, songsByKey, client],
+  )
+
+  const todayYear = today.getFullYear()
+  const todayMonth = today.getMonth()
+  const todayDate = today.getDate()
 
   return (
-    <Wrapper>
+    <Wrapper ref={wrapperRef} onDragOver={swapMode ? handleDragScroll : undefined}>
       <Header>
-        {view === 'calendar' ? <NavButton onClick={prevMonth}>&larr;</NavButton> : <div />}
-
-        <div style={{display: 'flex', alignItems: 'center', gap: '0.75rem'}}>
-          <ViewToggle>
-            <ViewToggleButton $active={view === 'calendar'} onClick={() => setView('calendar')}>
-              Calendar
-            </ViewToggleButton>
-            <ViewToggleButton $active={view === 'list'} onClick={() => setView('list')}>
-              List
-            </ViewToggleButton>
-          </ViewToggle>
-          {view === 'calendar' && (
-            <MonthTitle>
-              {MONTH_NAMES[month]} {year}
-            </MonthTitle>
-          )}
-          {view === 'calendar' &&
-            (!isCurrentMonth ? (
-              <TodayButton onClick={goToToday}>Today</TodayButton>
-            ) : (
-              <TodayButtonHidden onClick={goToToday}>Today</TodayButtonHidden>
-            ))}
-        </div>
-        {view === 'calendar' ? <NavButton onClick={nextMonth}>&rarr;</NavButton> : <div />}
+        {view === 'calendar' ? (
+          <LoadButton onClick={loadPrevMonth}>
+            Load {MONTH_NAMES[prevYearMonth(visibleMonths[0]).month]}
+          </LoadButton>
+        ) : (
+          <div />
+        )}
+        {view === 'calendar' && (
+          <SwapToggle $active={swapMode} onClick={() => setSwapMode((v) => !v)}>
+            {swapMode ? 'Done' : 'SWAP'}
+          </SwapToggle>
+        )}
+        <ViewToggle>
+          <ViewToggleButton $active={view === 'calendar'} onClick={() => setView('calendar')}>
+            Calendar
+          </ViewToggleButton>
+          <ViewToggleButton $active={view === 'list'} onClick={() => setView('list')}>
+            List
+          </ViewToggleButton>
+        </ViewToggle>
       </Header>
 
       {loading && (
@@ -479,47 +584,110 @@ export function SotdCalendar() {
       )}
 
       {view === 'calendar' && (
-        <Grid>
-          {DAYS_OF_WEEK.map((d) => (
-            <DayHeader key={d}>{d}</DayHeader>
-          ))}
-          {Array.from({length: firstDay}).map((_, i) => (
-            <DayCell key={`pad-${i}`} $empty />
-          ))}
-          {Array.from({length: totalDays}).map((_, i) => {
-            const day = i + 1
-            const song = songsByDay[day]
-            const isToday = isCurrentMonth && day === today.getDate()
+        <>
+          {visibleMonths.map((m) => {
+            const totalDays = getMonthDays(m.year, m.month)
+            const firstDay = getFirstDayOfWeek(m.year, m.month)
+            const isCurrMonth = m.year === todayYear && m.month === todayMonth
+
             return (
-              <DayCell
-                key={day}
-                $hasSong={!!song}
-                $isToday={isToday}
-                onClick={song ? () => handleSongClick(song) : undefined}
-                onDoubleClick={!song ? () => handleEmptyDayDoubleClick(day) : undefined}
-              >
-                <div style={{display: 'flex', alignItems: 'center', gap: '4px'}}>
-                  <DayNumber $isToday={isToday}>{day}</DayNumber>
-                  {song?.fileUrl && (
-                    <PlayButton
-                      $playing={playingId === song._id}
-                      onClick={(e) => handlePlay(e, song)}
-                    >
-                      {playingId === song._id ? '\u25A0' : '\u25B6'}
-                    </PlayButton>
-                  )}
-                  {song && isPublished(song._id) && <PublishedDot />}
-                </div>
-                {song && (
-                  <SongInfo>
-                    <Artist>{(song.artist || '').length > 15 ? song.artist.slice(0, 15) + '...' : song.artist}</Artist>
-                    <SongTitle>{song.name}</SongTitle>
-                  </SongInfo>
-                )}
-              </DayCell>
+              <MonthSection key={`${m.year}-${m.month}`}>
+                <MonthTitle>
+                  {MONTH_NAMES[m.month]} {m.year}
+                </MonthTitle>
+                <Grid>
+                  {DAYS_OF_WEEK.map((d) => (
+                    <DayHeader key={d}>{d}</DayHeader>
+                  ))}
+                  {Array.from({length: firstDay}).map((_, i) => (
+                    <DayCell key={`pad-${i}`} $empty />
+                  ))}
+                  {Array.from({length: totalDays}).map((_, i) => {
+                    const day = i + 1
+                    const key = dayKey(m.year, m.month, day)
+                    const song = songsByKey[key]
+                    const isToday = isCurrMonth && day === todayDate
+                    return (
+                      <DayCell
+                        key={day}
+                        $hasSong={!!song}
+                        $isToday={isToday}
+                        $isDragOver={dragOverKey === key}
+                        $isDragging={!!draggedSong && draggedSong._id === song?._id}
+                        draggable={swapMode && !!song}
+                        onClick={!swapMode && song ? () => handleSongClick(song) : undefined}
+                        onDragStart={
+                          swapMode && song
+                            ? (e) => {
+                                e.dataTransfer.effectAllowed = 'move'
+                                setDraggedSong(song)
+                              }
+                            : undefined
+                        }
+                        onDragOver={
+                          swapMode
+                            ? (e) => {
+                                e.preventDefault()
+                                setDragOverKey(key)
+                              }
+                            : undefined
+                        }
+                        onDragLeave={swapMode ? () => setDragOverKey(null) : undefined}
+                        onDrop={
+                          swapMode
+                            ? (e) => {
+                                e.preventDefault()
+                                handleSwapDates(key)
+                              }
+                            : undefined
+                        }
+                        onDragEnd={
+                          swapMode
+                            ? () => {
+                                setDraggedSong(null)
+                                setDragOverKey(null)
+                              }
+                            : undefined
+                        }
+                      >
+                        <div style={{display: 'flex', alignItems: 'center', gap: '4px'}}>
+                          <DayNumber $isToday={isToday}>{day}</DayNumber>
+                          {song?.fileUrl ? (
+                            <PlayButton
+                              $playing={playingId === song._id}
+                              onClick={(e) => handlePlay(e, song)}
+                            >
+                              {playingId === song._id ? '\u25A0' : '\u25B6'}
+                            </PlayButton>
+                          ) : !song ? (
+                            <AddButton
+                              onClick={(e) => {
+                                e.stopPropagation()
+                                handleEmptyDayDoubleClick(m.year, m.month, day)
+                              }}
+                            >
+                              +
+                            </AddButton>
+                          ) : null}
+                          {song && !song.artist && <Dot $color="#f1c40f" />}
+                          {song && isPublished(song._id) && <PublishedDot />}
+                        </div>
+                        {song && (
+                          <SongInfo>
+                            <Artist>{song.artist}</Artist>
+                            <SongTitle>{song.name}</SongTitle>
+                          </SongInfo>
+                        )}
+                      </DayCell>
+                    )
+                  })}
+                </Grid>
+              </MonthSection>
             )
           })}
-        </Grid>
+
+          <div ref={bottomRef} style={{height: '50vh'}} />
+        </>
       )}
 
       {view === 'list' && !loading && (
