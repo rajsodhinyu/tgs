@@ -178,11 +178,11 @@ export default function AlbumGrid({ albums }: AlbumGridProps) {
               <div className="text-white flex flex-col">
                 <div className="relative">
                   <Link
-                    className="hover:underline decoration-tgs-purple"
+                    className="hover:underline decoration-white"
                     href={linkResolver(blog.slug)}
                   >
                     <Image
-                      className="object-contain rounded-md border-tgs-purple border-0 hover:border-4 hover:scale-[98%]"
+                      className="object-contain rounded-md border-white border-0 hover:border-4 hover:scale-[98%]"
                       src={`${eventImage(blog)}?h=300&w=300&fit=crop&crop=center`}
                       width={300}
                       height={300}

@@ -71,7 +71,9 @@ export default async function Page() {
   return (
     <div className="mt-8 md:mt-6 pb-3">
       <div className="flex justify-between items-center mx-3 mb-8 pt-16 md:pt-0">
-        <div className="text-lg md:text-xl invisible flex items-center gap-1">2025 <ChevronDots className="mt-0.5" /></div>
+        <div className="text-lg md:text-xl invisible flex items-center gap-1">
+          2025 <ChevronDots className="mt-0.5" />
+        </div>
         <h1 className="text-lg text-center sm:text-2xl lg:text-4xl font-bold font-title text-white absolute left-1/2 transform uppercase -translate-x-1/2">
           50 faves of 2024
         </h1>
@@ -91,11 +93,11 @@ export default async function Page() {
             <div className="text-white flex flex-col">
               <div className="relative">
                 <Link
-                  className="hover:underline decoration-tgs-purple"
+                  className="hover:underline decoration-white"
                   href={linkResolver(blog.slug)}
                 >
                   <Image
-                    className="object-contain rounded-md border-tgs-purple border-0 hover:border-4 hover:scale-[98%]"
+                    className="object-contain rounded-md border-white border-0 hover:border-4 hover:scale-[98%]"
                     src={`${eventImage(blog)}?h=300&w=300&fit=crop&crop=center`}
                     width={300}
                     height={300}
