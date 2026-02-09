@@ -130,29 +130,7 @@ export default function PlaylistGrid({ playlists }: { playlists: Playlist[] }) {
                 view === "grid" ? "group flex flex-col text-center" : "group"
               }
             >
-              {view === "list" && i > 0 && (
-                <div className="mx-3 sm:mx-6 select-none overflow-hidden py-2">
-                  <svg width="100%" height="4" className="block">
-                    <pattern
-                      id={`dots-${i}`}
-                      x="0"
-                      y="0"
-                      width="5"
-                      height="4"
-                      patternUnits="userSpaceOnUse"
-                    >
-                      <circle
-                        cx="2"
-                        cy="2"
-                        r="2"
-                        fill="white"
-                        fillOpacity="0.2"
-                      />
-                    </pattern>
-                    <rect width="100%" height="4" fill={`url(#dots-${i})`} />
-                  </svg>
-                </div>
-              )}
+
               <Link
                 href={resolveUrl(playlist)}
                 className={
@@ -165,7 +143,7 @@ export default function PlaylistGrid({ playlists }: { playlists: Playlist[] }) {
                   className={
                     view === "grid"
                       ? "rounded-lg border-white border-0 group-hover:border-4 group-hover:scale-[98%]"
-                      : "rounded-lg w-28 h-28 md:w-36 md:h-36 object-cover shrink-0"
+                      : "rounded-lg w-28 h-28 md:w-36 md:h-36 object-cover shrink-0 border-white border-0 group-hover:border-4"
                   }
                   src={playlist.coverUrl}
                   width={view === "grid" ? 400 : 144}
@@ -187,7 +165,7 @@ export default function PlaylistGrid({ playlists }: { playlists: Playlist[] }) {
                   </>
                 ) : (
                   <div className="flex flex-col justify-center min-w-0">
-                    <div className="text-white text-xl md:text-2xl font-bold font-bit group-hover:font-title leading-6">
+                    <div className="text-white text-xl md:text-2xl font-bold font-bit group-hover:font-title leading-6 group-hover:underline decoration-white">
                       {playlist.name}
                     </div>
                     <div className="text-white/80 text-sm md:text-base font-semibold font-roc leading-tight pt-2">
