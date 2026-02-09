@@ -38,7 +38,7 @@ export default async function Sidebar() {
     <div className="flex flex-col items-center w-full">
       <div className="*:m-1 w-80">
         <div className="sticky top-0 z-10 bg-white  font-bold hover:underline hover:text-tgs-purple decoration-tgs-purple text-black flex shrink text-4xl font-bit  text-nowrap justify-center ">
-          <Link href="/blog-archive">BLOG &gt;</Link>
+          <Link href="/blog-archive">BLOG</Link>
         </div>
 
         {/* Mobile: infinite scroll, no fixed height */}
