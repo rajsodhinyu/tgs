@@ -58,9 +58,6 @@ export default async function Page() {
   }
   return (
     <div>
-      <div className="text-2xl min-[340px]:text-4xl font-bold decoration-tgs-purple text-black font-bit leading-10 text-balance w-full justify-center text-center pt-12 md:mb-3 md:pt-0">
-        BLOG
-      </div>
       <div className="grid lg:grid-cols-5 sm:grid-cols-4 grid-cols-2 mx-3 md:p-2 pt-4 gap-2">
         {blogs.map((blog) => (
           <div
@@ -70,12 +67,12 @@ export default async function Page() {
             <div className="text-white flex flex-col">
               <div className="relative">
                 <Link
-                  className="hover:underline decoration-tgs-purple"
+                  className="hover:underline decoration-white"
                   href={`${linkResolver(blog.youtube, blog.youtubeURL, blog.slug)}`}
                   target={tabResolver(blog.youtube)}
                 >
                   <Image
-                    className="object-contain rounded-md border-tgs-purple border-0 hover:border-4 hover:scale-[98%]"
+                    className="object-contain rounded-md border-white border-0 hover:border-4 hover:scale-[98%]"
                     src={`${eventImage(blog)}?h=700&w=700&fit=crop&crop=center`}
                     width={700}
                     height={700}
@@ -86,7 +83,7 @@ export default async function Page() {
                 </Link>
               </div>
             </div>
-            <div className="flex flex-col text-center text-sm leading-tight font-bit font-bold group-hover:text-tgs-purple truncate p-2">
+            <div className="flex flex-col text-center text-sm leading-tight font-bit group-hover:font-title font-bold text-white truncate p-2">
               <div>{blog.name}</div>
             </div>
           </div>

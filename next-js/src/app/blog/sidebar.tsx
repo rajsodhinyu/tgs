@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import ChevronDots from "../components/ChevronDots";
 
 import { SanityImageSource } from "@sanity/image-url/lib/types/types";
 import imageUrlBuilder from "@sanity/image-url";
@@ -36,9 +37,15 @@ export default async function Sidebar() {
 
   return (
     <div className="flex flex-col items-center w-full">
-      <div className="*:m-1 w-80">
-        <div className="sticky top-0 z-10 bg-white  font-bold hover:underline hover:text-tgs-purple decoration-tgs-purple text-black flex shrink text-4xl font-bit  text-nowrap justify-center ">
-          <Link href="/blog-archive">BLOG</Link>
+      <div className="*:m-1 w-80 -mt-2">
+        <div className="sticky top-0 z-10 flex justify-center">
+          <Link
+            href="/blog-archive"
+            className="bg-tgs-purple rounded-2xl px-6 text-4xl font-bold font-title my-2 uppercase text-white border-2 border-transparent hover:border-white text-nowrap flex items-center gap-2 "
+          >
+            All Posts
+            <ChevronDots className="inline-block mt-1" />
+          </Link>
         </div>
 
         {/* Mobile: infinite scroll, no fixed height */}
@@ -47,13 +54,13 @@ export default async function Sidebar() {
         </div>
 
         {/* Desktop: fixed-height scrollable container */}
-        <div className="hidden md:block">
+        <div className="hidden md:block relative">
           <div className="flex-col w-full">
             {blogs.map((blog) => (
               <div key={blog._id} className="flex justify-center">
                 <Link href={`/blog/post/${blog.slug.current}`} target="_self">
                   <Image
-                    className="h-auto object-cover w-80 border-opacity-0 hover:border-opacity-100 hover:scale-95 border-4 border-tgs-purple rounded-md"
+                    className="h-auto object-cover w-80 border-opacity-0 hover:border-opacity-100 hover:scale-95 border-4 border-white rounded-md"
                     src={`${eventImage(blog)}`}
                     alt={`${blog.name} Cover`}
                     width={300}
@@ -64,6 +71,13 @@ export default async function Sidebar() {
               </div>
             ))}
           </div>
+          <Link
+            href="/blog-archive"
+            className="sticky bottom-4 float-right mr-2 bg-tgs-purple rounded-2xl px-3 py-1 text-sm font-bold font-title uppercase text-white border-2 border-transparent hover:border-white flex items-center gap-1"
+          >
+            See All
+            <ChevronDots className="inline-block mt-0.5" color="white" />
+          </Link>
         </div>
       </div>
     </div>

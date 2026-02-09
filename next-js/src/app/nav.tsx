@@ -45,15 +45,7 @@ export default function Nav() {
               alt="About"
             />
           </Link>
-          <Link href="https://www.patreon.com/thatgoodshit">
-            <Image
-              className="min-h-6 max-h-16 min-w-16 w-auto"
-              src="https://cdn.sanity.io/images/fnvy29id/tgs/aaadb16ce9553cad7741d97aa957f4f9d1a9e830-4809x1503.png?h=200"
-              width={300}
-              height={40}
-              alt="Patreon"
-            />
-          </Link>
+
           <Link href="/blog">
             <Image
               className="min-h-5 max-h-16 min-w-10 w-auto"
@@ -63,7 +55,15 @@ export default function Nav() {
               alt="Blog"
             />
           </Link>
-
+          <Link href="https://www.patreon.com/thatgoodshit">
+            <Image
+              className="min-h-6 max-h-16 min-w-16 w-auto"
+              src="https://cdn.sanity.io/images/fnvy29id/tgs/aaadb16ce9553cad7741d97aa957f4f9d1a9e830-4809x1503.png?h=200"
+              width={300}
+              height={40}
+              alt="Patreon"
+            />
+          </Link>
           <Link href="/shop" scroll={true}>
             <Image
               className="min-h-5 max-h-16 min-w-12 w-auto"

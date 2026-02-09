@@ -1,7 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import Link from "next/link";
 import PlaylistCard from "./playlistCards";
+import PlatformSwitcher, { usePlatform } from "../components/PlatformSwitcher";
+import ChevronDots from "../components/ChevronDots";
 
 type Playlist = {
   _id: string;
@@ -17,36 +19,19 @@ export default function PlaylistSection({
 }: {
   playlists: Playlist[];
 }) {
-  const [platform, setPlatform] = useState<"spotify" | "apple">("spotify");
+  const [platform, setPlatform] = usePlatform();
 
   return (
     <>
-      <div className="flex items-center pb-3 justify-between w-full px-3">
-        <div className="text-3xl font-bold text-black font-bit leading-10">
-          PLAYLISTS
-        </div>
-        <div className="flex gap-1 bg-gray-200 rounded-full">
-          <button
-            onClick={() => setPlatform("spotify")}
-            className={`px-3 py-1 rounded-full text-xs font-bold font-roc transition-colors ${
-              platform === "spotify"
-                ? "bg-tgs-purple text-white"
-                : "text-gray-600 hover:text-black"
-            }`}
-          >
-            Spotify
-          </button>
-          <button
-            onClick={() => setPlatform("apple")}
-            className={`px-3 py-1 rounded-full text-xs font-bold font-roc transition-colors ${
-              platform === "apple"
-                ? "bg-tgs-purple text-white"
-                : "text-gray-600 hover:text-black"
-            }`}
-          >
-            Apple Music
-          </button>
-        </div>
+      <div className="flex justify-center w-full py-3">
+        <Link
+          href="/playlists"
+          className="bg-tgs-purple rounded-2xl px-6 text-2xl sm:text-4xl font-bold font-title uppercase text-white border-2 border-transparent hover:border-white text-nowrap flex items-center gap-2"
+        >
+          All Playlists
+          <ChevronDots className="inline-block mt-1" />
+        </Link>
+        {/* <PlatformSwitcher platform={platform} setPlatform={setPlatform} /> */}
       </div>
       <div className="grid lg:grid-cols-3 grid-cols-2 gap-4">
         {playlists.map((playlist) => (

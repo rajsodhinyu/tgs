@@ -52,8 +52,8 @@ export default function VariantSelector({ variants }: { variants: Variant[] }) {
         <div
           className={`w-9 h-9 rounded-full flex items-center justify-center text-sm
             ${soldOut
-              ? "text-gray-400 line-through"
-              : "text-tgs-purple peer-checked:bg-tgs-purple peer-checked:text-white"
+              ? "text-white/40 line-through"
+              : "text-white peer-checked:bg-white peer-checked:text-black"
             }`}
         >
           {label}
@@ -63,10 +63,10 @@ export default function VariantSelector({ variants }: { variants: Variant[] }) {
   };
 
   return (
-    <div className="flex font-title">
+    <div className="flex font-title text-white">
       <Form action="/shop/cart/add">
         <div className="flex">
-          <div className="w-full flex-none mt-2 order-1 text-4xl sm:text-5xl font-bold text-tgs-purple">
+          <div className="w-full flex-none mt-2 order-1 text-4xl sm:text-5xl font-bold text-white">
             {allSamePrice
               ? formatPrice(variants[0].price.amount)
               : formatPrice(selectedVariant?.price.amount ?? variants[0].price.amount)}
@@ -77,7 +77,7 @@ export default function VariantSelector({ variants }: { variants: Variant[] }) {
             {hasGroups ? (
               Object.entries(groups).map(([groupName, groupVariants]) => (
                 <div key={groupName}>
-                  <div className="mb-3 text-tgs-purple">{groupName.toUpperCase()}</div>
+                  <div className="mb-3 text-white">{groupName.toUpperCase()}</div>
                   {groupVariants.map((v, i) => {
                     const label = v.title.split(" / ")[1];
                     return renderVariantButton(v, label, i === 0);
@@ -95,7 +95,7 @@ export default function VariantSelector({ variants }: { variants: Variant[] }) {
         <div className="flex space-x-4 mb-5 text-sm font-medium">
           <div className="flex-auto flex space-x-4 place-content-center">
             <button
-              className="h-10 px-6 rounded-full bg-tgs-purple text-white disabled:opacity-40"
+              className="h-10 px-6 rounded-full bg-white text-black disabled:opacity-40"
               type="submit"
               disabled={!firstAvailable}
             >

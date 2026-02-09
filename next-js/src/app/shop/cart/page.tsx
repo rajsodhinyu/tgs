@@ -2,6 +2,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { shopifyClient as client } from '@/lib/shopify';
 import Form from "next/form";
+import ChevronDots from "../../components/ChevronDots";
 
 const CART_LINE_DETAILS = `
   query CartLineDetails($id: ID!) {
@@ -74,7 +75,7 @@ export default async function Post() {
     if (cartData.data.cart?.totalQuantity === 0) {
       checkoutURL = null;
     }
-    
+
     const edges = cartData.data.cart?.lines?.edges || [];
 
     const items = await Promise.all(
@@ -87,13 +88,13 @@ export default async function Post() {
     return (
       <div className="">
         <br />
-        <div className="text-4xl font-bold font-bit" key={"test"}>
+        <div className="text-4xl font-bold font-bit text-white" key={"test"}>
           Your Cart:
-          <div className="border-dashed border-black border-2" key={"border"}>
+          <div className="border-dashed border-white border-2" key={"border"}>
             {items.map((item) => (
               <div
                 key={`item ${item.id}`}
-                className="mb-6 -mt-6 font-title flex-col text-lg md:text-4xl"
+                className="mb-6 -mt-6 font-title flex-col text-lg md:text-4xl text-white"
               >
                 <br />
                 <div className="flex-col ">
@@ -104,12 +105,12 @@ export default async function Post() {
             ))}
           </div>
           <br />
-          <div className="font-bit font-bold flex justify-between -mt-8 sm:text-4xl text-xl">
+          <div className="font-bit font-bold flex justify-between -mt-8 sm:text-4xl text-xl text-white">
             <div className="justify-start ">
               <Form action="/shop/cart/add">
                 <input type="hidden" id="clear" name="size" value="clear" />
                 <button
-                  className="hover:underline decoration-from-font decoration-tgs-purple"
+                  className="border-b-2 border-transparent hover:border-white"
                   type="submit"
                 >
                   EMPTY
@@ -119,11 +120,11 @@ export default async function Post() {
             <div>
               {checkoutURL && (
                 <a
-                  className="flex items-end hover:underline decoration-from-font decoration-tgs-purple"
+                  className="flex items-end border-b-2 border-transparent hover:border-white"
                   href={checkoutURL}
                   target="_blank"
                 >
-                  CHECKOUT
+                  CHECKOUT <ChevronDots color="white" className="inline-block mt-1 ml-1" />
                 </a>
               )}
             </div>
@@ -134,7 +135,7 @@ export default async function Post() {
   } catch (error) {
     console.error("Cart error:", error);
     return (
-      <div className="text-4xl font-bold font-bit">
+      <div className="text-4xl font-bold font-bit text-white">
         <p>There was an error loading your cart. Please try again.</p>
       </div>
     );

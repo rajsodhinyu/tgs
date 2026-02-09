@@ -1,5 +1,7 @@
 "use client";
 
+import ChevronDots from "../../../components/ChevronDots";
+
 export default function HorizontalCarousel({ cards }: { cards: string[] }) {
   const scrollCarousel = (direction: "left" | "right") => {
     const container = document.querySelector(".carousel-container");
@@ -13,10 +15,10 @@ export default function HorizontalCarousel({ cards }: { cards: string[] }) {
   return (
     <div className="flex flex-row items-center justify-start w-full md:w-96 relative ">
       <button
-        className="absolute -left-8 z-10 bg-tgs-pink bg-opacity-100 text-white p-1 pb-2 rounded-full -ml-2"
+        className="absolute -left-8 z-10 bg-white/20 hover:bg-white/30 text-white p-2 rounded-full -ml-2 transition-colors"
         onClick={() => scrollCarousel("left")}
       >
-        <div className="font-title text-3xl pl-1"> &lt; </div>
+        <ChevronDots direction="left" />
       </button>
 
       <div className="carousel-container flex overflow-x-scroll snap-both snap-mandatory no-scrollbar rounded-lg">
@@ -35,10 +37,10 @@ export default function HorizontalCarousel({ cards }: { cards: string[] }) {
       </div>
 
       <button
-        className="absolute -right-8 z-10 bg-tgs-pink bg-opacity-100 text-white p-1 pb-2 rounded-full flex -mr-2"
+        className="absolute -right-8 z-10 bg-white/20 hover:bg-white/30 text-white p-2 rounded-full flex -mr-2 transition-colors"
         onClick={() => scrollCarousel("right")}
       >
-        <div className="font-title text-3xl pl-1">&gt;</div>
+        <ChevronDots />
       </button>
     </div>
   );
