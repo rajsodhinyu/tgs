@@ -8,7 +8,7 @@ import PlaylistGrid from "./PlaylistGrid";
 const projectId = "fnvy29id";
 const dataset = "tgs";
 
-const PLAYLIST_Q = `*[_type == "playlist"] | order(order) {_id, order, thumb, name, description, playlistURL, appleMusicURL}`;
+const PLAYLIST_Q = `*[_type == "playlist"] | order(order asc) {_id, thumb, name, description, playlistURL, appleMusicURL}`;
 
 const urlFor = (source: SanityImageSource) =>
   projectId && dataset

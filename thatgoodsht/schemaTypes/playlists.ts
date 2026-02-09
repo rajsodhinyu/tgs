@@ -3,12 +3,25 @@ import {media, mediaAssetSource} from 'sanity-plugin-media'
 
 export const playlistType = defineType({
   name: 'playlist',
-  title: 'Playlist',
+  title: 'Playlists',
   type: 'document',
+  orderings: [
+    {
+      title: 'Display Order',
+      name: 'orderAsc',
+      by: [{field: 'order', direction: 'asc'}],
+    },
+  ],
   initialValue: {
     name: 'Unused Playlist',
   },
   fields: [
+    defineField({
+      name: 'order',
+      title: 'Order',
+      type: 'number',
+      hidden: true,
+    }),
     defineField({
       name: 'name',
       title: 'Title',
@@ -19,14 +32,6 @@ export const playlistType = defineType({
       name: 'title',
       title: 'frontendID',
       type: 'string',
-      validation: (rule) => rule.required(),
-      hidden: true,
-    }),
-    defineField({
-      name: 'order',
-      title: 'Admin - playlistOrder',
-      type: 'number',
-      validation: (rule) => rule.required(),
       hidden: true,
     }),
     defineField({
@@ -37,7 +42,6 @@ export const playlistType = defineType({
       options: {sources: [mediaAssetSource], hotspot: true},
       validation: (rule) => rule.required(),
     }),
-
     defineField({
       name: 'description',
       title: 'Playlist Description',
@@ -58,13 +62,6 @@ export const playlistType = defineType({
       description: 'Must start with https://',
       type: 'url',
     }),
-  ],
-  orderings: [
-    {
-      title: 'Display Order',
-      name: 'releaseDateDesc',
-      by: [{field: 'order', direction: 'asc'}],
-    },
   ],
   preview: {
     select: {
