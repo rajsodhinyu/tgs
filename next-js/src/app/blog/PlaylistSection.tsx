@@ -26,7 +26,7 @@ export default function PlaylistSection({
       <div className="flex justify-center w-full py-3">
         <Link
           href="/playlists"
-          className="bg-tgs-purple rounded-2xl px-6 text-2xl sm:text-4xl font-bold font-title uppercase text-white border-2 border-transparent hover:border-white text-nowrap flex items-center gap-2"
+          className="bg-tgs-purple rounded-2xl px-6 text-2xl sm:text-4xl font-bold font-title uppercase text-white border-4 border-transparent hover:border-white text-nowrap flex items-center gap-2"
         >
           All Playlists
           <ChevronDots className="inline-block mt-1" />

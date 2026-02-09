@@ -41,7 +41,7 @@ export default async function Sidebar() {
         <div className="sticky top-0 z-10 flex justify-center">
           <Link
             href="/blog-archive"
-            className="bg-tgs-purple rounded-2xl px-6 text-4xl font-bold font-title my-2 uppercase text-white border-2 border-transparent hover:border-white text-nowrap flex items-center gap-2 "
+            className="bg-tgs-purple rounded-2xl px-6 text-4xl font-bold font-title my-2 uppercase text-white border-4 border-transparent hover:border-white text-nowrap flex items-center gap-2 "
           >
             All Posts
             <ChevronDots className="inline-block mt-1" />
