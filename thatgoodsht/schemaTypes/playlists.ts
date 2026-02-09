@@ -5,13 +5,6 @@ export const playlistType = defineType({
   name: 'playlist',
   title: 'Playlists',
   type: 'document',
-  orderings: [
-    {
-      title: 'Display Order',
-      name: 'orderAsc',
-      by: [{field: 'order', direction: 'asc'}],
-    },
-  ],
   initialValue: {
     name: 'Unused Playlist',
   },

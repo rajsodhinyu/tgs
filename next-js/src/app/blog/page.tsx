@@ -41,7 +41,7 @@ const projectId = "fnvy29id";
 const dataset = "tgs";
 
 const PLAYLIST_Q = `
-*[_type == "playlist"] | order(order asc) [0...6] {_id, thumb, name, description, playlistURL, appleMusicURL}`;
+*[_type == "playlist"] | order(order asc) [0...5] {_id, thumb, name, description, playlistURL, appleMusicURL}`;
 
 const urlFor = (source: SanityImageSource) =>
   projectId && dataset
