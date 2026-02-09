@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { Metadata } from "next";
+import ChevronDots from "../components/ChevronDots";
 
 export const metadata: Metadata = {
   title: "About - That Good Sh*t!",
@@ -33,7 +34,7 @@ export const metadata: Metadata = {
 export default function Page() {
   return (
     <div className="md:mt-10 mt-20 sm:px-40 mx-8">
-      <div className="md:text-lg text-sm font-black font-bit text-pretty text-center sm:text-balance">
+      <div className="md:text-lg text-sm font-black font-title text-white text-pretty text-center sm:text-balance">
         <p>
           {" "}
           That Good Sh*t! because good music transcends genre. Our mission is to
@@ -53,35 +54,31 @@ export default function Page() {
           src="https://cdn.sanity.io/images/fnvy29id/tgs/b5cee228b7299f1fd664e36a34f48678a30cb3d0-1250x1000.jpg"
           alt=""
         />
-        <div className="pt-8 font-bit text-2xl decoration-tgs-purple text-center ">
+        <div className="pt-8 font-title text-2xl text-white text-center flex justify-center gap-6 flex-wrap">
           <a
-            className="hover:underline hover:text-tgs-purple hover:font-bold"
+            className="hover:underline decoration-white inline-flex items-center gap-1"
             href="https://www.instagram.com/thatgoodsht"
           >
-            Instagram
+            Instagram <ChevronDots className="mt-0.5" />
           </a>
-          &emsp;
           <a
-            className="hover:underline hover:text-tgs-purple hover:font-bold"
+            className="hover:underline decoration-white inline-flex items-center gap-1"
             href="https://www.youtube.com/@thatgoodshtmusic"
           >
-            Youtube
+            Youtube <ChevronDots className="mt-0.5" />
           </a>
-          &emsp;
           <a
-            className="hover:underline hover:text-tgs-purple hover:font-bold"
+            className="hover:underline decoration-white inline-flex items-center gap-1"
             href="https://www.twitter.com/thatgoodsh_t"
           >
-            Twitter
+            Twitter <ChevronDots className="mt-0.5" />
           </a>
-          &emsp;
           <a
-            className="hover:underline hover:text-tgs-purple hover:font-bold"
+            className="hover:underline decoration-white inline-flex items-center gap-1"
             href="https://discord.gg/PTYgag2kxD"
           >
-            Discord
+            Discord <ChevronDots className="mt-0.5" />
           </a>
-          &emsp;
         </div>
       </div>
     </div>

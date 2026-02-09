@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import ChevronDots from "../../components/ChevronDots";
 import { SanityImageSource } from "@sanity/image-url/lib/types/types";
 import imageUrlBuilder from "@sanity/image-url";
 import { SanityDocument } from "next-sanity";
@@ -70,15 +71,15 @@ export default async function Page() {
   return (
     <div className="mt-8 md:mt-6 pb-3">
       <div className="flex justify-between items-center mx-3 mb-8 pt-16 md:pt-0">
-        <div className="text-lg md:text-xl invisible">2025 &gt;</div>
+        <div className="text-lg md:text-xl invisible flex items-center gap-1">2025 <ChevronDots className="mt-0.5" /></div>
         <h1 className="text-lg text-center sm:text-2xl lg:text-4xl font-bold font-title text-white absolute left-1/2 transform uppercase -translate-x-1/2">
           50 faves of 2024
         </h1>
         <Link
           href="/feature/2025"
-          className="text-lg md:text-xl font-bit text-white hover:underline"
+          className="text-lg md:text-xl font-bit text-white hover:underline flex items-center gap-1"
         >
-          2025 &gt;
+          2025 <ChevronDots className="mt-0.5" />
         </Link>
       </div>
       <div className="grid md:grid-cols-5 mx-3 gap-2 grid-cols-2">

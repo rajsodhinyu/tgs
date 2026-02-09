@@ -62,6 +62,10 @@ Shopify Storefront API powers the shop. The shared client lives in `src/lib/shop
 | `shop/product/tgs-ring` | `thatgoodsh-t-ring` |
 | `shop/product/quintaro` | `quintaro-dvd` + `quintaro-cd` (two separate products) |
 
+### Shared Components (`next-js/src/app/components/`)
+- `ChevronDots` — Pixel-art dotted chevron arrow SVG, styled to match the bitcount-filled font. Props: `color` (default `"white"`), `direction` (`"left"` | `"right"`, default `"right"`), `className`. Used for navigation arrows and directional indicators across the site (feature year nav, blog sidebar, playlists title, checkout button).
+- `PlatformSwitcher` — Spotify/Apple Music toggle pill. Also exports a `usePlatform()` hook for state. Used on `/playlists` and `/blog` playlist sections.
+
 ### Styling
 Tailwind CSS with custom brand tokens defined in `next-js/tailwind.config.ts`:
 - Colors: `tgs-pink` (#ed9df9), `tgs-purple` (#6c5cbe), `tgs-dark-purple` (#3D3564), `tgs-gray` (#DBDBDB)

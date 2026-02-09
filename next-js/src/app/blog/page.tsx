@@ -1,5 +1,5 @@
 import Image from "next/image";
-import PlaylistCard from "./playlistCards";
+import PlaylistSection from "./PlaylistSection";
 import Sidebar from "./sidebar";
 import { sanityFetch } from "../client";
 import { SanityDocument } from "next-sanity";
@@ -41,7 +41,7 @@ const projectId = "fnvy29id";
 const dataset = "tgs";
 
 const PLAYLIST_Q = `
-*[_type == "playlist"]| order(order) {_id, order, thumb, name, description, playlistURL}`;
+*[_type == "playlist"] | order(order asc) [0...5] {_id, thumb, name, description, playlistURL, appleMusicURL}`;
 
 const urlFor = (source: SanityImageSource) =>
   projectId && dataset
@@ -71,22 +71,16 @@ export default async function Page() {
           />
         </div>
       </Link>
-      <div className="text-2xl min-[340px]:text-4xl font-bold hover:underline hover:text-tgs-purple decoration-tgs-purple text-black flex shrink mt-2 font-bit leading-10 text-balance w-full justify-center text-center">
-        <Link href="https://open.spotify.com/user/annabelle816">
-          OUR PLAYLISTS &gt;
-        </Link>
-      </div>
-      <div className="grid lg:grid-cols-3 grid-cols-2 pt-4 gap-4">
-        {blogs.map((playlist) => (
-          <PlaylistCard
-            key={playlist.name}
-            title={playlist.name}
-            description={playlist.description}
-            cover={`${eventImage(playlist)}?h=700&w=700&fit=crop&crop=center`}
-            url={playlist.playlistURL}
-          ></PlaylistCard>
-        ))}
-      </div>
+      <PlaylistSection
+        playlists={blogs.map((playlist) => ({
+          _id: playlist._id,
+          name: playlist.name,
+          description: playlist.description,
+          playlistURL: playlist.playlistURL,
+          appleMusicURL: playlist.appleMusicURL,
+          coverUrl: `${eventImage(playlist)}?h=700&w=700&fit=crop&crop=center`,
+        }))}
+      />
     </div>
   );
 }

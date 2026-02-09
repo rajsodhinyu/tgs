@@ -3,6 +3,7 @@ import { SanityDocument } from "next-sanity";
 import { sanityFetch } from "../../client";
 import { Metadata } from "next";
 import AlbumGrid from "./AlbumGrid";
+import ChevronDots from "../../components/ChevronDots";
 
 const ALBUMS_Q = `*[_type == "albums" && year == 2025]{_id, name, artist, thumb, writer, datetime, slug}|order(datetime asc)`;
 
@@ -43,14 +44,14 @@ export default async function Page() {
       <div className="flex justify-between items-center mx-3 mb-8 pt-16 md:pt-0">
         <Link
           href="/feature/2024"
-          className="text-lg md:text-xl font-bit text-white hover:underline"
+          className="text-lg md:text-xl font-bit text-white hover:underline flex items-center gap-1"
         >
-          &lt; 2024
+          <ChevronDots direction="left" className="mt-0.5" /> 2024
         </Link>
         <h1 className="text-lg text-center sm:text-2xl lg:text-4xl font-bold font-title text-white absolute left-1/2 transform uppercase -translate-x-1/2">
           50 faves of 2025
         </h1>
-        <div className="text-lg md:text-xl invisible">&lt; 2024</div>
+        <div className="text-lg md:text-xl invisible flex items-center gap-1"><ChevronDots direction="left" className="mt-0.5" /> 2024</div>
       </div>
       <AlbumGrid albums={blogs as any} />
     </div>

@@ -143,14 +143,14 @@ const components: PortableTextComponents = {
     ),
   },
   marks: {
-    em: ({ children }) => <em className="text-tgs-purple">{children} </em>,
+    em: ({ children }) => <em className="text-white">{children} </em>,
 
     link: ({ children, value }) => {
       const rel = !value.href.startsWith("/")
         ? "noreferrer noopener"
         : undefined;
       return (
-        <a className="underline text-pink-600" href={value.href} rel={rel}>
+        <a className="underline text-white" href={value.href} rel={rel}>
           {children}
         </a>
       );
@@ -194,7 +194,7 @@ const components: PortableTextComponents = {
             className="rounded-md"
           ></iframe>
           {value.caption && (
-            <p className="text-sm text-gray-600 mt-2 text-center">
+            <p className="text-sm text-white/60 mt-2 text-center">
               {value.caption}
             </p>
           )}
@@ -233,7 +233,7 @@ const components: PortableTextComponents = {
             }}
           ></iframe>
           {value.caption && (
-            <p className="text-sm text-gray-600 mt-2 text-center">
+            <p className="text-sm text-white/60 mt-2 text-center">
               {value.caption}
             </p>
           )}
@@ -345,13 +345,13 @@ export default async function Page({
   const posts = await sanityFetch<SanityDocument[]>({ query: SLUG_QUERY });
   const post = posts[0];
   return (
-    <div className="font-roc text-lg text-balance max-md:mt-14 max-[300px]:w-80">
+    <div className="font-roc text-lg text-balance text-white max-md:mt-14 max-[300px]:w-80">
       <div className="place-items-center">{renderBanner(post)}</div>
-      <div className="xl:text-4xl text-2xl font-bold font-bit mt-4 text-center">
+      <div className="xl:text-4xl text-2xl font-bold font-title mt-4 text-center uppercase">
         {/* Title */}
         {post.name}
       </div>
-      <div className="xl:text-2xl text-xl font-bit text-center">
+      <div className="xl:text-2xl text-xl font-bit text-center text-white/80">
         {/* Writer */}
         {post.writer && `${await findWriter(post.writer)} • `}
         {post.date &&
@@ -365,7 +365,7 @@ export default async function Page({
       {/* Spotify Embed */}
       <div>{renderSpotifyEmbed(post.playlistURL)}</div>
 
-      <div className="mx-3 text-sm lg:text-lg text-wrap text-justify pb-10 indent-4 md:indent-6 first-letter:text-8xl first-letter:font-title first-letter:text-black ">
+      <div className="mx-3 text-sm lg:text-lg text-wrap text-justify pb-10 indent-4 md:indent-6 first-letter:text-8xl first-letter:font-title first-letter:text-white ">
         <PortableText value={post.content} components={components} />
       </div>
     </div>

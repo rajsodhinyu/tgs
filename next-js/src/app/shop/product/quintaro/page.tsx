@@ -34,7 +34,7 @@ export default async function Page() {
       <br />
       <div
         className="text-center font-title font-bold
-          text-4xl md:text-5xl text-tgs-purple max-[340px]:w-80 w-full
+          text-4xl md:text-5xl text-white max-[340px]:w-80 w-full
         "
       >
         Quintaro
@@ -45,7 +45,7 @@ export default async function Page() {
           <div></div>
         </div>
 
-        <div className="flex text-center place-self-center text-black text-balance text-sm md:text-lg pt-2">
+        <div className="flex text-center place-self-center text-white text-balance text-sm md:text-lg pt-2">
           <VariantSelector variants={variants} />
         </div>
       </div>
@@ -56,11 +56,11 @@ export default async function Page() {
       >
         <div
           className="mt-5 text-center font-title font-bold
-            text-4xl md:text-5xl text-tgs-purple"
+            text-4xl md:text-5xl text-white"
         >
           Product Information
         </div>
-        <div className="text-2xl font-bit font-bold text-pretty sm:w-5/6 text-left py-12">
+        <div className="text-2xl font-bit font-bold text-white text-pretty sm:w-5/6 text-left py-12">
           <p>Quincy Davis - Quintaro</p>
           <p>Format: DVD-R</p>
           <p>Runtime: 28m</p>

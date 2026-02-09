@@ -16,17 +16,17 @@ export default function ShopCard({
     <div className=" align-middle pb-3 group">
       <Link className="" href={url} scroll={true}>
         <Image
-          className="rounded-md place-self-center flex shrink -mt-2 group-hover:border-4 border-tgs-purple"
+          className="rounded-md place-self-center flex shrink -mt-2 group-hover:border-4 border-white"
           src={cover}
           alt=""
           width={500}
           height={500}
         />
         <div className="flex-col justify-between">
-          <div className="pt-4 text-center  decoration-tgs-purple text-pretty text-black font-bold group-hover:text-tgs-purple font-bit text-3xl leading-none">
+          <div className="pt-4 text-center text-pretty text-white font-bold font-bit group-hover:font-title text-3xl leading-none">
             {title}
           </div>
-          <div className="w-11/12 place-self-center text-center align-center text-black group-hover:text-tgs-purple text-balance text-sm lg:text-lg font-semibold font-roc leading-none pt-2">
+          <div className="w-11/12 place-self-center text-center align-center text-white/80 group-hover:text-white text-balance text-sm lg:text-lg font-semibold font-roc leading-none pt-2">
             {description}
           </div>
         </div>
