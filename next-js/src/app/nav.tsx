@@ -38,7 +38,7 @@ export default function Nav() {
 
           <Link href="/about">
             <Image
-              className="min-h-5 max-h-16 min-w-12 w-auto"
+              className="min-h-5 max-h-14 min-w-12 w-auto"
               src="https://cdn.sanity.io/images/fnvy29id/tgs/2db78d790b6062d7cb293b895f1d8cd3748353ef-1786x755.png?h=200"
               width={95}
               height={40}
@@ -48,16 +48,16 @@ export default function Nav() {
 
           <Link href="/blog">
             <Image
-              className="min-h-5 max-h-16 min-w-10 w-auto"
+              className="min-h-5 max-h-14 min-w-10 w-auto"
               src="https://cdn.sanity.io/images/fnvy29id/tgs/9a5244d1c770d1e667006b7f54f5738745847917-1533x846.png?h=200"
               width={75}
-              height={40}
+              height={30}
               alt="Blog"
             />
           </Link>
           <Link href="https://www.patreon.com/thatgoodshit">
             <Image
-              className="min-h-6 max-h-16 min-w-16 w-auto"
+              className="min-h-6 max-h-14 min-w-16 w-auto"
               src="https://cdn.sanity.io/images/fnvy29id/tgs/aaadb16ce9553cad7741d97aa957f4f9d1a9e830-4809x1503.png?h=200"
               width={300}
               height={40}
@@ -66,7 +66,7 @@ export default function Nav() {
           </Link>
           <Link href="/shop" scroll={true}>
             <Image
-              className="min-h-5 max-h-16 min-w-12 w-auto"
+              className="min-h-5 max-h-14 min-w-12 w-auto"
               src="https://cdn.sanity.io/images/fnvy29id/tgs/7162c809beb7a870dfbb0127b72fc6359218b456-1874x954.png?h=200"
               width={95}
               height={40}
