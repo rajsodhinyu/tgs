@@ -1,12 +1,44 @@
 "use client";
 
-import { useState } from "react";
+import { useSyncExternalStore, useCallback } from "react";
 
 type Platform = "spotify" | "apple";
 
-export function usePlatform() {
-  return useState<Platform>("spotify");
+const STORAGE_KEY = "tgs-platform";
+
+function subscribe(callback: () => void) {
+  window.addEventListener("storage", callback);
+  return () => window.removeEventListener("storage", callback);
 }
+
+function getSnapshot(): Platform {
+  const stored = localStorage.getItem(STORAGE_KEY);
+  return stored === "apple" ? "apple" : "spotify";
+}
+
+function getServerSnapshot(): Platform {
+  return "spotify";
+}
+
+export function usePlatform(): [Platform, (p: Platform) => void] {
+  const platform = useSyncExternalStore(
+    subscribe,
+    getSnapshot,
+    getServerSnapshot,
+  );
+
+  const setPlatform = useCallback((p: Platform) => {
+    localStorage.setItem(STORAGE_KEY, p);
+    window.dispatchEvent(new StorageEvent("storage"));
+  }, []);
+
+  return [platform, setPlatform];
+}
+
+const SWITCHER_SRC =
+  "https://cdn.sanity.io/images/fnvy29id/tgs/b66fb12a38cefd233b0ec4ce181e21bc19358187-2048x779.png";
+const DOT_SRC =
+  "https://cdn.sanity.io/images/fnvy29id/tgs/99d06c48fd9516f9867456a9b4055eed2da1cdfb-2048x779.png";
 
 export default function PlatformSwitcher({
   platform,
@@ -15,28 +47,30 @@ export default function PlatformSwitcher({
   platform: Platform;
   setPlatform: (p: Platform) => void;
 }) {
+  const isApple = platform === "apple";
+
   return (
-    <div className="flex gap-1 bg-white/10 rounded-full">
-      <button
-        onClick={() => setPlatform("spotify")}
-        className={`px-3 py-1 rounded-full text-xs font-bold font-roc transition-colors ${
-          platform === "spotify"
-            ? "bg-white text-black"
-            : "text-white hover:bg-white/20"
-        }`}
-      >
-        Spotify
-      </button>
-      <button
-        onClick={() => setPlatform("apple")}
-        className={`px-3 py-1 rounded-full text-xs font-bold font-roc transition-colors ${
-          platform === "apple"
-            ? "bg-white text-black"
-            : "text-white hover:bg-white/20"
-        }`}
-      >
-        Apple Music
-      </button>
-    </div>
+    <button
+      onClick={() => setPlatform(isApple ? "spotify" : "apple")}
+      className="relative w-32 cursor-pointer"
+      style={{ aspectRatio: "2048 / 779" }}
+      aria-label={`Switch to ${isApple ? "Spotify" : "Apple Music"}`}
+    >
+      {/* Track with logos */}
+      <img
+        src={SWITCHER_SRC}
+        alt=""
+        className="w-full h-full"
+        draggable={false}
+      />
+      {/* Sliding dot */}
+      <img
+        src={DOT_SRC}
+        alt=""
+        className="absolute inset-0 w-full h-full transition-transform duration-300 ease-in-out"
+        style={{ transform: `translateX(${isApple ? "25%" : "1%"})` }}
+        draggable={false}
+      />
+    </button>
   );
 }

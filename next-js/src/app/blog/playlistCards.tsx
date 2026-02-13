@@ -3,9 +3,9 @@ import Link from "next/link";
 
 
 
-export default function PlaylistCard({ title, description, cover, url }: { title: string, description: string, cover: string, url: string }) {
+export default function PlaylistCard({ title, description, cover, url, disabled }: { title: string, description: string, cover: string, url: string, disabled?: boolean }) {
   return (
-    <div className=" align-middle pb-3 group">
+    <div className={`align-middle pb-3 group ${disabled ? "opacity-30 pointer-events-none" : ""}`}>
       <Link className=""
         href={url}>
         <Image className='rounded-lg place-self-center flex shrink border-white border-0 group-hover:border-4 md:group-hover:border-6 group-hover:scale-[98%]' src={cover} alt="" width={400} height={400} />

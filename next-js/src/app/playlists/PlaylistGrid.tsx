@@ -80,11 +80,8 @@ export default function PlaylistGrid({ playlists }: { playlists: Playlist[] }) {
 
   return (
     <>
-      <div className="flex items-center justify-between mx-3 sm:mx-6 mb-6">
-        <h1 className="text-2xl lg:text-4xl font-bold font-title text-white uppercase">
-          Playlists
-        </h1>
-        <div className="flex items-center gap-3">
+      <div className="grid grid-cols-3 items-center mx-3 sm:mx-6 mb-6">
+        <div className="flex items-center justify-start">
           <div className="flex bg-white/10 rounded-full">
             <button
               onClick={() => setView("grid")}
@@ -103,7 +100,12 @@ export default function PlaylistGrid({ playlists }: { playlists: Playlist[] }) {
               <ListIcon active={view === "list"} />
             </button>
           </div>
-          {/* <PlatformSwitcher platform={platform} setPlatform={setPlatform} /> */}
+        </div>
+        <h1 className="text-2xl lg:text-4xl font-bold font-title text-white uppercase text-center">
+          Playlists
+        </h1>
+        <div className="flex items-center justify-end scale-[0.8] origin-right">
+          <PlatformSwitcher platform={platform} setPlatform={setPlatform} />
         </div>
       </div>
 
@@ -119,16 +121,19 @@ export default function PlaylistGrid({ playlists }: { playlists: Playlist[] }) {
             <motion.div
               key={`${playlist._id}-${view}`}
               initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
+              animate={{
+                opacity: platform === "apple" && !playlist.appleMusicURL ? 0.3 : 1,
+                scale: 1,
+              }}
               exit={{ opacity: 0, scale: 0.8 }}
               transition={{
                 layout: { type: "spring", stiffness: 350, damping: 30 },
                 opacity: { duration: 0.2 },
                 scale: { duration: 0.2 },
               }}
-              className={
+              className={`${
                 view === "grid" ? "group flex flex-col text-center" : "group"
-              }
+              } ${platform === "apple" && !playlist.appleMusicURL ? "pointer-events-none" : ""}`}
             >
 
               <Link
