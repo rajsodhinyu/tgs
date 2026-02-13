@@ -1,6 +1,8 @@
 import {defineField, defineType} from 'sanity'
 import {media, mediaAssetSource} from 'sanity-plugin-media'
 import blockContent from './blockContent'
+import {CroppedImageInput} from '../components/CroppedImageInput'
+import {SlugWithVisit} from '../components/SlugWithVisit'
 
 export const postType = defineType({
   name: 'post',
@@ -12,30 +14,68 @@ export const postType = defineType({
   fields: [
     defineField({
       name: 'name',
-      title: 'Headline',
+      title: 'Title',
       type: 'string',
       validation: (rule) => rule.required(),
     }),
     defineField({
-      name: 'youtubeURL',
-      title: 'Youtube Link (optional)',
-      description: 'If provided, will display as embedded video instead of banner image',
-      type: 'url',
-    }),
-    defineField({
       name: 'thumb',
       title: 'Thumbnail',
-      description: 'Must be cropped to a square before uploading!',
       type: 'image',
-      options: {sources: [mediaAssetSource]},
-      validation: (rule) => rule.required(),
+      components: {
+        input: CroppedImageInput,
+      },
+      options: {
+        hotspot: {
+          previews: [{title: '1:1 (Square)', aspectRatio: 1}],
+        },
+        sources: [mediaAssetSource],
+      },
+      validation: (rule) =>
+        rule.required().custom((value) => {
+          if (!value?.crop) {
+            return 'Thumbnail is not a square.'
+          }
+          return true
+        }),
+    }),
+    defineField({
+      name: 'youtubeURL',
+      title: 'Link to Youtube Video',
+      type: 'url',
+      validation: (rule) =>
+        rule.custom((youtubeURL, context) => {
+          const banner = context.document?.banner
+          if (!youtubeURL && !banner) {
+            return 'Upload either a banner or a Youtube video for the top of the page.'
+          }
+          return true
+        }),
     }),
     defineField({
       name: 'banner',
-      title: 'Banner (optional)',
-      description: 'Optional image, must be cropped to 16:9! Not used if YouTube link is provided.',
+      title: 'Banner (shown if no video)',
       type: 'image',
-      options: {sources: [mediaAssetSource], hotspot: true},
+      components: {
+        input: CroppedImageInput,
+      },
+      options: {
+        hotspot: {
+          previews: [{title: '16:9 (Banner)', aspectRatio: 16 / 9}],
+        },
+        sources: [mediaAssetSource],
+      },
+      validation: (rule) =>
+        rule.custom((banner, context) => {
+          const youtubeURL = context.document?.youtubeURL
+          if (!youtubeURL && !banner) {
+            return 'Upload either a banner or a Youtube video for the top of the page.'
+          }
+          if (banner && !banner?.crop) {
+            return 'Banner is not 16:9.'
+          }
+          return true
+        }),
     }),
     defineField({
       name: 'writer',
@@ -53,19 +93,28 @@ export const postType = defineType({
       type: 'url',
     }),
     defineField({
-      name: 'content',
-      title: 'Article',
-      type: 'blockContent',
-      description:
-        'Links must start with https:// and are pink, Italics are purple. Enters and Shift-Enters are treated differently! Check formatting before posting.',
-    }),
-    defineField({
       name: 'slug',
-      title: 'URL Generator',
+      title: 'Direct Link',
       type: 'slug',
+      components: {
+        input: SlugWithVisit,
+      },
       options: {source: 'name'},
       description: 'thatgoodsht.com/blog/post/',
       validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'private',
+      title: 'Hide post from blog (direct link will still work)',
+      type: 'boolean',
+      initialValue: true,
+      hidden: true,
+    }),
+    defineField({
+      name: 'content',
+      title: 'Article',
+      type: 'blockContent',
+      description: 'Publish and visit your article before setting it to public.',
     }),
     defineField({
       name: 'date',
@@ -75,17 +124,6 @@ export const postType = defineType({
         dateFormat: 'MMMM Do',
       },
       validation: (rule) => rule.required(),
-    }),
-    defineField({
-      name: 'private',
-      title: 'Keep post hidden',
-      description:
-        'Hide this post from site? Direct link will still work. Use direct link to preview your post before launching, then uncheck to post on site.',
-      type: 'boolean',
-      initialValue: true,
-      options: {
-        layout: 'checkbox',
-      },
     }),
     defineField({
       name: 'file',
