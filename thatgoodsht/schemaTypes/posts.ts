@@ -93,6 +93,12 @@ export const postType = defineType({
       type: 'url',
     }),
     defineField({
+      name: 'appleMusicURL',
+      title: 'Apple Music Embed',
+      description: 'Apple Music equivalent (shows switcher if both are provided)',
+      type: 'url',
+    }),
+    defineField({
       name: 'slug',
       title: 'Direct Link',
       type: 'slug',

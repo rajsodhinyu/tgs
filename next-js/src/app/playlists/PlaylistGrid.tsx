@@ -101,10 +101,10 @@ export default function PlaylistGrid({ playlists }: { playlists: Playlist[] }) {
             </button>
           </div>
         </div>
-        <h1 className="text-2xl lg:text-4xl font-bold font-title text-white uppercase text-center">
+        <h1 className="text-3xl lg:text-4xl font-bold font-title text-white  uppercase flex items-center justify-center">
           Playlists
         </h1>
-        <div className="flex items-center justify-end scale-[0.8] origin-right">
+        <div className="flex items-center justify-end scale-[0.65] mr-1 origin-right">
           <PlatformSwitcher platform={platform} setPlatform={setPlatform} />
         </div>
       </div>
@@ -122,7 +122,8 @@ export default function PlaylistGrid({ playlists }: { playlists: Playlist[] }) {
               key={`${playlist._id}-${view}`}
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{
-                opacity: platform === "apple" && !playlist.appleMusicURL ? 0.3 : 1,
+                opacity:
+                  platform === "apple" && !playlist.appleMusicURL ? 0.3 : 1,
                 scale: 1,
               }}
               exit={{ opacity: 0, scale: 0.8 }}
@@ -135,7 +136,6 @@ export default function PlaylistGrid({ playlists }: { playlists: Playlist[] }) {
                 view === "grid" ? "group flex flex-col text-center" : "group"
               } ${platform === "apple" && !playlist.appleMusicURL ? "pointer-events-none" : ""}`}
             >
-
               <Link
                 href={resolveUrl(playlist)}
                 className={

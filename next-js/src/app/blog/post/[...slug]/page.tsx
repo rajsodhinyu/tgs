@@ -13,6 +13,7 @@ import imageUrlBuilder from "@sanity/image-url";
 import { writer } from "repl";
 import Link from "next/link";
 import { Metadata } from "next";
+import PostEmbed from "../PostEmbed";
 
 const projectId = "fnvy29id";
 const dataset = "tgs";
@@ -28,25 +29,6 @@ function eventImage(event: any) {
   return thing;
 }
 
-function renderSpotifyEmbed(playlist: string) {
-  if (playlist == null) {
-    return <div className="-my-4"></div>;
-  } else {
-    const parts = playlist.split("/");
-    return (
-      <div className="w-full">
-        <div className="place-items-center mt-3 -mb-8 max-sm:ml-2">
-          <iframe
-            src={`https://open.spotify.com/embed/${parts[3]}/${parts[4]}`}
-            width="100%"
-            height="180"
-            allow=" clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-          ></iframe>
-        </div>
-      </div>
-    );
-  }
-}
 
 function renderYoutubeEmbed(youtubeURL: string) {
   if (youtubeURL == null) {
@@ -249,7 +231,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const slug = (await params).slug;
-  const SLUG_QUERY = `*[_type == "post" && slug.current == "${slug}"]{_id, name, youtubeURL, thumb, writer, banner, playlistURL, content, slug, date, description}`;
+  const SLUG_QUERY = `*[_type == "post" && slug.current == "${slug}"]{_id, name, youtubeURL, thumb, writer, banner, playlistURL, appleMusicURL, content, slug, date, description}`;
   const posts = await sanityFetch<SanityDocument[]>({ query: SLUG_QUERY });
   const post = posts[0];
 
@@ -341,7 +323,7 @@ export default async function Page({
   params: Promise<{ slug: string }>;
 }) {
   const slug = (await params).slug;
-  const SLUG_QUERY = `*[_type == "post" && slug.current == "${slug}"]{_id, name, youtubeURL, thumb, writer, banner, playlistURL, content, slug, date, description}`;
+  const SLUG_QUERY = `*[_type == "post" && slug.current == "${slug}"]{_id, name, youtubeURL, thumb, writer, banner, playlistURL, appleMusicURL, content, slug, date, description}`;
   const posts = await sanityFetch<SanityDocument[]>({ query: SLUG_QUERY });
   const post = posts[0];
   return (
@@ -362,8 +344,8 @@ export default async function Page({
             timeZone: "UTC",
           })}
       </div>
-      {/* Spotify Embed */}
-      <div>{renderSpotifyEmbed(post.playlistURL)}</div>
+      {/* Spotify / Apple Music Embed */}
+      <PostEmbed spotifyURL={post.playlistURL} appleMusicURL={post.appleMusicURL} />
 
       <div className="mx-3 text-sm lg:text-lg text-wrap text-justify pb-10 indent-4 md:indent-6 first-letter:text-8xl first-letter:font-title first-letter:text-white ">
         <PortableText value={post.content} components={components} />
