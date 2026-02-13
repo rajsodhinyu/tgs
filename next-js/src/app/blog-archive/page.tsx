@@ -8,7 +8,7 @@ import { sanityFetch } from "../client";
 const projectId = "fnvy29id";
 const dataset = "tgs";
 
-const BLOGS_QUERY = `*[_type == "post" && private != true]{_id, name, youtube,youtubeURL, thumb, writer, banner,playlistURL, content, slug, date, description}|order(date desc)`;
+const BLOGS_QUERY = `*[_type == "post" && private != true]{_id, name, youtubeURL, thumb, writer, banner,playlistURL, content, slug, date, description}|order(date desc)`;
 
 const urlFor = (source: SanityImageSource) =>
   projectId && dataset
@@ -20,17 +20,8 @@ function eventImage(event: any) {
   let thing = pull ? urlFor(pull)?.url() : null;
   return thing;
 }
-function tabResolver(isYoutube: boolean) {
-  // Always open in same tab since we're not redirecting to YouTube anymore
-  return `_self`;
-}
-
 export default async function Page() {
   const blogs = await sanityFetch<SanityDocument[]>({ query: BLOGS_QUERY });
-  function linkResolver(isYoutube: boolean, youtubeLink: string, slug: any) {
-    // Always return local URL for both regular and YouTube posts
-    return `/blog/post/${slug.current}`;
-  }
   function stringifyDate(input: string) {
     let date = new Date(input);
     const options = {
@@ -71,8 +62,7 @@ export default async function Page() {
               <div className="relative">
                 <Link
                   className="hover:underline decoration-white"
-                  href={`${linkResolver(blog.youtube, blog.youtubeURL, blog.slug)}`}
-                  target={tabResolver(blog.youtube)}
+                  href={`/blog/post/${blog.slug.current}`}
                 >
                   <Image
                     className="object-contain rounded-md border-white border-0 hover:border-4 hover:scale-[98%]"

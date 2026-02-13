@@ -10,7 +10,6 @@ type Blog = {
   _id: string;
   name: string;
   slug: { current: string };
-  youtube: boolean;
   youtubeURL: string;
   imageUrl: string;
 };

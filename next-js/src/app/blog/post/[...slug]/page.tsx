@@ -88,7 +88,7 @@ function bannerResolver(post: any) {
 }
 
 function renderBanner(post: any) {
-  if (post.youtube) {
+  if (post.youtubeURL) {
     return renderYoutubeEmbed(post.youtubeURL);
   } else {
     return (
@@ -249,7 +249,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const slug = (await params).slug;
-  const SLUG_QUERY = `*[_type == "post" && slug.current == "${slug}"]{_id, name, youtube, youtubeURL, thumb, writer, banner, playlistURL, content, slug, date, description}`;
+  const SLUG_QUERY = `*[_type == "post" && slug.current == "${slug}"]{_id, name, youtubeURL, thumb, writer, banner, playlistURL, content, slug, date, description}`;
   const posts = await sanityFetch<SanityDocument[]>({ query: SLUG_QUERY });
   const post = posts[0];
 
@@ -262,7 +262,7 @@ export async function generateMetadata({
 
   // Get the image URL for OpenGraph
   const getImageUrl = () => {
-    if (post.youtube && post.youtubeURL) {
+    if (post.youtubeURL) {
       // For YouTube videos, use the YouTube thumbnail
       const getYoutubeID = (url: string) => {
         const regExp =
@@ -311,8 +311,8 @@ export async function generateMetadata({
         images: [
           {
             url: imageUrl,
-            width: post.youtube ? 1280 : post.banner ? 1280 : 700,
-            height: post.youtube ? 720 : post.banner ? 720 : 700,
+            width: post.youtubeURL ? 1280 : post.banner ? 1280 : 700,
+            height: post.youtubeURL ? 720 : post.banner ? 720 : 700,
             alt: title,
           },
         ],
@@ -341,7 +341,7 @@ export default async function Page({
   params: Promise<{ slug: string }>;
 }) {
   const slug = (await params).slug;
-  const SLUG_QUERY = `*[_type == "post" && slug.current == "${slug}"]{_id, name, youtube, youtubeURL, thumb, writer, banner, playlistURL, content, slug, date, description}`;
+  const SLUG_QUERY = `*[_type == "post" && slug.current == "${slug}"]{_id, name, youtubeURL, thumb, writer, banner, playlistURL, content, slug, date, description}`;
   const posts = await sanityFetch<SanityDocument[]>({ query: SLUG_QUERY });
   const post = posts[0];
   return (
