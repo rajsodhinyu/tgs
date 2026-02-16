@@ -23,7 +23,7 @@ export default function PlaylistSection({
 
   return (
     <>
-      <div className="relative flex items-center justify-start sm:justify-center w-full py-3 sm:px-0">
+      <div className="relative flex items-center justify-start  w-full py-3 sm:px-0">
         <Link
           href="/playlists"
           className="bg-tgs-purple rounded-2xl px-6 text-2xl sm:text-4xl font-bold font-title uppercase text-white border-4 border-transparent hover:border-white text-nowrap flex items-center gap-2"
@@ -31,7 +31,7 @@ export default function PlaylistSection({
           All Playlists
           <ChevronDots className="inline-block mt-1" />
         </Link>
-        <div className="absolute right-3 sm:right-4 scale-[0.7] lg:scale-90 origin-right">
+        <div className="absolute right-3 sm:right-4 scale-[0.7]  lg:scale-90 origin-right">
           <PlatformSwitcher platform={platform} setPlatform={setPlatform} />
         </div>
       </div>

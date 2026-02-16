@@ -348,7 +348,7 @@ export default async function Page({
         appleMusicURL={post.appleMusicURL}
       />
 
-      <div className="mx-3 text-sm lg:text-lg text-wrap text-justify pb-10 indent-4 md:indent-6 first-letter:text-8xl first-letter:font-title first-letter:text-white ">
+      <div className="mx-3 text-md lg:text-lg text-wrap pt-10 pb-6 indent-4 md:indent-6 first-letter:text-4xl first-letter:font-title first-letter:text-white ">
         <PortableText value={post.content} components={components} />
       </div>
     </div>

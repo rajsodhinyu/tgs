@@ -36,16 +36,13 @@ export default function PostEmbed({
 
   return (
     <div className="w-full">
-      <div
-        className="place-items-center mt-3 -mb-8 max-sm:ml-2"
-        style={{ height: 180 }}
-      >
+      <div className="place-items-center mt-3 -mb-8 max-sm:ml-2">
         {showApple ? (
           <iframe
             key="apple"
             src={appleMusicEmbedUrl(appleMusicURL!)}
             width="100%"
-            height="140"
+            height="450"
             title="Apple Music Player"
             allow="autoplay *; encrypted-media *; clipboard-write"
             sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-top-navigation-by-user-activation"
@@ -56,13 +53,13 @@ export default function PostEmbed({
             key="spotify"
             src={spotifyEmbedUrl(spotifyURL)}
             width="100%"
-            height="180"
+            height="450"
             allow="clipboard-write; encrypted-media; fullscreen; picture-in-picture"
           ></iframe>
         ) : null}
       </div>
       {hasBoth && (
-        <div className="flex justify-center mt-4 -mb-12">
+        <div className="flex justify-center mt-12 -mb-12">
           <div className="scale-90">
             <PlatformSwitcher platform={platform} setPlatform={setPlatform} />
           </div>
