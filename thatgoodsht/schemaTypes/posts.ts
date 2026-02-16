@@ -4,6 +4,7 @@ import {getImageDimensions} from '@sanity/asset-utils'
 import blockContent from './blockContent'
 import {CroppedImageInput} from '../components/CroppedImageInput'
 import {SlugWithVisit} from '../components/SlugWithVisit'
+import {UrlWithVisit} from '../components/UrlWithVisit'
 import {DateWithToday} from '../components/DateWithToday'
 
 
@@ -43,6 +44,9 @@ export const postType = defineType({
       name: 'youtubeURL',
       title: 'Link to Youtube Video',
       type: 'url',
+      components: {
+        input: UrlWithVisit,
+      },
       validation: (rule) =>
         rule.custom((youtubeURL, context) => {
           const banner = context.document?.banner
