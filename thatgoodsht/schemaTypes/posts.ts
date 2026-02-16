@@ -3,6 +3,7 @@ import {media, mediaAssetSource} from 'sanity-plugin-media'
 import blockContent from './blockContent'
 import {CroppedImageInput} from '../components/CroppedImageInput'
 import {SlugWithVisit} from '../components/SlugWithVisit'
+import {DateWithToday} from '../components/DateWithToday'
 
 export const postType = defineType({
   name: 'post',
@@ -31,13 +32,7 @@ export const postType = defineType({
         },
         sources: [mediaAssetSource],
       },
-      validation: (rule) =>
-        rule.required().custom((value) => {
-          if (!value?.crop) {
-            return 'Thumbnail is not a square.'
-          }
-          return true
-        }),
+      validation: (rule) => rule.required(),
     }),
     defineField({
       name: 'youtubeURL',
@@ -70,9 +65,6 @@ export const postType = defineType({
           const youtubeURL = context.document?.youtubeURL
           if (!youtubeURL && !banner) {
             return 'Upload either a banner or a Youtube video for the top of the page.'
-          }
-          if (banner && !banner?.crop) {
-            return 'Banner is not 16:9.'
           }
           return true
         }),
@@ -126,6 +118,9 @@ export const postType = defineType({
       name: 'date',
       title: 'Date',
       type: 'date',
+      components: {
+        input: DateWithToday,
+      },
       options: {
         dateFormat: 'MMMM Do',
       },

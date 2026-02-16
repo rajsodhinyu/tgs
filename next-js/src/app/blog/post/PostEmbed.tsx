@@ -15,7 +15,7 @@ function appleMusicEmbedUrl(url: string) {
     "https://embed.music.apple.com",
   );
   const separator = base.includes("?") ? "&" : "?";
-  return `${base}${separator}app=music&theme=light`;
+  return `${base}${separator}app=music&theme=dark`;
 }
 
 export default function PostEmbed({
@@ -36,17 +36,20 @@ export default function PostEmbed({
 
   return (
     <div className="w-full">
-      <div className="place-items-center mt-3 -mb-8 max-sm:ml-2">
+      <div
+        className="place-items-center mt-3 -mb-8 max-sm:ml-2"
+        style={{ height: 180 }}
+      >
         {showApple ? (
           <iframe
             key="apple"
             src={appleMusicEmbedUrl(appleMusicURL!)}
             width="100%"
-            height="450"
+            height="140"
             title="Apple Music Player"
             allow="autoplay *; encrypted-media *; clipboard-write"
             sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-top-navigation-by-user-activation"
-            style={{ border: 0, borderRadius: "12px", marginBottom: "3rem" }}
+            style={{ border: 0, borderRadius: "12px" }}
           ></iframe>
         ) : spotifyURL ? (
           <iframe

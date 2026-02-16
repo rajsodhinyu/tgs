@@ -29,7 +29,6 @@ function eventImage(event: any) {
   return thing;
 }
 
-
 function renderYoutubeEmbed(youtubeURL: string) {
   if (youtubeURL == null) {
     return <div className="-my-4"></div>;
@@ -333,19 +332,21 @@ export default async function Page({
         {/* Title */}
         {post.name}
       </div>
-      <div className="xl:text-2xl text-xl font-bit text-center text-white/80">
+      <div className="xl:text-xl text-xl font-roc text-center pt-2 text-white/80">
         {/* Writer */}
         {post.writer && `${await findWriter(post.writer)} • `}
         {post.date &&
           new Date(post.date).toLocaleDateString(undefined, {
-            year: "numeric",
             month: "long",
             day: "numeric",
             timeZone: "UTC",
           })}
       </div>
       {/* Spotify / Apple Music Embed */}
-      <PostEmbed spotifyURL={post.playlistURL} appleMusicURL={post.appleMusicURL} />
+      <PostEmbed
+        spotifyURL={post.playlistURL}
+        appleMusicURL={post.appleMusicURL}
+      />
 
       <div className="mx-3 text-sm lg:text-lg text-wrap text-justify pb-10 indent-4 md:indent-6 first-letter:text-8xl first-letter:font-title first-letter:text-white ">
         <PortableText value={post.content} components={components} />
