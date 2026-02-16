@@ -1,9 +1,11 @@
 import {defineField, defineType} from 'sanity'
 import {media, mediaAssetSource} from 'sanity-plugin-media'
+import {getImageDimensions} from '@sanity/asset-utils'
 import blockContent from './blockContent'
 import {CroppedImageInput} from '../components/CroppedImageInput'
 import {SlugWithVisit} from '../components/SlugWithVisit'
 import {DateWithToday} from '../components/DateWithToday'
+
 
 export const postType = defineType({
   name: 'post',
@@ -27,12 +29,15 @@ export const postType = defineType({
         input: CroppedImageInput,
       },
       options: {
-        hotspot: {
-          previews: [{title: '1:1 (Square)', aspectRatio: 1}],
-        },
         sources: [mediaAssetSource],
       },
-      validation: (rule) => rule.required(),
+      validation: (rule) =>
+        rule.required().custom((value) => {
+          if (!value?.asset?._ref) return true
+          const {width, height} = getImageDimensions(value.asset._ref)
+          if (Math.abs(width / height - 1) > 0.05) return 'Thumbnail is not a square.'
+          return true
+        }),
     }),
     defineField({
       name: 'youtubeURL',
@@ -55,9 +60,6 @@ export const postType = defineType({
         input: CroppedImageInput,
       },
       options: {
-        hotspot: {
-          previews: [{title: '16:9 (Banner)', aspectRatio: 16 / 9}],
-        },
         sources: [mediaAssetSource],
       },
       validation: (rule) =>
@@ -65,6 +67,10 @@ export const postType = defineType({
           const youtubeURL = context.document?.youtubeURL
           if (!youtubeURL && !banner) {
             return 'Upload either a banner or a Youtube video for the top of the page.'
+          }
+          if (banner?.asset?._ref) {
+            const {width, height} = getImageDimensions(banner.asset._ref)
+            if (Math.abs(width / height - 16 / 9) > 0.05) return 'Banner is not 16:9.'
           }
           return true
         }),
