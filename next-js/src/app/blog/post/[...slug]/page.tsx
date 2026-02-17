@@ -14,6 +14,7 @@ import { writer } from "repl";
 import Link from "next/link";
 import { Metadata } from "next";
 import PostEmbed from "../PostEmbed";
+import TrackEmbedBlock from "../TrackEmbedBlock";
 
 const projectId = "fnvy29id";
 const dataset = "tgs";
@@ -180,6 +181,20 @@ const components: PortableTextComponents = {
             </p>
           )}
         </div>
+      );
+    },
+    trackEmbed: ({ value }) => {
+      return (
+        <TrackEmbedBlock
+          spotifyUrl={value?.spotifyUrl}
+          appleMusicUrl={value?.appleMusicUrl}
+          trackName={value?.trackName}
+          artistName={value?.artistName}
+          albumArt={value?.albumArt}
+          title={value?.title}
+          blurb={value?.blurb}
+          alignment={value?.alignment || "left"}
+        />
       );
     },
     appleMusicEmbed: ({ value }) => {

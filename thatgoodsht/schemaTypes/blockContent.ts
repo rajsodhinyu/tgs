@@ -1,6 +1,7 @@
+import React from 'react'
 import {defineType, defineArrayMember} from 'sanity'
-import {PlayIcon, ImageIcon} from '@sanity/icons'
-
+import {TrackSearchInput} from '../components/TrackSearchInput'
+import {FaMusic} from 'react-icons/fa6'
 export default defineType({
   title: 'Block Content',
   name: 'blockContent',
@@ -9,15 +10,8 @@ export default defineType({
     defineArrayMember({
       title: 'Block',
       type: 'block',
-      styles: [
-        {title: 'Normal', value: 'normal'},
-        {title: 'H1', value: 'h1'},
-        {title: 'H2', value: 'h2'},
-        {title: 'H3', value: 'h3'},
-        {title: 'H4', value: 'h4'},
-        {title: 'Quote', value: 'blockquote'},
-      ],
-      lists: [{title: 'Bullet', value: 'bullet'}],
+      styles: [],
+      lists: [],
       // Marks let you mark up inline text in the block editor.
       marks: {
         // Decorators usually describe a single property – e.g. a typographic
@@ -44,82 +38,78 @@ export default defineType({
       },
     }),
     defineArrayMember({
-      type: 'image',
-      options: {hotspot: true},
-      icon: ImageIcon,
-    }),
-    defineArrayMember({
-      title: 'Spotify',
-      name: 'spotifyEmbed',
-      icon: PlayIcon,
+      title: 'Music',
+      name: 'trackEmbed',
+      icon: FaMusic,
       type: 'object',
+      components: {
+        input: TrackSearchInput,
+      },
       fields: [
         {
           title: 'Spotify URL',
-          name: 'url',
+          name: 'spotifyUrl',
           type: 'url',
-          description: 'Paste the Spotify playlist, album, or track URL',
-          validation: (Rule) =>
-            Rule.required()
-              .uri({
-                scheme: ['https'],
-                allowRelative: false,
-              })
-              .custom((url) => {
-                if (!url?.includes('spotify.com')) {
-                  return 'URL must be a valid Spotify link'
-                }
-                return true
-              }),
         },
-      ],
-      preview: {
-        select: {
-          title: 'url',
-          subtitle: 'caption',
-        },
-        prepare({title, subtitle}) {
-          return {
-            title: 'Spotify Embed',
-            subtitle: subtitle || title,
-          }
-        },
-      },
-    }),
-    defineArrayMember({
-      title: 'Apple Music',
-      name: 'appleMusicEmbed',
-      icon: PlayIcon,
-      type: 'object',
-      fields: [
         {
           title: 'Apple Music URL',
-          name: 'url',
+          name: 'appleMusicUrl',
           type: 'url',
-          description: 'Paste an Apple Music Song Url (Copy Link)',
-          validation: (Rule) =>
-            Rule.required()
-              .uri({
-                scheme: ['https'],
-                allowRelative: false,
-              })
-              .custom((url) => {
-                if (!url?.includes('music.apple.com')) {
-                  return 'URL must be a valid Apple Music link'
-                }
-                return true
-              }),
+        },
+        {
+          title: 'Track Name',
+          name: 'trackName',
+          type: 'string',
+        },
+        {
+          title: 'Artist Name',
+          name: 'artistName',
+          type: 'string',
+        },
+        {
+          title: 'Album Art',
+          name: 'albumArt',
+          type: 'string',
+        },
+        {
+          title: 'Title',
+          name: 'title',
+          type: 'string',
+        },
+        {
+          title: 'Blurb',
+          name: 'blurb',
+          type: 'text',
+        },
+        {
+          title: 'Alignment',
+          name: 'alignment',
+          type: 'string',
+          options: {
+            list: [
+              {title: 'Left', value: 'left'},
+              {title: 'Right', value: 'right'},
+            ],
+            layout: 'radio',
+          },
+          initialValue: 'left',
         },
       ],
       preview: {
         select: {
-          title: 'url',
-          subtitle: 'caption',
+          trackName: 'trackName',
+          artistName: 'artistName',
+          title: 'title',
+          blurb: 'blurb',
+          albumArt: 'albumArt',
+          alignment: 'alignment',
         },
-        prepare({title, subtitle}) {
+        prepare({trackName, artistName, title, blurb, albumArt, alignment}) {
+          const arrow = alignment === 'right' ? '◨ ' : '◧ '
           return {
-            title: 'Apple Music Embed',
-            subtitle: subtitle || title,
+            title: arrow + (title || (trackName ? `${trackName} – ${artistName}` : 'Track')),
+            subtitle: blurb || '',
+            media: albumArt ? React.createElement('img', {src: albumArt}) : undefined,
           }
         },
       },

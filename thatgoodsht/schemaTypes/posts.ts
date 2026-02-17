@@ -7,7 +7,6 @@ import {SlugWithVisit} from '../components/SlugWithVisit'
 import {UrlWithVisit} from '../components/UrlWithVisit'
 import {DateWithToday} from '../components/DateWithToday'
 
-
 export const postType = defineType({
   name: 'post',
   title: 'Blog',
@@ -93,12 +92,14 @@ export const postType = defineType({
       title: 'Primary Spotify Embed',
       description: 'Will go underneath the title!',
       type: 'url',
+      hidden: true,
     }),
     defineField({
       name: 'appleMusicURL',
       title: 'Apple Music Embed',
       description: 'Apple Music equivalent (shows switcher if both are provided)',
       type: 'url',
+      hidden: true,
     }),
     defineField({
       name: 'slug',
@@ -122,7 +123,8 @@ export const postType = defineType({
       name: 'content',
       title: 'Article',
       type: 'blockContent',
-      description: 'Publish and visit your article before setting it to public.',
+      description:
+        'Publish and visit your article before setting it to public. Use the fullscreen and music buttons.',
     }),
     defineField({
       name: 'date',
