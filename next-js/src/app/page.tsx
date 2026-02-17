@@ -14,11 +14,6 @@ const DynamicComponentWithNoSSR = dynamic(() => import("./ui/FireworksBackground
   ),
 });
 
-const Clear = dynamic(() => import("./ui/Clear"), {
-  ssr: false,
-  loading: () => <p>clearing...</p>,
-});
-
 function catchClick() {
   let audio = document.getElementById("myAudio") as HTMLAudioElement;
   if (audio.paused) {
