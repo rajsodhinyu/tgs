@@ -5,7 +5,7 @@ import { useEffect, useRef } from "react";
 import { useSotData } from "./context/SotDataContext";
 import Link from "next/link";
 
-const DynamicComponentWithNoSSR = dynamic(() => import("./ui/Backround"), {
+const DynamicComponentWithNoSSR = dynamic(() => import("./ui/FireworksBackground"), {
   ssr: false,
   loading: () => (
     <p className="font-title text-xl absolute top-1/4 left-1/2 transform -translate-x-1/2 +translate-y-3/4 text-tgs-dark-purple">

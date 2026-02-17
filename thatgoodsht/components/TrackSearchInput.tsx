@@ -256,7 +256,7 @@ export function TrackSearchInput(props: any) {
       setLoading(true)
       try {
         const res = await fetch(
-          `${API_URL}/api/spotify/search/?q=${encodeURIComponent(q)}&type=${searchType}`,
+          `${API_URL}/api/spotify/search?q=${encodeURIComponent(q)}&type=${searchType}`,
         )
         const data = await res.json()
         setResults(data.tracks || [])
