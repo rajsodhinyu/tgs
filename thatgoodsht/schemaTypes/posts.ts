@@ -123,8 +123,7 @@ export const postType = defineType({
       name: 'content',
       title: 'Article',
       type: 'blockContent',
-      description:
-        'Publish and visit your article before setting it to public. Use the fullscreen and music buttons.',
+      description: 'Publish and visit your article before setting it to public.',
     }),
     defineField({
       name: 'date',
