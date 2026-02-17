@@ -61,13 +61,15 @@ export default function TrackEmbedBlock({
           <div
             className={`font-title text-white ${isRight ? "text-right" : "text-left"} mt-2 leading-tight truncate`}
           >
-            <div className="truncate text-sm lg:text-xl">{trackName}</div>
-            <div className="text-white/80 text-sm truncate">{artistName}</div>
+            <div className="truncate text-sm lg:text-2xl">{trackName}</div>
+            <div className="text-white/80 text-sm lg:text-xl truncate">
+              {artistName}
+            </div>
           </div>
         </a>
         {blurb && (
           <p
-            className={`text-white font-roc  ${isRight ? "text-left" : "text-right"} text-base md:text-lg lg:text-xl xl:text-2xl leading-normal`}
+            className={`text-white font-roc  ${isRight ? "text-left" : "text-left"} text-balance text-base md:text-lg lg:text-xl  leading-normal`}
             style={{ textIndent: 0 }}
           >
             {blurb}
