@@ -2,7 +2,7 @@ import {useState, useCallback, useEffect, useRef} from 'react'
 import {set, unset} from 'sanity'
 import styled from 'styled-components'
 
-const API_URL = (import.meta as any).env?.SANITY_STUDIO_SPOTIFY_API_URL || 'https://thatgoodsht.com'
+const API_URL = (import.meta as any).env?.SANITY_STUDIO_SPOTIFY_API_URL || 'https://www.thatgoodsht.com'
 
 // ── Styled Components ──
 

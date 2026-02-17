@@ -42,7 +42,9 @@ export default function TrackEmbedBlock({
           className={`${isRight ? "float-right ml-4" : "float-left mr-4"} mb-2 w-[180px] lg:w-[280px] block`}
         >
           {title && (
-            <div className={`font-bit text-tgs-pink text-xl lg:text-2xl mb-2 uppercase tracking-wider ${isRight ? "text-right" : "text-left"}`}>
+            <div
+              className={`font-title text-white text-xl lg:text-2xl mb-2 uppercase tracking-wider ${isRight ? "text-right" : "text-left"}`}
+            >
               {title}
             </div>
           )}
@@ -56,13 +58,18 @@ export default function TrackEmbedBlock({
               unoptimized
             />
           )}
-          <div className={`font-bit text-white ${isRight ? "text-right" : "text-left"} mt-2 text-sm lg:text-base leading-tight truncate`}>
-            <div className="truncate">{trackName}</div>
-            <div className="text-white/60 truncate">{artistName}</div>
+          <div
+            className={`font-title text-white ${isRight ? "text-right" : "text-left"} mt-2 leading-tight truncate`}
+          >
+            <div className="truncate text-sm lg:text-xl">{trackName}</div>
+            <div className="text-white/80 text-sm truncate">{artistName}</div>
           </div>
         </a>
         {blurb && (
-          <p className={`text-white font-roc text-base ${isRight ? "text-left" : "text-right"} leading-normal`} style={{ textIndent: 0 }}>
+          <p
+            className={`text-white font-roc  ${isRight ? "text-left" : "text-right"} text-base md:text-lg lg:text-xl xl:text-2xl leading-normal`}
+            style={{ textIndent: 0 }}
+          >
             {blurb}
           </p>
         )}
