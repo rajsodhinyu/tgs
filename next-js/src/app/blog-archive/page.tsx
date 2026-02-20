@@ -49,7 +49,7 @@ export default async function Page() {
   }
   return (
     <div>
-      <h1 className="text-2xl sm:text-4xl font-bold font-title text-white uppercase pt-12 sm:pt-0 mx-4 sm:mx-6  ">
+      <h1 className="text-2xl sm:text-4xl font-bold font-title text-white uppercase mx-4 sm:mx-6">
         Blog
       </h1>
       <div className="grid lg:grid-cols-5 sm:grid-cols-4 grid-cols-2 mx-3 md:p-2 pt-2 gap-2">

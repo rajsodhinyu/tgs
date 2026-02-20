@@ -1,17 +1,25 @@
 import Image from "next/image";
 import Link from "next/link";
 import Sotd from "./ui/Sotd";
+import MobileMenu from "./ui/MobileMenu";
 
 export default function Nav() {
   return (
     <main>
-      <div className="w-svh mx-3 pt-4 inset-0 h-24 flex items-baseline md:items-center flex-wrap md:justify-between md:flex-nowrap md:flex-row justify-around mb-3">
-        {/*whole nav bar*/}
-        <div className="shrink h-12 flex gap-3 sm:gap-6 items-center lg:gap-8 justify-start ">
-          {/*everything not inc SOTD?*/}
-          <Link href="/" className="group">
+      {/* Mobile nav */}
+      <div className="md:hidden flex items-center px-3 pt-3 h-20 gap-3">
+        <MobileMenu />
+        <div className="flex-1">
+          <Sotd />
+        </div>
+      </div>
+
+      {/* Desktop nav */}
+      <div className="hidden md:flex mx-3 pt-4 h-24 items-center justify-between">
+        <div className="shrink h-12 flex gap-6 items-center lg:gap-8">
+          <Link href="/" className="group relative">
             <Image
-              className="z-40 max-h-16 w-auto lg:invisible"
+              className="relative z-40 max-h-16 w-auto"
               src="https://cdn.sanity.io/images/fnvy29id/tgs/6e0d6fefaf95cf0e570f958d10c13cf66265735a-1266x750.png?h=200"
               width={135}
               height={80}
@@ -19,15 +27,8 @@ export default function Nav() {
               priority
             />
             <Image
-              className="z-40 max-h-16 w-auto absolute left-3 top-6 max-lg:invisible"
-              src="https://cdn.sanity.io/images/fnvy29id/tgs/6e0d6fefaf95cf0e570f958d10c13cf66265735a-1266x750.png?h=200"
-              width={135}
-              height={80}
-              alt="TGS logo"
-              priority
-            />
-            <Image
-              className="z-0 sm:hidden group-hover:block absolute -left-2 -top-2 max-lg:invisible"
+              className="hidden"
+              style={{ height: '80px', width: 'auto' }}
               src="https://cdn.sanity.io/images/fnvy29id/tgs/409cbc55ba676a991fd6d75f8ba242ad7dc08cd1-240x192.gif"
               width={165}
               height={150}
@@ -55,15 +56,17 @@ export default function Nav() {
               alt="Blog"
             />
           </Link>
-          <Link href="https://www.patreon.com/thatgoodshit">
+
+          <Link href="/events">
             <Image
-              className="min-h-6 max-h-14 min-w-16 w-auto"
-              src="https://cdn.sanity.io/images/fnvy29id/tgs/aaadb16ce9553cad7741d97aa957f4f9d1a9e830-4809x1503.png?h=200"
-              width={300}
+              className="min-h-5 max-h-14 min-w-10 w-auto"
+              src="https://cdn.sanity.io/images/fnvy29id/tgs/a82c27d8c7dcd43014eaa1fdc852185942645f7e-2037x795.png?h=200"
+              width={95}
               height={40}
-              alt="Patreon"
+              alt="Events"
             />
           </Link>
+
           <Link href="/shop" scroll={true}>
             <Image
               className="min-h-5 max-h-14 min-w-12 w-auto"
@@ -73,9 +76,19 @@ export default function Nav() {
               alt="Shop"
             />
           </Link>
+
+          <Link href="https://www.patreon.com/thatgoodshit">
+            <Image
+              className="min-h-6 max-h-14 min-w-16 w-auto"
+              src="https://cdn.sanity.io/images/fnvy29id/tgs/aaadb16ce9553cad7741d97aa957f4f9d1a9e830-4809x1503.png?h=200"
+              width={300}
+              height={40}
+              alt="Patreon"
+            />
+          </Link>
         </div>
 
-        <Sotd></Sotd>
+        <Sotd />
       </div>
     </main>
   );

@@ -53,29 +53,29 @@ export default async function Page() {
 
   return (
     <div>
-      <div className="text-2xl min-[340px]:text-4xl font-bold decoration-tgs-purple text-black font-bit leading-10 text-balance w-full justify-center text-center pt-12 md:mb-3 md:pt-0">
-        ALL EVENTS
-      </div>
-      <div className="grid lg:grid-cols-5 sm:grid-cols-4 grid-cols-3 max-sm:mx-2 md:p-2 pt-4 gap-2">
+      <h1 className="text-2xl sm:text-4xl font-bold font-title text-white uppercase mx-4 sm:mx-6">
+        All Events
+      </h1>
+      <div className="grid lg:grid-cols-5 sm:grid-cols-4 grid-cols-2 max-sm:mx-2 md:p-2 pt-4 gap-2">
         {events.map((event) => (
           <div className="group rounded-lg" key={event._id}>
             <Link className=" decoration-tgs-purple" href={`${event.link}`}>
-              <div className="text-white flex place-content-center">
-                <div className="relative h-[19.85vw] w-[16vw]">
+              <div className="text-white">
+                <div className="relative w-full aspect-[4/5]">
                   <Image
-                    className="object-contain rounded-md border-tgs-purple border-0 group-hover:border-4 group-hover:scale-[98%]"
+                    className="object-contain rounded-md border-white border-0 group-hover:border-4 group-hover:scale-[98%]"
                     src={`${eventImage(event)}`}
                     fill={true}
                     alt={`${event.name}`}
-                    sizes="(max-width: 1024px) 300"
+                    sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 20vw"
                     quality={100}
                   />
                 </div>
               </div>
-              <p className="text-center text-md sm:text-xl font-bit font-black text-balance pt-1 leading-tight group-hover:underline group-hover:text-tgs-purple">
+              <p className="text-center text-md sm:text-xl font-bit font-black text-balance pt-1 leading-tight text-white group-hover:underline group-hover:text-tgs-pink">
                 {event.name}
               </p>
-              <p className="text-gray-500 text-center text-xs sm:text-base font-roc py-2 -m-2 group-hover:text-tgs-purple">
+              <p className="text-gray-300 text-center text-xs sm:text-base font-roc py-2 -m-2 group-hover:text-tgs-pink">
                 {stringifyDate(event.date)}
               </p>
             </Link>

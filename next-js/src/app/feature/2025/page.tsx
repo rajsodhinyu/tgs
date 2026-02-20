@@ -41,7 +41,7 @@ export default async function Page() {
 
   return (
     <div className="mt-8 md:mt-6 pb-3">
-      <div className="flex justify-between items-center mx-3 mb-8 pt-16 md:pt-0">
+      <div className="flex justify-between items-center mx-3 mb-8">
         <Link
           href="/feature/2024"
           className="text-lg md:text-xl font-bit text-white hover:underline flex items-center gap-1"

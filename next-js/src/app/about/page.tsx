@@ -33,7 +33,7 @@ export const metadata: Metadata = {
 
 export default function Page() {
   return (
-    <div className="md:mt-10 mt-20 sm:px-40 mx-8">
+    <div className="md:mt-10 sm:px-40 mx-8">
       <div className="md:text-lg text-sm font-black font-title text-white text-pretty text-center sm:text-balance">
         <p>
           {" "}

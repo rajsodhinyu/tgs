@@ -70,7 +70,7 @@ export default async function Page() {
 
   return (
     <div className="mt-8 md:mt-6 pb-3">
-      <div className="flex justify-between items-center mx-3 mb-8 pt-16 md:pt-0">
+      <div className="flex justify-between items-center mx-3 mb-8">
         <div className="text-lg md:text-xl invisible flex items-center gap-1">
           2025 <ChevronDots className="mt-0.5" />
         </div>

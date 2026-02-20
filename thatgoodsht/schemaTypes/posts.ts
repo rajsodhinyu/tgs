@@ -80,7 +80,7 @@ export const postType = defineType({
     }),
     defineField({
       name: 'writer',
-      title: 'Writer (optional)',
+      title: 'Writer',
       type: 'reference',
       to: [{type: 'writer'}],
       options: {

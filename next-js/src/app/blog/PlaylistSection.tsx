@@ -26,13 +26,13 @@ export default function PlaylistSection({
       <div className="relative flex items-center justify-start  w-full py-3 sm:px-0">
         <Link
           href="/playlists"
-          className="bg-tgs-purple rounded-2xl px-6 text-2xl sm:text-4xl font-bold font-title uppercase text-white border-4 border-transparent hover:border-white text-nowrap flex items-center gap-2"
+          className="bg-tgs-purple rounded-2xl px-6 text-[5vw] sm:text-4xl font-bold font-title uppercase text-white border-4 border-transparent hover:border-white text-nowrap flex items-center gap-2"
         >
           All Playlists
           <ChevronDots className="inline-block mt-1" />
         </Link>
-        <div className="absolute right-3 sm:right-4 scale-[0.7]  lg:scale-90 origin-right">
-          <PlatformSwitcher platform={platform} setPlatform={setPlatform} />
+        <div className="absolute right-3 sm:right-4">
+          <PlatformSwitcher platform={platform} setPlatform={setPlatform} className="w-[20vw] sm:w-28 lg:w-32" />
         </div>
       </div>
       <div className="grid lg:grid-cols-3 grid-cols-2 gap-4">

@@ -177,7 +177,7 @@ export default async function Page({
   const posts = await sanityFetch<SanityDocument[]>({ query: SLUG_QUERY });
   const post = posts[0];
 
-  return (<div className="font-roc text-lg text-balance max-md:mt-14 max-[300px]:w-80 text-white">
+  return (<div className="font-roc text-lg text-balance max-[300px]:w-80 text-white">
     <div className="m-5 ">
       <div className="flex items-center justify-between mb-1">
         <div className="xl:text-2xl text-lg font-bit">

@@ -6,7 +6,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <div className="h-full pb-10 min-h-screen bg-gradient-radial from-tgs-dark-purple to-tgs-pink">
       <Nav />
-      <div className="mx-6 -mt-1 max-sm:mt-16">
+      <div className="mx-6 -mt-1 max-sm:mt-3">
         <div className="text-4xl font-title font-bold text-white text-left flex justify-between place-items-center uppercase">
           <div className="border-b-2 border-transparent hover:border-white">
             <Link href="/shop" className="flex items-center gap-2">SHOP</Link>

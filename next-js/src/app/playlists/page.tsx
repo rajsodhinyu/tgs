@@ -43,7 +43,7 @@ export default async function Page() {
   const playlists = await sanityFetch<SanityDocument[]>({ query: PLAYLIST_Q });
 
   return (
-    <div className="md:mt-6 pb-3 pt-12 md:pt-0">
+    <div className="md:mt-6 pb-3">
       <PlaylistGrid
         playlists={playlists.map((playlist) => ({
           _id: playlist._id,

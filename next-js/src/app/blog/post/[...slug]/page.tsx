@@ -341,7 +341,7 @@ export default async function Page({
   const posts = await sanityFetch<SanityDocument[]>({ query: SLUG_QUERY });
   const post = posts[0];
   return (
-    <div className="font-roc text-lg text-balance text-white max-md:mt-14 max-[300px]:w-80">
+    <div className="font-roc text-lg text-balance text-white max-[300px]:w-80">
       <div className="place-items-center">{renderBanner(post)}</div>
       <div className="xl:text-4xl text-2xl font-bold font-title mt-4 text-center uppercase">
         {/* Title */}

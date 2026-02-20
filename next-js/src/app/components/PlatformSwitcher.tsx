@@ -43,16 +43,18 @@ const DOT_SRC =
 export default function PlatformSwitcher({
   platform,
   setPlatform,
+  className,
 }: {
   platform: Platform;
   setPlatform: (p: Platform) => void;
+  className?: string;
 }) {
   const isApple = platform === "apple";
 
   return (
     <button
       onClick={() => setPlatform(isApple ? "spotify" : "apple")}
-      className="relative w-32 cursor-pointer"
+      className={`relative cursor-pointer ${className ?? "w-32"}`}
       style={{ aspectRatio: "2048 / 779" }}
       aria-label={`Switch to ${isApple ? "Spotify" : "Apple Music"}`}
     >

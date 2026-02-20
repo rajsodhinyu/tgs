@@ -86,10 +86,12 @@ export function SlugWithVisit(props: any) {
           Visit ↗
         </VisitButton>
         <ToggleWrapper onClick={toggleVisibility}>
+          {'🔒 Link Only'}
           <Track $isPublic={!isPrivate}>
             <Thumb $isPublic={!isPrivate} />
           </Track>
-          {isPrivate ? '🔒 Direct Link only' : '🌐 Public'}
+          {'🌐 Public'}
+          {/*{isPrivate ? '🔒 Direct Link only' : '🌐 Public'}*/}
         </ToggleWrapper>
       </ButtonRow>
     </Wrapper>
