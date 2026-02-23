@@ -1,5 +1,19 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  async redirects() {
+    return [
+      {
+        source: "/blog-archive",
+        destination: "/archive",
+        permanent: true,
+      },
+      {
+        source: "/blog/post/:slug*",
+        destination: "/blog/:slug*",
+        permanent: true,
+      },
+    ];
+  },
   async headers() {
     return [
       {

@@ -39,7 +39,7 @@ export default function SidebarList({ blogs }: { blogs: Blog[] }) {
     <div className="flex-col w-full">
       {blogs.slice(0, visible).map((blog) => (
         <div key={blog._id} className="">
-          <Link href={`/blog/post/${blog.slug.current}`}>
+          <Link href={`/blog/${blog.slug.current}`}>
             <Image
               className="h-auto object-cover w-80 border-opacity-0 hover:border-opacity-100 hover:scale-95 border-4 border-white rounded-md"
               src={blog.imageUrl}

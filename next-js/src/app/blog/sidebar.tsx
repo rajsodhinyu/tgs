@@ -39,7 +39,7 @@ export default async function Sidebar() {
       <div className="*:m-1 w-80 -mt-2">
         <div className="sticky top-0 z-10 flex justify-center">
           <Link
-            href="/blog-archive"
+            href="/archive"
             className="bg-tgs-purple rounded-2xl px-6 text-4xl font-bold font-title my-2 uppercase text-white border-4 border-transparent hover:border-white text-nowrap flex items-center gap-2 "
           >
             All Posts
@@ -57,7 +57,7 @@ export default async function Sidebar() {
           <div className="flex-col w-full">
             {blogs.map((blog) => (
               <div key={blog._id} className="flex justify-center">
-                <Link href={`/blog/post/${blog.slug.current}`} target="_self">
+                <Link href={`/blog/${blog.slug.current}`} target="_self">
                   <Image
                     className="h-auto object-cover w-80 border-opacity-0 hover:border-opacity-100 hover:scale-95 border-4 border-white rounded-md"
                     src={`${eventImage(blog)}`}
@@ -71,7 +71,7 @@ export default async function Sidebar() {
             ))}
           </div>
           <Link
-            href="/blog-archive"
+            href="/archive"
             className="sticky bottom-4 float-right mr-2 bg-tgs-purple rounded-2xl px-3 py-1 text-sm font-bold font-title uppercase text-white border-2 border-transparent hover:border-white flex items-center gap-1"
           >
             See All
