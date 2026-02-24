@@ -191,7 +191,8 @@ const components: PortableTextComponents = {
           trackName={value?.trackName}
           artistName={value?.artistName}
           albumArt={value?.albumArt}
-          title={value?.title}
+          heading={value?.heading}
+          subheading={value?.subheading}
           blurb={value?.blurb}
           alignment={value?.alignment || "left"}
         />

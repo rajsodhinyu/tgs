@@ -1,12 +1,40 @@
 import {useState, useCallback, useEffect, useRef} from 'react'
 import {set, unset} from 'sanity'
+import {PortableText} from '@portabletext/react'
 import styled from 'styled-components'
 
-const API_URL = (import.meta as any).env?.SANITY_STUDIO_SPOTIFY_API_URL || 'https://www.thatgoodsht.com'
+const API_URL =
+  (import.meta as any).env?.SANITY_STUDIO_SPOTIFY_API_URL || 'https://www.thatgoodsht.com'
 
 // ── Styled Components ──
 
 const Wrapper = styled.div`
+  --text-primary: #222;
+  --text-secondary: #666;
+  --text-muted: #999;
+  --text-label: #555;
+  --bg-surface: #f3f1fa;
+  --bg-neutral: #fafafa;
+  --bg-input: #fff;
+  --bg-inactive: #f0f0f0;
+  --bg-inactive-hover: #e0e0e0;
+  --border-color: #ddd;
+  --border-divider: #d0d0d0;
+
+  [data-scheme='dark'] & {
+    --text-primary: #e8e8e8;
+    --text-secondary: #aaa;
+    --text-muted: #777;
+    --text-label: #bbb;
+    --bg-surface: #2a2640;
+    --bg-neutral: #1e1e2e;
+    --bg-input: #1e1e2e;
+    --bg-inactive: #2a2a3d;
+    --bg-inactive-hover: #353548;
+    --border-color: #444;
+    --border-divider: #444;
+  }
+
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
@@ -44,7 +72,7 @@ const PreviewCard = styled.div`
   align-items: center;
   padding: 0.6rem;
   border-radius: 6px;
-  background: #f3f1fa;
+  background: var(--bg-surface);
 `
 
 const AlbumArt = styled.img`
@@ -62,7 +90,7 @@ const TrackInfo = styled.div`
 const TrackName = styled.div`
   font-weight: 600;
   font-size: 0.85rem;
-  color: #222;
+  color: var(--text-primary);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -70,7 +98,7 @@ const TrackName = styled.div`
 
 const ArtistName = styled.div`
   font-size: 0.75rem;
-  color: #666;
+  color: var(--text-secondary);
   display: -webkit-box;
   -webkit-line-clamp: 4;
   -webkit-box-orient: vertical;
@@ -85,7 +113,7 @@ const DialogBody = styled.div`
 const StepLabel = styled.div`
   font-size: 0.7rem;
   font-weight: 700;
-  color: #999;
+  color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.05em;
   margin-bottom: 0.75rem;
@@ -94,28 +122,15 @@ const StepLabel = styled.div`
 const Input = styled.input`
   width: 100%;
   padding: 0.5rem 0.75rem;
-  border: 2px solid #ddd;
+  border: 2px solid var(--border-color);
   border-radius: 4px;
   font-size: 1rem;
   outline: none;
   box-sizing: border-box;
+  background: var(--bg-input);
+  color: var(--text-primary);
   &:focus {
     border: 2px solid #6c5cbe;
-  }
-`
-
-const Textarea = styled.textarea`
-  width: 100%;
-  padding: 0.5rem 0.75rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 0.85rem;
-  outline: none;
-  resize: vertical;
-  min-height: 60px;
-  box-sizing: border-box;
-  &:focus {
-    border-color: #6c5cbe;
   }
 `
 
@@ -133,12 +148,13 @@ const ResultRow = styled.button<{$selected: boolean}>`
   padding: 0.5rem;
   border-radius: 5px;
   border: 2px solid ${(p) => (p.$selected ? '#6c5cbe' : 'transparent')};
-  background: ${(p) => (p.$selected ? '#f3f1fa' : '#fafafa')};
+  background: ${(p) => (p.$selected ? 'var(--bg-surface)' : 'var(--bg-neutral)')};
+  color: var(--text-primary);
   cursor: pointer;
   text-align: left;
   width: 100%;
   &:hover {
-    background: #f3f1fa;
+    background: var(--bg-surface);
   }
 `
 
@@ -166,13 +182,13 @@ const FieldLabel = styled.label`
   display: block;
   font-size: 0.75rem;
   font-weight: 600;
-  color: #555;
+  color: var(--text-label);
   margin-bottom: 0.25rem;
 `
 
 const HelpText = styled.div`
   font-size: 0.72rem;
-  color: #999;
+  color: var(--text-muted);
   margin-top: 0.25rem;
 `
 
@@ -184,18 +200,18 @@ const SearchToggle = styled.div`
 `
 
 const SearchToggleButton = styled.button<{$active: boolean}>`
-  background: ${(p) => (p.$active ? '#6c5cbe' : '#f0f0f0')};
+  background: ${(p) => (p.$active ? '#6c5cbe' : 'var(--bg-inactive)')};
   border: none;
-  color: ${(p) => (p.$active ? '#fff' : '#000')};
+  color: ${(p) => (p.$active ? '#fff' : 'var(--text-primary)')};
   padding: 0.35rem 0.6rem;
   cursor: pointer;
   font-size: 0.75rem;
   font-family: inherit;
   &:hover {
-    background: ${(p) => (p.$active ? '#6c5cbe' : '#e0e0e0')};
+    background: ${(p) => (p.$active ? '#6c5cbe' : 'var(--bg-inactive-hover)')};
   }
   & + & {
-    border-left: 1px solid #d0d0d0;
+    border-left: 1px solid var(--border-divider);
   }
 `
 
@@ -213,6 +229,14 @@ type Step = 'search' | 'apple' | 'editorial'
 type SearchType = 'track' | 'album'
 
 // ── Component ──
+
+function blocksToText(blocks: any): string {
+  if (!blocks || !Array.isArray(blocks)) return ''
+  return blocks
+    .map((block: any) => block?.children?.map((child: any) => child?.text || '').join('') || '')
+    .join(' ')
+    .trim()
+}
 
 export function TrackSearchInput(props: any) {
   const {value, onChange} = props
@@ -233,11 +257,18 @@ export function TrackSearchInput(props: any) {
   const [appleMusicUrl, setAppleMusicUrl] = useState('')
 
   // Editorial state
-  const [title, setTitle] = useState('')
-  const [blurb, setBlurb] = useState('')
+  const [heading, setHeading] = useState('')
+  const [subheading, setSubheading] = useState('')
   const [alignment, setAlignment] = useState<'left' | 'right'>(value?.alignment || 'left')
 
   const hasValue = value?.trackName
+
+  // Auto-enter editorial mode when a track is already saved
+  useEffect(() => {
+    if (hasValue && !editing) {
+      startEditing('editorial')
+    }
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   // Debounced search
   useEffect(() => {
@@ -282,8 +313,8 @@ export function TrackSearchInput(props: any) {
         spotifyUrl: value?.spotifyUrl || '',
       })
       setAppleMusicUrl(value?.appleMusicUrl || '')
-      setTitle(value?.title || '')
-      setBlurb(value?.blurb || '')
+      setHeading(value?.heading || '')
+      setSubheading(value?.subheading || '')
       setAlignment(value?.alignment || 'left')
       setStep(toStep)
       setEditing(true)
@@ -305,22 +336,23 @@ export function TrackSearchInput(props: any) {
       onChange(unset(['appleMusicUrl']))
     }
 
-    if (title.trim()) {
-      onChange(set(title.trim(), ['title']))
+    if (heading.trim()) {
+      onChange(set(heading.trim(), ['heading']))
     } else {
-      onChange(unset(['title']))
+      onChange(unset(['heading']))
     }
 
-    if (blurb.trim()) {
-      onChange(set(blurb.trim(), ['blurb']))
+    if (subheading.trim()) {
+      onChange(set(subheading.trim(), ['subheading']))
     } else {
-      onChange(unset(['blurb']))
+      onChange(unset(['subheading']))
     }
 
     onChange(set(alignment, ['alignment']))
 
-    setEditing(false)
-  }, [selected, appleMusicUrl, title, blurb, alignment, onChange])
+    // Close the block editor modal
+    props.onPathFocus([])
+  }, [selected, appleMusicUrl, heading, subheading, alignment, onChange, props])
 
   const isValidAppleUrl =
     !appleMusicUrl.trim() ||
@@ -335,55 +367,7 @@ export function TrackSearchInput(props: any) {
 
   return (
     <Wrapper>
-      {hasValue && !editing ? (
-        <>
-          <div style={{display: 'flex', alignItems: 'flex-start', gap: '0.75rem', flexDirection: (value.alignment || 'left') === 'right' ? 'row-reverse' : 'row'}}>
-            {value.albumArt && <AlbumArt src={value.albumArt} alt="" />}
-            <div style={{flex: 1, minWidth: 0, textAlign: (value.alignment || 'left') === 'right' ? 'right' : 'left'}}>
-              <div style={{fontWeight: 600, fontSize: '0.85rem', color: '#222'}}>
-                {value.title || `${value.trackName} – ${value.artistName}`}
-              </div>
-              {value.blurb && (
-                <div
-                  style={{
-                    fontSize: '0.75rem',
-                    color: '#666',
-                    marginTop: '0.25rem',
-                    whiteSpace: 'pre-wrap',
-                  }}
-                >
-                  {value.blurb}
-                </div>
-              )}
-            </div>
-          </div>
-          <div style={{display: 'flex', gap: '0.5rem', alignItems: 'center', marginTop: '0.5rem'}}>
-            <SearchToggle style={{marginBottom: 0}}>
-            <SearchToggleButton
-              type="button"
-              $active={(value.alignment || 'left') === 'left'}
-              onClick={() => onChange(set('left', ['alignment']))}
-            >
-              Left
-            </SearchToggleButton>
-            <SearchToggleButton
-              type="button"
-              $active={(value.alignment || 'left') === 'right'}
-              onClick={() => onChange(set('right', ['alignment']))}
-            >
-              Right
-            </SearchToggleButton>
-          </SearchToggle>
-            <ActionButton
-              type="button"
-              onClick={() => startEditing('editorial')}
-              style={{padding: '0.35rem 0.6rem', fontSize: '0.72rem'}}
-            >
-              Edit
-            </ActionButton>
-          </div>
-        </>
-      ) : (
+      {
         <DialogBody>
           {/* ── Step 1: Search ── */}
           {step === 'search' && (
@@ -501,24 +485,69 @@ export function TrackSearchInput(props: any) {
               </PreviewCard>
 
               <FieldGroup>
-                <FieldLabel>Apple Music</FieldLabel>
+                <FieldLabel>Apple Music Link</FieldLabel>
                 <div style={{display: 'flex'}}>
                   <ActionButton
                     type="button"
-                    style={{marginRight: '0.5rem', background: '#FA233B'}}
+                    style={{
+                      marginRight: '0.5rem',
+                      background: '#FA233B',
+                      whiteSpace: 'nowrap',
+                      padding: '0.4rem 2.2rem',
+                    }}
                     onClick={openAppleSearch}
                   >
-                    Search
+                    Search Apple Music
                   </ActionButton>
-                  <Input
-                    value={appleMusicUrl}
-                    onChange={(e) => setAppleMusicUrl(e.target.value)}
-                    placeholder={
-                      searchType === 'album'
-                        ? 'https://music.apple.com/us/album/...'
-                        : 'https://music.apple.com/us/song/...'
-                    }
-                  />
+                  <div style={{position: 'relative', flex: 1}}>
+                    <Input
+                      value={appleMusicUrl}
+                      onChange={(e) => setAppleMusicUrl(e.target.value)}
+                      placeholder={
+                        searchType === 'album'
+                          ? 'https://music.apple.com/us/album/...'
+                          : 'https://music.apple.com/us/song/...'
+                      }
+                      style={{paddingLeft: '2rem'}}
+                    />
+                    <button
+                      type="button"
+                      title="Paste from clipboard"
+                      onClick={async () => {
+                        try {
+                          const text = await navigator.clipboard.readText()
+                          setAppleMusicUrl(text)
+                        } catch {}
+                      }}
+                      style={{
+                        position: 'absolute',
+                        left: '6px',
+                        top: '50%',
+                        transform: 'translateY(-50%)',
+                        background: 'none',
+                        border: 'none',
+                        padding: '0.2rem',
+                        fontSize: '0.85rem',
+                        color: 'var(--text-muted)',
+                        cursor: 'pointer',
+                        lineHeight: 1,
+                      }}
+                    >
+                      <svg
+                        width="14"
+                        height="14"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
+                        <rect x="8" y="2" width="8" height="4" rx="1" ry="1" />
+                      </svg>
+                    </button>
+                  </div>
                 </div>
                 {appleMusicUrl && !isValidAppleUrl && (
                   <HelpText style={{color: '#e74c3c'}}>
@@ -548,41 +577,129 @@ export function TrackSearchInput(props: any) {
           {/* ── Step 3: Editorial ── */}
           {step === 'editorial' && selected && (
             <>
-              <StepLabel>Preview</StepLabel>
-              <PreviewCard style={{marginBottom: '0.75rem'}}>
-                {selected.albumArt && <AlbumArt src={selected.albumArt} alt="" />}
-                <TrackInfo>
-                  <TrackName>{title || `${selected.name} – ${selected.artists}`}</TrackName>
-                  <ArtistName>{blurb}</ArtistName>
-                </TrackInfo>
+              <PreviewCard
+                style={{
+                  marginBottom: '0.75rem',
+                  flexDirection: alignment === 'right' ? 'row-reverse' : 'row',
+                  alignItems: 'flex-start',
+                  gap: '1rem',
+                }}
+              >
+                <div
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: alignment === 'right' ? 'flex-end' : 'flex-start',
+                    textAlign: alignment === 'right' ? 'right' : 'left',
+                    flexShrink: 0,
+                  }}
+                >
+                  {selected.albumArt && (
+                    <img
+                      src={selected.albumArt}
+                      alt=""
+                      style={{
+                        width: 80,
+                        height: 80,
+                        borderRadius: 4,
+                        objectFit: 'cover',
+                        marginBottom: '0.4rem',
+                      }}
+                    />
+                  )}
+                  <TrackName style={{whiteSpace: 'normal'}}>{heading || selected.name}</TrackName>
+                  <ArtistName>{subheading || selected.artists}</ArtistName>
+                </div>
+                {blocksToText(value?.blurb) && (
+                  <div
+                    style={{
+                      fontSize: '0.72rem',
+                      color: 'var(--text-secondary)',
+                      lineHeight: 1.4,
+                      flex: 1,
+                      minWidth: 0,
+                      display: '-webkit-box',
+                      WebkitLineClamp: 6,
+                      WebkitBoxOrient: 'vertical' as const,
+                      overflow: 'hidden',
+                    }}
+                  >
+                    <PortableText value={value.blurb} />
+                  </div>
+                )}
               </PreviewCard>
 
               <FieldGroup>
-                <FieldLabel>Custom Header</FieldLabel>
+                <FieldLabel>Heading</FieldLabel>
                 <Input
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                  placeholder={selected.name + ' – ' + selected.artists}
+                  value={heading}
+                  onChange={(e) => {
+                    setHeading(e.target.value)
+                    if (e.target.value.trim()) {
+                      onChange(set(e.target.value.trim(), ['heading']))
+                    } else {
+                      onChange(unset(['heading']))
+                    }
+                  }}
+                  placeholder={selected.name}
                 />
               </FieldGroup>
 
               <FieldGroup>
-                <FieldLabel>Write as much as you want</FieldLabel>
-                <Textarea value={blurb} onChange={(e) => setBlurb(e.target.value)} />
+                <FieldLabel>Subheading</FieldLabel>
+                <Input
+                  value={subheading}
+                  onChange={(e) => {
+                    setSubheading(e.target.value)
+                    if (e.target.value.trim()) {
+                      onChange(set(e.target.value.trim(), ['subheading']))
+                    } else {
+                      onChange(unset(['subheading']))
+                    }
+                  }}
+                  placeholder={selected.artists}
+                />
               </FieldGroup>
 
               <ButtonRow style={{marginTop: '1rem', justifyContent: 'space-between'}}>
                 <ActionButton type="button" $variant="secondary" onClick={() => setStep('apple')}>
                   ← Back
                 </ActionButton>
-                <ActionButton type="button" onClick={confirmTrack}>
-                  Save ✓
-                </ActionButton>
+                <SearchToggle style={{marginBottom: 0}}>
+                  <SearchToggleButton
+                    type="button"
+                    $active={alignment === 'left'}
+                    onClick={() => {
+                      setAlignment('left')
+                      onChange(set('left', ['alignment']))
+                    }}
+                  >
+                    Left
+                  </SearchToggleButton>
+                  <SearchToggleButton
+                    type="button"
+                    $active={alignment === 'right'}
+                    onClick={() => {
+                      setAlignment('right')
+                      onChange(set('right', ['alignment']))
+                    }}
+                  >
+                    Right
+                  </SearchToggleButton>
+                </SearchToggle>
               </ButtonRow>
             </>
           )}
         </DialogBody>
-      )}
+      }
+      <div style={{display: step === 'editorial' ? 'block' : 'none'}}>
+        {props.renderDefault({
+          ...props,
+          members: (props.members || []).filter(
+            (m: any) => m.kind === 'field' && m.name === 'blurb',
+          ),
+        })}
+      </div>
     </Wrapper>
   )
 }

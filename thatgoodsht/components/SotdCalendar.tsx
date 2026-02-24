@@ -66,9 +66,43 @@ function nextYearMonth(ym: YearMonth): YearMonth {
 }
 
 const OuterWrapper = styled.div`
+  --text-primary: #000;
+  --text-secondary: #666;
+  --text-muted: #999;
+  --text-song: #333;
+  --bg-surface: #e0d5f0;
+  --bg-surface-hover: #f0edf8;
+  --bg-neutral: #fafafa;
+  --bg-neutral-alt: #f5f5f5;
+  --bg-cell: #fff;
+  --bg-cell-song: #f0edf8;
+  --bg-cell-song-hover: #e6e0f3;
+  --bg-inactive: #f0f0f0;
+  --bg-inactive-hover: #e0e0e0;
+  --border-color: #e0e0e0;
+  --border-grid: #d0d0d0;
+
+  [data-scheme="dark"] & {
+    --text-primary: #e8e8e8;
+    --text-secondary: #aaa;
+    --text-muted: #777;
+    --text-song: #ccc;
+    --bg-surface: #2a2640;
+    --bg-surface-hover: #332e50;
+    --bg-neutral: #1e1e2e;
+    --bg-neutral-alt: #252538;
+    --bg-cell: #1a1a2e;
+    --bg-cell-song: #252240;
+    --bg-cell-song-hover: #2e2a4d;
+    --bg-inactive: #2a2a3d;
+    --bg-inactive-hover: #353548;
+    --border-color: #444;
+    --border-grid: #555;
+  }
+
   display: flex;
   height: 100%;
-  color: #000;
+  color: var(--text-primary);
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 `
 
@@ -92,37 +126,37 @@ const Header = styled.div`
 `
 
 const SwapToggle = styled.button<{$active: boolean}>`
-  background: ${(p) => (p.$active ? '#6c5cbe' : '#f0f0f0')};
-  border: 1px solid ${(p) => (p.$active ? '#6c5cbe' : '#d0d0d0')};
-  color: ${(p) => (p.$active ? '#fff' : '#000')};
+  background: ${(p) => (p.$active ? '#6c5cbe' : 'var(--bg-inactive)')};
+  border: 1px solid ${(p) => (p.$active ? '#6c5cbe' : 'var(--border-grid)')};
+  color: ${(p) => (p.$active ? '#fff' : 'var(--text-primary)')};
   padding: 0.35rem 0.6rem;
   border-radius: 4px;
   cursor: pointer;
   font-size: 0.75rem;
   &:hover {
-    background: ${(p) => (p.$active ? '#5a4aad' : '#e0e0e0')};
+    background: ${(p) => (p.$active ? '#5a4aad' : 'var(--bg-inactive-hover)')};
   }
 `
 
 const ViewToggle = styled.div`
   display: flex;
-  border: 1px solid #d0d0d0;
+  border: 1px solid var(--border-grid);
   border-radius: 4px;
   overflow: hidden;
 `
 
 const ViewToggleButton = styled.button<{$active: boolean}>`
-  background: ${(p) => (p.$active ? '#6c5cbe' : '#f0f0f0')};
+  background: ${(p) => (p.$active ? '#6c5cbe' : 'var(--bg-inactive)')};
   border: none;
-  color: ${(p) => (p.$active ? '#fff' : '#000')};
+  color: ${(p) => (p.$active ? '#fff' : 'var(--text-primary)')};
   padding: 0.35rem 0.6rem;
   cursor: pointer;
   font-size: 0.75rem;
   &:hover {
-    background: ${(p) => (p.$active ? '#6c5cbe' : '#e0e0e0')};
+    background: ${(p) => (p.$active ? '#6c5cbe' : 'var(--bg-inactive-hover)')};
   }
   & + & {
-    border-left: 1px solid #d0d0d0;
+    border-left: 1px solid var(--border-grid);
   }
 `
 
@@ -134,15 +168,15 @@ const MonthTitle = styled.h3`
   margin: 0 0 0.5rem 0;
   font-size: 1.1rem;
   font-weight: 600;
-  color: #000;
+  color: var(--text-primary);
 `
 
 const Grid = styled.div`
   display: grid;
   grid-template-columns: repeat(7, minmax(0, 1fr));
   gap: 1px;
-  background: #d0d0d0;
-  border: 1px solid #d0d0d0;
+  background: var(--border-grid);
+  border: 1px solid var(--border-grid);
   border-radius: 6px;
   overflow: hidden;
 `
@@ -152,24 +186,24 @@ const DayHeader = styled.div`
   text-align: center;
   font-size: 0.75rem;
   font-weight: 600;
-  color: #666;
-  background: #f5f5f5;
+  color: var(--text-secondary);
+  background: var(--bg-neutral-alt);
   text-transform: uppercase;
 `
 
 const AddButton = styled.button`
-  background: #f0f0f0;
-  border: 1px solid #d0d0d0;
+  background: var(--bg-inactive);
+  border: 1px solid var(--border-grid);
   border-radius: 4px;
   cursor: pointer;
   padding: 0.15rem 0.4rem;
   font-size: 0.5rem;
-  color: #333;
+  color: var(--text-song);
   flex-shrink: 0;
   opacity: 0;
   transition: opacity 0.15s;
   &:hover {
-    background: #e0e0e0;
+    background: var(--bg-inactive-hover);
   }
 `
 
@@ -184,7 +218,7 @@ const DayCell = styled.div<{
   padding: 0.4rem;
   overflow: hidden;
   background: ${(p) =>
-    p.$isDragOver ? '#e0d5f0' : p.$empty ? '#fafafa' : p.$hasSong ? '#f0edf8' : '#fff'};
+    p.$isDragOver ? 'var(--bg-surface)' : p.$empty ? 'var(--bg-neutral)' : p.$hasSong ? 'var(--bg-cell-song)' : 'var(--bg-cell)'};
   cursor: ${(p) => (p.$isDragging ? 'grabbing' : p.$empty ? 'default' : 'pointer')};
   border: ${(p) =>
     p.$isDragOver ? '2px dashed #6c5cbe' : p.$isToday ? '2px solid #6c5cbe' : 'none'};
@@ -194,7 +228,7 @@ const DayCell = styled.div<{
     opacity 0.15s;
   &:hover {
     background: ${(p) =>
-      p.$isDragOver ? '#e0d5f0' : p.$empty ? '#fafafa' : p.$hasSong ? '#e6e0f3' : '#f5f5f5'};
+      p.$isDragOver ? 'var(--bg-surface)' : p.$empty ? 'var(--bg-neutral)' : p.$hasSong ? 'var(--bg-cell-song-hover)' : 'var(--bg-neutral-alt)'};
   }
   &:hover ${AddButton} {
     opacity: 1;
@@ -205,7 +239,7 @@ const DayNumber = styled.span<{$isToday?: boolean}>`
   display: inline-block;
   font-size: 0.75rem;
   font-weight: 500;
-  color: ${(p) => (p.$isToday ? '#fff' : '#666')};
+  color: ${(p) => (p.$isToday ? '#fff' : 'var(--text-secondary)')};
   margin-bottom: 0.25rem;
   ${(p) =>
     p.$isToday &&
@@ -233,23 +267,23 @@ const Artist = styled.div`
 `
 
 const SongTitle = styled.div`
-  color: #333;
+  color: var(--text-song);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 `
 
 const PlayButton = styled.button<{$playing?: boolean}>`
-  background: ${(p) => (p.$playing ? '#6c5cbe' : '#f0f0f0')};
-  border: 1px solid ${(p) => (p.$playing ? '#6c5cbe' : '#d0d0d0')};
+  background: ${(p) => (p.$playing ? '#6c5cbe' : 'var(--bg-inactive)')};
+  border: 1px solid ${(p) => (p.$playing ? '#6c5cbe' : 'var(--border-grid)')};
   border-radius: 4px;
   cursor: pointer;
   padding: 0.15rem ${(p) => (p.$playing ? '0.45rem' : '0.4rem')};
   font-size: 0.5rem;
-  color: ${(p) => (p.$playing ? '#fff' : '#333')};
+  color: ${(p) => (p.$playing ? '#fff' : 'var(--text-song)')};
   flex-shrink: 0;
   &:hover {
-    background: ${(p) => (p.$playing ? '#5a4aad' : '#e0e0e0')};
+    background: ${(p) => (p.$playing ? '#5a4aad' : 'var(--bg-inactive-hover)')};
   }
 `
 
@@ -259,16 +293,16 @@ const ListRow = styled.div`
   gap: 1rem;
   padding: 0.6rem 0.75rem;
   cursor: pointer;
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1px solid var(--border-color);
   transition: background 0.15s;
   &:hover {
-    background: #f0edf8;
+    background: var(--bg-surface-hover);
   }
 `
 
 const ListDate = styled.span`
   font-size: 0.75rem;
-  color: #666;
+  color: var(--text-secondary);
   min-width: 130px;
   flex-shrink: 0;
 `
@@ -280,12 +314,12 @@ const ListArtist = styled.span`
 `
 
 const ListSongTitle = styled.span`
-  color: #333;
+  color: var(--text-song);
   font-size: 0.85rem;
 `
 
 const ListContainer = styled.div`
-  border: 1px solid #e0e0e0;
+  border: 1px solid var(--border-color);
   border-radius: 6px;
   overflow: hidden;
 `
@@ -335,29 +369,29 @@ function PublishedDot() {
 }
 
 const LoadButton = styled.button`
-  background: #f0f0f0;
-  border: 1px solid #d0d0d0;
-  color: #000;
+  background: var(--bg-inactive);
+  border: 1px solid var(--border-grid);
+  color: var(--text-primary);
   padding: 0.35rem 0.6rem;
   border-radius: 4px;
   cursor: pointer;
   font-size: 0.75rem;
   &:hover {
-    background: #e0e0e0;
+    background: var(--bg-inactive-hover);
   }
 `
 
 const AZButton = styled.button<{$active: boolean}>`
   background: ${(p) => (p.$active ? '#6c5cbe' : 'transparent')};
-  border: 1px solid ${(p) => (p.$active ? '#6c5cbe' : '#d0d0d0')};
-  color: ${(p) => (p.$active ? '#fff' : '#666')};
+  border: 1px solid ${(p) => (p.$active ? '#6c5cbe' : 'var(--border-grid)')};
+  color: ${(p) => (p.$active ? '#fff' : 'var(--text-secondary)')};
   padding: 0.2rem 0.4rem;
   border-radius: 4px;
   cursor: pointer;
   font-size: 0.65rem;
   font-weight: 600;
   &:hover {
-    background: ${(p) => (p.$active ? '#5a4aad' : '#f0f0f0')};
+    background: ${(p) => (p.$active ? '#5a4aad' : 'var(--bg-inactive)')};
   }
 `
 
@@ -377,8 +411,8 @@ const ShowPastButton = styled.button`
 const Sidebar = styled.div<{$dragOver?: boolean}>`
   width: 220px;
   flex-shrink: 0;
-  border-left: 1px solid #d0d0d0;
-  background: ${(p) => (p.$dragOver ? '#e0d5f0' : '#fafafa')};
+  border-left: 1px solid var(--border-grid);
+  background: ${(p) => (p.$dragOver ? 'var(--bg-surface)' : 'var(--bg-neutral)')};
   overflow-y: auto;
   transition: background 0.15s;
 `
@@ -386,24 +420,24 @@ const Sidebar = styled.div<{$dragOver?: boolean}>`
 const SidebarHeader = styled.div`
   position: sticky;
   top: 0;
-  background: #f5f5f5;
+  background: var(--bg-neutral-alt);
   padding: 0.75rem;
   font-size: 0.8rem;
   font-weight: 600;
-  border-bottom: 1px solid #d0d0d0;
+  border-bottom: 1px solid var(--border-grid);
   z-index: 1;
 `
 
 const SidebarItem = styled.div<{$isDragging?: boolean}>`
   padding: 0.5rem 0.75rem;
-  border-bottom: 1px solid #e8e8e8;
+  border-bottom: 1px solid var(--border-color);
   cursor: pointer;
   opacity: ${(p) => (p.$isDragging ? 0.5 : 1)};
   transition:
     background 0.15s,
     opacity 0.15s;
   &:hover {
-    background: #f0edf8;
+    background: var(--bg-surface-hover);
   }
 `
 
@@ -417,7 +451,7 @@ const SidebarArtist = styled.div`
 `
 
 const SidebarSongTitle = styled.div`
-  color: #333;
+  color: var(--text-song);
   font-size: 0.65rem;
   white-space: nowrap;
   overflow: hidden;
@@ -784,7 +818,7 @@ export function SotdCalendar() {
         </Header>
 
         {loading && (
-          <div style={{textAlign: 'center', padding: '2rem', color: '#666'}}>Loading...</div>
+          <div style={{textAlign: 'center', padding: '2rem', color: 'var(--text-secondary)'}}>Loading...</div>
         )}
 
         {view === 'calendar' && (
@@ -934,7 +968,7 @@ export function SotdCalendar() {
                 </ListRow>
               ))}
               {visibleSongs.length === 0 && (
-                <div style={{padding: '2rem', textAlign: 'center', color: '#666'}}>
+                <div style={{padding: '2rem', textAlign: 'center', color: 'var(--text-secondary)'}}>
                   No songs found
                 </div>
               )}
@@ -1024,7 +1058,7 @@ export function SotdCalendar() {
             </SidebarItem>
           ))}
           {unscheduledSongs.length === 0 && (
-            <div style={{padding: '1rem 0.75rem', color: '#999', fontSize: '0.7rem'}}>
+            <div style={{padding: '1rem 0.75rem', color: 'var(--text-muted)', fontSize: '0.7rem'}}>
               No unscheduled songs
             </div>
           )}

@@ -22,6 +22,15 @@ export const postType = defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
+      name: 'writer',
+      title: 'Writer',
+      type: 'reference',
+      to: [{type: 'writer'}],
+      options: {
+        disableNew: true,
+      },
+    }),
+    defineField({
       name: 'thumb',
       title: 'Thumbnail',
       type: 'image',
@@ -40,24 +49,9 @@ export const postType = defineType({
         }),
     }),
     defineField({
-      name: 'youtubeURL',
-      title: 'Link to Youtube Video',
-      type: 'url',
-      components: {
-        input: UrlWithVisit,
-      },
-      validation: (rule) =>
-        rule.custom((youtubeURL, context) => {
-          const banner = context.document?.banner
-          if (!youtubeURL && !banner) {
-            return 'Upload either a banner or a Youtube video for the top of the page.'
-          }
-          return true
-        }),
-    }),
-    defineField({
       name: 'banner',
-      title: 'Banner (shown if no video)',
+      title: 'Banner',
+      description: 'Shown if no YT video',
       type: 'image',
       components: {
         input: CroppedImageInput,
@@ -79,13 +73,26 @@ export const postType = defineType({
         }),
     }),
     defineField({
-      name: 'writer',
-      title: 'Writer',
-      type: 'reference',
-      to: [{type: 'writer'}],
-      options: {
-        disableNew: true,
+      name: 'youtubeURL',
+      title: 'Link to Youtube Video',
+      type: 'url',
+      components: {
+        input: UrlWithVisit,
       },
+      validation: (rule) =>
+        rule.custom((youtubeURL, context) => {
+          const banner = context.document?.banner
+          if (!youtubeURL && !banner) {
+            return 'Upload either a banner or a Youtube video for the top of the page.'
+          }
+          return true
+        }),
+    }),
+    defineField({
+      name: 'content',
+      title: 'Article Text',
+      type: 'blockContent',
+      description: 'Paste here and edit in fullscreen mode.',
     }),
     defineField({
       name: 'playlistURL',
@@ -108,8 +115,8 @@ export const postType = defineType({
       components: {
         input: SlugWithVisit,
       },
-      options: {source: 'name'},
-      description: 'thatgoodsht.com/blog/post/',
+      options: {source: 'name', maxLength: 30},
+      description: 'Publish and visit your article before setting it to public.',
       validation: (rule) => rule.required(),
     }),
     defineField({
@@ -119,12 +126,7 @@ export const postType = defineType({
       initialValue: true,
       hidden: true,
     }),
-    defineField({
-      name: 'content',
-      title: 'Article',
-      type: 'blockContent',
-      description: 'Publish and visit your article before setting it to public.',
-    }),
+
     defineField({
       name: 'date',
       title: 'Date',

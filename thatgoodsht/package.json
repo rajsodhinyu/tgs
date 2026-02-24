@@ -16,6 +16,7 @@
   ],
   "dependencies": {
     "-": "^0.0.1",
+    "@portabletext/react": "^6.0.2",
     "@sanity/asset-utils": "^2.3.0",
     "@sanity/cli": "^3.99.0",
     "@sanity/icons": "^3.7.0",

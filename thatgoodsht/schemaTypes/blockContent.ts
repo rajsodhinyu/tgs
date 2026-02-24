@@ -72,14 +72,46 @@ export default defineType({
           type: 'string',
         },
         {
-          title: 'Title',
-          name: 'title',
+          title: 'Heading',
+          name: 'heading',
+          type: 'string',
+        },
+        {
+          title: 'Subheading',
+          name: 'subheading',
           type: 'string',
         },
         {
           title: 'Blurb',
           name: 'blurb',
-          type: 'text',
+          type: 'array',
+          of: [
+            {
+              type: 'block',
+              styles: [],
+              lists: [],
+              marks: {
+                decorators: [
+                  {title: 'Bold', value: 'strong'},
+                  {title: 'Italic', value: 'em'},
+                ],
+                annotations: [
+                  {
+                    title: 'URL',
+                    name: 'link',
+                    type: 'object',
+                    fields: [
+                      {
+                        title: 'URL',
+                        name: 'href',
+                        type: 'url',
+                      },
+                    ],
+                  },
+                ],
+              },
+            },
+          ],
         },
         {
           title: 'Alignment',
@@ -99,16 +131,19 @@ export default defineType({
         select: {
           trackName: 'trackName',
           artistName: 'artistName',
-          title: 'title',
+          heading: 'heading',
           blurb: 'blurb',
           albumArt: 'albumArt',
           alignment: 'alignment',
         },
-        prepare({trackName, artistName, title, blurb, albumArt, alignment}) {
+        prepare({trackName, artistName, heading, blurb, albumArt, alignment}) {
           const arrow = alignment === 'right' ? '◨ ' : '◧ '
+          const blurbText = Array.isArray(blurb)
+            ? blurb.map((b: any) => b?.children?.map((c: any) => c?.text || '').join('')).join(' ')
+            : blurb || ''
           return {
-            title: arrow + (title || (trackName ? `${trackName} – ${artistName}` : 'Track')),
-            subtitle: blurb || '',
+            title: arrow + (heading || (trackName ? `${trackName} – ${artistName}` : 'Track')),
+            subtitle: blurbText,
             media: albumArt ? React.createElement('img', {src: albumArt}) : undefined,
           }
         },

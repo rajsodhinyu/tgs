@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { PortableText } from "next-sanity";
 import { usePlatform } from "../../components/PlatformSwitcher";
 
 interface TrackEmbedProps {
@@ -9,8 +10,9 @@ interface TrackEmbedProps {
   trackName?: string;
   artistName?: string;
   albumArt?: string;
-  title?: string;
-  blurb?: string;
+  heading?: string;
+  subheading?: string;
+  blurb?: any;
   alignment?: "left" | "right";
 }
 
@@ -20,7 +22,8 @@ export default function TrackEmbedBlock({
   trackName,
   artistName,
   albumArt,
-  title,
+  heading,
+  subheading,
   blurb,
   alignment = "left",
 }: TrackEmbedProps) {
@@ -41,13 +44,6 @@ export default function TrackEmbedBlock({
           rel="noopener noreferrer"
           className={`${isRight ? "float-right ml-4" : "float-left mr-4"} mb-2 w-[180px] lg:w-[280px] block`}
         >
-          {title && (
-            <div
-              className={`font-title text-white text-xl lg:text-2xl mb-2 uppercase tracking-wider ${isRight ? "text-right" : "text-left"}`}
-            >
-              {title}
-            </div>
-          )}
           {albumArt && (
             <Image
               src={albumArt}
@@ -61,19 +57,19 @@ export default function TrackEmbedBlock({
           <div
             className={`font-title text-white ${isRight ? "text-right" : "text-left"} mt-2 leading-tight truncate`}
           >
-            <div className="truncate text-sm lg:text-2xl">{trackName}</div>
+            <div className="truncate text-sm lg:text-2xl">{heading || trackName}</div>
             <div className="text-white/80 text-sm lg:text-xl truncate">
-              {artistName}
+              {subheading || artistName}
             </div>
           </div>
         </a>
         {blurb && (
-          <p
-            className={`text-white font-roc  ${isRight ? "text-left" : "text-left"} text-balance text-base md:text-lg lg:text-xl  leading-normal`}
+          <div
+            className={`text-white font-roc text-left text-balance text-base md:text-lg lg:text-xl leading-normal [&_a]:underline [&_a]:underline-offset-2`}
             style={{ textIndent: 0 }}
           >
-            {blurb}
-          </p>
+            <PortableText value={blurb} />
+          </div>
         )}
         <div className="clear-both" />
       </div>

@@ -3,6 +3,18 @@ import {useCallback} from 'react'
 import styled from 'styled-components'
 
 const Wrapper = styled.div`
+  --text-primary: #333;
+  --bg-disabled: #d0d0d0;
+  --text-disabled: #999;
+  --bg-track-off: #ccc;
+
+  [data-scheme='dark'] & {
+    --text-primary: #e8e8e8;
+    --bg-disabled: #444;
+    --text-disabled: #777;
+    --bg-track-off: #555;
+  }
+
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
@@ -20,15 +32,15 @@ const VisitButton = styled.a<{$disabled?: boolean}>`
   gap: 0.25rem;
   padding: 0.35rem 0.75rem;
   border-radius: 4px;
-  background: ${(p) => (p.$disabled ? '#d0d0d0' : '#6c5cbe')};
-  color: ${(p) => (p.$disabled ? '#999' : '#fff')};
+  background: ${(p) => (p.$disabled ? 'var(--bg-disabled)' : '#6c5cbe')};
+  color: ${(p) => (p.$disabled ? 'var(--text-disabled)' : '#fff')};
   font-size: 0.8rem;
   font-weight: 600;
   text-decoration: none;
   cursor: ${(p) => (p.$disabled ? 'default' : 'pointer')};
   pointer-events: ${(p) => (p.$disabled ? 'none' : 'auto')};
   &:hover {
-    background: ${(p) => (p.$disabled ? '#d0d0d0' : '#5a4aad')};
+    background: ${(p) => (p.$disabled ? 'var(--bg-disabled)' : '#5a4aad')};
   }
 `
 
@@ -39,7 +51,7 @@ const ToggleWrapper = styled.label`
   cursor: pointer;
   font-size: 0.8rem;
   font-weight: 600;
-  color: #333;
+  color: var(--text-primary);
   user-select: none;
 `
 
@@ -47,7 +59,7 @@ const Track = styled.div<{$isPublic: boolean}>`
   width: 36px;
   height: 20px;
   border-radius: 10px;
-  background: ${(p) => (p.$isPublic ? '#2ecc40' : '#ccc')};
+  background: ${(p) => (p.$isPublic ? '#2ecc40' : 'var(--bg-track-off)')};
   position: relative;
   transition: background 0.2s;
 `
@@ -91,7 +103,6 @@ export function SlugWithVisit(props: any) {
             <Thumb $isPublic={!isPrivate} />
           </Track>
           {'🌐 Public'}
-          {/*{isPrivate ? '🔒 Direct Link only' : '🌐 Public'}*/}
         </ToggleWrapper>
       </ButtonRow>
     </Wrapper>

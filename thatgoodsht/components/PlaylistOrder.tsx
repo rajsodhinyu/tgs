@@ -17,11 +17,31 @@ const QUERY = `*[_type == "playlist" && !(_id in path("drafts.**"))] | order(ord
 }`
 
 const Wrapper = styled.div`
+  --text-primary: #000;
+  --text-secondary: #666;
+  --text-muted: #999;
+  --bg-surface: #e0d5f0;
+  --bg-surface-hover: #f0edf8;
+  --bg-neutral: #f5f5f5;
+  --border-color: #e0e0e0;
+  --border-dashed: #d0d0d0;
+
+  [data-scheme="dark"] & {
+    --text-primary: #e8e8e8;
+    --text-secondary: #aaa;
+    --text-muted: #777;
+    --bg-surface: #2a2640;
+    --bg-surface-hover: #332e50;
+    --bg-neutral: #1e1e2e;
+    --border-color: #444;
+    --border-dashed: #555;
+  }
+
   padding: 1.5rem;
   height: 100%;
   overflow-y: auto;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  color: #000;
+  color: var(--text-primary);
 `
 
 const Header = styled.div`
@@ -54,7 +74,7 @@ const NewButton = styled.button`
 const Subtitle = styled.p`
   margin: 0 0 1.25rem 0;
   font-size: 0.8rem;
-  color: #666;
+  color: var(--text-secondary);
 `
 
 const ContentLayout = styled.div`
@@ -84,9 +104,9 @@ const CoverSlot = styled.div<{$isDragOver?: boolean; $empty?: boolean}>`
     p.$isDragOver
       ? '2px dashed #6c5cbe'
       : p.$empty
-        ? '2px dashed #d0d0d0'
+        ? '2px dashed var(--border-dashed)'
         : '2px solid transparent'};
-  background: ${(p) => (p.$isDragOver ? '#e0d5f0' : p.$empty ? '#f5f5f5' : 'transparent')};
+  background: ${(p) => (p.$isDragOver ? 'var(--bg-surface)' : p.$empty ? 'var(--bg-neutral)' : 'transparent')};
   transition: border 0.15s, background 0.15s, transform 0.15s;
   &:hover {
     transform: ${(p) => (p.$empty ? 'none' : 'scale(0.98)')};
@@ -121,7 +141,7 @@ const EmptyLabel = styled.div`
   justify-content: center;
   height: 100%;
   font-size: 0.75rem;
-  color: #999;
+  color: var(--text-muted);
 `
 
 const ListSection = styled.div`
@@ -135,7 +155,7 @@ const ListHeader = styled.div`
   justify-content: space-between;
   font-size: 0.8rem;
   font-weight: 600;
-  color: #666;
+  color: var(--text-secondary);
   margin-bottom: 0.5rem;
 `
 
@@ -150,7 +170,7 @@ const ViewLink = styled.a`
 `
 
 const ListContainer = styled.div`
-  border: 1px solid #e0e0e0;
+  border: 1px solid var(--border-color);
   border-radius: 6px;
   overflow: hidden;
 `
@@ -161,15 +181,15 @@ const ListRow = styled.div<{$isDragOver?: boolean; $isDragging?: boolean}>`
   gap: 0.75rem;
   padding: 0.5rem 0.75rem;
   cursor: pointer;
-  border-bottom: 1px solid #e0e0e0;
-  background: ${(p) => (p.$isDragOver ? '#e0d5f0' : 'transparent')};
+  border-bottom: 1px solid var(--border-color);
+  background: ${(p) => (p.$isDragOver ? 'var(--bg-surface)' : 'transparent')};
   opacity: ${(p) => (p.$isDragging ? 0.4 : 1)};
   transition: background 0.15s, opacity 0.15s;
   &:last-child {
     border-bottom: none;
   }
   &:hover {
-    background: ${(p) => (p.$isDragOver ? '#e0d5f0' : '#f0edf8')};
+    background: ${(p) => (p.$isDragOver ? 'var(--bg-surface)' : 'var(--bg-surface-hover)')};
   }
 `
 
@@ -196,7 +216,7 @@ const ListName = styled.div`
 
 const ListDesc = styled.div`
   font-size: 0.7rem;
-  color: #666;
+  color: var(--text-secondary);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -204,7 +224,7 @@ const ListDesc = styled.div`
 
 const ListOrder = styled.span`
   font-size: 0.7rem;
-  color: #999;
+  color: var(--text-muted);
   flex-shrink: 0;
   min-width: 20px;
   text-align: right;
@@ -317,7 +337,7 @@ export function PlaylistOrder() {
   if (loading && playlists.length === 0) {
     return (
       <Wrapper>
-        <div style={{textAlign: 'center', padding: '2rem', color: '#666'}}>Loading...</div>
+        <div style={{textAlign: 'center', padding: '2rem', color: 'var(--text-secondary)'}}>Loading...</div>
       </Wrapper>
     )
   }
