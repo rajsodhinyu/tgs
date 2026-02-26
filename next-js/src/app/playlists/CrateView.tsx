@@ -122,18 +122,11 @@ function CrateBin({
       if (!el || stack.length === 0) return;
       const rect = el.getBoundingClientRect();
       const y = clientY - rect.top;
-      const h = rect.height;
-      const w = rect.width;
-      // Iterate from back (i=0, top) to front (last, bottom).
-      // Each cover's full square starts at bottom edge minus its height.
-      // First cover whose full bounds contain y wins — this means the
-      // switch happens before the cursor reaches the visible peek edge,
-      // matching the list view's anticipatory hit-test.
       for (let i = 0; i < stack.length; i++) {
         const fromFront = stack.length - 1 - i;
-        const coverBottom = h - fromFront * peek;
-        const coverTop = coverBottom - w; // square: height = width
-        if (y >= coverTop && y < coverBottom) {
+        const topEdge = i * peek;
+        const bottomEdge = fromFront === 0 ? rect.height : topEdge + peek;
+        if (y >= topEdge && y < bottomEdge) {
           setHoveredIndex(i);
           return;
         }
