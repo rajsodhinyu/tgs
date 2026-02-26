@@ -102,9 +102,9 @@ function CrateBin({
       .finally(() => setLoading(false));
   }, [playlist.playlistURL]);
 
-  // Track art on bottom, playlist cover on top (front)
+  // Track art on bottom (reversed so first track is near front), playlist cover on top
   const stack = [
-    ...trackArt.filter((u) => u !== playlist.coverUrl).slice(0, 12),
+    ...trackArt.filter((u) => u !== playlist.coverUrl).slice(0, 12).reverse(),
     ...(playlist.coverUrl ? [playlist.coverUrl] : []),
   ];
 
@@ -122,11 +122,18 @@ function CrateBin({
       if (!el || stack.length === 0) return;
       const rect = el.getBoundingClientRect();
       const y = clientY - rect.top;
+      const h = rect.height;
+      const w = rect.width;
+      // Iterate from back (i=0, top) to front (last, bottom).
+      // Each cover's full square starts at bottom edge minus its height.
+      // First cover whose full bounds contain y wins — this means the
+      // switch happens before the cursor reaches the visible peek edge,
+      // matching the list view's anticipatory hit-test.
       for (let i = 0; i < stack.length; i++) {
         const fromFront = stack.length - 1 - i;
-        const topEdge = i * peek;
-        const bottomEdge = fromFront === 0 ? rect.height : topEdge + peek;
-        if (y >= topEdge && y < bottomEdge) {
+        const coverBottom = h - fromFront * peek;
+        const coverTop = coverBottom - w; // square: height = width
+        if (y >= coverTop && y < coverBottom) {
           setHoveredIndex(i);
           return;
         }
@@ -202,6 +209,8 @@ function CrateBin({
               ref={stackRef}
               className="absolute inset-0 select-none"
               style={{ WebkitTouchCallout: "none" }}
+              onMouseMove={(e) => hitTestY(e.clientY)}
+              onMouseLeave={() => setHoveredIndex(null)}
             >
               {stack.map((src, i) => {
                 // i=0 is deepest (back), last is front (playlist cover)
@@ -210,7 +219,7 @@ function CrateBin({
                 return (
                   <div
                     key={src}
-                    className="absolute left-0 right-0 aspect-square rounded-md overflow-hidden transition-shadow duration-200 ease-out cursor-pointer"
+                    className="absolute left-0 right-0 aspect-square rounded-md overflow-hidden transition-shadow duration-200 ease-out cursor-pointer pointer-events-none"
                     style={{
                       bottom: fromFront * peek,
                       marginLeft: fromFront * 2,
@@ -222,11 +231,6 @@ function CrateBin({
                         ? "0 8px 20px rgba(0,0,0,0.6)"
                         : "0 2px 6px rgba(0,0,0,0.4)",
                     }}
-                    onMouseEnter={() => setHoveredIndex(i)}
-                    onMouseLeave={() => setHoveredIndex(null)}
-                    onClick={() =>
-                      setHoveredIndex((prev) => (prev === i ? null : i))
-                    }
                   >
                     <Image
                       src={src}
