@@ -1,6 +1,5 @@
 import {useState, useCallback, useEffect, useRef} from 'react'
 import {set, unset} from 'sanity'
-import {PortableText} from '@portabletext/react'
 import styled from 'styled-components'
 
 const API_URL =
@@ -110,15 +109,6 @@ const DialogBody = styled.div`
   padding: 1.25rem;
 `
 
-const StepLabel = styled.div`
-  font-size: 0.7rem;
-  font-weight: 700;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin-bottom: 0.75rem;
-`
-
 const Input = styled.input`
   width: 100%;
   padding: 0.5rem 0.75rem;
@@ -225,18 +215,10 @@ interface SpotifyTrack {
   spotifyUrl: string
 }
 
-type Step = 'search' | 'apple' | 'editorial'
+type Step = 'search' | 'apple'
 type SearchType = 'track' | 'album'
 
 // ── Component ──
-
-function blocksToText(blocks: any): string {
-  if (!blocks || !Array.isArray(blocks)) return ''
-  return blocks
-    .map((block: any) => block?.children?.map((child: any) => child?.text || '').join('') || '')
-    .join(' ')
-    .trim()
-}
 
 export function TrackSearchInput(props: any) {
   const {value, onChange} = props
@@ -256,17 +238,17 @@ export function TrackSearchInput(props: any) {
   // Apple Music state
   const [appleMusicUrl, setAppleMusicUrl] = useState('')
 
-  // Editorial state
+  // Heading / subheading / alignment state
   const [heading, setHeading] = useState('')
   const [subheading, setSubheading] = useState('')
   const [alignment, setAlignment] = useState<'left' | 'right'>(value?.alignment || 'left')
 
   const hasValue = value?.trackName
 
-  // Auto-enter editorial mode when a track is already saved
+  // Auto-enter apple step when a track is already saved
   useEffect(() => {
     if (hasValue && !editing) {
-      startEditing('editorial')
+      startEditing('apple')
     }
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -350,8 +332,18 @@ export function TrackSearchInput(props: any) {
 
     onChange(set(alignment, ['alignment']))
 
-    // Close the block editor modal
-    props.onPathFocus([])
+    // Close the block editor modal by clicking the dialog's X button
+    setTimeout(() => {
+      const dialog = document.querySelector('[data-testid="default-edit-object-dialog"]')
+      const closeBtn =
+        dialog?.querySelector<HTMLButtonElement>('button[aria-label="Close dialog"]') ||
+        dialog?.querySelector<HTMLButtonElement>('button[aria-label="Close"]')
+      if (closeBtn) {
+        closeBtn.click()
+      } else {
+        props.onPathFocus?.([])
+      }
+    }, 0)
   }, [selected, appleMusicUrl, heading, subheading, alignment, onChange, props])
 
   const isValidAppleUrl =
@@ -367,36 +359,218 @@ export function TrackSearchInput(props: any) {
 
   return (
     <Wrapper>
-      {
-        <DialogBody>
-          {/* ── Step 1: Search ── */}
-          {step === 'search' && (
-            <>
-              <div style={{display: 'flex', gap: '0.75rem', marginBottom: '0.75rem'}}>
-                <SearchToggle style={{marginBottom: 0}}>
-                  <SearchToggleButton
+      <DialogBody>
+        {/* ── Step 1: Search ── */}
+        {step === 'search' && (
+          <>
+            <div style={{display: 'flex', gap: '0.75rem', marginBottom: '0.75rem'}}>
+              <SearchToggle style={{marginBottom: 0}}>
+                <SearchToggleButton
+                  type="button"
+                  $active={searchType === 'track'}
+                  onClick={() => {
+                    setSearchType('track')
+                    setResults([])
+                    setSelected(null)
+                  }}
+                >
+                  Song
+                </SearchToggleButton>
+                <SearchToggleButton
+                  type="button"
+                  $active={searchType === 'album'}
+                  onClick={() => {
+                    setSearchType('album')
+                    setResults([])
+                    setSelected(null)
+                  }}
+                >
+                  Album
+                </SearchToggleButton>
+              </SearchToggle>
+              <SearchToggle style={{marginBottom: 0}}>
+                <SearchToggleButton
+                  type="button"
+                  $active={alignment === 'left'}
+                  onClick={() => setAlignment('left')}
+                >
+                  Left
+                </SearchToggleButton>
+                <SearchToggleButton
+                  type="button"
+                  $active={alignment === 'right'}
+                  onClick={() => setAlignment('right')}
+                >
+                  Right
+                </SearchToggleButton>
+              </SearchToggle>
+            </div>
+            <FieldGroup>
+              <FieldLabel>{searchType === 'track' ? 'Song' : 'Album'}</FieldLabel>
+              <Input
+                value={trackQuery}
+                onChange={(e) => setTrackQuery(e.target.value)}
+                placeholder={searchType === 'track' ? 'e.g. Automatic' : 'e.g. Purity'}
+                autoFocus
+              />
+            </FieldGroup>
+            <FieldGroup>
+              <FieldLabel>Filter by Artist</FieldLabel>
+              <Input
+                value={artistQuery}
+                onChange={(e) => setArtistQuery(e.target.value)}
+                placeholder="e.g. Anysia Kim, Tony Seltzer"
+              />
+            </FieldGroup>
+
+            {loading && (
+              <div style={{display: 'flex', gap: '4px', padding: '0.5rem 0'}}>
+                <SpinnerDot style={{animationDelay: '0s'}} />
+                <SpinnerDot style={{animationDelay: '0.2s'}} />
+                <SpinnerDot style={{animationDelay: '0.4s'}} />
+              </div>
+            )}
+
+            {results.length > 0 && (
+              <ResultsList>
+                {results.map((track) => (
+                  <ResultRow
+                    key={track.id}
                     type="button"
-                    $active={searchType === 'track'}
+                    $selected={selected?.id === track.id}
                     onClick={() => {
-                      setSearchType('track')
-                      setResults([])
-                      setSelected(null)
+                      setSelected(track)
+                      setStep('apple')
                     }}
                   >
-                    Song
-                  </SearchToggleButton>
-                  <SearchToggleButton
+                    {track.albumArt && (
+                      <AlbumArt src={track.albumArt} alt="" style={{width: 40, height: 40}} />
+                    )}
+                    <TrackInfo>
+                      <TrackName>{track.name}</TrackName>
+                      <ArtistName>{track.artists}</ArtistName>
+                    </TrackInfo>
+                  </ResultRow>
+                ))}
+              </ResultsList>
+            )}
+
+            <div style={{marginTop: '1rem', textAlign: 'right'}}>
+              <ActionButton type="button" disabled={!selected} onClick={() => setStep('apple')}>
+                Apple Music →
+              </ActionButton>
+            </div>
+          </>
+        )}
+
+        {/* ── Step 2: Apple Music + Heading/Subheading + Save ── */}
+        {step === 'apple' && selected && (
+          <>
+            <FieldLabel>Spotify</FieldLabel>
+            <PreviewCard style={{marginBottom: '0.75rem', border: '2px solid #1DB954'}}>
+              {selected.albumArt && <AlbumArt src={selected.albumArt} alt="" />}
+              <TrackInfo>
+                <TrackName>{selected.name}</TrackName>
+                <ArtistName>{selected.artists}</ArtistName>
+              </TrackInfo>
+            </PreviewCard>
+
+            <FieldGroup>
+              <FieldLabel>Apple Music Link</FieldLabel>
+              <div style={{display: 'flex'}}>
+                <ActionButton
+                  type="button"
+                  style={{
+                    marginRight: '0.5rem',
+                    background: '#FA233B',
+                    whiteSpace: 'nowrap',
+                    padding: '0.4rem 2.2rem',
+                  }}
+                  onClick={openAppleSearch}
+                >
+                  Search Apple Music
+                </ActionButton>
+                <div style={{position: 'relative', flex: 1}}>
+                  <Input
+                    value={appleMusicUrl}
+                    onChange={(e) => setAppleMusicUrl(e.target.value)}
+                    placeholder={
+                      searchType === 'album'
+                        ? 'https://music.apple.com/us/album/...'
+                        : 'https://music.apple.com/us/song/...'
+                    }
+                    style={{paddingLeft: '2rem'}}
+                  />
+                  <button
                     type="button"
-                    $active={searchType === 'album'}
-                    onClick={() => {
-                      setSearchType('album')
-                      setResults([])
-                      setSelected(null)
+                    title="Paste from clipboard"
+                    onClick={async () => {
+                      try {
+                        const text = await navigator.clipboard.readText()
+                        setAppleMusicUrl(text)
+                      } catch {}
+                    }}
+                    style={{
+                      position: 'absolute',
+                      left: '6px',
+                      top: '50%',
+                      transform: 'translateY(-50%)',
+                      background: 'none',
+                      border: 'none',
+                      padding: '0.2rem',
+                      fontSize: '0.85rem',
+                      color: 'var(--text-muted)',
+                      cursor: 'pointer',
+                      lineHeight: 1,
                     }}
                   >
-                    Album
-                  </SearchToggleButton>
-                </SearchToggle>
+                    <svg
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
+                      <rect x="8" y="2" width="8" height="4" rx="1" ry="1" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+              {appleMusicUrl && !isValidAppleUrl && (
+                <HelpText style={{color: '#e74c3c'}}>
+                  {searchType === 'album' ? 'Album' : 'Song'} link must be copied from Apple Music.
+                </HelpText>
+              )}
+            </FieldGroup>
+
+            <div style={{display: 'flex', gap: '0.75rem'}}>
+              <FieldGroup style={{flex: 1}}>
+                <FieldLabel>Title</FieldLabel>
+                <Input
+                  value={heading}
+                  onChange={(e) => setHeading(e.target.value)}
+                  placeholder={selected.name}
+                />
+              </FieldGroup>
+              <FieldGroup style={{flex: 1}}>
+                <FieldLabel>Subtitle</FieldLabel>
+                <Input
+                  value={subheading}
+                  onChange={(e) => setSubheading(e.target.value)}
+                  placeholder={selected.artists}
+                />
+              </FieldGroup>
+            </div>
+
+            <ButtonRow style={{marginTop: '1rem', justifyContent: 'space-between'}}>
+              <ActionButton type="button" $variant="secondary" onClick={() => setStep('search')}>
+                ← Change Song
+              </ActionButton>
+              <ButtonRow>
                 <SearchToggle style={{marginBottom: 0}}>
                   <SearchToggleButton
                     type="button"
@@ -413,293 +587,18 @@ export function TrackSearchInput(props: any) {
                     Right
                   </SearchToggleButton>
                 </SearchToggle>
-              </div>
-              <FieldGroup>
-                <FieldLabel>{searchType === 'track' ? 'Song' : 'Album'}</FieldLabel>
-                <Input
-                  value={trackQuery}
-                  onChange={(e) => setTrackQuery(e.target.value)}
-                  placeholder={searchType === 'track' ? 'e.g. Automatic' : 'e.g. Purity'}
-                  autoFocus
-                />
-              </FieldGroup>
-              <FieldGroup>
-                <FieldLabel>Filter by Artist</FieldLabel>
-                <Input
-                  value={artistQuery}
-                  onChange={(e) => setArtistQuery(e.target.value)}
-                  placeholder="e.g. Anysia Kim, Tony Seltzer"
-                />
-              </FieldGroup>
-
-              {loading && (
-                <div style={{display: 'flex', gap: '4px', padding: '0.5rem 0'}}>
-                  <SpinnerDot style={{animationDelay: '0s'}} />
-                  <SpinnerDot style={{animationDelay: '0.2s'}} />
-                  <SpinnerDot style={{animationDelay: '0.4s'}} />
-                </div>
-              )}
-
-              {results.length > 0 && (
-                <ResultsList>
-                  {results.map((track) => (
-                    <ResultRow
-                      key={track.id}
-                      type="button"
-                      $selected={selected?.id === track.id}
-                      onClick={() => {
-                        setSelected(track)
-                        setStep('apple')
-                      }}
-                    >
-                      {track.albumArt && (
-                        <AlbumArt src={track.albumArt} alt="" style={{width: 40, height: 40}} />
-                      )}
-                      <TrackInfo>
-                        <TrackName>{track.name}</TrackName>
-                        <ArtistName>{track.artists}</ArtistName>
-                      </TrackInfo>
-                    </ResultRow>
-                  ))}
-                </ResultsList>
-              )}
-
-              <div style={{marginTop: '1rem', textAlign: 'right'}}>
-                <ActionButton type="button" disabled={!selected} onClick={() => setStep('apple')}>
-                  Apple Music →
-                </ActionButton>
-              </div>
-            </>
-          )}
-
-          {/* ── Step 2: Apple Music ── */}
-          {step === 'apple' && selected && (
-            <>
-              <FieldLabel>Spotify</FieldLabel>
-              <PreviewCard style={{marginBottom: '0.75rem', border: '2px solid #1DB954'}}>
-                {selected.albumArt && <AlbumArt src={selected.albumArt} alt="" />}
-                <TrackInfo>
-                  <TrackName>{selected.name}</TrackName>
-                  <ArtistName>{selected.artists}</ArtistName>
-                </TrackInfo>
-              </PreviewCard>
-
-              <FieldGroup>
-                <FieldLabel>Apple Music Link</FieldLabel>
-                <div style={{display: 'flex'}}>
-                  <ActionButton
-                    type="button"
-                    style={{
-                      marginRight: '0.5rem',
-                      background: '#FA233B',
-                      whiteSpace: 'nowrap',
-                      padding: '0.4rem 2.2rem',
-                    }}
-                    onClick={openAppleSearch}
-                  >
-                    Search Apple Music
-                  </ActionButton>
-                  <div style={{position: 'relative', flex: 1}}>
-                    <Input
-                      value={appleMusicUrl}
-                      onChange={(e) => setAppleMusicUrl(e.target.value)}
-                      placeholder={
-                        searchType === 'album'
-                          ? 'https://music.apple.com/us/album/...'
-                          : 'https://music.apple.com/us/song/...'
-                      }
-                      style={{paddingLeft: '2rem'}}
-                    />
-                    <button
-                      type="button"
-                      title="Paste from clipboard"
-                      onClick={async () => {
-                        try {
-                          const text = await navigator.clipboard.readText()
-                          setAppleMusicUrl(text)
-                        } catch {}
-                      }}
-                      style={{
-                        position: 'absolute',
-                        left: '6px',
-                        top: '50%',
-                        transform: 'translateY(-50%)',
-                        background: 'none',
-                        border: 'none',
-                        padding: '0.2rem',
-                        fontSize: '0.85rem',
-                        color: 'var(--text-muted)',
-                        cursor: 'pointer',
-                        lineHeight: 1,
-                      }}
-                    >
-                      <svg
-                        width="14"
-                        height="14"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
-                        <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
-                        <rect x="8" y="2" width="8" height="4" rx="1" ry="1" />
-                      </svg>
-                    </button>
-                  </div>
-                </div>
-                {appleMusicUrl && !isValidAppleUrl && (
-                  <HelpText style={{color: '#e74c3c'}}>
-                    {searchType === 'album' ? 'Album' : 'Song'} link must be copied from Apple
-                    Music.
-                  </HelpText>
-                )}
-              </FieldGroup>
-
-              <ButtonRow style={{marginTop: '1rem', justifyContent: 'space-between'}}>
-                <ActionButton type="button" $variant="secondary" onClick={() => setStep('search')}>
-                  ← Change Song
-                </ActionButton>
-                <ButtonRow>
-                  <ActionButton
-                    type="button"
-                    disabled={!isValidAppleUrl || appleMusicUrl === ''}
-                    onClick={() => setStep('editorial')}
-                  >
-                    Write →
-                  </ActionButton>
-                </ButtonRow>
-              </ButtonRow>
-            </>
-          )}
-
-          {/* ── Step 3: Editorial ── */}
-          {step === 'editorial' && selected && (
-            <>
-              <PreviewCard
-                style={{
-                  marginBottom: '0.75rem',
-                  flexDirection: alignment === 'right' ? 'row-reverse' : 'row',
-                  alignItems: 'flex-start',
-                  gap: '1rem',
-                }}
-              >
-                <div
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: alignment === 'right' ? 'flex-end' : 'flex-start',
-                    textAlign: alignment === 'right' ? 'right' : 'left',
-                    flexShrink: 0,
-                  }}
+                <ActionButton
+                  type="button"
+                  disabled={!isValidAppleUrl || appleMusicUrl === ''}
+                  onClick={confirmTrack}
                 >
-                  {selected.albumArt && (
-                    <img
-                      src={selected.albumArt}
-                      alt=""
-                      style={{
-                        width: 80,
-                        height: 80,
-                        borderRadius: 4,
-                        objectFit: 'cover',
-                        marginBottom: '0.4rem',
-                      }}
-                    />
-                  )}
-                  <TrackName style={{whiteSpace: 'normal'}}>{heading || selected.name}</TrackName>
-                  <ArtistName>{subheading || selected.artists}</ArtistName>
-                </div>
-                {blocksToText(value?.blurb) && (
-                  <div
-                    style={{
-                      fontSize: '0.72rem',
-                      color: 'var(--text-secondary)',
-                      lineHeight: 1.4,
-                      flex: 1,
-                      minWidth: 0,
-                      display: '-webkit-box',
-                      WebkitLineClamp: 6,
-                      WebkitBoxOrient: 'vertical' as const,
-                      overflow: 'hidden',
-                    }}
-                  >
-                    <PortableText value={value.blurb} />
-                  </div>
-                )}
-              </PreviewCard>
-
-              <FieldGroup>
-                <FieldLabel>Heading</FieldLabel>
-                <Input
-                  value={heading}
-                  onChange={(e) => {
-                    setHeading(e.target.value)
-                    if (e.target.value.trim()) {
-                      onChange(set(e.target.value.trim(), ['heading']))
-                    } else {
-                      onChange(unset(['heading']))
-                    }
-                  }}
-                  placeholder={selected.name}
-                />
-              </FieldGroup>
-
-              <FieldGroup>
-                <FieldLabel>Subheading</FieldLabel>
-                <Input
-                  value={subheading}
-                  onChange={(e) => {
-                    setSubheading(e.target.value)
-                    if (e.target.value.trim()) {
-                      onChange(set(e.target.value.trim(), ['subheading']))
-                    } else {
-                      onChange(unset(['subheading']))
-                    }
-                  }}
-                  placeholder={selected.artists}
-                />
-              </FieldGroup>
-
-              <ButtonRow style={{marginTop: '1rem', justifyContent: 'space-between'}}>
-                <ActionButton type="button" $variant="secondary" onClick={() => setStep('apple')}>
-                  ← Back
+                  Save
                 </ActionButton>
-                <SearchToggle style={{marginBottom: 0}}>
-                  <SearchToggleButton
-                    type="button"
-                    $active={alignment === 'left'}
-                    onClick={() => {
-                      setAlignment('left')
-                      onChange(set('left', ['alignment']))
-                    }}
-                  >
-                    Left
-                  </SearchToggleButton>
-                  <SearchToggleButton
-                    type="button"
-                    $active={alignment === 'right'}
-                    onClick={() => {
-                      setAlignment('right')
-                      onChange(set('right', ['alignment']))
-                    }}
-                  >
-                    Right
-                  </SearchToggleButton>
-                </SearchToggle>
               </ButtonRow>
-            </>
-          )}
-        </DialogBody>
-      }
-      <div style={{display: step === 'editorial' ? 'block' : 'none'}}>
-        {props.renderDefault({
-          ...props,
-          members: (props.members || []).filter(
-            (m: any) => m.kind === 'field' && m.name === 'blurb',
-          ),
-        })}
-      </div>
+            </ButtonRow>
+          </>
+        )}
+      </DialogBody>
     </Wrapper>
   )
 }

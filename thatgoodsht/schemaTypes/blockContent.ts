@@ -1,7 +1,9 @@
 import React from 'react'
 import {defineType, defineArrayMember} from 'sanity'
 import {TrackSearchInput} from '../components/TrackSearchInput'
+import {PlaylistPickerInput} from '../components/PlaylistPickerInput'
 import {FaMusic} from 'react-icons/fa6'
+import {RiPlayListFill} from 'react-icons/ri'
 export default defineType({
   title: 'Block Content',
   name: 'blockContent',
@@ -82,38 +84,6 @@ export default defineType({
           type: 'string',
         },
         {
-          title: 'Blurb',
-          name: 'blurb',
-          type: 'array',
-          of: [
-            {
-              type: 'block',
-              styles: [],
-              lists: [],
-              marks: {
-                decorators: [
-                  {title: 'Bold', value: 'strong'},
-                  {title: 'Italic', value: 'em'},
-                ],
-                annotations: [
-                  {
-                    title: 'URL',
-                    name: 'link',
-                    type: 'object',
-                    fields: [
-                      {
-                        title: 'URL',
-                        name: 'href',
-                        type: 'url',
-                      },
-                    ],
-                  },
-                ],
-              },
-            },
-          ],
-        },
-        {
           title: 'Alignment',
           name: 'alignment',
           type: 'string',
@@ -132,19 +102,65 @@ export default defineType({
           trackName: 'trackName',
           artistName: 'artistName',
           heading: 'heading',
-          blurb: 'blurb',
           albumArt: 'albumArt',
           alignment: 'alignment',
         },
-        prepare({trackName, artistName, heading, blurb, albumArt, alignment}) {
+        prepare({trackName, artistName, heading, albumArt, alignment}) {
           const arrow = alignment === 'right' ? '◨ ' : '◧ '
-          const blurbText = Array.isArray(blurb)
-            ? blurb.map((b: any) => b?.children?.map((c: any) => c?.text || '').join('')).join(' ')
-            : blurb || ''
           return {
             title: arrow + (heading || (trackName ? `${trackName} – ${artistName}` : 'Track')),
-            subtitle: blurbText,
+            subtitle: artistName || '',
             media: albumArt ? React.createElement('img', {src: albumArt}) : undefined,
+          }
+        },
+      },
+    }),
+    defineArrayMember({
+      title: 'Playlist',
+      name: 'playlistEmbed',
+      icon: RiPlayListFill,
+      type: 'object',
+      components: {
+        input: PlaylistPickerInput,
+      },
+      fields: [
+        {
+          title: 'Name',
+          name: 'name',
+          type: 'string',
+        },
+        {
+          title: 'Description',
+          name: 'description',
+          type: 'string',
+        },
+        {
+          title: 'Cover URL',
+          name: 'coverUrl',
+          type: 'string',
+        },
+        {
+          title: 'Spotify URL',
+          name: 'spotifyUrl',
+          type: 'url',
+        },
+        {
+          title: 'Apple Music URL',
+          name: 'appleMusicUrl',
+          type: 'url',
+        },
+      ],
+      preview: {
+        select: {
+          name: 'name',
+          description: 'description',
+          coverUrl: 'coverUrl',
+        },
+        prepare({name, description, coverUrl}) {
+          return {
+            title: name || 'Playlist',
+            subtitle: description || '',
+            media: coverUrl ? React.createElement('img', {src: coverUrl}) : undefined,
           }
         },
       },

@@ -147,8 +147,8 @@ export default function PlaylistGrid({ playlists }: { playlists: Playlist[] }) {
                 <Image
                   className={
                     view === "grid"
-                      ? "rounded-lg border-white border-0 group-hover:border-4 group-hover:scale-[98%]"
-                      : "rounded-lg w-28 h-28 md:w-36 md:h-36 object-cover shrink-0 border-white border-0 group-hover:border-4"
+                      ? "rounded-lg border-white border-0 group-hover:border-4 group-hover:scale-[98%] transition-all"
+                      : "rounded-lg w-28 h-28 md:w-36 md:h-36 object-cover shrink-0 border-white border-0 group-hover:border-4 transition-all"
                   }
                   src={playlist.coverUrl}
                   width={view === "grid" ? 400 : 144}

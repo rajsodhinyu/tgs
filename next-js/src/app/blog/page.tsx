@@ -41,7 +41,7 @@ const projectId = "fnvy29id";
 const dataset = "tgs";
 
 const PLAYLIST_Q = `
-*[_type == "playlist"] | order(order asc) [0...6] {_id, thumb, name, description, playlistURL, appleMusicURL}`;
+*[_type == "playlist"] | order(order asc) {_id, thumb, name, description, playlistURL, appleMusicURL}`;
 
 const urlFor = (source: SanityImageSource) =>
   projectId && dataset
@@ -61,7 +61,7 @@ export default async function Page() {
       <Link href={"/feature/2025"}>
         <div>
           <Image
-            className="rounded-md border-opacity-0 hover:scale-[0.98] hover:border-opacity-100 border-white border-4"
+            className="rounded-md border-opacity-0 hover:scale-[0.98] hover:border-opacity-100 border-white border-4 transition-all"
             priority={true}
             src="https://cdn.sanity.io/images/fnvy29id/tgs/3f865c1d27dc5d299ea783001c22015f5d45b3c6-2880x2160.png"
             alt=""

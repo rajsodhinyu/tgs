@@ -40,7 +40,7 @@ export default async function Sidebar() {
         <div className="sticky top-0 z-10 flex justify-center">
           <Link
             href="/archive"
-            className="bg-tgs-purple rounded-2xl px-6 text-4xl font-bold font-title my-2 uppercase text-white border-4 border-transparent hover:border-white text-nowrap flex items-center gap-2 "
+            className="bg-tgs-purple rounded-2xl px-6 text-4xl font-bold font-title my-2 uppercase text-white border-4 border-transparent hover:border-white hover:scale-95 text-nowrap flex items-center gap-2 transition-all"
           >
             All Posts
             <ChevronDots className="inline-block mt-1" />
@@ -59,7 +59,7 @@ export default async function Sidebar() {
               <div key={blog._id} className="flex justify-center">
                 <Link href={`/blog/${blog.slug.current}`} target="_self">
                   <Image
-                    className="h-auto object-cover w-80 border-opacity-0 hover:border-opacity-100 hover:scale-95 border-4 border-white rounded-md"
+                    className="h-auto object-cover w-80 border-opacity-0 hover:border-opacity-100 hover:scale-95 border-4 border-white rounded-md transition-all"
                     src={`${eventImage(blog)}`}
                     alt={`${blog.name} Cover`}
                     width={300}

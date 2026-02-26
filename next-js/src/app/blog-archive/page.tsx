@@ -62,7 +62,7 @@ export default async function Page() {
               <div className="relative">
                 <Link
                   className="hover:underline decoration-white"
-                  href={`/blog/post/${blog.slug.current}`}
+                  href={`/blog/${blog.slug.current}`}
                 >
                   <Image
                     className="object-contain rounded-md border-white border-0 hover:border-4 hover:scale-[98%]"

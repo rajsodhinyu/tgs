@@ -56,25 +56,25 @@ export default function Page() {
         />
         <div className="pt-8 font-title text-2xl text-white text-center flex justify-center gap-6 flex-wrap">
           <a
-            className="hover:underline decoration-white inline-flex items-center gap-1"
+            className="bg-tgs-purple rounded-2xl px-6 py-1 border-4 border-transparent hover:border-white hover:scale-95 transition-all inline-flex items-center gap-1"
             href="https://www.instagram.com/thatgoodsht"
           >
             Instagram <ChevronDots className="mt-0.5" />
           </a>
           <a
-            className="hover:underline decoration-white inline-flex items-center gap-1"
+            className="bg-tgs-purple rounded-2xl px-6 py-1 border-4 border-transparent hover:border-white hover:scale-95 transition-all inline-flex items-center gap-1"
             href="https://www.youtube.com/@thatgoodshtmusic"
           >
             Youtube <ChevronDots className="mt-0.5" />
           </a>
           <a
-            className="hover:underline decoration-white inline-flex items-center gap-1"
+            className="bg-tgs-purple rounded-2xl px-6 py-1 border-4 border-transparent hover:border-white hover:scale-95 transition-all inline-flex items-center gap-1"
             href="https://www.twitter.com/thatgoodsh_t"
           >
             Twitter <ChevronDots className="mt-0.5" />
           </a>
           <a
-            className="hover:underline decoration-white inline-flex items-center gap-1"
+            className="bg-tgs-purple rounded-2xl px-6 py-1 border-4 border-transparent hover:border-white hover:scale-95 transition-all inline-flex items-center gap-1"
             href="https://discord.gg/PTYgag2kxD"
           >
             Discord <ChevronDots className="mt-0.5" />

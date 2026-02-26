@@ -54,7 +54,7 @@ export default async function Page() {
   return (
     <div>
       <h1 className="text-2xl sm:text-4xl font-bold font-title text-white uppercase mx-4 sm:mx-6">
-        All Events
+        Events
       </h1>
       <div className="grid lg:grid-cols-5 sm:grid-cols-4 grid-cols-2 max-sm:mx-2 md:p-2 pt-4 gap-2">
         {events.map((event) => (
@@ -63,7 +63,7 @@ export default async function Page() {
               <div className="text-white">
                 <div className="relative w-full aspect-[4/5]">
                   <Image
-                    className="object-contain rounded-md border-white border-0 group-hover:border-4 group-hover:scale-[98%]"
+                    className="object-contain rounded-md border-white border-0 group-hover:border-4 group-hover:scale-[98%] transition-all"
                     src={`${eventImage(event)}`}
                     fill={true}
                     alt={`${event.name}`}
@@ -72,10 +72,10 @@ export default async function Page() {
                   />
                 </div>
               </div>
-              <p className="text-center text-md sm:text-xl font-bit font-black text-balance pt-1 leading-tight text-white group-hover:underline group-hover:text-tgs-pink">
+              <p className="text-center text-md sm:text-xl font-bit font-black text-balance pt-1 leading-tight text-white group-hover:underline group-hover:text-white transition-all">
                 {event.name}
               </p>
-              <p className="text-gray-300 text-center text-xs sm:text-base font-roc py-2 -m-2 group-hover:text-tgs-pink">
+              <p className="text-gray-300 text-center text-xs sm:text-base font-roc py-2 -m-2 group-hover:text-white transition-all">
                 {stringifyDate(event.date)}
               </p>
             </Link>

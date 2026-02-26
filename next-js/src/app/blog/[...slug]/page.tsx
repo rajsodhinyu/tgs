@@ -15,6 +15,9 @@ import Link from "next/link";
 import { Metadata } from "next";
 import PostEmbed from "../PostEmbed";
 import TrackEmbedBlock from "../TrackEmbedBlock";
+import PlaylistEmbedBlock from "../PlaylistEmbedBlock";
+import TrackGrid from "../TrackGrid";
+import { preprocessContent } from "../preprocessContent";
 
 const projectId = "fnvy29id";
 const dataset = "tgs";
@@ -101,11 +104,16 @@ const components: PortableTextComponents = {
     h1: ({ children }) => (
       <h1 className="text-center text-2xl font-bit">{children}</h1>
     ),
-    normal: ({ children }) => (
-      <p>
-        {children} <br />
-      </p>
-    ),
+    normal: ({ children, value }) => {
+      const v = value as any;
+      const indent = v._afterTrack ? "" : "indent-4 md:indent-6";
+      const justify = "";
+      return (
+        <p className={`${indent} ${justify}`}>
+          {children} <br />
+        </p>
+      );
+    },
     blockquote: ({ children }) => (
       <div className="text-sm text-center font-thin ">{children}</div>
     ),
@@ -193,8 +201,21 @@ const components: PortableTextComponents = {
           albumArt={value?.albumArt}
           heading={value?.heading}
           subheading={value?.subheading}
-          blurb={value?.blurb}
           alignment={value?.alignment || "left"}
+        />
+      );
+    },
+    trackGrid: ({ value }) => {
+      return <TrackGrid tracks={value?.tracks || []} />;
+    },
+    playlistEmbed: ({ value }) => {
+      return (
+        <PlaylistEmbedBlock
+          name={value?.name}
+          description={value?.description}
+          coverUrl={value?.coverUrl}
+          spotifyUrl={value?.spotifyUrl}
+          appleMusicUrl={value?.appleMusicUrl}
         />
       );
     },
@@ -364,8 +385,8 @@ export default async function Page({
         appleMusicURL={post.appleMusicURL}
       />
 
-      <div className="mx-3 text-base md:text-lg lg:text-xl  text-wrap pt-10 pb-6 indent-4 md:indent-6 first-letter:text-4xl first-letter:font-title first-letter:text-white ">
-        <PortableText value={post.content} components={components} />
+      <div className="mx-3 text-base md:text-lg lg:text-xl text-justify text-pretty pt-10 pb-6 first-letter:text-4xl first-letter:font-title first-letter:text-white">
+        <PortableText value={preprocessContent(post.content)} components={components} />
       </div>
     </div>
   );
