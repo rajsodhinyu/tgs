@@ -216,6 +216,7 @@ const components: PortableTextComponents = {
           coverUrl={value?.coverUrl}
           spotifyUrl={value?.spotifyUrl}
           appleMusicUrl={value?.appleMusicUrl}
+          hasSidebar
         />
       );
     },
@@ -386,7 +387,10 @@ export default async function Page({
       />
 
       <div className="mx-3 text-base md:text-lg lg:text-xl text-justify text-pretty pt-10 pb-6 first-letter:text-4xl first-letter:font-title first-letter:text-white">
-        <PortableText value={preprocessContent(post.content)} components={components} />
+        <PortableText
+          value={preprocessContent(post.content)}
+          components={components}
+        />
       </div>
     </div>
   );

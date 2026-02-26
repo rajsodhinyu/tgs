@@ -234,6 +234,7 @@ export function TrackSearchInput(props: any) {
   const [loading, setLoading] = useState(false)
   const [selected, setSelected] = useState<SpotifyTrack | null>(null)
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const searchInputRef = useRef<HTMLInputElement>(null)
 
   // Apple Music state
   const [appleMusicUrl, setAppleMusicUrl] = useState('')
@@ -251,6 +252,13 @@ export function TrackSearchInput(props: any) {
       startEditing('apple')
     }
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Focus search input when the search step is shown
+  useEffect(() => {
+    if (step === 'search') {
+      setTimeout(() => searchInputRef.current?.focus(), 50)
+    }
+  }, [step])
 
   // Debounced search
   useEffect(() => {
@@ -408,10 +416,10 @@ export function TrackSearchInput(props: any) {
             <FieldGroup>
               <FieldLabel>{searchType === 'track' ? 'Song' : 'Album'}</FieldLabel>
               <Input
+                ref={searchInputRef}
                 value={trackQuery}
                 onChange={(e) => setTrackQuery(e.target.value)}
                 placeholder={searchType === 'track' ? 'e.g. Automatic' : 'e.g. Purity'}
-                autoFocus
               />
             </FieldGroup>
             <FieldGroup>

@@ -40,7 +40,7 @@ export default function PlaylistSection({
         </div>
       </div>
       {/* Mobile: horizontal scroll carousel */}
-      <div className="flex overflow-x-auto snap-x snap-mandatory gap-2 no-scrollbar -mb-2 lg:hidden">
+      <div className="flex overflow-x-auto snap-x snap-mandatory gap-2 no-scrollbar -mb-2 md:hidden">
         {playlists.map((playlist) => (
           <div
             key={playlist._id}
@@ -61,7 +61,7 @@ export default function PlaylistSection({
         ))}
       </div>
       {/* Desktop: grid layout */}
-      <div className="hidden lg:grid lg:grid-cols-3 gap-4">
+      <div className="hidden md:grid grid-cols-3 gap-2">
         {playlists.map((playlist) => (
           <PlaylistCard
             key={playlist._id}
