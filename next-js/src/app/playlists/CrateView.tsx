@@ -201,6 +201,10 @@ function CrateBin({
       }`}
     >
       <div className="bg-white/5 rounded-lg p-2 h-full flex flex-col overflow-hidden">
+        <div className="flex-shrink-0 mb-1">
+          <DividerCard playlist={playlist} platform={platform} />
+        </div>
+
         <div className="flex-1 min-h-0 relative overflow-hidden">
           {loading ? (
             <SkeletonStack />
@@ -250,10 +254,6 @@ function CrateBin({
               No tracks found
             </div>
           )}
-        </div>
-
-        <div className="mt-1 flex-shrink-0">
-          <DividerCard playlist={playlist} platform={platform} />
         </div>
       </div>
     </div>
