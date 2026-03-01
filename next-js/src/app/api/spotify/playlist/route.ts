@@ -73,7 +73,7 @@ export async function GET(request: NextRequest) {
 
   try {
     const token = await getAccessToken();
-    const apiUrl = `https://api.spotify.com/v1/playlists/${playlistId}?fields=tracks.items(track(album(images)))`;
+    const apiUrl = `https://api.spotify.com/v1/playlists/${playlistId}?fields=tracks.items(track(name,artists(name),album(images)))`;
 
     const res = await fetch(apiUrl, {
       headers: { Authorization: `Bearer ${token}` },
@@ -86,14 +86,22 @@ export async function GET(request: NextRequest) {
     const data = await res.json();
     const seen = new Set<string>();
     const images: string[] = [];
+    const tracks: { name: string; artist: string; art: string }[] = [];
 
     for (const item of data.tracks?.items || []) {
-      // Use the smallest image (last in array, typically 64px) for thumbnails
-      const imgs = item.track?.album?.images;
+      const track = item.track;
+      if (!track) continue;
+
+      // Track info
+      const name = track.name;
+      const artist = track.artists?.map((a: any) => a.name).join(", ") || "Unknown";
+      const imgs = track.album?.images;
+      const trackArt = imgs?.[0]?.url || imgs?.[imgs.length - 1]?.url || "";
+      tracks.push({ name, artist, art: trackArt });
+
+      // Album art (deduplicated)
       if (!imgs || imgs.length === 0) continue;
-      const thumb = imgs[imgs.length - 1]?.url;
-      const full = imgs[0]?.url;
-      const url = full || thumb;
+      const url = trackArt;
       if (url && !seen.has(url)) {
         seen.add(url);
         images.push(url);
@@ -101,7 +109,7 @@ export async function GET(request: NextRequest) {
     }
 
     return NextResponse.json(
-      { images },
+      { images, tracks },
       {
         headers: {
           "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=86400",

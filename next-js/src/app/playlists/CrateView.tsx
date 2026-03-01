@@ -194,7 +194,7 @@ function CrateBin({
       }`}
     >
       <div className="bg-white/5 rounded-lg p-2 h-full flex flex-col overflow-hidden">
-        <div className="flex-shrink-0 mb-1">
+        <div className="flex-shrink-0 mb-2">
           <DividerCard playlist={playlist} platform={platform} />
         </div>
 
@@ -218,7 +218,7 @@ function CrateBin({
                     key={src}
                     className="absolute left-0 right-0 aspect-square rounded-md overflow-hidden transition-shadow duration-200 ease-out cursor-pointer pointer-events-none"
                     style={{
-                      bottom: fromFront * peek,
+                      top: (stack.length - 1 - fromFront) * peek,
                       marginLeft: fromFront * 2,
                       marginRight: fromFront * 2,
                       zIndex: isHovered
