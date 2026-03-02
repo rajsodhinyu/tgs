@@ -104,7 +104,10 @@ function CrateBin({
 
   // Track art on bottom (reversed so first track is near front), playlist cover on top
   const stack = [
-    ...trackArt.filter((u) => u !== playlist.coverUrl).slice(0, 12).reverse(),
+    ...trackArt
+      .filter((u) => u !== playlist.coverUrl)
+      .slice(0, 12)
+      .reverse(),
     ...(playlist.coverUrl ? [playlist.coverUrl] : []),
   ];
 
@@ -193,7 +196,7 @@ function CrateBin({
         dimmed ? "opacity-30 pointer-events-none" : ""
       }`}
     >
-      <div className="bg-white/5 rounded-lg p-2 h-full flex flex-col overflow-hidden">
+      <div className="rounded-lg p-2 h-full flex flex-col overflow-hidden">
         <div className="flex-shrink-0 mb-2">
           <DividerCard playlist={playlist} platform={platform} />
         </div>
@@ -273,9 +276,7 @@ export default function CrateView({
   }, []);
 
   return (
-    <div
-      className="relative overflow-hidden h-[calc(100dvh-130px)] -mb-[82px] md:h-auto md:mb-0"
-    >
+    <div className="relative overflow-hidden h-[calc(100dvh-130px)] -mb-[82px] md:h-auto md:mb-0">
       <div
         className="flex overflow-x-auto snap-x snap-mandatory gap-3 no-scrollbar mx-3 h-full md:h-auto md:items-start items-end"
         style={{ perspective: "1200px" }}
