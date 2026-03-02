@@ -64,7 +64,7 @@ function SkeletonStack() {
   );
 }
 
-const MIN_PEEK = 20;
+const MIN_PEEK = 10;
 const MAX_STACK = 10;
 
 function CrateBin({

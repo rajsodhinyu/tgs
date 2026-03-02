@@ -95,7 +95,7 @@ export default function PlaylistGrid({ playlists }: { playlists: Playlist[] }) {
 
   return (
     <>
-      <div className="grid grid-cols-3 items-center mx-3 sm:mx-6 mb-6">
+      <div className="grid grid-cols-3 items-center mx-3 sm:mx-6 mb-1">
         <div className="flex items-center justify-start">
           <div className="flex bg-white/10 rounded-full">
             <button
