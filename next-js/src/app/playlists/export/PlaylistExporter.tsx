@@ -45,6 +45,9 @@ export default function PlaylistExporter({
   const [verticalReverse, setVerticalReverse] = useState(false);
   const [rendering, setRendering] = useState(false);
 
+  // URL input
+  const [urlInput, setUrlInput] = useState("");
+
   // Smoke break state
   const [sbPlaylist, setSbPlaylist] = useState<Playlist | null>(null);
   const [sbTracks, setSbTracks] = useState<Track[]>([]);
@@ -66,8 +69,26 @@ export default function PlaylistExporter({
     setVPreview(null);
   }, []);
 
+  function handleUrlSubmit() {
+    const url = urlInput.trim();
+    if (!url.includes("spotify.com/playlist")) return;
+    const playlist: Playlist = {
+      _id: `url-${Date.now()}`,
+      name: "Custom Playlist",
+      description: "",
+      playlistURL: url,
+      coverUrl: "",
+    };
+    if (mode === "crate") {
+      handleSelect(playlist);
+    } else {
+      handleSbSelect(playlist);
+    }
+  }
+
   async function handleSelect(playlist: Playlist) {
     cleanup();
+    setActivePlaylist(playlist);
     setState({ step: "loading", playlistId: playlist._id });
 
     try {
@@ -78,10 +99,14 @@ export default function PlaylistExporter({
       const trackImages: string[] = data.images || [];
       const tracks: Track[] = data.tracks || [];
 
-      const stack = [
-        ...trackImages.filter((u: string) => u !== playlist.coverUrl).reverse(),
-        ...(playlist.coverUrl ? [playlist.coverUrl] : []),
-      ];
+      const stack = playlist.coverUrl
+        ? [
+            ...trackImages
+              .filter((u: string) => u !== playlist.coverUrl)
+              .reverse(),
+            playlist.coverUrl,
+          ]
+        : [...trackImages.reverse()];
 
       const proxiedUrls = stack.map(proxyUrl);
 
@@ -103,10 +128,12 @@ export default function PlaylistExporter({
     if (state.step !== "preview") return;
 
     const { allUrls } = state;
-    // allUrls is ordered: track art reversed... then cover last
-    const cover = allUrls[allUrls.length - 1];
-    const trackArt = allUrls.slice(0, -1);
-    const trackCount = showCover ? Math.max(0, albumCount - 1) : albumCount;
+    const hasCover = activePlaylist?.coverUrl ? true : false;
+    // allUrls is ordered: track art reversed... then cover last (if hasCover)
+    const cover = hasCover ? allUrls[allUrls.length - 1] : null;
+    const trackArt = hasCover ? allUrls.slice(0, -1) : allUrls;
+    const trackCount =
+      showCover && hasCover ? Math.max(0, albumCount - 1) : albumCount;
     const selected = [
       ...trackArt.slice(0, trackCount),
       ...(showCover && cover ? [cover] : []),
@@ -135,7 +162,8 @@ export default function PlaylistExporter({
     return () => {
       cancelled = true;
     };
-  }, [state.step === "preview" ? albumCount : null, state.step === "preview" ? state.allUrls : null, showCover, verticalReverse]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state, albumCount, showCover, verticalReverse]);
 
   function handleDownload(blob: Blob, name: string) {
     const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, "-");
@@ -200,13 +228,18 @@ export default function PlaylistExporter({
   function handleBack() {
     cleanup();
     setCopied(null);
+    setActivePlaylist(null);
     setState({ step: "select" });
   }
 
+  // Keep track of the active playlist (including custom URL playlists)
+  const [activePlaylist, setActivePlaylist] = useState<Playlist | null>(null);
+
   const selectedPlaylist =
-    state.step !== "select" && state.step !== "error"
-      ? playlists.find((p) => p._id === state.playlistId)
-      : null;
+    activePlaylist ??
+    (state.step !== "select" && state.step !== "error"
+      ? playlists.find((p) => p._id === state.playlistId) ?? null
+      : null);
 
   const maxAlbums =
     state.step === "preview" ? state.allUrls.length : 0;
@@ -262,9 +295,23 @@ export default function PlaylistExporter({
 
       {mode === "crate" && state.step === "select" && (
         <div>
-          <p className="text-white/60 font-roc text-sm mb-4">
-            Select a playlist to export as a PNG image.
-          </p>
+          <div className="flex gap-2 mb-4">
+            <input
+              type="text"
+              value={urlInput}
+              onChange={(e) => setUrlInput(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && handleUrlSubmit()}
+              placeholder="Paste a Spotify playlist URL..."
+              className="flex-1 px-4 py-2 rounded-full bg-white/10 text-white font-roc text-sm placeholder:text-white/30 outline-none focus:ring-2 ring-tgs-pink"
+            />
+            <button
+              onClick={handleUrlSubmit}
+              disabled={!urlInput.includes("spotify.com/playlist")}
+              className="px-4 py-2 rounded-full bg-tgs-pink text-black font-bold font-roc text-sm hover:bg-tgs-pink/80 transition-colors disabled:opacity-30"
+            >
+              Go
+            </button>
+          </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {playlists.map((playlist) => (
               <button
@@ -471,9 +518,23 @@ export default function PlaylistExporter({
       {/* Smoke Break mode */}
       {mode === "smoke-break" && !sbPlaylist && (
         <div>
-          <p className="text-white/60 font-roc text-sm mb-4">
-            Pick a playlist.
-          </p>
+          <div className="flex gap-2 mb-4">
+            <input
+              type="text"
+              value={urlInput}
+              onChange={(e) => setUrlInput(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && handleUrlSubmit()}
+              placeholder="Paste a Spotify playlist URL..."
+              className="flex-1 px-4 py-2 rounded-full bg-white/10 text-white font-roc text-sm placeholder:text-white/30 outline-none focus:ring-2 ring-tgs-pink"
+            />
+            <button
+              onClick={handleUrlSubmit}
+              disabled={!urlInput.includes("spotify.com/playlist")}
+              className="px-4 py-2 rounded-full bg-tgs-pink text-black font-bold font-roc text-sm hover:bg-tgs-pink/80 transition-colors disabled:opacity-30"
+            >
+              Go
+            </button>
+          </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {playlists.map((p) => (
               <button
