@@ -42,7 +42,7 @@ export default function PlaylistExporter({
   const [copied, setCopied] = useState<string | null>(null);
   const [albumCount, setAlbumCount] = useState(10);
   const [showCover, setShowCover] = useState(true);
-  const [verticalReverse, setVerticalReverse] = useState(false);
+  const verticalReverse = true;
   const [rendering, setRendering] = useState(false);
 
   // URL input
@@ -102,15 +102,14 @@ export default function PlaylistExporter({
       const stack = playlist.coverUrl
         ? [
             ...trackImages
-              .filter((u: string) => u !== playlist.coverUrl)
-              .reverse(),
+              .filter((u: string) => u !== playlist.coverUrl),
             playlist.coverUrl,
           ]
-        : [...trackImages.reverse()];
+        : [...trackImages];
 
       const proxiedUrls = stack.map(proxyUrl);
 
-      setAlbumCount(Math.min(10, proxiedUrls.length));
+      setAlbumCount(proxiedUrls.length);
       setState({
         step: "preview",
         playlistId: playlist._id,
@@ -129,13 +128,14 @@ export default function PlaylistExporter({
 
     const { allUrls } = state;
     const hasCover = activePlaylist?.coverUrl ? true : false;
-    // allUrls is ordered: track art reversed... then cover last (if hasCover)
+    // allUrls is ordered: track art in playlist order, then cover last (if hasCover)
     const cover = hasCover ? allUrls[allUrls.length - 1] : null;
     const trackArt = hasCover ? allUrls.slice(0, -1) : allUrls;
     const trackCount =
       showCover && hasCover ? Math.max(0, albumCount - 1) : albumCount;
+    // Reverse so track 1 is closest to cover (front) and new tracks add to the back
     const selected = [
-      ...trackArt.slice(0, trackCount),
+      ...trackArt.slice(0, trackCount).reverse(),
       ...(showCover && cover ? [cover] : []),
     ];
 
@@ -281,7 +281,14 @@ export default function PlaylistExporter({
               Export Crate
             </button>
             <button
-              onClick={() => setMode("smoke-break")}
+              onClick={() => {
+                setMode("smoke-break");
+                // If we already have a playlist loaded in crate mode, reuse its data
+                if (state.step === "preview" && activePlaylist) {
+                  setSbPlaylist(activePlaylist);
+                  setSbTracks(state.tracks);
+                }
+              }}
               className={`px-4 py-1.5 rounded-full font-title text-sm uppercase transition-colors ${
                 mode === "smoke-break" ? "bg-white text-black" : "text-white hover:bg-white/20"
               }`}
@@ -391,17 +398,6 @@ export default function PlaylistExporter({
                   }`}
                 >
                   Cover {showCover ? "On" : "Off"}
-                </button>
-                {/* Vertical stack direction */}
-                <button
-                  onClick={() => setVerticalReverse((v) => !v)}
-                  className={`px-4 py-2 rounded-full font-roc text-sm transition-colors ${
-                    verticalReverse
-                      ? "bg-tgs-pink text-black font-bold"
-                      : "bg-white/10 text-white hover:bg-white/20"
-                  }`}
-                >
-                  {verticalReverse ? "Crate Style" : "Stack Down"}
                 </button>
 
                 {/* Album count stepper */}

@@ -86,7 +86,7 @@ export async function renderCrateHorizontal(
   let tracksToShow = trackImages.length;
   let peek = 0;
   if (tracksToShow > 0 && peekZone > 0) {
-    const minPeek = 80;
+    const minPeek = 10;
     const maxTracks = Math.floor(peekZone / minPeek);
     tracksToShow = Math.min(tracksToShow, maxTracks);
     peek = peekZone / tracksToShow;
@@ -153,7 +153,7 @@ export async function renderCrateVertical(
   let tracksToShow = trackImages.length;
   let peek = 0;
   if (tracksToShow > 0 && peekZone > 0) {
-    const minPeek = 80;
+    const minPeek = 10;
     const maxTracks = Math.floor(peekZone / minPeek);
     tracksToShow = Math.min(tracksToShow, maxTracks);
     peek = peekZone / tracksToShow;
@@ -161,9 +161,13 @@ export async function renderCrateVertical(
 
   const stack = [...trackImages.slice(0, tracksToShow), coverImage];
 
+  // Scale margin step so the back-most cover is at least 70% of full width
+  const maxMarginPerSide = w * 0.15;
+  const marginStep = Math.min(3, maxMarginPerSide / Math.max(1, stack.length - 1));
+
   for (let i = 0; i < stack.length; i++) {
     const fromFront = stack.length - 1 - i;
-    const lrMargin = PADDING + fromFront * 3;
+    const lrMargin = PADDING + fromFront * marginStep;
     const coverW = w - lrMargin * 2;
     const coverH = coverW;
     const x = lrMargin;
