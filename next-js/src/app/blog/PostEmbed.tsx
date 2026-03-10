@@ -1,8 +1,6 @@
 "use client";
 
-import PlatformSwitcher, {
-  usePlatform,
-} from "../components/PlatformSwitcher";
+import { usePlatform } from "../components/PlatformSwitcher";
 
 function spotifyEmbedUrl(url: string) {
   const parts = url.split("/");
@@ -25,18 +23,17 @@ export default function PostEmbed({
   spotifyURL?: string;
   appleMusicURL?: string;
 }) {
-  const [platform, setPlatform] = usePlatform();
+  const [platform] = usePlatform();
 
   if (!spotifyURL && !appleMusicURL) {
     return <div className="-my-4"></div>;
   }
 
-  const hasBoth = !!spotifyURL && !!appleMusicURL;
   const showApple = platform === "apple" && !!appleMusicURL;
 
   return (
     <div className="w-full">
-      <div className="place-items-center mt-3 -mb-8 max-sm:ml-2">
+      <div className="place-items-center mt-3 mb-3 max-sm:ml-2">
         {showApple ? (
           <iframe
             key="apple"
@@ -58,13 +55,6 @@ export default function PostEmbed({
           ></iframe>
         ) : null}
       </div>
-      {hasBoth && (
-        <div className="flex justify-center mt-12 -mb-12">
-          <div className="scale-90">
-            <PlatformSwitcher platform={platform} setPlatform={setPlatform} />
-          </div>
-        </div>
-      )}
     </div>
   );
 }
