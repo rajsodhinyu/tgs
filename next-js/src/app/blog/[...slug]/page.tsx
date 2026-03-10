@@ -18,6 +18,7 @@ import TrackEmbedBlock from "../TrackEmbedBlock";
 import PlaylistEmbedBlock from "../PlaylistEmbedBlock";
 import TrackGrid from "../TrackGrid";
 import { preprocessContent } from "../preprocessContent";
+import BlogPlatformSwitcher from "../BlogPlatformSwitcher";
 
 const projectId = "fnvy29id";
 const dataset = "tgs";
@@ -372,26 +373,39 @@ export default async function Page({
         {/* Title */}
         {post.name}
       </div>
-      <div className="xl:text-xl text-xl font-roc text-center pt-2 text-white/80">
-        {/* Writer */}
-        {post.writer && await (async () => {
-          const writer = await findWriter(post.writer);
-          if (!writer) return null;
-          return <>
-            {writer.url ? (
-              <Link href={writer.url} target="_blank" rel="noopener noreferrer" className="hover:underline">
-                {writer.name}
-              </Link>
-            ) : writer.name}
-            {" • "}
-          </>;
-        })()}
-        {post.date &&
-          new Date(post.date).toLocaleDateString(undefined, {
-            month: "long",
-            day: "numeric",
-            timeZone: "UTC",
-          })}
+      <div className="flex items-center justify-center gap-12 md:relative xl:text-xl text-xl font-roc pt-2 text-white/80">
+        <span>
+          {/* Writer */}
+          {post.writer &&
+            (await (async () => {
+              const writer = await findWriter(post.writer);
+              if (!writer) return null;
+              return (
+                <>
+                  {writer.url ? (
+                    <Link
+                      href={writer.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="hover:underline"
+                    >
+                      {writer.name}
+                    </Link>
+                  ) : (
+                    writer.name
+                  )}
+                  {" • "}
+                </>
+              );
+            })())}
+          {post.date &&
+            new Date(post.date).toLocaleDateString(undefined, {
+              month: "long",
+              day: "numeric",
+              timeZone: "UTC",
+            })}
+        </span>
+        <BlogPlatformSwitcher />
       </div>
       {/* Spotify / Apple Music Embed */}
       <PostEmbed
@@ -399,7 +413,7 @@ export default async function Page({
         appleMusicURL={post.appleMusicURL}
       />
 
-      <div className="mx-3 text-base md:text-lg lg:text-xl text-justify text-pretty pt-10 pb-6 first-letter:text-4xl first-letter:font-title first-letter:text-white">
+      <div className="mx-3 text-base md:text-lg lg:text-xl text-justify text-pretty pt-3 pb-6 first-letter:text-4xl first-letter:font-title first-letter:text-white">
         <PortableText
           value={preprocessContent(post.content)}
           components={components}
