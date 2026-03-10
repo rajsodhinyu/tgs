@@ -92,10 +92,11 @@ function renderBanner(post: any) {
 async function findWriter(writer: any) {
   if (!writer || !writer._ref) return null;
 
-  const writerQ = `*[_type == "writer" && _id == "${writer._ref}"]{name}`;
+  const writerQ = `*[_type == "writer" && _id == "${writer._ref}"]{name, url}`;
   const data: any = await sanityFetch({ query: writerQ });
 
-  return data[0]?.name || null;
+  if (!data[0]) return null;
+  return { name: data[0].name, url: data[0].url || null };
 }
 
 const components: PortableTextComponents = {
@@ -304,7 +305,8 @@ export async function generateMetadata({
   };
 
   const imageUrl = getImageUrl();
-  const writerName = post.writer ? await findWriter(post.writer) : null;
+  const writerData = post.writer ? await findWriter(post.writer) : null;
+  const writerName = writerData?.name || null;
   const formattedDate = post.date
     ? new Date(post.date).toLocaleDateString(undefined, {
         year: "numeric",
@@ -372,7 +374,18 @@ export default async function Page({
       </div>
       <div className="xl:text-xl text-xl font-roc text-center pt-2 text-white/80">
         {/* Writer */}
-        {post.writer && `${await findWriter(post.writer)} • `}
+        {post.writer && await (async () => {
+          const writer = await findWriter(post.writer);
+          if (!writer) return null;
+          return <>
+            {writer.url ? (
+              <Link href={writer.url} target="_blank" rel="noopener noreferrer" className="hover:underline">
+                {writer.name}
+              </Link>
+            ) : writer.name}
+            {" • "}
+          </>;
+        })()}
         {post.date &&
           new Date(post.date).toLocaleDateString(undefined, {
             month: "long",

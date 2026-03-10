@@ -24,9 +24,15 @@ export const writerType = defineType({
             type: 'url'
         }),
         defineField({
+            name: 'url',
+            title: 'URL',
+            type: 'url',
+            description: 'Link to writer\'s website or social profile',
+        }),
+        defineField({
             name: 'description',
             title: 'Bio',
-            type: 'array', 
+            type: 'array',
             of: [{type: 'block'}]
         })
     ]
