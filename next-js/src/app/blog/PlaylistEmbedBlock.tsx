@@ -205,7 +205,7 @@ export default function PlaylistEmbedBlock({
 
   return (
     <div
-      className="clear-both pt-4 pb-2 w-full min-w-0 overflow-hidden select-none"
+      className="clear-both pb-2 w-full min-w-0 overflow-hidden select-none"
       style={{ WebkitTouchCallout: "none" }}
     >
       <a
