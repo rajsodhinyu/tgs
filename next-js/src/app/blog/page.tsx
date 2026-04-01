@@ -57,7 +57,7 @@ function eventImage(event: any) {
 export default async function Page() {
   const blogs = await sanityFetch<SanityDocument[]>({ query: PLAYLIST_Q });
   return (
-    <div className="place-items-center">
+    <div className="place-items-center overflow-x-hidden">
       <Link href={"/feature/2025"}>
         <div>
           <Image

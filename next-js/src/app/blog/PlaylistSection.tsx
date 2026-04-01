@@ -40,7 +40,7 @@ export default function PlaylistSection({
         </div>
       </div>
       {/* Mobile: horizontal scroll carousel */}
-      <div className="flex overflow-x-auto snap-x snap-mandatory gap-2 no-scrollbar -mb-2 md:hidden">
+      <div className="flex w-full overflow-x-auto snap-x snap-mandatory gap-2 no-scrollbar -mb-2 md:hidden">
         {playlists.map((playlist) => (
           <div
             key={playlist._id}

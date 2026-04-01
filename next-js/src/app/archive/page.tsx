@@ -52,7 +52,7 @@ export default async function Page() {
       <h1 className="text-2xl sm:text-4xl font-bold font-title text-white uppercase mx-4 sm:mx-6">
         Blog
       </h1>
-      <div className="grid lg:grid-cols-5 sm:grid-cols-4 grid-cols-2 mx-3 md:p-2 pt-2 gap-2">
+      <div className="grid lg:grid-cols-3 sm:grid-cols-3 grid-cols-2 mx-3 md:p-2 pt-2 gap-2">
         {blogs.map((blog) => (
           <div
             className="group flex flex-col text-center justify-around"
@@ -76,8 +76,8 @@ export default async function Page() {
                 </Link>
               </div>
             </div>
-            <div className="flex flex-col text-center text-sm leading-tight font-bit group-hover:font-title font-bold text-white truncate p-2">
-              <div>{blog.name}</div>
+            <div className="flex flex-col text-center text-sm leading-tight font-bit group-hover:font-title font-bold text-white p-2">
+              <div className="truncate">{blog.name}</div>
             </div>
           </div>
         ))}

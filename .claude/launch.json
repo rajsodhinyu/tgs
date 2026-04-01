@@ -1,0 +1,20 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "next-js",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["dev"],
+      "port": 3000,
+      "autoPort": false,
+      "cwd": "next-js"
+    },
+    {
+      "name": "sanity-studio",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["dev"],
+      "port": 3333,
+      "cwd": "thatgoodsht"
+    }
+  ]
+}

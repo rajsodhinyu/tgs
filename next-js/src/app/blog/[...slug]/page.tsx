@@ -108,11 +108,11 @@ const components: PortableTextComponents = {
     ),
     normal: ({ children, value }) => {
       const v = value as any;
-      const indent = v._afterTrack ? "" : "indent-4 md:indent-6";
+      const indent = v._afterTrack ? "" : "indent-4 md:indent-6 mb-4";
       const justify = "";
       return (
         <p className={`${indent} ${justify}`}>
-          {children} <br />
+          {children}
         </p>
       );
     },
@@ -369,11 +369,11 @@ export default async function Page({
   return (
     <div className="font-roc text-lg text-balance text-white max-[300px]:w-80">
       <div className="place-items-center">{renderBanner(post)}</div>
-      <div className="xl:text-4xl text-2xl font-bold font-title mt-4 text-center uppercase">
+      <div className="text-xl sm:text-2xl md:text-3xl xl:text-4xl font-bold font-title mt-4 text-center uppercase">
         {/* Title */}
         {post.name}
       </div>
-      <div className="flex items-center justify-center gap-12 md:relative xl:text-xl text-xl font-roc pt-2 text-white/80">
+      <div className="flex items-center justify-center gap-12 md:relative xl:text-xl text-xl font-roc font-medium pt-2 text-white/80">
         <span>
           {/* Writer */}
           {post.writer &&
@@ -413,7 +413,7 @@ export default async function Page({
         appleMusicURL={post.appleMusicURL}
       />
 
-      <div className="mx-3 text-base md:text-lg lg:text-xl text-justify text-pretty pt-3 pb-6 first-letter:text-4xl first-letter:font-title first-letter:text-white">
+      <div className="mx-3 text-base md:text-lg lg:text-xl pt-3 pb-6 first-letter:text-4xl first-letter:font-medium first-letter:text-white">
         <PortableText
           value={preprocessContent(post.content)}
           components={components}

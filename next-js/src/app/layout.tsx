@@ -15,7 +15,10 @@ const bitcount = localFont({
 });
 
 const roc = localFont({
-  src: "../../font_body.ttf",
+  src: [
+    { path: "../../roc_grotesk_regular.ttf", weight: "400" },
+    { path: "../../roc_grotesk_medium.ttf", weight: "500" },
+  ],
   display: "swap",
   variable: "--font-roc",
 });

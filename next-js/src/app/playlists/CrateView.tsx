@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 
 type Playlist = {
   _id: string;
@@ -83,6 +83,7 @@ function CrateBin({
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const stackRef = useRef<HTMLDivElement>(null);
   const touchingRef = useRef(false);
+  const [dims, setDims] = useState<{ w: number; h: number } | null>(null);
 
   useEffect(() => {
     if (!playlist.playlistURL) {
@@ -102,6 +103,17 @@ function CrateBin({
       .finally(() => setLoading(false));
   }, [playlist.playlistURL]);
 
+  // Measure stack area so peek can fill available height
+  useEffect(() => {
+    const el = stackRef.current;
+    if (!el) return;
+    const ro = new ResizeObserver(([e]) =>
+      setDims({ w: e.contentRect.width, h: e.contentRect.height }),
+    );
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
   // Track art on bottom (reversed so first track is near front), playlist cover on top
   const stack = [
     ...trackArt
@@ -111,12 +123,12 @@ function CrateBin({
     ...(playlist.coverUrl ? [playlist.coverUrl] : []),
   ];
 
-  // Total peek area = (maxCount - 1) * MIN_PEEK — same for every crate
-  // Distribute across this crate's actual covers
-  const totalPeekArea = (maxCount - 1) * MIN_PEEK;
+  // Dynamic peek: spread records to fill the bin height
+  // Cover is aspect-square so coverHeight ≈ container width
+  // Available peek space = container height - cover height
   const peek =
-    stack.length > 1
-      ? Math.max(MIN_PEEK, totalPeekArea / (stack.length - 1))
+    dims && stack.length > 1 && dims.h > dims.w
+      ? Math.max(MIN_PEEK, (dims.h - dims.w) / (stack.length - 1))
       : MIN_PEEK;
 
   const hitTestY = useCallback(
@@ -192,7 +204,7 @@ function CrateBin({
 
   return (
     <div
-      className={`w-[80vw] flex-shrink-0 snap-center md:w-[calc(33.3%-8px)] xl:w-[calc(25%-12px)] transition-opacity h-full md:h-[600px] xl:h-[700px] ${
+      className={`w-[80vw] flex-shrink-0 snap-center md:w-[calc(28%-8px)] xl:w-[calc(22%-12px)] transition-opacity h-full ${
         dimmed ? "opacity-30 pointer-events-none" : ""
       }`}
     >
@@ -201,50 +213,47 @@ function CrateBin({
           <DividerCard playlist={playlist} platform={platform} />
         </div>
 
-        <div className="flex-1 min-h-0 relative overflow-hidden">
+        <div
+          ref={stackRef}
+          className="flex-1 min-h-0 relative overflow-hidden select-none"
+          style={{ WebkitTouchCallout: "none" } as React.CSSProperties}
+          onMouseMove={(e) => hitTestY(e.clientY)}
+          onMouseLeave={() => setHoveredIndex(null)}
+        >
           {loading ? (
             <SkeletonStack />
           ) : stack.length > 0 ? (
-            <div
-              ref={stackRef}
-              className="absolute inset-0 select-none"
-              style={{ WebkitTouchCallout: "none" }}
-              onMouseMove={(e) => hitTestY(e.clientY)}
-              onMouseLeave={() => setHoveredIndex(null)}
-            >
-              {stack.map((src, i) => {
-                // i=0 is deepest (back), last is front (playlist cover)
-                const fromFront = stack.length - 1 - i;
-                const isHovered = hoveredIndex === i;
-                return (
-                  <div
-                    key={src}
-                    className="absolute left-0 right-0 aspect-square rounded-md overflow-hidden transition-shadow duration-200 ease-out cursor-pointer pointer-events-none"
-                    style={{
-                      top: (stack.length - 1 - fromFront) * peek,
-                      marginLeft: fromFront * 2,
-                      marginRight: fromFront * 2,
-                      zIndex: isHovered
-                        ? stack.length + 1
-                        : stack.length - fromFront,
-                      boxShadow: isHovered
-                        ? "0 8px 20px rgba(0,0,0,0.6)"
-                        : "0 2px 6px rgba(0,0,0,0.4)",
-                    }}
-                  >
-                    <Image
-                      src={src}
-                      alt=""
-                      width={300}
-                      height={300}
-                      className="w-full h-full object-cover"
-                      unoptimized
-                      draggable={false}
-                    />
-                  </div>
-                );
-              })}
-            </div>
+            stack.map((src, i) => {
+              const fromFront = stack.length - 1 - i;
+              const isHovered = hoveredIndex === i;
+              return (
+                <div
+                  key={src}
+                  className="absolute left-0 right-0 aspect-square rounded-md overflow-hidden transition-shadow duration-200 ease-out pointer-events-none"
+                  style={{
+                    top: i * peek,
+                    marginLeft: fromFront * 1,
+                    marginRight: fromFront * 1,
+                    zIndex: isHovered
+                      ? stack.length + 1
+                      : stack.length - fromFront,
+                    boxShadow: isHovered
+                      ? "0 8px 20px rgba(0,0,0,0.6)"
+                      : "0 2px 6px rgba(0,0,0,0.4)",
+                  }}
+                >
+                  <Image
+                    src={src}
+                    alt=""
+                    width={300}
+                    height={300}
+                    className="w-full h-full object-cover"
+                    unoptimized
+                    draggable={false}
+                  />
+                </div>
+              );
+            })
           ) : (
             <div className="text-white/40 text-xs font-roc text-center py-4">
               No tracks found
@@ -276,9 +285,9 @@ export default function CrateView({
   }, []);
 
   return (
-    <div className="relative overflow-hidden h-[calc(100dvh-130px)] -mb-[82px] md:h-auto md:mb-0">
+    <div className="relative overflow-hidden h-[calc(100dvh-130px)] md:h-[calc(100dvh-200px)] -mb-[82px]">
       <div
-        className="flex overflow-x-auto snap-x snap-mandatory gap-3 no-scrollbar mx-3 h-full md:h-auto md:items-start items-end"
+        className="flex overflow-x-auto snap-x snap-mandatory gap-3 no-scrollbar mx-3 h-full items-end"
         style={{ perspective: "1200px" }}
       >
         {playlists.map((playlist) => (

@@ -1,4 +1,5 @@
 import {defineField, defineType} from 'sanity'
+import {getImageDimensions} from '@sanity/asset-utils'
 import {media, mediaAssetSource} from 'sanity-plugin-media'
 import {CroppedImageInput} from '../components/CroppedImageInput'
 
@@ -44,8 +45,10 @@ export const playlistType = defineType({
       },
       validation: (rule) =>
         rule.required().custom((value) => {
-          if (!value?.crop) {
-            return 'Cover must be cropped'
+          if (!value?.asset?._ref) return true
+          const {width, height} = getImageDimensions(value.asset._ref)
+          if (width !== height && !value?.crop) {
+            return 'Cover must be cropped to a square'
           }
           return true
         }),
