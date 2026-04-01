@@ -108,7 +108,7 @@ const components: PortableTextComponents = {
     ),
     normal: ({ children, value }) => {
       const v = value as any;
-      const indent = v._afterTrack ? "" : "indent-4 md:indent-6 mb-4";
+      const indent = v._afterTrack ? "" : "mb-4";
       const justify = "";
       return (
         <p className={`${indent} ${justify}`}>
@@ -367,7 +367,7 @@ export default async function Page({
   const posts = await sanityFetch<SanityDocument[]>({ query: SLUG_QUERY });
   const post = posts[0];
   return (
-    <div className="font-roc text-lg text-balance text-white max-[300px]:w-80">
+    <div className="font-roc text-lg text-white max-[300px]:w-80">
       <div className="place-items-center">{renderBanner(post)}</div>
       <div className="text-xl sm:text-2xl md:text-3xl xl:text-4xl font-bold font-title mt-4 text-center uppercase">
         {/* Title */}

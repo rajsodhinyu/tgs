@@ -30,6 +30,7 @@ const config: Config = {
         "tgs-purple": "#6c5cbe",
         "tgs-dark-purple": "#3D3564",
         "tgs-gray": "#DBDBDB",
+        "tgs-background": "#333333",
       },
     },
   },

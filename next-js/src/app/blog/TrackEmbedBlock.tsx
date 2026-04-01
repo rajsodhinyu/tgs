@@ -53,8 +53,10 @@ export default function TrackEmbedBlock({
           />
         )}
         <div className="font-title text-white text-left mt-2 leading-tight truncate">
-          <div className="truncate text-sm lg:text-2xl">{heading || trackName}</div>
-          <div className="text-white/80 text-sm lg:text-xl truncate">
+          <div className="truncate text-base lg:text-xl">
+            {heading || trackName}
+          </div>
+          <div className="text-white/80 text-sm lg:text-md truncate font-roc font-medium">
             {subheading || artistName}
           </div>
         </div>

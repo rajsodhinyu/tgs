@@ -114,7 +114,7 @@ export default function Page() {
         <div
           className="absolute top-1/2 left-1/2 transform -translate-x-1/2  translate-y-44 md:translate-y-52 lg:translate-y-64  text-center  rounded-md font-title flex max-w-72 md:max-w-96 lg:max-w-fit
 
-          bg-tgs-dark-purple
+          bg-tgs-background
           ring ring-white
           text-white"
         >

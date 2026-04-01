@@ -58,6 +58,7 @@ export default async function Page() {
   const blogs = await sanityFetch<SanityDocument[]>({ query: PLAYLIST_Q });
   return (
     <div className="place-items-center overflow-x-hidden">
+      <div className="fixed inset-0 -z-10 bg-gradient-radial from-tgs-dark-purple to-tgs-pink" />
       <Link href={"/feature/2025"}>
         <div>
           <Image

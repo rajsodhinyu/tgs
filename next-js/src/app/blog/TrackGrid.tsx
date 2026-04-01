@@ -49,7 +49,7 @@ export default function TrackGrid({ tracks }: { tracks: Track[] }) {
               <div className="truncate text-sm lg:text-xl">
                 {track.heading || track.trackName}
               </div>
-              <div className="text-white/80 text-sm lg:text-lg truncate">
+              <div className="text-white/80 font-roc font-medium text-sm lg:text-lg truncate">
                 {track.subheading || track.artistName}
               </div>
             </div>

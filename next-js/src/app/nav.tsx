@@ -15,7 +15,7 @@ export default function Nav() {
       </div>
 
       {/* Desktop nav */}
-      <div className="hidden md:flex mx-3 pt-4 h-24 items-center justify-between">
+      <div className="hidden md:flex mx-3 pt-0 h-24 items-center justify-between">
         <div className="shrink h-12 flex gap-6 items-center lg:gap-8">
           <Link href="/" className="group relative">
             <Image
@@ -28,7 +28,7 @@ export default function Nav() {
             />
             <Image
               className="hidden"
-              style={{ height: '80px', width: 'auto' }}
+              style={{ height: "80px", width: "auto" }}
               src="https://cdn.sanity.io/images/fnvy29id/tgs/409cbc55ba676a991fd6d75f8ba242ad7dc08cd1-240x192.gif"
               width={165}
               height={150}
