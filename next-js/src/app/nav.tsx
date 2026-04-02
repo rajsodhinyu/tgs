@@ -7,7 +7,7 @@ export default function Nav() {
   return (
     <main>
       {/* Mobile nav */}
-      <div className="md:hidden flex items-center px-3 pt-3 h-20 gap-3">
+      <div className="md:hidden flex items-center px-3 h-20 gap-3">
         <MobileMenu />
         <div className="flex-1">
           <Sotd />
