@@ -2,7 +2,7 @@ import { createStorefrontApiClient } from '@shopify/storefront-api-client';
 
 export const shopifyClient = createStorefrontApiClient({
   storeDomain: process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN!,
-  apiVersion: '2024-04',
+  apiVersion: '2026-04',
   publicAccessToken: process.env.NEXT_PUBLIC_SHOPIFY_ACCESS_TOKEN!,
 });
 
@@ -38,5 +38,5 @@ export async function getProduct(handle: string): Promise<Variant[]> {
   const { data } = await shopifyClient.request(GET_PRODUCT, {
     variables: { handle },
   });
-  return data.product.variants.edges.map((edge: any) => edge.node);
+  return data?.product?.variants?.edges?.map((edge: any) => edge.node) ?? [];
 }
