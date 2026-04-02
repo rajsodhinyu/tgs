@@ -110,11 +110,7 @@ const components: PortableTextComponents = {
       const v = value as any;
       const indent = v._afterTrack ? "" : "mb-4";
       const justify = "";
-      return (
-        <p className={`${indent} ${justify}`}>
-          {children}
-        </p>
-      );
+      return <p className={`${indent} ${justify}`}>{children}</p>;
     },
     blockquote: ({ children }) => (
       <div className="text-sm text-center font-thin ">{children}</div>
@@ -363,7 +359,7 @@ export default async function Page({
   params: Promise<{ slug: string }>;
 }) {
   const slug = (await params).slug;
-  const SLUG_QUERY = `*[_type == "post" && slug.current == "${slug}"]{_id, name, youtubeURL, thumb, writer, banner, playlistURL, appleMusicURL, content, slug, date, description}`;
+  const SLUG_QUERY = `*[_type == "post" && slug.current == "${slug}"]{_id, name, youtubeURL, thumb, writer, banner, playlistURL, appleMusicURL, content, slug, date, description, private}`;
   const posts = await sanityFetch<SanityDocument[]>({ query: SLUG_QUERY });
   const post = posts[0];
   return (
@@ -404,6 +400,11 @@ export default async function Page({
               day: "numeric",
               timeZone: "UTC",
             })}
+          {post.private && (
+            <span className="ml-2 -translate-y-0.5 inline-block text-xs font-bold uppercase tracking-widest bg-white/10 text-white/50 border border-white/20 px-2 py-0.5 rounded">
+              Private
+            </span>
+          )}
         </span>
         <BlogPlatformSwitcher />
       </div>
