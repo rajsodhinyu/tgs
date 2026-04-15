@@ -428,6 +428,23 @@ const SidebarHeader = styled.div`
   z-index: 1;
 `
 
+const DeleteButton = styled.button`
+  background: transparent;
+  border: 1px solid var(--border-grid);
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 0.15rem 0.35rem;
+  font-size: 0.5rem;
+  color: var(--text-muted);
+  flex-shrink: 0;
+  opacity: 0;
+  transition: opacity 0.15s, color 0.15s, border-color 0.15s;
+  &:hover {
+    color: #e74c3c;
+    border-color: #e74c3c;
+  }
+`
+
 const SidebarItem = styled.div<{$isDragging?: boolean}>`
   padding: 0.5rem 0.75rem;
   border-bottom: 1px solid var(--border-color);
@@ -438,6 +455,9 @@ const SidebarItem = styled.div<{$isDragging?: boolean}>`
     opacity 0.15s;
   &:hover {
     background: var(--bg-surface-hover);
+  }
+  &:hover ${DeleteButton} {
+    opacity: 1;
   }
 `
 
@@ -457,6 +477,7 @@ const SidebarSongTitle = styled.div`
   overflow: hidden;
   text-overflow: ellipsis;
 `
+
 
 export function SotdCalendar() {
   const client = useClient({apiVersion: '2024-04-01'})
@@ -493,6 +514,7 @@ export function SotdCalendar() {
   const [fetchKey, setFetchKey] = useState(0)
   const [unscheduledSongs, setUnscheduledSongs] = useState<SotdDoc[]>([])
   const [dragOverSidebar, setDragOverSidebar] = useState(false)
+  const [deletingId, setDeletingId] = useState<string | null>(null)
   const bottomRef = useRef<HTMLDivElement | null>(null)
   const wrapperRef = useRef<HTMLDivElement | null>(null)
 
@@ -509,7 +531,7 @@ export function SotdCalendar() {
   // Fetch songs for visible range
   useEffect(() => {
     if (view !== 'calendar') return
-    setLoading(true)
+    if (fetchKey === 0) setLoading(true)
     client
       .fetch<SotdDoc[]>(
         `*[_type == 'sotd' && datetime >= $start && datetime < $end] | order(datetime asc) { _id, name, artist, datetime, "fileUrl": file.asset->url }`,
@@ -738,6 +760,26 @@ export function SotdCalendar() {
       setFetchKey((k) => k + 1)
     },
     [draggedSong, songsByKey, client],
+  )
+
+  const handleDelete = useCallback(
+    async (e: React.MouseEvent, song: SotdDoc) => {
+      e.stopPropagation()
+      setDeletingId(song._id)
+      // Stop playback if this song is playing
+      if (playingId === song._id && audioRef.current) {
+        audioRef.current.pause()
+        globalAudio = null
+        setPlayingId(null)
+        setPaused(false)
+      }
+      await client.delete(song._id)
+      // Also delete drafts version if it exists
+      await client.delete(`drafts.${song._id}`).catch(() => {})
+      setDeletingId(null)
+      setFetchKey((k) => k + 1)
+    },
+    [client, playingId, setPlayingId, setPaused],
   )
 
   const handleUnschedule = useCallback(async () => {
@@ -1050,10 +1092,17 @@ export function SotdCalendar() {
                 ) : (
                   <div style={{width: '18px', flexShrink: 0}} />
                 )}
-                <div style={{minWidth: 0}}>
+                <div style={{minWidth: 0, flex: 1}}>
                   <SidebarArtist>{song.artist || 'Unknown Artist'}</SidebarArtist>
                   <SidebarSongTitle>{song.name || 'Untitled'}</SidebarSongTitle>
                 </div>
+                <DeleteButton
+                  onClick={(e) => handleDelete(e, song)}
+                  disabled={deletingId === song._id}
+                  style={deletingId === song._id ? {opacity: 1} : undefined}
+                >
+                  {deletingId === song._id ? '⏳' : '✕'}
+                </DeleteButton>
               </div>
             </SidebarItem>
           ))}
