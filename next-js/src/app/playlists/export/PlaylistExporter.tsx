@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { renderCrateHorizontal, renderCrateVertical } from "./crateCanvas";
+import { renderArtistCard } from "./artistCardCanvas";
 import ChevronDots from "../../components/ChevronDots";
 
 type Playlist = {
@@ -15,7 +16,8 @@ type Playlist = {
 };
 
 type Track = { name: string; artist: string; art?: string };
-type Mode = "crate" | "smoke-break";
+type Artist = { id: string; name: string; image: string };
+type Mode = "crate" | "smoke-break" | "artists";
 
 type ExportState =
   | { step: "select" }
@@ -53,6 +55,15 @@ export default function PlaylistExporter({
   const [sbTracks, setSbTracks] = useState<Track[]>([]);
   const [sbLoading, setSbLoading] = useState(false);
 
+  // Artists export state
+  const [artPlaylist, setArtPlaylist] = useState<Playlist | null>(null);
+  const [artists, setArtists] = useState<Artist[]>([]);
+  const [artLoading, setArtLoading] = useState(false);
+  const [artPreviews, setArtPreviews] = useState<Record<string, string>>({});
+  const [artBlobs, setArtBlobs] = useState<Record<string, Blob>>({});
+  const [bulkDownloading, setBulkDownloading] = useState(false);
+  const artPreviewRefs = useRef<string[]>([]);
+
   // Rendered blobs + preview URLs
   const [hBlob, setHBlob] = useState<Blob | null>(null);
   const [vBlob, setVBlob] = useState<Blob | null>(null);
@@ -81,9 +92,98 @@ export default function PlaylistExporter({
     };
     if (mode === "crate") {
       handleSelect(playlist);
-    } else {
+    } else if (mode === "smoke-break") {
       handleSbSelect(playlist);
+    } else {
+      handleArtSelect(playlist);
     }
+  }
+
+  async function handleArtSelect(playlist: Playlist) {
+    setArtPlaylist(playlist);
+    setArtLoading(true);
+    setArtists([]);
+    artPreviewRefs.current.forEach((u) => URL.revokeObjectURL(u));
+    artPreviewRefs.current = [];
+    setArtPreviews({});
+    setArtBlobs({});
+    try {
+      const res = await fetch(
+        `/api/spotify/playlist?url=${encodeURIComponent(playlist.playlistURL)}&includeArtists=1`,
+      );
+      const data = await res.json();
+      setArtists(data.artists || []);
+    } catch {
+      // ignore
+    } finally {
+      setArtLoading(false);
+    }
+  }
+
+  function handleArtBack() {
+    artPreviewRefs.current.forEach((u) => URL.revokeObjectURL(u));
+    artPreviewRefs.current = [];
+    setArtPlaylist(null);
+    setArtists([]);
+    setArtPreviews({});
+    setArtBlobs({});
+  }
+
+  // Render cards whenever the artist list changes
+  useEffect(() => {
+    if (artists.length === 0) return;
+    let cancelled = false;
+    (async () => {
+      for (const a of artists) {
+        if (cancelled) return;
+        if (!a.image) continue;
+        try {
+          const blob = await renderArtistCard({
+            name: a.name,
+            imageUrl: a.image,
+          });
+          if (cancelled) return;
+          const url = URL.createObjectURL(blob);
+          artPreviewRefs.current.push(url);
+          setArtPreviews((p) => ({ ...p, [a.id]: url }));
+          setArtBlobs((p) => ({ ...p, [a.id]: blob }));
+        } catch {
+          // skip broken
+        }
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [artists]);
+
+  function downloadBlob(blob: Blob, filename: string) {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  function artistFilename(name: string, index: number) {
+    const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+    const num = String(index + 1).padStart(2, "0");
+    return `${num}-${slug || "unknown"}.png`;
+  }
+
+  async function handleDownloadAllArtists() {
+    setBulkDownloading(true);
+    for (let i = 0; i < artists.length; i++) {
+      const a = artists[i];
+      const blob = artBlobs[a.id];
+      if (!blob) continue;
+      downloadBlob(blob, artistFilename(a.name, i));
+      await new Promise((r) => setTimeout(r, 150));
+    }
+    setBulkDownloading(false);
   }
 
   async function handleSelect(playlist: Playlist) {
@@ -262,6 +362,13 @@ export default function PlaylistExporter({
           >
             <ChevronDots direction="left" color="white" />
           </button>
+        ) : (mode === "artists" && artPlaylist) ? (
+          <button
+            onClick={handleArtBack}
+            className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 transition-colors flex items-center justify-center justify-self-start"
+          >
+            <ChevronDots direction="left" color="white" />
+          </button>
         ) : (
           <Link
             href="/playlists"
@@ -294,6 +401,14 @@ export default function PlaylistExporter({
               }`}
             >
               Smoke Break
+            </button>
+            <button
+              onClick={() => setMode("artists")}
+              className={`px-4 py-1.5 rounded-full font-title text-sm uppercase transition-colors ${
+                mode === "artists" ? "bg-white text-black" : "text-white hover:bg-white/20"
+              }`}
+            >
+              Export Artists
             </button>
           </div>
         </div>
@@ -561,6 +676,107 @@ export default function PlaylistExporter({
           <p className="text-white/60 font-roc text-sm mt-4">
             Loading {sbPlaylist.name}...
           </p>
+        </div>
+      )}
+
+      {mode === "artists" && !artPlaylist && (
+        <div>
+          <div className="flex gap-2 mb-4">
+            <input
+              type="text"
+              value={urlInput}
+              onChange={(e) => setUrlInput(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && handleUrlSubmit()}
+              placeholder="Paste a Spotify playlist URL..."
+              className="flex-1 px-4 py-2 rounded-full bg-white/10 text-white font-roc text-sm placeholder:text-white/30 outline-none focus:ring-2 ring-tgs-pink"
+            />
+            <button
+              onClick={handleUrlSubmit}
+              disabled={!urlInput.includes("spotify.com/playlist")}
+              className="px-4 py-2 rounded-full bg-tgs-pink text-black font-bold font-roc text-sm hover:bg-tgs-pink/80 transition-colors disabled:opacity-30"
+            >
+              Go
+            </button>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {playlists.map((p) => (
+              <button
+                key={p._id}
+                onClick={() => handleArtSelect(p)}
+                className="group text-left"
+              >
+                <Image
+                  className="rounded-lg border-2 border-transparent group-hover:border-tgs-pink transition-all"
+                  src={p.coverUrl}
+                  width={400}
+                  height={400}
+                  alt={p.name}
+                  sizes="(max-width: 768px) 50vw, 25vw"
+                />
+                <div className="pt-2 text-white text-sm font-bold font-bit leading-tight group-hover:text-tgs-pink transition-colors">
+                  {p.name}
+                </div>
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {mode === "artists" && artPlaylist && artLoading && (
+        <div className="flex flex-col items-center justify-center py-20">
+          <div className="w-12 h-12 border-4 border-white/20 border-t-tgs-pink rounded-full animate-spin" />
+          <p className="text-white/60 font-roc text-sm mt-4">
+            Loading {artPlaylist.name}...
+          </p>
+        </div>
+      )}
+
+      {mode === "artists" && artPlaylist && !artLoading && artists.length > 0 && (
+        <div className="flex flex-col gap-4">
+          <div className="flex items-center gap-3">
+            <span className="text-white/60 font-roc text-sm">
+              {artists.length} artist{artists.length === 1 ? "" : "s"} · {Object.keys(artBlobs).length} rendered
+            </span>
+            <button
+              onClick={handleDownloadAllArtists}
+              disabled={bulkDownloading || Object.keys(artBlobs).length === 0}
+              className="ml-auto px-4 py-2 rounded-full bg-tgs-pink text-black font-bold font-roc text-sm hover:bg-tgs-pink/80 transition-colors disabled:opacity-30"
+            >
+              {bulkDownloading ? "Downloading..." : "Download All"}
+            </button>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {artists.map((a, i) => {
+              const preview = artPreviews[a.id];
+              const blob = artBlobs[a.id];
+              return (
+                <button
+                  key={a.id}
+                  onClick={() => blob && downloadBlob(blob, artistFilename(a.name, i))}
+                  disabled={!blob}
+                  className="group relative block w-full overflow-hidden rounded-[17px] disabled:opacity-50"
+                  title={`Download ${a.name}`}
+                >
+                  {preview ? (
+                    /* eslint-disable-next-line @next/next/no-img-element */
+                    <img
+                      src={preview}
+                      alt={a.name}
+                      className="w-full h-auto block transition-transform group-hover:scale-[1.01]"
+                    />
+                  ) : (
+                    <div className="w-full aspect-[740/154] bg-white/5 animate-pulse rounded-[17px]" />
+                  )}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {mode === "artists" && artPlaylist && !artLoading && artists.length === 0 && (
+        <div className="flex flex-col items-center py-20">
+          <p className="text-white/60 font-roc text-sm">No artists found.</p>
         </div>
       )}
 

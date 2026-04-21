@@ -71,9 +71,12 @@ export async function GET(request: NextRequest) {
     );
   }
 
+  const includeArtists =
+    request.nextUrl.searchParams.get("includeArtists") === "1";
+
   try {
     const token = await getAccessToken();
-    const apiUrl = `https://api.spotify.com/v1/playlists/${playlistId}?fields=tracks.items(track(name,artists(name),album(images)))`;
+    const apiUrl = `https://api.spotify.com/v1/playlists/${playlistId}?fields=tracks.items(track(name,artists(name,id),album(images)))`;
 
     const res = await fetch(apiUrl, {
       headers: { Authorization: `Bearer ${token}` },
@@ -86,20 +89,25 @@ export async function GET(request: NextRequest) {
     const data = await res.json();
     const seen = new Set<string>();
     const images: string[] = [];
-    const tracks: { name: string; artist: string; art: string }[] = [];
+    const tracks: {
+      name: string;
+      artist: string;
+      art: string;
+      artistId?: string;
+    }[] = [];
 
     for (const item of data.tracks?.items || []) {
       const track = item.track;
       if (!track) continue;
 
-      // Track info
       const name = track.name;
-      const artist = track.artists?.map((a: any) => a.name).join(", ") || "Unknown";
+      const artist =
+        track.artists?.map((a: any) => a.name).join(", ") || "Unknown";
+      const firstArtistId = track.artists?.[0]?.id;
       const imgs = track.album?.images;
       const trackArt = imgs?.[0]?.url || imgs?.[imgs.length - 1]?.url || "";
-      tracks.push({ name, artist, art: trackArt });
+      tracks.push({ name, artist, art: trackArt, artistId: firstArtistId });
 
-      // Album art (deduplicated)
       if (!imgs || imgs.length === 0) continue;
       const url = trackArt;
       if (url && !seen.has(url)) {
@@ -108,8 +116,46 @@ export async function GET(request: NextRequest) {
       }
     }
 
+    let artists:
+      | { id: string; name: string; image: string }[]
+      | undefined;
+    if (includeArtists) {
+      const ids: string[] = [];
+      const idSeen = new Set<string>();
+      for (const t of tracks) {
+        if (t.artistId && !idSeen.has(t.artistId)) {
+          idSeen.add(t.artistId);
+          ids.push(t.artistId);
+        }
+      }
+
+      const byId = new Map<string, { name: string; image: string }>();
+      for (let i = 0; i < ids.length; i += 50) {
+        const chunk = ids.slice(i, i + 50);
+        const r = await fetch(
+          `https://api.spotify.com/v1/artists?ids=${chunk.join(",")}`,
+          { headers: { Authorization: `Bearer ${token}` } },
+        );
+        if (!r.ok) continue;
+        const j = await r.json();
+        for (const a of j.artists || []) {
+          if (!a?.id) continue;
+          const image = a.images?.[0]?.url || "";
+          byId.set(a.id, { name: a.name, image });
+        }
+      }
+
+      // Preserve playlist order via first-appearance of each artist id
+      artists = ids
+        .map((id) => {
+          const info = byId.get(id);
+          return info ? { id, name: info.name, image: info.image } : null;
+        })
+        .filter((x): x is { id: string; name: string; image: string } => !!x);
+    }
+
     return NextResponse.json(
-      { images, tracks },
+      { images, tracks, ...(artists ? { artists } : {}) },
       {
         headers: {
           "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=86400",
