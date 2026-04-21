@@ -140,26 +140,83 @@ export async function renderArtistCard(
     ctx.restore();
   }
 
-  // Artist name text
+  // Artist name text — fit by shrinking font, then wrapping to 2 lines
   ctx.save();
   ctx.fillStyle = "#ffffff";
-  ctx.font = `${FONT_SIZE * SCALE}px "${CARD_FONT_FAMILY}", monospace`;
   ctx.textBaseline = "middle";
-  const baseY = (CARD_H / 2) * SCALE;
-  // Truncate with ellipsis if too wide
   const maxTextW = w - TEXT_LEFT * SCALE - 20 * SCALE;
-  let text = input.name;
-  if (ctx.measureText(text).width > maxTextW) {
-    const ell = "...";
-    while (text.length > 1 && ctx.measureText(text + ell).width > maxTextW) {
-      text = text.slice(0, -1);
-    }
-    text += ell;
+  const maxTextH = (CARD_H - 20) * SCALE;
+  const minFont = 18 * SCALE;
+
+  const { lines, fontPx } = fitText(
+    ctx,
+    input.name,
+    maxTextW,
+    maxTextH,
+    FONT_SIZE * SCALE,
+    minFont,
+  );
+
+  ctx.font = `${fontPx}px "${CARD_FONT_FAMILY}", monospace`;
+  const lineH = fontPx * 1.1;
+  const totalH = lineH * lines.length;
+  const cy = (CARD_H / 2) * SCALE;
+  const firstY = cy - totalH / 2 + lineH / 2;
+  for (let i = 0; i < lines.length; i++) {
+    ctx.fillText(lines[i], TEXT_LEFT * SCALE, firstY + i * lineH);
   }
-  ctx.fillText(text, TEXT_LEFT * SCALE, baseY);
   ctx.restore();
 
   return canvasToBlob(canvas);
+}
+
+function wrapToLines(
+  ctx: CanvasRenderingContext2D,
+  text: string,
+  maxW: number,
+  maxLines: number,
+): string[] | null {
+  const words = text.split(/\s+/).filter(Boolean);
+  if (words.length === 0) return [text];
+  const lines: string[] = [];
+  let cur = "";
+  for (const word of words) {
+    const next = cur ? `${cur} ${word}` : word;
+    if (ctx.measureText(next).width <= maxW) {
+      cur = next;
+    } else {
+      if (cur) lines.push(cur);
+      if (ctx.measureText(word).width > maxW) return null; // single word too wide
+      cur = word;
+      if (lines.length >= maxLines) return null;
+    }
+  }
+  if (cur) lines.push(cur);
+  return lines.length <= maxLines ? lines : null;
+}
+
+function fitText(
+  ctx: CanvasRenderingContext2D,
+  text: string,
+  maxW: number,
+  maxH: number,
+  startPx: number,
+  minPx: number,
+): { lines: string[]; fontPx: number } {
+  for (let size = startPx; size >= minPx; size -= 2) {
+    ctx.font = `${size}px "${CARD_FONT_FAMILY}", monospace`;
+    const lineH = size * 1.1;
+    const maxLines = Math.max(1, Math.floor(maxH / lineH));
+    for (let n = 1; n <= Math.min(maxLines, 3); n++) {
+      const lines = wrapToLines(ctx, text, maxW, n);
+      if (lines && lines.length * lineH <= maxH) {
+        return { lines, fontPx: size };
+      }
+    }
+  }
+  // Last resort: force a single line at min size
+  ctx.font = `${minPx}px "${CARD_FONT_FAMILY}", monospace`;
+  return { lines: [text], fontPx: minPx };
 }
 
 function canvasToBlob(canvas: HTMLCanvasElement): Promise<Blob> {
