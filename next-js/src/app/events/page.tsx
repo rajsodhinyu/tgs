@@ -53,10 +53,10 @@ export default async function Page() {
 
   return (
     <div>
-      <h1 className="text-2xl sm:text-4xl font-bold font-title text-white uppercase mx-4 sm:mx-6">
+      <h1 className="text-4xl font-title font-bold text-white uppercase">
         Events
       </h1>
-      <div className="grid lg:grid-cols-5 sm:grid-cols-4 grid-cols-2 max-sm:mx-2 md:p-2 pt-4 gap-2">
+      <div className="grid lg:grid-cols-5 sm:grid-cols-4 grid-cols-2 md:p-2 mt-4 gap-2">
         {events.map((event) => (
           <div className="group rounded-lg" key={event._id}>
             <Link className=" decoration-tgs-purple" href={`${event.link}`}>

@@ -20,19 +20,26 @@ const FLAME_COLORS: [number, number, number][] = [
   [255, 255, 255], // white (hot core)
 ];
 
+const OVERSIZE = 1.25;
+
 export const fireSketch = (s: p5) => {
-  let width = s.windowWidth;
-  let height = s.windowHeight;
+  let width = Math.ceil(s.windowWidth * OVERSIZE);
+  let height = Math.ceil(s.windowHeight * OVERSIZE);
   const embers: Ember[] = [];
 
   s.windowResized = () => {
-    s.resizeCanvas(s.windowWidth, s.windowHeight);
-    width = s.windowWidth;
-    height = s.windowHeight;
+    width = Math.ceil(s.windowWidth * OVERSIZE);
+    height = Math.ceil(s.windowHeight * OVERSIZE);
+    s.resizeCanvas(width, height);
   };
 
   s.setup = () => {
-    s.createCanvas(width, height);
+    const canvas = s.createCanvas(width, height);
+    canvas.parent("p5-background");
+    canvas.style("position", "absolute");
+    canvas.style("bottom", "0");
+    canvas.style("left", "50%");
+    canvas.style("transform", "translateX(-50%)");
     s.noStroke();
   };
 

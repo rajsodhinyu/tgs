@@ -18,7 +18,12 @@ const P5Background = ({ sketch }: { sketch: Sketch }) => {
     };
   }, [sketch]);
 
-  return <div id="p5-background"></div>;
+  return (
+    <div
+      id="p5-background"
+      className="fixed inset-0 -z-10 overflow-hidden pointer-events-none"
+    ></div>
+  );
 };
 
 export default P5Background;

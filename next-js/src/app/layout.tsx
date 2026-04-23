@@ -67,9 +67,10 @@ export default async function RootLayout({
           name="viewport"
           content="width=device-width, initial-scale=0.99"
         ></meta>
+        <meta name="theme-color" content="#191A24" />
       </head>
       <body
-        className={`${bitcount.variable} ${roc.variable} ${bitcount_fill.variable} bg-tgs-background`}
+        className={`${bitcount.variable} ${roc.variable} ${bitcount_fill.variable} bg-[#191A24]`}
       >
         <audio loop id="myAudio" src={song}></audio>
         <SotDataProvider value={sotdata}>

@@ -49,10 +49,10 @@ export default async function Page() {
   }
   return (
     <div>
-      <h1 className="text-2xl sm:text-4xl font-bold font-title text-white uppercase mx-4 sm:mx-6">
+      <h1 className="text-4xl font-title font-bold text-white uppercase">
         Blog
       </h1>
-      <div className="grid lg:grid-cols-3 sm:grid-cols-3 grid-cols-2 mx-3 md:p-2 pt-2 gap-2">
+      <div className="grid xl:grid-cols-5 lg:grid-cols-4 sm:grid-cols-3 grid-cols-2 md:p-2 mt-4 gap-2">
         {blogs.map((blog) => (
           <div
             className="group flex flex-col text-center justify-around"
