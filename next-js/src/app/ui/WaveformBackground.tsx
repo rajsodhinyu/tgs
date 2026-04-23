@@ -11,6 +11,7 @@ type AudioTap = {
   ctx: AudioContext;
   analyser: AnalyserNode;
   timeData: Uint8Array;
+  audio: HTMLAudioElement;
 };
 
 // MediaElementAudioSourceNode can only be created once per <audio> element —
@@ -49,6 +50,7 @@ function getAudioTap(): AudioTap | null {
       ctx,
       analyser,
       timeData: new Uint8Array(analyser.fftSize),
+      audio,
     };
     audio.__tgsAudioTap = tap;
     return tap;
@@ -98,7 +100,7 @@ export const waveformSketch = (s: p5) => {
 
   const sampleFrame = (): Float32Array => {
     const out = new Float32Array(SAMPLES);
-    if (tap && tap.ctx.state === "running") {
+    if (tap && tap.ctx.state === "running" && !tap.audio.paused) {
       tap.analyser.getByteTimeDomainData(tap.timeData);
       const step = tap.timeData.length / SAMPLES;
       for (let i = 0; i < SAMPLES; i++) {
