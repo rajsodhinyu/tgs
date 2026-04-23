@@ -27,6 +27,11 @@ function getAudioTap(): AudioTap | null {
   if (!audio) return null;
   if (audio.__tgsAudioTap) return audio.__tgsAudioTap;
 
+  // Without CORS, createMediaElementSource would permanently reroute the audio
+  // element's output through Web Audio but return silence — breaking playback.
+  // Skip the tap entirely unless the element is explicitly CORS-opted-in.
+  if (!audio.crossOrigin) return null;
+
   try {
     const Ctx =
       window.AudioContext ||

@@ -57,6 +57,10 @@ export default async function RootLayout({
     query: SONG_QUERY3,
   });
   song = `${songs.file?.asset.url}`;
+  const audioSrc =
+    song && song.startsWith("https://cdn.sanity.io/")
+      ? `/api/sotd-stream?src=${encodeURIComponent(song)}`
+      : song;
   const sotdata = { artist: songs.artist, name: songs.name };
 
   return (
@@ -72,7 +76,7 @@ export default async function RootLayout({
       <body
         className={`${bitcount.variable} ${roc.variable} ${bitcount_fill.variable} bg-[#191A24]`}
       >
-        <audio loop id="myAudio" src={song} crossOrigin="anonymous"></audio>
+        <audio loop id="myAudio" src={audioSrc} crossOrigin="anonymous"></audio>
         <SotDataProvider value={sotdata}>
           <main>{children}</main>
         </SotDataProvider>
