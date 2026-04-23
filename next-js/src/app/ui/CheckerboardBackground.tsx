@@ -33,9 +33,7 @@ export const checkerboardSketch = (s: p5) => {
         let x = i * gridSize;
         let y = j * gridSize;
 
-        let dx = 0.1 * s.mouseX - x - 1000;
-        let dy = 0.1 * s.mouseY - y - 1000;
-        let dist = s.sqrt(dx * dx + dy * dy);
+        let dist = s.sqrt(x * x + y * y);
 
         let offsetX = s.cos(s.frameCount * 0.01 + dist * 0.2) * elasticity;
         let offsetY = s.cos(s.frameCount * 0.01 + dist * 0.2) * elasticity;

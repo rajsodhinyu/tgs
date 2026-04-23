@@ -828,6 +828,9 @@ export function SotdCalendar() {
                 {playingSong && (
                   <span
                     style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '4px',
                       fontSize: '0.65rem',
                       backgroundColor: '#6c5cbe',
                       color: '#fff',
@@ -835,9 +838,9 @@ export function SotdCalendar() {
                       whiteSpace: 'nowrap',
                       overflow: 'hidden',
                       textOverflow: 'ellipsis',
-                      border: '1px 1px 1px 1px solid #6c5cbe',
+                      border: '1px solid #6c5cbe',
                       borderRadius: '4px',
-                      padding: '2px 4px',
+                      padding: '2px 8px 2px 2px',
                     }}
                   >
                     <PlayButton $playing onClick={handleGlobalPlayPause}>
