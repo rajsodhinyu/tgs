@@ -72,7 +72,7 @@ export default async function RootLayout({
       <body
         className={`${bitcount.variable} ${roc.variable} ${bitcount_fill.variable} bg-[#191A24]`}
       >
-        <audio loop id="myAudio" src={song}></audio>
+        <audio loop id="myAudio" src={song} crossOrigin="anonymous"></audio>
         <SotDataProvider value={sotdata}>
           <main>{children}</main>
         </SotDataProvider>
