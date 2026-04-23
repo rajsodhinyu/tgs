@@ -364,7 +364,6 @@ export default async function Page({
   const post = posts[0];
   return (
     <div className="font-roc text-lg text-white max-[300px]:w-80">
-      <div className="absolute inset-0 -z-10 bg-tgs-background" />
       <div className="place-items-center">{renderBanner(post)}</div>
       <div className="text-xl sm:text-2xl md:text-3xl xl:text-4xl font-bold font-title mt-4 text-center uppercase">
         {/* Title */}
