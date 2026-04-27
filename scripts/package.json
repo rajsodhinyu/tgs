@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "capture": "node capture-homepage.js"
   },
   "keywords": [],
   "author": "",
@@ -18,6 +19,7 @@
     "music-metadata": "^11.8.3",
     "ora": "^8.2.0",
     "p-limit": "^7.1.1",
+    "puppeteer": "^23.0.0",
     "uuid": "^11.1.0"
   }
 }
