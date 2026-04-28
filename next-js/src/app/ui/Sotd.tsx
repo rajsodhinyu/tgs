@@ -32,7 +32,7 @@ export default function Sotd() {
             min-w-7 truncate
             text-2xl"
           >
-            {`"${sotdata.name}"`}
+            {sotdata.name}
             <div
               className="
               text-xl"
