@@ -1,7 +1,7 @@
 "use client";
 import dynamic from "next/dynamic";
 import * as React from "react";
-import { useEffect, useRef } from "react";
+import { Suspense, useEffect, useRef } from "react";
 import { useSearchParams } from "next/navigation";
 import { useSotData } from "./context/SotDataContext";
 import Link from "next/link";
@@ -25,6 +25,14 @@ function catchClick() {
 }
 
 export default function Page() {
+  return (
+    <Suspense fallback={null}>
+      <PageInner />
+    </Suspense>
+  );
+}
+
+function PageInner() {
   const sotdata = useSotData();
   const discRef = useRef<HTMLImageElement>(null);
   const searchParams = useSearchParams();
