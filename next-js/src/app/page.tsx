@@ -190,7 +190,7 @@ function PageInner() {
               <div className={isCapture ? "text-3xl" : "md:text-xl text-sm"}>
                 {`${todayDate}`}
               </div>
-              {`"${sotdata.name}"`}
+              {sotdata.name}
               <div className={isCapture ? "text-5xl" : "md:text-3xl text-lg"}>
                 {`${sotdata.artist}`}
               </div>

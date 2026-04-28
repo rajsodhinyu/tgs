@@ -66,7 +66,7 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <head>
-        <title>{`ThatGoodSh*t: "${songs.name}" - ${songs.artist}`}</title>
+        <title>{`ThatGoodSh*t: ${songs.name} - ${songs.artist}`}</title>
         <meta
           name="viewport"
           content="width=device-width, initial-scale=0.99"
