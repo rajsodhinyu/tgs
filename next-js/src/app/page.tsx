@@ -6,20 +6,45 @@ import { useSearchParams } from "next/navigation";
 import { useSotData } from "./context/SotDataContext";
 import Link from "next/link";
 
-const DynamicComponentWithNoSSR = dynamic(() => import("./ui/WaveformBackground"), {
+const DynamicComponentWithNoSSR = dynamic(
+  () => import("./ui/WaveformBackground"),
+  {
+    ssr: false,
+    loading: () => (
+      <p className="font-title text-xl absolute top-1/4 left-1/2 transform -translate-x-1/2 +translate-y-3/4 text-tgs-dark-purple">
+        Loading That Good Sh*t...
+      </p>
+    ),
+  },
+);
+
+const DiagnosticOverlay = dynamic(() => import("./ui/DiagnosticOverlay"), {
   ssr: false,
-  loading: () => (
-    <p className="font-title text-xl absolute top-1/4 left-1/2 transform -translate-x-1/2 +translate-y-3/4 text-tgs-dark-purple">
-      Loading That Good Sh*t...
-    </p>
-  ),
 });
 
-function catchClick() {
-  let audio = document.getElementById("myAudio") as HTMLAudioElement;
+let pendingPlay: Promise<void> | null = null;
+async function catchClick() {
+  const audio = document.getElementById("myAudio") as HTMLAudioElement & {
+    __tgsAudioTap?: { ctx: AudioContext };
+  };
+  // If the waveform sketch has tapped the element, its AudioContext starts
+  // suspended and audio will be silent until resumed. Resume synchronously
+  // inside the user gesture before calling play().
+  const ctx = audio.__tgsAudioTap?.ctx;
+  if (ctx && ctx.state === "suspended") {
+    ctx.resume().catch(() => {});
+  }
   if (audio.paused) {
-    audio.play();
+    try {
+      pendingPlay = audio.play();
+      await pendingPlay;
+    } catch {
+      // Pending play() was interrupted by a pause — expected.
+    } finally {
+      pendingPlay = null;
+    }
   } else {
+    if (pendingPlay) await pendingPlay.catch(() => {});
     audio.pause();
   }
 }
@@ -47,17 +72,26 @@ function PageInner() {
 
     const syncDisc = () => {
       if (!discRef.current) return;
-      discRef.current.className = audio.paused
-        ? "cd-disc"
-        : "cd-disc-going animate-spin";
+      const actuallyPlaying =
+        !audio.paused && audio.readyState >= 3 && !audio.seeking;
+      discRef.current.className = actuallyPlaying
+        ? "cd-disc-going animate-spin"
+        : "cd-disc";
     };
 
     syncDisc();
-    audio.addEventListener("play", syncDisc);
-    audio.addEventListener("pause", syncDisc);
+    const events = [
+      "playing",
+      "waiting",
+      "pause",
+      "ended",
+      "stalled",
+      "seeking",
+      "seeked",
+    ];
+    events.forEach((ev) => audio.addEventListener(ev, syncDisc));
     return () => {
-      audio.removeEventListener("play", syncDisc);
-      audio.removeEventListener("pause", syncDisc);
+      events.forEach((ev) => audio.removeEventListener(ev, syncDisc));
     };
   }, []);
 
@@ -74,6 +108,7 @@ function PageInner() {
   });
   return (
     <div>
+      {/*{process.env.NODE_ENV === "development" && <DiagnosticOverlay />}*/}
       <div>
         {/* Graphic */}
         <DynamicComponentWithNoSSR />
@@ -103,7 +138,11 @@ function PageInner() {
             </div>
           </Link>
           {/* Events */}
-          <Link className="" href={"https://www.patreon.com/thatgoodshit"} scroll={false}>
+          <Link
+            className=""
+            href={"https://www.patreon.com/thatgoodshit"}
+            scroll={false}
+          >
             <div className="absolute bottom-0 left-0">
               <img
                 className="h-10 md:h-16 md:m-10 m-2"
@@ -126,8 +165,10 @@ function PageInner() {
       )}
       {/* Disc */}
       {!hideDisc && (
-        <div onClick={catchClick}>
-          <div className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 ${isCapture ? "size-[640px]" : "size-60 md:size-96"}`}>
+        <div onClick={catchClick} data-disc>
+          <div
+            className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 ${isCapture ? "size-[640px]" : "size-60 md:size-96"}`}
+          >
             <img
               ref={discRef}
               className="cd-disc"
@@ -139,27 +180,23 @@ function PageInner() {
       )}
       {/* Song Title and Artist */}
       {!hideTitleCard && (
-      <div>
-        <div
-          className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 ${isCapture ? "translate-y-[360px] max-w-fit" : "translate-y-44 md:translate-y-52 lg:translate-y-64 max-w-72 md:max-w-96 lg:max-w-fit"} text-center rounded-md font-title flex bg-tgs-background ring ring-white text-white`}
-        >
+        <div>
           <div
-            className={`min-w-0 truncate ${isCapture ? "py-5 px-12 text-6xl" : "py-2 px-7 md:py-3 md:px-9 md:text-4xl text-xl"}`}
+            className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 ${isCapture ? "translate-y-[360px] max-w-fit" : "translate-y-44 md:translate-y-52 lg:translate-y-64 max-w-72 md:max-w-96 lg:max-w-fit"} text-center rounded-md font-title flex bg-tgs-background ring ring-white text-white`}
           >
             <div
-              className={isCapture ? "text-3xl" : "md:text-xl text-sm"}
+              className={`min-w-0 truncate ${isCapture ? "py-5 px-12 text-6xl" : "py-2 px-7 md:py-3 md:px-9 md:text-4xl text-xl"}`}
             >
-              {`${todayDate}`}
-            </div>
-            {`"${sotdata.name}"`}
-            <div
-              className={isCapture ? "text-5xl" : "md:text-3xl text-lg"}
-            >
-              {`${sotdata.artist}`}
+              <div className={isCapture ? "text-3xl" : "md:text-xl text-sm"}>
+                {`${todayDate}`}
+              </div>
+              {`"${sotdata.name}"`}
+              <div className={isCapture ? "text-5xl" : "md:text-3xl text-lg"}>
+                {`${sotdata.artist}`}
+              </div>
             </div>
           </div>
         </div>
-      </div>
       )}
     </div>
   );
