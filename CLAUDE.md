@@ -63,11 +63,11 @@ Shopify Storefront API powers the shop. The shared client lives in `src/lib/shop
 | `shop/product/quintaro` | `quintaro-dvd` + `quintaro-cd` (two separate products) |
 
 ### p5.js Background Sketches (`next-js/src/app/ui/`)
-All homepage backgrounds are p5.js sketches loaded via `next/dynamic` with `ssr: false`. Each sketch file exports a default component and a named sketch function.
+All homepage backgrounds are p5.js sketches loaded via `next/dynamic` with `ssr: false`. Each sketch file exports a default component and a named sketch function. The active background changes from time to time — check the dynamic import in `page.tsx` for the current one.
 
 - `P5Background.tsx` — Reusable wrapper that handles p5 instance lifecycle (mount, resize, cleanup). All sketch components use this. Accepts a `sketch: (s: p5) => void` prop.
 - `Backround.tsx` — **Grid**: Warped rectangle grid using `atan`/`tan` offsets. Dark background (`rgb(26, 27, 35)`). Exports `gridSketch`.
-- `FireworksBackground.tsx` — **Fireworks** (currently active on homepage): Particles launch and explode in TGS brand colors with gravity and trails. Exports `fireworksSketch`.
+- `FireworksBackground.tsx` — **Fireworks**: Particles launch and explode in TGS brand colors with gravity and trails. Exports `fireworksSketch`.
 - `CheckerboardBackground.tsx` — **Checkerboard**: Large tiles (90px) with gentle cosine wave motion, mouse-reactive. Purple background (`rgb(61, 53, 100)`). Exports `checkerboardSketch`.
 - `SpiralBackground.tsx` — **Spiral**: Grid tiles with sin/cos spiral radiating from screen center. Purple background. Exports `spiralSketch`.
 
