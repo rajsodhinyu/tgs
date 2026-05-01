@@ -11,11 +11,14 @@ type Note = {
 export const shinyNotesSketch = (s: p5) => {
   let noteTex: p5.Graphics;
   const notes: Note[] = [];
-  const NOTE_SIZE = 75;
   const SPIN_SPEED = 0.0085;
-  // Spin angle is integrated only while the SOTD audio is playing.
-  // Start at π/2 (edge-on) so notes are invisible until playback starts.
+  const DESKTOP_BREAKPOINT = 1024;
+  let noteSize = 110;
+  // Spin angle and shine sweep are both integrated only while the SOTD audio
+  // is playing. spinAngle starts at π/2 (edge-on) so notes are invisible
+  // until playback begins.
   let spinAngle = Math.PI / 2;
+  let shinePhase = 0;
 
   // Draws the note glyph at a dim base, then composites a moving diagonal
   // white stripe ON TOP — masked to the note shape via source-atop. After
@@ -73,11 +76,17 @@ export const shinyNotesSketch = (s: p5) => {
 
   const seedNotes = () => {
     notes.length = 0;
-    const cols = 3;
-    const rows = 6;
+    const isDesktop = s.windowWidth >= DESKTOP_BREAKPOINT;
+    // Desktop: two huge notes side by side.
+    // Smaller screens: 3×3 grid of normal-size notes.
+    const cols = isDesktop ? 2 : 3;
+    const rows = isDesktop ? 1 : 3;
     const margin = 1.0;
     const xSpan = s.windowWidth * margin;
     const ySpan = s.windowHeight * margin;
+    noteSize = isDesktop
+      ? Math.min(s.windowWidth * 0.42, s.windowHeight * 0.7)
+      : 110;
     for (let i = 0; i < cols * rows; i++) {
       const cx = i % cols;
       const cy = Math.floor(i / cols);
@@ -94,33 +103,30 @@ export const shinyNotesSketch = (s: p5) => {
   s.setup = () => {
     s.createCanvas(s.windowWidth, s.windowHeight, s.WEBGL);
     s.noStroke();
-    // Orthographic projection: all rays parallel, so a plane at rotateY(π/2)
-    // is genuinely edge-on regardless of its x position. With perspective the
-    // off-center columns showed a sliver when "invisible".
-    s.ortho();
     noteTex = s.createGraphics(256, 256);
     seedNotes();
   };
 
   s.windowResized = () => {
     s.resizeCanvas(s.windowWidth, s.windowHeight);
-    s.ortho();
     seedNotes();
   };
 
   s.draw = () => {
     s.background(61, 53, 100);
+    s.ortho();
 
     const audio = document.getElementById(
       "myAudio",
     ) as HTMLAudioElement | null;
     const isPlaying = !!audio && !audio.paused && !audio.ended;
-    if (isPlaying) spinAngle += SPIN_SPEED;
+    if (isPlaying) {
+      spinAngle += SPIN_SPEED;
+      shinePhase += 0.008;
+    }
 
     const t = s.frameCount * 0.02;
-    // Continuous sweep: stripe travels across, wraps, repeats.
-    const sweep = (s.frameCount * 0.008) % 1;
-    drawShinyNote(noteTex, sweep);
+    drawShinyNote(noteTex, shinePhase % 1);
 
     for (const n of notes) {
       const r = 200 + 55 * Math.sin(t * 0.9 + n.hueOffset);
@@ -132,7 +138,7 @@ export const shinyNotesSketch = (s: p5) => {
       s.rotateY(spinAngle);
       s.tint(r, g, b);
       s.texture(noteTex);
-      s.plane(NOTE_SIZE, NOTE_SIZE);
+      s.plane(noteSize, noteSize);
       s.pop();
     }
     s.noTint();
