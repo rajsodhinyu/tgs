@@ -7,7 +7,7 @@ import { useSotData } from "./context/SotDataContext";
 import Link from "next/link";
 
 const DynamicComponentWithNoSSR = dynamic(
-  () => import("./ui/CheckerboardBackground"),
+  () => import("./ui/CheckerboardStaticBackground"),
   {
     ssr: false,
     loading: () => (
@@ -182,7 +182,7 @@ function PageInner() {
       {!hideTitleCard && (
         <div>
           <div
-            className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 ${isCapture ? "translate-y-[360px] max-w-fit" : "translate-y-44 md:translate-y-52 lg:translate-y-64 max-w-72 md:max-w-96 lg:max-w-fit"} text-center rounded-md font-title flex bg-tgs-background ring ring-white text-white`}
+            className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 ${isCapture ? "translate-y-[500px] max-w-fit" : "translate-y-44 md:translate-y-52 lg:translate-y-64 max-w-72 md:max-w-96 lg:max-w-fit"} text-center rounded-md font-title flex bg-tgs-background ring ring-white text-white`}
           >
             <div
               className={`min-w-0 truncate ${isCapture ? "py-5 px-12 text-6xl" : "py-2 px-7 md:py-3 md:px-9 md:text-4xl text-xl"}`}

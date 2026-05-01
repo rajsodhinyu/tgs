@@ -52,15 +52,15 @@ export const checkerboardSketch = (s: p5) => {
   let width = s.windowWidth;
   let height = s.windowHeight;
 
-  let gridSize = 60;
+  let gridSize = 70;
   let cols = width / gridSize;
   let rows = height / gridSize;
   const baseElasticity = 0;
   const audioBoost = -1000;
-  let smoothedLevel = 0;
+  let smoothedLevel = 40;
   let phase = 0;
   let freezeFrames = 0;
-  const peakThreshold = 0.1; // raw level must exceed smoothed by this to count as a peak
+  const peakThreshold = 0.12; // raw level must exceed smoothed by this to count as a peak
   const freezeDuration = 8; // frames to hold the wobble still after a peak
   let tap: AudioTap | null = null;
 
