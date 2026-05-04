@@ -7,7 +7,7 @@ import { useSotData } from "./context/SotDataContext";
 import Link from "next/link";
 
 const DynamicComponentWithNoSSR = dynamic(
-  () => import("./ui/ShinyNotesBackground"),
+  () => import("./ui/PurpleSeaBackground"),
   {
     ssr: false,
     loading: () => (
@@ -118,7 +118,7 @@ function PageInner() {
         <Link className="" href={"/"} scroll={false}>
           <div className="absolute left-0 top-0">
             <img
-              className={isCapture ? "h-32 m-12" : "h-10 md:h-16 md:m-10 m-2 "}
+              className="h-10 md:h-16 md:m-10 m-2 "
               src="https://cdn.sanity.io/images/fnvy29id/tgs/6e0d6fefaf95cf0e570f958d10c13cf66265735a-1266x750.png?h=200"
               alt=""
             />
@@ -166,9 +166,7 @@ function PageInner() {
       {/* Disc */}
       {!hideDisc && (
         <div onClick={catchClick} data-disc>
-          <div
-            className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 ${isCapture ? "size-[640px]" : "size-60 md:size-96"}`}
-          >
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 size-60 md:size-96">
             <img
               ref={discRef}
               className="cd-disc"
@@ -181,19 +179,11 @@ function PageInner() {
       {/* Song Title and Artist */}
       {!hideTitleCard && (
         <div>
-          <div
-            className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 ${isCapture ? "translate-y-[500px] max-w-fit" : "translate-y-44 md:translate-y-52 lg:translate-y-64 max-w-72 md:max-w-96 lg:max-w-fit"} text-center rounded-md font-title flex bg-tgs-background ring ring-white text-white`}
-          >
-            <div
-              className={`min-w-0 truncate ${isCapture ? "py-5 px-12 text-6xl" : "py-2 px-7 md:py-3 md:px-9 md:text-4xl text-xl"}`}
-            >
-              <div className={isCapture ? "text-3xl" : "md:text-xl text-sm"}>
-                {`${todayDate}`}
-              </div>
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 translate-y-44 md:translate-y-52 lg:translate-y-64 max-w-72 md:max-w-96 lg:max-w-fit text-center rounded-md font-title flex bg-tgs-background ring ring-white text-white">
+            <div className="min-w-0 truncate py-2 px-7 md:py-3 md:px-9 md:text-4xl text-xl">
+              <div className="md:text-xl text-sm">{`${todayDate}`}</div>
               {sotdata.name}
-              <div className={isCapture ? "text-5xl" : "md:text-3xl text-lg"}>
-                {`${sotdata.artist}`}
-              </div>
+              <div className="md:text-3xl text-lg">{`${sotdata.artist}`}</div>
             </div>
           </div>
         </div>

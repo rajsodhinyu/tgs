@@ -44,8 +44,16 @@ const outMp4 =
   arg("--out") || path.join(outDir, `${today}${suffix}.mp4`);
 const tmpAudio = path.join(outDir, `tmp-audio-${process.pid}`);
 
+// Output video dimensions (1080x1920, 9:16). The browser renders at a
+// mobile-sized CSS viewport (CSS_W x CSS_H) and `deviceScaleFactor` upsamples
+// to the output dimensions — so the page sees a phone-shaped layout (mobile
+// Tailwind breakpoints, normal-size assets) instead of a 1080-wide desktop
+// where everything looks tiny in the 9:16 frame.
 const WIDTH = 1080;
 const HEIGHT = 1920;
+const CSS_W = 360;
+const CSS_H = 640;
+const DPR = WIDTH / CSS_W; // = 3
 
 async function checkDevServer() {
   try {
@@ -80,7 +88,7 @@ async function downloadAudio(url, dest) {
 
   const browser = await puppeteer.launch({
     headless: "new",
-    defaultViewport: { width: WIDTH, height: HEIGHT, deviceScaleFactor: 1 },
+    defaultViewport: { width: CSS_W, height: CSS_H, deviceScaleFactor: DPR },
     args: [
       "--autoplay-policy=no-user-gesture-required",
       "--hide-scrollbars",
@@ -93,7 +101,7 @@ async function downloadAudio(url, dest) {
   let audioPath;
   try {
     const page = await browser.newPage();
-    await page.setViewport({ width: WIDTH, height: HEIGHT, deviceScaleFactor: 1 });
+    await page.setViewport({ width: CSS_W, height: CSS_H, deviceScaleFactor: DPR });
     page.on("console", (m) => {
       if (m.type() === "error") console.error(`  [page error] ${m.text()}`);
     });
