@@ -8,7 +8,7 @@ const tileSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><
 const tileUrl = `url("data:image/svg+xml;utf8,${encodeURIComponent(tileSvg)}")`;
 
 // Tile size (px) on screen. Larger = bigger zebra motifs.
-const TILE = 240;
+const TILE = 100;
 
 const ZebraStripesBackground = () => {
   return (
@@ -22,11 +22,15 @@ const ZebraStripesBackground = () => {
       <div
         style={{
           position: "absolute",
-          inset: 0,
+          top: "50%",
+          left: "50%",
+          width: "200vmax",
+          height: "200vmax",
+          transform: "translate(-50%, -50%) rotate(45deg)",
           backgroundImage: tileUrl,
           backgroundRepeat: "repeat",
           backgroundSize: `${TILE}px ${TILE}px`,
-          animation: "zebraDrift 12s linear infinite",
+          animation: "zebraDrift 6s linear infinite",
           willChange: "background-position",
         }}
       />
