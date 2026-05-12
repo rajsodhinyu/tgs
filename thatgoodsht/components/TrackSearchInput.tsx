@@ -246,10 +246,10 @@ export function TrackSearchInput(props: any) {
 
   const hasValue = value?.trackName
 
-  // Auto-enter apple step when a track is already saved
+  // Auto-enter search ("change song") step when a track is already saved
   useEffect(() => {
     if (hasValue && !editing) {
-      startEditing('apple')
+      startEditing('search')
     }
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
