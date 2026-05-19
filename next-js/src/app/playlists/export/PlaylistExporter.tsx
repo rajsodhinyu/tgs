@@ -492,7 +492,8 @@ export default function PlaylistExporter({
                 <button
                   onClick={() =>
                     copyText(
-                      tracks
+                      [...tracks]
+                        .reverse()
                         .map((t) => `${t.name} — ${t.artist}`)
                         .join("\n"),
                       "tracks",

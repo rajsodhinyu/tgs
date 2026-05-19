@@ -92,7 +92,11 @@ async function downloadAudio(url, dest) {
     args: [
       "--autoplay-policy=no-user-gesture-required",
       "--hide-scrollbars",
-      "--mute-audio=false",
+      // Mute Chrome's system audio output: we don't capture from it (audio is
+      // downloaded separately and muxed by ffmpeg), and headless Chrome's
+      // audio device drive can hitch ~10s in. The Web Audio analyser still
+      // receives data, so audio-reactive sketches keep working.
+      "--mute-audio",
       `--window-size=${WIDTH},${HEIGHT}`,
     ],
   });
@@ -193,20 +197,60 @@ async function downloadAudio(url, dest) {
       } catch (e) {}
     });
 
-    // Reset audio to 0, disable looping, then play
-    await page.evaluate(() => {
+    // Warmup: wait for the p5 canvas to mount, fonts to load, and a few
+    // animation frames to elapse so JIT + noise() init + font swap settle
+    // before we start rolling tape. Without this, the first ~30 captured
+    // frames are jittery and show a half-rendered page.
+    await page.waitForSelector("canvas", { timeout: 10_000 });
+    await page.evaluate(() =>
+      document.fonts ? document.fonts.ready : Promise.resolve(),
+    );
+    await page.evaluate(
+      () =>
+        new Promise((r) => {
+          let n = 0;
+          const tick = () => (++n >= 30 ? r() : requestAnimationFrame(tick));
+          requestAnimationFrame(tick);
+        }),
+    );
+
+    // Pre-roll the audio: prime currentTime=0 + readiness BEFORE play, so the
+    // play() call lands on a buffered, decoded element with no extra startup.
+    await page.evaluate(async () => {
       const a = document.getElementById("myAudio");
       a.pause();
       a.currentTime = 0;
       a.loop = false;
-      return a.play().catch(() => {});
+      if (a.readyState < 3) {
+        await new Promise((r) => {
+          const done = () => {
+            a.removeEventListener("canplaythrough", done);
+            r();
+          };
+          a.addEventListener("canplaythrough", done, { once: true });
+          a.load();
+        });
+      }
     });
 
+    // Start screencast first so video is rolling before any audio sample
+    // plays, then kick off audio on the next frame boundary. This keeps
+    // ffmpeg's t=0 frame and the first audio sample aligned within ~1 frame.
     await cdp.send("Page.startScreencast", {
       format: "jpeg",
       quality: 90,
       everyNthFrame: 1,
     });
+    await page.evaluate(
+      () =>
+        new Promise((r) => {
+          requestAnimationFrame(() => {
+            const a = document.getElementById("myAudio");
+            a.play().catch(() => {});
+            r();
+          });
+        }),
+    );
 
     console.log(`→ Recording ${recordSeconds.toFixed(1)}s…`);
     await new Promise((r) => setTimeout(r, recordSeconds * 1000));
