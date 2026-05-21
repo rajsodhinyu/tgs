@@ -45,9 +45,25 @@ Quote the folder path (it usually has spaces or underscores). Timestamps can be 
 
 If the user wanted non-default pairings (rare), fall back to running the interactive prompts manually in their own terminal — Claude's piped stdin doesn't work reliably with readline.
 
+## Re-rendering individual videos with --only
+
+When the user wants to redo just one (or a few) videos — e.g. "redo post 5 with an 8s start" — use `--only` instead of `--auto`. It renders only the listed images and leaves the rest untouched:
+
+```bash
+pnpm playlist-carousel "scripts/carousels/<folder>" --only 6:8
+pnpm playlist-carousel "scripts/carousels/<folder>" --only 6:0:08,3:1:15
+```
+
+Each spec is `index:timestamp`, comma-separated. The **index is 1-based**, matching the `[N]` image list the script prints — it is *not* the trailing number in the filename. Translate the user's reference into the right index:
+
+- Files sort numerically, so `Instagram post - 0.png` is index `[1]`, `post - 1` is `[2]`, … `post - N` is `[N+1]`.
+- So "post 5" → index `6`, "post 0" → index `1`.
+
+Timestamps accept `mm:ss` or seconds; only the first colon splits the spec, so `6:1:15` means image 6 at `1:15`.
+
 ## Step 5 — Report results
 
-When ffmpeg finishes, list the generated `.mp4` files in `scripts/carousels/<folder>/render/` and tell the user they're ready to AirDrop.
+When ffmpeg finishes, list the generated `.mp4` files in `scripts/carousels/<folder>/render/` and tell the user they're ready to AirDrop. For an `--only` re-render, just report the videos that were re-rendered.
 
 ## Notes
 

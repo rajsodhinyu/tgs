@@ -4,6 +4,12 @@
  *
  * Usage:
  *   node make-carousel-videos.js <folder>
+ *   node make-carousel-videos.js <folder> --auto t1,t2,t3,...   (render all, 1:1 pairings)
+ *   node make-carousel-videos.js <folder> --only 6:8,2:1:15     (render just those images)
+ *
+ * --only takes "index:timestamp" specs (comma-separated). Index is 1-based,
+ * matching the [N] image list the script prints. Use it to re-render a single
+ * video without touching the rest.
  *
  * Interactive flow:
  *   1. Lists images and mp3s in the folder.
@@ -101,11 +107,13 @@ function render(image, audio, startSec, output) {
 }
 
 function parseArgs(argv) {
-  const args = { folder: null, auto: null };
+  const args = { folder: null, auto: null, only: null };
   for (let i = 2; i < argv.length; i++) {
     const a = argv[i];
     if (a === '--auto') {
       args.auto = argv[++i];
+    } else if (a === '--only') {
+      args.only = argv[++i];
     } else if (!args.folder) {
       args.folder = a;
     }
@@ -114,9 +122,11 @@ function parseArgs(argv) {
 }
 
 async function main() {
-  const { folder, auto } = parseArgs(process.argv);
+  const { folder, auto, only } = parseArgs(process.argv);
   if (!folder) {
-    console.error('Usage: node make-carousel-videos.js <folder> [--auto t1,t2,t3,...]');
+    console.error(
+      'Usage: node make-carousel-videos.js <folder> [--auto t1,t2,...] [--only index:timestamp,...]'
+    );
     process.exit(1);
   }
   const dir = path.resolve(folder);
@@ -159,6 +169,36 @@ async function main() {
         process.exit(1);
       }
       jobs.push({ image: images[i], audio: audios[i], startSec });
+    }
+  } else if (only != null) {
+    // --only mode: render just the listed images. Each spec is "index:timestamp",
+    // comma-separated. Index is 1-based, matching the [N] image list printed above.
+    // Timestamp may contain colons (mm:ss), so only the FIRST colon splits the spec.
+    // e.g. --only 6:8  or  --only 2:1:15,6:0:08
+    const specs = only.split(',').map((s) => s.trim()).filter(Boolean);
+    if (specs.length === 0) {
+      console.error('--only needs at least one "index:timestamp" spec.');
+      process.exit(1);
+    }
+    for (const spec of specs) {
+      const ci = spec.indexOf(':');
+      const idxStr = ci === -1 ? spec : spec.slice(0, ci);
+      const tsStr = ci === -1 ? '0' : spec.slice(ci + 1);
+      const idx = Number(idxStr);
+      if (!Number.isInteger(idx) || idx < 1 || idx > images.length) {
+        console.error(`--only: image index "${idxStr}" out of range (1-${images.length}).`);
+        process.exit(1);
+      }
+      if (idx > audios.length) {
+        console.error(`--only: no audio paired with image ${idx}.`);
+        process.exit(1);
+      }
+      const startSec = parseTimestamp(tsStr);
+      if (startSec === null) {
+        console.error(`--only: could not parse timestamp "${tsStr}" for image ${idx}.`);
+        process.exit(1);
+      }
+      jobs.push({ image: images[idx - 1], audio: audios[idx - 1], startSec });
     }
   } else {
   const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
