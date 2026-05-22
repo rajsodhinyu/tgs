@@ -3,7 +3,7 @@ import Sidebar from "./sidebar";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="relative min-w-80 pb-10 min-h-screen">
+    <div className="relative isolate min-w-80 pb-10 min-h-screen">
       <Nav />
       <div className="w-full px-3 sm:flex-wrap md:flex-nowrap md:inline-flex md:flex-row md:justify-between xl:w-screen max-md:place-items-center">
         <div className="w-full">{children}</div>

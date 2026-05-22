@@ -78,7 +78,9 @@ export default async function RootLayout({
       >
         <audio loop id="myAudio" src={audioSrc} crossOrigin="anonymous"></audio>
         <SotDataProvider value={sotdata}>
-          <main>{children}</main>
+          <main className="min-h-screen bg-gradient-radial from-tgs-dark-purple to-tgs-pink">
+            {children}
+          </main>
         </SotDataProvider>
         <Analytics />
         <SpeedInsights />

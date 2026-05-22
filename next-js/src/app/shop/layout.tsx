@@ -4,7 +4,7 @@ import ChevronDots from "../components/ChevronDots";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="h-full pb-10 min-h-screen bg-gradient-radial from-tgs-dark-purple to-tgs-pink">
+    <div className="h-full pb-10 min-h-screen">
       <Nav />
       <div className="mx-6 -mt-1 max-sm:mt-3">
         <div className="text-4xl font-title font-bold text-white text-left flex justify-between place-items-center uppercase">
