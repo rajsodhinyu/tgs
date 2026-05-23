@@ -70,6 +70,7 @@ All homepage backgrounds are p5.js sketches loaded via `next/dynamic` with `ssr:
 - `FireworksBackground.tsx` — **Fireworks**: Particles launch and explode in TGS brand colors with gravity and trails. Exports `fireworksSketch`.
 - `CheckerboardBackground.tsx` — **Checkerboard**: Large tiles (90px) with gentle cosine wave motion, mouse-reactive. Purple background (`rgb(61, 53, 100)`). Exports `checkerboardSketch`.
 - `SpiralBackground.tsx` — **Spiral**: Grid tiles with sin/cos spiral radiating from screen center. Purple background. Exports `spiralSketch`.
+- `GlitchBackground.tsx` — **Glitch**: The halftone dot grid (from `HalftoneBackground`) rendered to an offscreen buffer, then copied back row-by-row with horizontal slice displacement (pixel-sort / "melting" effect) that intensifies toward the bottom. Exports `glitchSketch`.
 
 To swap the homepage background, change the dynamic import in `page.tsx`:
 ```tsx

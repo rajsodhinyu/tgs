@@ -7,7 +7,7 @@ import { useSotData } from "./context/SotDataContext";
 import Link from "next/link";
 
 const DynamicComponentWithNoSSR = dynamic(
-  () => import("./ui/HalftoneBackground"),
+  () => import("./ui/GlitchBackground"),
   {
     ssr: false,
     loading: () => (
