@@ -263,9 +263,10 @@ const components: PortableTextComponents = {
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ slug: string | string[] }>;
 }): Promise<Metadata> {
-  const slug = (await params).slug;
+  const slugParam = (await params).slug;
+  const slug = Array.isArray(slugParam) ? slugParam.join("/") : slugParam;
   const SLUG_QUERY = `*[_type == "post" && slug.current == "${slug}"]{_id, name, youtubeURL, thumb, writer, banner, playlistURL, appleMusicURL, content, slug, date, description}`;
   const posts = await sanityFetch<SanityDocument[]>({ query: SLUG_QUERY });
   const post = posts[0];
@@ -294,6 +295,9 @@ export async function generateMetadata({
     }
 
     // Use banner if available, otherwise use thumb
+    if (post.banner) {
+      return urlFor(post.banner)?.width(1280).height(720)?.url();
+    }
     if (post.thumb) {
       return urlFor(post.thumb)?.fit("crop").width(700).height(700)?.url();
     }
@@ -356,9 +360,10 @@ export async function generateMetadata({
 export default async function Page({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ slug: string | string[] }>;
 }) {
-  const slug = (await params).slug;
+  const slugParam = (await params).slug;
+  const slug = Array.isArray(slugParam) ? slugParam.join("/") : slugParam;
   const SLUG_QUERY = `*[_type == "post" && slug.current == "${slug}"]{_id, name, youtubeURL, thumb, writer, banner, playlistURL, appleMusicURL, content, slug, date, description, private}`;
   const posts = await sanityFetch<SanityDocument[]>({ query: SLUG_QUERY });
   const post = posts[0];
