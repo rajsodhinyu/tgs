@@ -1,7 +1,17 @@
 node_modules/
 .env
-*.ndjson
 *.tar.gz
-output/
-temp/
-/mp3-data.json
+
+# SOTD import — intermediate artifacts, regenerated each run
+*.ndjson
+/sotd-import/mp3-data.json
+
+# Media tooling — keep the scripts, ignore the heavy input/output media
+/homepage-capture/captures/
+/bg-audio/
+/greenscreen/*
+!/greenscreen/render.sh
+/endcards/*
+!/endcards/render.sh
+!/endcards/make-endcard-clip.sh
+!/endcards/mask.png

@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "capture": "node scripts/capture-homepage.js",
-    "playlist-carousel": "node scripts/make-carousel-videos.js"
+    "capture": "node scripts/homepage-capture/capture-homepage.js",
+    "bg-audio": "node scripts/make-bg-audio.js"
   },
   "author": "",
   "license": "ISC"

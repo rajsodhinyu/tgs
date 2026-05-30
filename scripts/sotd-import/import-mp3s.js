@@ -105,7 +105,7 @@ async function createBackup() {
       "sanity",
       ["dataset", "export", "tgs", "--path", backupFile],
       {
-        cwd: path.join(__dirname, "..", "thatgoodsht"),
+        cwd: path.join(__dirname, "..", "..", "thatgoodsht"),
         stdio: "inherit",
       },
     );
@@ -142,7 +142,7 @@ async function runSanityImport(ndjsonPath) {
         "--replace",
       ],
       {
-        cwd: path.join(__dirname, "..", "thatgoodsht"),
+        cwd: path.join(__dirname, "..", "..", "thatgoodsht"),
         stdio: "inherit",
       },
     );
@@ -236,10 +236,10 @@ async function main() {
       console.log(chalk.gray(`  • ${jsonPath} - Extracted MP3 metadata`));
       console.log(chalk.gray(`  • import.ndjson - Sanity import file`));
       console.log(chalk.gray("\nTo run the actual import:"));
-      console.log(chalk.cyan("  cd ../thatgoodsht"));
+      console.log(chalk.cyan("  cd ../../thatgoodsht"));
       console.log(
         chalk.cyan(
-          `  sanity dataset import ../scripts/import.ndjson tgs --replace`,
+          `  sanity dataset import ../scripts/sotd-import/import.ndjson tgs --replace`,
         ),
       );
     } else {

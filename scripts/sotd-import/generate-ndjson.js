@@ -199,10 +199,10 @@ if (require.main === module) {
       const result = await generateFromJSON(inputPath, outputPath);
       console.log(chalk.green(`\n✨ Ready for import!`));
       console.log(chalk.gray(`\nNext step: Run the import command:`));
-      console.log(chalk.cyan(`  cd ../thatgoodsht`));
+      console.log(chalk.cyan(`  cd ../../thatgoodsht`));
       console.log(
         chalk.cyan(
-          `  sanity dataset import ../scripts/${result.outputPath} tgs --replace\n`,
+          `  sanity dataset import ../scripts/sotd-import/${result.outputPath} tgs --replace\n`,
         ),
       );
     } catch (error) {

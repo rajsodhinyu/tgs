@@ -1,152 +1,73 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+Guidance for Claude Code working in this repo. This file is an **index + gotchas**,
+not a manual — it points you to the file to read when a task actually needs it.
 
 ## Project Overview
 
-ThatGoodSht (TGS) is an independent music curation platform. The repo is a monorepo with two packages:
+ThatGoodSht (TGS) is an independent music curation platform. Monorepo, three packages
+(no root workspace — each has its own `pnpm-lock.yaml`):
 
-- **`next-js/`** — Next.js 15 frontend (App Router, React 18, TypeScript, Tailwind CSS)
-- **`thatgoodsht/`** — Sanity v3 CMS backend (content studio)
-- **`scripts/`** — Song of the Day (SOTD) bulk import tooling (Node.js)
+- **`next-js/`** — Next.js 15 frontend (App Router, React 18, TypeScript, Tailwind)
+- **`thatgoodsht/`** — Sanity v3 CMS (content studio)
+- **`scripts/`** — Standalone media/video tooling + SOTD bulk import (Node / bash + ffmpeg). See [scripts/ tooling](#scripts-tooling).
 
 ## Commands
 
-All commands use **pnpm**. Each package has its own `pnpm-lock.yaml`; there is no root workspace config.
+All **pnpm**. Run inside the relevant package.
 
-### Frontend (`next-js/`)
-```bash
-pnpm dev      # Start dev server (port 3000)
-pnpm build    # Production build
-pnpm start    # Start production server
-pnpm lint     # ESLint (next/core-web-vitals)
-```
-
-### Sanity CMS (`thatgoodsht/`)
-```bash
-pnpm dev      # Start Sanity Studio dev server
-pnpm build    # Build studio
-pnpm deploy   # Deploy studio to Sanity.io
-```
+- **`next-js/`**: `pnpm dev` (port 3000) · `pnpm build` · `pnpm start` · `pnpm lint`
+- **`thatgoodsht/`**: `pnpm dev` (Studio) · `pnpm build` · `pnpm deploy` (to Sanity.io)
 
 ## Architecture
 
-### Data Flow
-Content is authored in Sanity CMS and fetched at request time via GROQ queries using the `sanityFetch()` helper in `src/app/client.tsx`. This helper wraps `next-sanity`'s client with ISR revalidation (30s dev, 60s prod). Sanity project ID is `fnvy29id`, dataset `tgs`.
+### Data flow
+- **Sanity** content is fetched at request time via GROQ through the `sanityFetch()` helper in `src/app/client.tsx` (wraps `next-sanity` with ISR revalidation — 30s dev, 60s prod). Project `fnvy29id`, dataset `tgs`.
+- **Shopify** Storefront API powers the shop. Shared client: `src/lib/shopify.ts` (creds via `NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN` / `NEXT_PUBLIC_SHOPIFY_ACCESS_TOKEN` in `.env.local`). Product data via the `getProduct(handle)` helper.
 
-Shopify Storefront API powers the shop. The shared client lives in `src/lib/shopify.ts` (credentials via `NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN` and `NEXT_PUBLIC_SHOPIFY_ACCESS_TOKEN` env vars in `.env.local`). Cart state is managed via cookies and server-side route handlers (`shop/route.ts`, `shop/cart/add/route.ts`). Product data (variants, prices, availability) is fetched at render time via the `getProduct(handle)` helper.
+### Gotchas / non-obvious patterns
+- **Persistent audio**: root `layout.tsx` fetches the current SOTD and renders one persistent `<audio>`; metadata is shared via `SotDataContext` so children don't re-fetch.
+- **Server-first**: pages are server components by default; `"use client"` only for interactivity (p5 visualizer, audio controls, animations, shop carousel/variant selector). Heavy libs (p5.js, react-konva) load via `next/dynamic` with `ssr: false`.
+- **Shop cart flow**: cart ID lives in a cookie. Server Components *can't* set cookies, so the cart page redirects to `/shop` (a Route Handler) with a `returnTo` param when a cart must be created or is stale. All GraphQL uses **parameterized variables — never string interpolation**.
+- **Shop product pages**: server components fetch variants from Shopify, pass them to shared client components (`HorizontalCarousel`, `VariantSelector`) in `shop/product/components/`. Sold-out variants render greyed/disabled. Images are hardcoded (Sanity CDN). Route→handle map below.
+- **Catch-all routes**: blog posts (`blog/[...slug]`) and feature albums (`feature/2024|2025/[...slug]`).
 
-### Key Architectural Patterns
+### Sanity schema types (`thatgoodsht/schemaTypes/`)
+`posts.ts` (blog; also YouTube interviews via conditional fields) · `sotd.ts` (Song of the Day: audio + datetime) · `albums.ts` (Top 50 yearly features) · `event.ts` · `playlists.ts` · `blockContent.ts` (rich text + Spotify/Apple embeds) · `writer.ts`
 
-- **Persistent audio across navigation**: The root layout (`layout.tsx`) fetches the current Song of the Day from Sanity and renders a persistent `<audio>` element. Song metadata is shared via `SotDataContext` so child components can display it without re-fetching.
-- **Server-first with selective client components**: Pages default to server components. Client components (`"use client"`) are used only for interactivity (p5.js visualizer, audio controls, animations, shop carousel/variant selector).
-- **Dynamic imports for heavy client libs**: p5.js and react-konva components are loaded with `next/dynamic` and `ssr: false`.
-- **Catch-all dynamic routes**: Blog posts (`blog/post/[...slug]`) and feature albums (`feature/2024/[...slug]`, `feature/2025/[...slug]`) use catch-all segments.
-- **Shop product pages**: Server components that fetch variant data from Shopify, passing it to shared client components (`HorizontalCarousel`, `VariantSelector`) in `shop/product/components/`. Sold-out variants render greyed out and disabled. Images stay hardcoded (hosted on Sanity CDN).
-- **Shop cart flow**: Cart ID stored in a cookie. Server Components cannot set cookies, so the cart page redirects to `/shop` (a Route Handler) with a `returnTo` param when a cart needs to be created or is stale. All GraphQL queries use parameterized variables (never string interpolation).
-
-### Sanity Schema Types (`thatgoodsht/schemaTypes/`)
-- `posts.ts` — Blog posts (also used for YouTube interviews via conditional fields)
-- `sotd.ts` — Song of the Day (audio file + scheduled datetime)
-- `albums.ts` — Top 50 album reviews (yearly features)
-- `event.ts` — Events with flyers
-- `playlists.ts` — Playlist embeds
-- `blockContent.ts` — Rich text config with Spotify/Apple Music embed support
-- `writer.ts` — Authors
-
-### Shopify Product Handles
-| Route | Shopify Handle |
-|-------|---------------|
+### Shopify product handles
+| Route | Handle |
+|-------|--------|
 | `shop/product/tgs-hoodie` | `tgs-hoodie` |
 | `shop/product/tgs-pants` | `tgs-sweatpants` |
 | `shop/product/tgs-ring` | `thatgoodsh-t-ring` |
 | `shop/product/quintaro` | `quintaro-dvd` + `quintaro-cd` (two separate products) |
 
-### p5.js Background Sketches (`next-js/src/app/ui/`)
-All homepage backgrounds are p5.js sketches loaded via `next/dynamic` with `ssr: false`. Each sketch file exports a default component and a named sketch function. The active background changes from time to time — check the dynamic import in `page.tsx` for the current one.
-
-- `P5Background.tsx` — Reusable wrapper that handles p5 instance lifecycle (mount, resize, cleanup). All sketch components use this. Accepts a `sketch: (s: p5) => void` prop.
-- `Backround.tsx` — **Grid**: Warped rectangle grid using `atan`/`tan` offsets. Dark background (`rgb(26, 27, 35)`). Exports `gridSketch`.
-- `FireworksBackground.tsx` — **Fireworks**: Particles launch and explode in TGS brand colors with gravity and trails. Exports `fireworksSketch`.
-- `CheckerboardBackground.tsx` — **Checkerboard**: Large tiles (90px) with gentle cosine wave motion, mouse-reactive. Purple background (`rgb(61, 53, 100)`). Exports `checkerboardSketch`.
-- `SpiralBackground.tsx` — **Spiral**: Grid tiles with sin/cos spiral radiating from screen center. Purple background. Exports `spiralSketch`.
-- `GlitchBackground.tsx` — **Glitch**: The halftone dot grid (from `HalftoneBackground`) rendered to an offscreen buffer, then copied back row-by-row with horizontal slice displacement (pixel-sort / "melting" effect) that intensifies toward the bottom. Exports `glitchSketch`.
-
-To swap the homepage background, change the dynamic import in `page.tsx`:
+### p5.js backgrounds (`next-js/src/app/ui/`)
+Homepage backgrounds are p5 sketches loaded via `next/dynamic` (`ssr: false`), each wrapping the shared `P5Background.tsx` (handles p5 lifecycle; takes a `sketch: (s: p5) => void` prop). The active one rotates — check the import in `page.tsx`. To swap, change that line:
 ```tsx
 const DynamicComponentWithNoSSR = dynamic(() => import("./ui/FireworksBackground"), { ssr: false });
 ```
+Sketch files in that dir: `Backround.tsx` (grid), `FireworksBackground`, `CheckerboardBackground`, `SpiralBackground`, `GlitchBackground` (halftone pixel-sort), `HalftoneBackground`, … — each exports a default component + named sketch fn. Read the file for the specifics.
 
-### Shared Components (`next-js/src/app/components/`)
-- `ChevronDots` — Pixel-art dotted chevron arrow SVG, styled to match the bitcount-filled font. Props: `color` (default `"white"`), `direction` (`"left"` | `"right"`, default `"right"`), `className`. Used for navigation arrows and directional indicators across the site (feature year nav, blog sidebar, playlists title, checkout button).
-- `PlatformSwitcher` — Spotify/Apple Music toggle pill. Also exports a `usePlatform()` hook for state. Used on `/playlists` and `/blog` playlist sections.
+### Shared components (`next-js/src/app/components/`)
+- `ChevronDots` — pixel-art dotted chevron SVG (matches bitcount-filled font). Props: `color`, `direction` (`left`/`right`), `className`. Nav arrows site-wide.
+- `PlatformSwitcher` — Spotify/Apple Music toggle pill; also exports `usePlatform()`. Used on `/playlists` and `/blog`.
 
-### Styling
-Tailwind CSS with custom brand tokens defined in `next-js/tailwind.config.ts`:
-- Colors: `tgs-pink` (#ed9df9), `tgs-purple` (#6c5cbe), `tgs-dark-purple` (#3D3564), `tgs-gray` (#DBDBDB)
-- Fonts: `bitcount` (display), `roc` (body), `bitcount-filled` (titles) — loaded as local fonts from TTF files in `next-js/` root
+### Styling & conventions
+- Brand tokens in `next-js/tailwind.config.ts`: `tgs-pink` #ed9df9, `tgs-purple` #6c5cbe, `tgs-dark-purple` #3D3564, `tgs-gray` #DBDBDB. Font utility classes: `font-bit` (bitcount display), `font-roc` / `font-roc-variable` (body), `font-title` (bitcount-filled titles) — backed by CSS vars over local TTFs in `next-js/` root.
+- Path alias: `@/*` → `./src/*` (`tsconfig.json`).
+- Sanity package Prettier: no semicolons, single quotes, 100 char width, no bracket spacing.
 
-### Path Alias
-`@/*` maps to `./src/*` (configured in `tsconfig.json`).
+## scripts/ tooling
 
-### Sanity CMS Code Style
-Prettier is configured in the Sanity package: no semicolons, single quotes, 100 char width, no bracket spacing.
+Standalone tools in `scripts/`. They're independent — chaining them (e.g. greenscreen a clip, then put a song behind it) means running the tool, then a separate `ffmpeg` step. **Read the linked skill/header/README before driving any of them**; this table is only a router.
 
-## SOTD Bulk Import Scripts (`scripts/`)
-
-Tooling for bulk-importing Song of the Day MP3s into Sanity. Reads ID3 tags from MP3 files, assigns scheduled release dates, and imports as `sotd` documents.
-
-### Setup
-```bash
-cd scripts
-pnpm install
-```
-Requires a `.env` file in `scripts/` with `SANITY_TOKEN` (for backup/import).
-
-### Quick Start (all-in-one)
-```bash
-node import-mp3s.js <mp3-directory> [options]
-```
-This runs the full pipeline: extract metadata → generate NDJSON → backup existing data → import to Sanity.
-
-**Options:**
-- `--start-date <ISO>` — First release date (default: configured in `config.js`, currently `2025-10-09`)
-- `--keep-order` — Use original file order instead of shuffling
-- `--random-dates` — Assign random dates instead of sequential daily releases
-- `--dry-run` — Generate files but skip the actual Sanity import
-- `--no-backup` — Skip backing up existing Sanity data before import
-- `--no-date` — Import songs without dates (unscheduled, visible in the SOTD calendar sidebar)
-
-**Examples:**
-```bash
-node import-mp3s.js ../assets/mp3s/                          # Shuffle songs, daily releases
-node import-mp3s.js ./mp3s --keep-order                       # Keep file order
-node import-mp3s.js ./mp3s --start-date 2025-02-01T08:00:00Z  # Custom start date
-node import-mp3s.js ./mp3s --dry-run                          # Preview without importing
-node import-mp3s.js ./mp3s --no-date                          # Import as unscheduled
-```
-
-### Step-by-step (manual pipeline)
-If you want to inspect/edit between steps:
-
-1. **Extract metadata** — reads ID3 tags, shuffles order, assigns daily release dates, writes `mp3-data.json`:
-   ```bash
-   node extract-metadata.js <mp3-directory> [--keep-order] [--random-dates] [--start-date <ISO>] [--no-date]
-   ```
-
-2. **Generate NDJSON** — converts `mp3-data.json` into `import.ndjson` (Sanity import format with `sotd` document type and file asset references):
-   ```bash
-   node generate-ndjson.js [mp3-data.json] [import.ndjson]
-   ```
-
-3. **Import to Sanity** — run from the `thatgoodsht/` directory:
-   ```bash
-   cd ../thatgoodsht
-   sanity dataset import ../scripts/import.ndjson tgs --replace
-   ```
-
-### Config (`config.js`)
-- `import.startDate` — default first release date
-- `import.releaseTimeOfDay` — time of day for releases (default `12:00` UTC)
-- `import.daysInterval` — days between releases (default `1`)
-- `sanity.*` — project ID, dataset, API version (defaults to `fnvy29id` / `tgs`)
+| Plain-English ask | Tool | Read first |
+|---|---|---|
+| Greenscreen a video into a picture | `scripts/greenscreen/render.sh` | render.sh header — pairs `N.png` (Figma frame w/ green rect) + `N.mov\|.mp4` → `N_output.mp4`; **audio comes from the source video**, so "add a song behind it" is a separate ffmpeg mux |
+| Carousel of 30s IG videos from images + mp3s | `/bg-audio` → `scripts/make-bg-audio.js` | `.claude/skills/bg-audio/SKILL.md` |
+| Add endcards/outros to vertical clips | `/endcards` → `scripts/endcards/make-endcard-clip.sh` | `.claude/skills/endcards/SKILL.md` |
+| Screen-record the homepage SOTD background | `pnpm capture` → `scripts/homepage-capture/capture-homepage.js` | file header |
+| Bulk-import / unschedule SOTD songs | `scripts/sotd-import/*` | `scripts/sotd-import/README.md` |
+| (retired) YouTube interview import | `scripts/retired/import-youtube.js` | parked — not in active use |
