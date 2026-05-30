@@ -3,3 +3,12 @@ assets
 scripts/captures
 scripts/tmp-*.webm
 scripts/carousels
+
+# short_end: ignore the heavy video/image media, keep the shell scripts
+scripts/short_end/*
+!scripts/short_end/*.sh
+!scripts/short_end/mask.png
+
+# figmavideo: ignore the heavy video/audio media, keep the render script
+scripts/figmavideo/*
+!scripts/figmavideo/*.sh
