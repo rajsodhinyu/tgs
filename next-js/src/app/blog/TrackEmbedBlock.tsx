@@ -34,7 +34,7 @@ export default function TrackEmbedBlock({
 
   return (
     <>
-      <div className="clear-both pt-6" />
+      <div className="clear-both" />
       <a
         href={href}
         target="_blank"
@@ -56,7 +56,7 @@ export default function TrackEmbedBlock({
           <div className="truncate text-base lg:text-xl">
             {heading || trackName}
           </div>
-          <div className="text-white/80 text-sm lg:text-md truncate font-roc font-medium">
+          <div className="text-white/80 text-sm lg:text-base truncate font-roc font-medium">
             {subheading || artistName}
           </div>
         </div>

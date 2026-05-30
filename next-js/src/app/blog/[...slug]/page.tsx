@@ -108,9 +108,8 @@ const components: PortableTextComponents = {
     ),
     normal: ({ children, value }) => {
       const v = value as any;
-      const indent = v._afterTrack ? "" : "mb-4";
-      const justify = "";
-      return <p className={`${indent} ${justify}`}>{children}</p>;
+      const indent = v._afterTrack ? "" : "mb-[1.15rem]";
+      return <p className={indent}>{children}</p>;
     },
     blockquote: ({ children }) => (
       <div className="text-sm text-center font-thin ">{children}</div>
@@ -371,7 +370,7 @@ export default async function Page({
     <div className="font-roc text-lg text-white max-[300px]:w-80">
       <div className="absolute inset-0 -z-10 bg-[#191A24]" />
       <div className="place-items-center">{renderBanner(post)}</div>
-      <div className="text-xl sm:text-2xl md:text-3xl xl:text-4xl font-bold font-title mt-4 text-center uppercase">
+      <div className="text-4xl font-bold font-title mt-4 text-center uppercase">
         {/* Title */}
         {post.name}
       </div>
@@ -420,7 +419,7 @@ export default async function Page({
         appleMusicURL={post.appleMusicURL}
       />
 
-      <div className="mx-3 text-base md:text-lg lg:text-xl pt-3 pb-6 first-letter:text-4xl first-letter:font-medium first-letter:text-white">
+      <div className="font-roc-variable font-[280] [font-variation-settings:'wdth'_100] w-full mx-auto max-w-[1400px] px-3 pt-3 pb-6 text-left text-white text-[18.5px] lg:text-[21.5px] xl:text-[21px] leading-[1.1] tracking-[-0.005em] [word-spacing:1px] first-letter:text-[2.3rem] first-letter:font-[200] first-letter:text-white">
         <PortableText
           value={preprocessContent(post.content)}
           components={components}

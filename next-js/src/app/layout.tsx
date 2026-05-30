@@ -23,6 +23,14 @@ const roc = localFont({
   variable: "--font-roc",
 });
 
+// Variable Roc Grotesk — axes: wght 100–900, wdth 50–150. Tuned live on the
+// blog body via the BodyFontTuner (font-weight + font-variation-settings).
+const rocVariable = localFont({
+  src: "../../Roc Grotesk Variable.ttf",
+  display: "swap",
+  variable: "--font-roc-variable",
+});
+
 const bitcount_fill = localFont({
   src: "../../font_title.ttf",
   display: "swap",
@@ -74,7 +82,7 @@ export default async function RootLayout({
         <meta name="theme-color" content="#191A24" />
       </head>
       <body
-        className={`${bitcount.variable} ${roc.variable} ${bitcount_fill.variable} bg-[#191A24]`}
+        className={`${bitcount.variable} ${roc.variable} ${rocVariable.variable} ${bitcount_fill.variable} bg-[#191A24]`}
       >
         <audio loop id="myAudio" src={audioSrc} crossOrigin="anonymous"></audio>
         <SotDataProvider value={sotdata}>

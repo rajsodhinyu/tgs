@@ -40,7 +40,7 @@ export default async function Page() {
   const blogs = await sanityFetch<SanityDocument[]>({ query: ALBUMS_Q });
 
   return (
-    <div className="mt-8 md:mt-6 pb-3">
+    <div className="mt-2 pb-3">
       <div className="flex justify-between items-center mx-3 mb-8">
         <Link
           href="/feature/2024"

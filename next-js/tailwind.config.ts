@@ -17,6 +17,7 @@ const config: Config = {
       fontFamily: {
         bit: ["var(--font-bitcount)"],
         roc: ["var(--font-roc)"],
+        "roc-variable": ["var(--font-roc-variable)"],
         title: ["var(--font-bitcount-filled)"],
       },
       backgroundImage: {

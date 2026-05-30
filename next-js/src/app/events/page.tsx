@@ -53,7 +53,7 @@ export default async function Page() {
 
   return (
     <div>
-      <h1 className="text-4xl font-title font-bold text-white uppercase">
+      <h1 className="text-4xl font-title font-bold text-white uppercase leading-none -mt-2 text-center">
         Events
       </h1>
       <div className="grid lg:grid-cols-5 sm:grid-cols-4 grid-cols-2 md:p-2 mt-4 gap-2">
