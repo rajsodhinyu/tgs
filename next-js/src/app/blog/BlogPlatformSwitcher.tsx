@@ -6,7 +6,7 @@ export default function BlogPlatformSwitcher() {
   const [platform, setPlatform] = usePlatform();
 
   return (
-    <div className="md:absolute md:right-6">
+    <div>
       <PlatformSwitcher
         platform={platform}
         setPlatform={setPlatform}

@@ -19,6 +19,11 @@ import PlaylistEmbedBlock from "../PlaylistEmbedBlock";
 import TrackGrid from "../TrackGrid";
 import { preprocessContent } from "../preprocessContent";
 import BlogPlatformSwitcher from "../BlogPlatformSwitcher";
+import BlogTitleBar from "../BlogTitleBar";
+import BgStyles from "../BgStyles";
+import BgColorTuner from "../BgColorTuner";
+import { bgStyle } from "../bgStyle";
+import { BlogBackdrop, BlogBgSwitch } from "../BlogBg";
 
 const projectId = "fnvy29id";
 const dataset = "tgs";
@@ -363,18 +368,22 @@ export default async function Page({
 }) {
   const slugParam = (await params).slug;
   const slug = Array.isArray(slugParam) ? slugParam.join("/") : slugParam;
-  const SLUG_QUERY = `*[_type == "post" && slug.current == "${slug}"]{_id, name, youtubeURL, thumb, writer, banner, playlistURL, appleMusicURL, content, slug, date, description, private}`;
+  const SLUG_QUERY = `*[_type == "post" && slug.current == "${slug}"]{_id, name, youtubeURL, thumb, writer, banner, playlistURL, appleMusicURL, content, slug, date, description, private, bgColor}`;
   const posts = await sanityFetch<SanityDocument[]>({ query: SLUG_QUERY });
   const post = posts[0];
+  const customBg: string | null = post?.bgColor?.hex ?? null;
+  const hasCustomBg =
+    !!customBg && customBg.toLowerCase() !== bgStyle.color.toLowerCase();
   return (
     <div className="font-roc text-lg text-white max-[300px]:w-80">
-      <div className="absolute inset-0 -z-10 bg-[#191A24]" />
+      <BgStyles />
+      <BlogBackdrop customColor={customBg} />
+      <BlogBgSwitch customColor={customBg} defaultColor={bgStyle.color} />
+      {process.env.NODE_ENV !== "production" && (
+        <BgColorTuner initial={bgStyle} raised={hasCustomBg} />
+      )}
       <div className="place-items-center">{renderBanner(post)}</div>
-      <div className="text-4xl font-bold font-title mt-4 text-center uppercase">
-        {/* Title */}
-        {post.name}
-      </div>
-      <div className="flex items-center justify-center gap-12 md:relative xl:text-xl text-xl font-roc font-medium pt-2 text-white/80">
+      <BlogTitleBar title={post.name}>
         <span>
           {/* Writer */}
           {post.writer &&
@@ -412,7 +421,7 @@ export default async function Page({
           )}
         </span>
         <BlogPlatformSwitcher />
-      </div>
+      </BlogTitleBar>
       {/* Spotify / Apple Music Embed */}
       <PostEmbed
         spotifyURL={post.playlistURL}
