@@ -6,6 +6,7 @@ import {CroppedImageInput} from '../components/CroppedImageInput'
 import {SlugWithVisit} from '../components/SlugWithVisit'
 import {UrlWithVisit} from '../components/UrlWithVisit'
 import {DateWithToday} from '../components/DateWithToday'
+import {BgColorInput} from '../components/BgColorInput'
 
 export const postType = defineType({
   name: 'post',
@@ -71,6 +72,17 @@ export const postType = defineType({
           }
           return true
         }),
+    }),
+    defineField({
+      name: 'bgColor',
+      title: 'Custom background color',
+      type: 'color',
+      options: {
+        disableAlpha: true,
+      },
+      components: {
+        input: BgColorInput,
+      },
     }),
     defineField({
       name: 'youtubeURL',
