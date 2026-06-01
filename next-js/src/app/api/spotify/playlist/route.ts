@@ -41,7 +41,7 @@ export async function GET(request: NextRequest) {
 
   try {
     const token = await getSpotifyToken();
-    const apiUrl = `https://api.spotify.com/v1/playlists/${playlistId}?fields=tracks.items(track(name,artists(name,id),album(images)))`;
+    const apiUrl = `https://api.spotify.com/v1/playlists/${playlistId}?fields=tracks.total,tracks.items(track(name,artists(name,id),album(images),duration_ms))`;
 
     const res = await fetch(apiUrl, {
       headers: { Authorization: `Bearer ${token}` },
@@ -60,11 +60,13 @@ export async function GET(request: NextRequest) {
       art: string;
       artistId?: string;
     }[] = [];
+    let durationMs = 0;
 
     for (const item of data.tracks?.items || []) {
       const track = item.track;
       if (!track) continue;
 
+      durationMs += track.duration_ms || 0;
       const name = track.name;
       const artist =
         track.artists?.map((a: any) => a.name).join(", ") || "Unknown";
@@ -120,7 +122,13 @@ export async function GET(request: NextRequest) {
     }
 
     return NextResponse.json(
-      { images, tracks, ...(artists ? { artists } : {}) },
+      {
+        images,
+        tracks,
+        total: data.tracks?.total ?? tracks.length,
+        durationMs,
+        ...(artists ? { artists } : {}),
+      },
       {
         headers: {
           "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=86400",
