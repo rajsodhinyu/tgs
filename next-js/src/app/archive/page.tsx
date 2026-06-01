@@ -8,7 +8,7 @@ import { sanityFetch } from "../client";
 const projectId = "fnvy29id";
 const dataset = "tgs";
 
-const BLOGS_QUERY = `*[_type == "post" && private != true]{_id, name, youtubeURL, thumb, writer, banner,playlistURL, content, slug, date, description}|order(date desc)`;
+const BLOGS_QUERY = `*[_type == "post" && private != true]{_id, name, youtubeURL, thumb, writer, banner, content, slug, date, description}|order(date desc)`;
 
 const urlFor = (source: SanityImageSource) =>
   projectId && dataset
@@ -52,7 +52,7 @@ export default async function Page() {
       <h1 className="text-4xl font-title font-bold text-white uppercase leading-none -mt-2 text-center">
         Blog
       </h1>
-      <div className="grid xl:grid-cols-5 lg:grid-cols-4 sm:grid-cols-3 grid-cols-2 md:p-2 mt-4 gap-2">
+      <div className="grid xl:grid-cols-5 lg:grid-cols-4 sm:grid-cols-3 grid-cols-2 md:p-2 mt-2 gap-2">
         {blogs.map((blog) => (
           <div
             className="group flex flex-col text-center justify-around"
