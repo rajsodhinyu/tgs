@@ -151,7 +151,7 @@ export default function PlaylistGrid({ playlists }: { playlists: Playlist[] }) {
                   <div className="pt-3 text-white text-lg font-bold font-bit group-hover:font-title leading-5 lg:text-2xl">
                     {playlist.name}
                   </div>
-                  <div className="w-11/12 place-self-center text-white/80 text-xs lg:text-base font-semibold font-roc leading-none pt-1">
+                  <div className="w-11/12 place-self-center text-white/80 text-[12px] lg:text-base font-roc leading-none pt-1">
                     {playlist.description}
                   </div>
                 </Link>

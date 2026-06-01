@@ -40,7 +40,7 @@ export default async function Sidebar() {
         <div className="sticky top-0 z-10 flex justify-center">
           <Link
             href="/archive"
-            className="bg-tgs-purple rounded-2xl px-6 text-4xl font-bold font-title my-2 uppercase text-white border-4 border-transparent hover:border-white hover:scale-95 text-nowrap flex items-center gap-2 transition-all"
+            className="bg-tgs-dark-purple rounded-2xl px-6 text-4xl font-bold font-title my-2 uppercase text-white border-4 border-transparent hover:border-white hover:scale-95 text-nowrap flex items-center gap-2 transition-all"
           >
             All Posts
             <ChevronDots className="inline-block mt-1" />
@@ -72,7 +72,7 @@ export default async function Sidebar() {
           </div>
           <Link
             href="/archive"
-            className="sticky bottom-4 float-right mr-2 bg-tgs-purple rounded-2xl px-3 py-1 text-sm font-bold font-title uppercase text-white border-2 border-transparent hover:border-white flex items-center gap-1"
+            className="sticky bottom-4 float-right mr-2 bg-tgs-dark-purple rounded-2xl px-3 py-1 text-sm font-bold font-title uppercase text-white border-2 border-transparent hover:border-white flex items-center gap-1"
           >
             See All
             <ChevronDots className="inline-block mt-0.5" color="white" />

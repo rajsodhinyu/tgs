@@ -26,7 +26,7 @@ export default function PlaylistSection({
       <div className="relative flex items-center justify-start  w-full py-3 sm:px-0">
         <Link
           href="/playlists"
-          className="bg-tgs-purple rounded-2xl px-4 sm:px-6 text-[5vw] sm:text-4xl font-bold font-title uppercase text-white border-4 border-transparent hover:border-white hover:scale-95 text-nowrap flex items-center gap-2 transition-all"
+          className="bg-tgs-dark-purple rounded-2xl px-4 sm:px-6 text-[5vw] sm:text-4xl font-bold font-title uppercase text-white border-4 border-transparent hover:border-white hover:scale-95 text-nowrap flex items-center gap-2 transition-all"
         >
           Playlists
           <ChevronDots className="inline-block mt-1" />
@@ -40,7 +40,7 @@ export default function PlaylistSection({
         </div>
       </div>
       {/* Mobile: horizontal scroll carousel */}
-      <div className="flex w-full overflow-x-auto snap-x snap-mandatory gap-2 no-scrollbar -mb-2 md:hidden">
+      <div className="flex pt-2 w-full overflow-x-auto snap-x snap-mandatory gap-3 no-scrollbar md:hidden">
         {playlists.map((playlist) => (
           <div
             key={playlist._id}
@@ -50,6 +50,7 @@ export default function PlaylistSection({
               title={playlist.name}
               description={playlist.description}
               cover={playlist.coverUrl}
+              playlistURL={playlist.playlistURL}
               disabled={platform === "apple" && !playlist.appleMusicURL}
               url={
                 platform === "apple" && playlist.appleMusicURL

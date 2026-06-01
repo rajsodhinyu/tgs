@@ -213,7 +213,7 @@ export default function PlaylistEmbedBlock({
         href={href}
         target="_blank"
         rel="noopener noreferrer"
-        className="relative flex flex-col gap-3 rounded-md transition-all px-3 sm:px-5 py-3 group overflow-hidden mt-2 select-none"
+        className="relative flex flex-col gap-3 rounded-xl border-4 border-white border-opacity-0 hover:border-opacity-100 transition-all p-3 sm:p-4 group overflow-hidden mt-2 select-none"
         style={{ textIndent: 0, WebkitTouchCallout: "none" }}
         onClick={(e) => {
           if (touchingRef.current) e.preventDefault();
@@ -230,7 +230,7 @@ export default function PlaylistEmbedBlock({
             aria-hidden
           />
         )}
-        <div className="absolute inset-0 bg-black/20" />
+        <div className="absolute inset-0 bg-black/35" />
 
         {hasArt ? (
           <div
@@ -337,11 +337,11 @@ export default function PlaylistEmbedBlock({
 
         {/* Title + description */}
         <div className="relative z-10 min-w-0">
-          <div className="font-title text-white text-lg sm:text-3xl leading-tight truncate">
+          <div className="font-bit group-hover:font-title text-white text-lg sm:text-3xl leading-tight truncate">
             {name}
           </div>
           {description && (
-            <div className="text-white/70 text-base sm:text-md mt-1 line-clamp-2 font-roc">
+            <div className="font-roc font-medium text-white/85 text-base sm:text-md mt-1 line-clamp-2">
               {description}
             </div>
           )}
