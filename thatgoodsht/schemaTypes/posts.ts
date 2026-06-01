@@ -125,20 +125,6 @@ export const postType = defineType({
       description: 'Paste here and edit in fullscreen mode.',
     }),
     defineField({
-      name: 'playlistURL',
-      title: 'Primary Spotify Embed',
-      description: 'Will go underneath the title!',
-      type: 'url',
-      hidden: true,
-    }),
-    defineField({
-      name: 'appleMusicURL',
-      title: 'Apple Music Embed',
-      description: 'Apple Music equivalent (shows switcher if both are provided)',
-      type: 'url',
-      hidden: true,
-    }),
-    defineField({
       name: 'slug',
       title: 'Direct Link',
       type: 'slug',

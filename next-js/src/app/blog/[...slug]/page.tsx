@@ -13,7 +13,6 @@ import imageUrlBuilder from "@sanity/image-url";
 import { writer } from "repl";
 import Link from "next/link";
 import { Metadata } from "next";
-import PostEmbed from "../PostEmbed";
 import AlbumEmbedBlock from "../AlbumEmbedBlock";
 import TrackEmbedBlock from "../TrackEmbedBlock";
 import PlaylistEmbedBlock from "../PlaylistEmbedBlock";
@@ -269,7 +268,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const slugParam = (await params).slug;
   const slug = Array.isArray(slugParam) ? slugParam.join("/") : slugParam;
-  const SLUG_QUERY = `*[_type == "post" && slug.current == "${slug}"]{_id, name, youtubeURL, thumb, writer, banner, playlistURL, appleMusicURL, content, slug, date, description}`;
+  const SLUG_QUERY = `*[_type == "post" && slug.current == "${slug}"]{_id, name, youtubeURL, thumb, writer, banner, content, slug, date, description}`;
   const posts = await sanityFetch<SanityDocument[]>({ query: SLUG_QUERY });
   const post = posts[0];
 
@@ -366,16 +365,12 @@ export default async function Page({
 }) {
   const slugParam = (await params).slug;
   const slug = Array.isArray(slugParam) ? slugParam.join("/") : slugParam;
-  const SLUG_QUERY = `*[_type == "post" && slug.current == "${slug}"]{_id, name, youtubeURL, thumb, writer, banner, playlistURL, appleMusicURL, albumEmbed, content, slug, date, description, private, bgColor}`;
+  const SLUG_QUERY = `*[_type == "post" && slug.current == "${slug}"]{_id, name, youtubeURL, thumb, writer, banner, albumEmbed, content, slug, date, description, private, bgColor}`;
   const posts = await sanityFetch<SanityDocument[]>({ query: SLUG_QUERY });
   const post = posts[0];
   const customBg: string | null = post?.bgColor?.hex ?? null;
-  // New `albumEmbed` field is the source of truth; fall back to the legacy
-  // hidden playlistURL/appleMusicURL for posts not yet migrated.
-  const albumSpotify: string | null =
-    post?.albumEmbed?.spotifyUrl ?? post?.playlistURL ?? null;
-  const albumApple: string | null =
-    post?.albumEmbed?.appleMusicUrl ?? post?.appleMusicURL ?? null;
+  const albumSpotify: string | null = post?.albumEmbed?.spotifyUrl ?? null;
+  const albumApple: string | null = post?.albumEmbed?.appleMusicUrl ?? null;
   return (
     <div className="font-roc text-lg text-white max-[300px]:w-80">
       <BlogBgSync customColor={customBg} />
@@ -422,20 +417,14 @@ export default async function Page({
             their custom bgColor. Re-add <BlogBgSwitch> here to bring it back. */}
         <BlogPlatformSwitcher />
       </BlogTitleBar>
-      {/* Album-led posts use the full-width album card; anything else falls
-          back to the legacy Spotify/Apple embed. */}
-      {albumSpotify && albumSpotify.includes("/album/") ? (
+      {/* Album-led posts show the full-width album card. */}
+      {albumSpotify && (
         <div className="w-full mx-auto max-w-[1400px] pt-3">
           <AlbumEmbedBlock
             spotifyUrl={albumSpotify}
             appleMusicUrl={albumApple ?? undefined}
           />
         </div>
-      ) : (
-        <PostEmbed
-          spotifyURL={albumSpotify ?? undefined}
-          appleMusicURL={albumApple ?? undefined}
-        />
       )}
 
       <div className="font-roc-variable font-[280] [font-variation-settings:'wdth'_100] w-full mx-auto max-w-[1400px] px-3 pt-3 pb-6 text-left text-white text-[18.5px] lg:text-[21.5px] xl:text-[21px] leading-[1.1] tracking-[-0.005em] [word-spacing:1px] first-letter:text-[2.3rem] first-letter:font-[200] first-letter:text-white">

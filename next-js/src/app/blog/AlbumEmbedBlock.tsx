@@ -68,7 +68,7 @@ export default function AlbumEmbedBlock({
   const tracks = meta?.totalTracks ?? null;
 
   return (
-    <div className="clear-both w-full my-4">
+    <div className="clear-both w-full">
       <a
         href={href}
         target="_blank"
