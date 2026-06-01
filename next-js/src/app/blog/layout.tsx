@@ -2,8 +2,12 @@ import Nav from "../nav";
 import Sidebar from "./sidebar";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
+  // overflow-x-clip contains the BlogTitleBar measuring probe (an absolute,
+  // nowrap, full-width title) so it can't stretch the page wider than the
+  // viewport on mobile. `clip` doesn't make a scroll container, so the
+  // sidebar's sticky buttons and the probe's offsetWidth still work.
   return (
-    <div className="relative isolate min-w-80 pb-10 min-h-screen">
+    <div className="relative isolate min-w-80 pb-10 min-h-screen overflow-x-clip">
       <Nav />
       <div className="w-full px-3 sm:flex-wrap md:flex-nowrap md:inline-flex md:flex-row md:justify-between xl:w-screen max-md:place-items-center">
         <div className="w-full">{children}</div>
