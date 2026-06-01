@@ -20,8 +20,7 @@ import TrackGrid from "../TrackGrid";
 import { preprocessContent } from "../preprocessContent";
 import BlogPlatformSwitcher from "../BlogPlatformSwitcher";
 import BlogTitleBar from "../BlogTitleBar";
-import { bgStyle } from "../bgStyle";
-import { BlogBgSync, BlogBgSwitch } from "../BlogBg";
+import { BlogBgSync } from "../BlogBg";
 
 const projectId = "fnvy29id";
 const dataset = "tgs";
@@ -412,11 +411,8 @@ export default async function Page({
             </span>
           )}
         </span>
-        <BlogBgSwitch
-          customColor={customBg}
-          defaultColor={bgStyle.color}
-          shape={bgStyle.switchShape}
-        />
+        {/* Trial: reader background switch (two circles) removed; posts just show
+            their custom bgColor. Re-add <BlogBgSwitch> here to bring it back. */}
         <BlogPlatformSwitcher />
       </BlogTitleBar>
       {/* Spotify / Apple Music Embed */}
