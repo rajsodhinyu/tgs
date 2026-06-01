@@ -7,6 +7,7 @@ import {SlugWithVisit} from '../components/SlugWithVisit'
 import {UrlWithVisit} from '../components/UrlWithVisit'
 import {DateWithToday} from '../components/DateWithToday'
 import {BgColorInput} from '../components/BgColorInput'
+import {AlbumEmbedInput} from '../components/AlbumEmbedInput'
 
 export const postType = defineType({
   name: 'post',
@@ -99,6 +100,23 @@ export const postType = defineType({
           }
           return true
         }),
+    }),
+    defineField({
+      name: 'albumEmbed',
+      title: 'Featured Album',
+      type: 'object',
+      components: {
+        input: AlbumEmbedInput,
+      },
+      fields: [
+        defineField({name: 'spotifyUrl', title: 'Spotify URL', type: 'url'}),
+        defineField({name: 'appleMusicUrl', title: 'Apple Music URL', type: 'url'}),
+        // Cached from Spotify on selection so the collapsed card can render
+        // without a re-fetch.
+        defineField({name: 'albumName', title: 'Album name', type: 'string'}),
+        defineField({name: 'albumArtist', title: 'Artist', type: 'string'}),
+        defineField({name: 'albumArt', title: 'Album art', type: 'url'}),
+      ],
     }),
     defineField({
       name: 'content',

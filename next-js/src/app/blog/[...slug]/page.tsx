@@ -14,6 +14,7 @@ import { writer } from "repl";
 import Link from "next/link";
 import { Metadata } from "next";
 import PostEmbed from "../PostEmbed";
+import AlbumEmbedBlock from "../AlbumEmbedBlock";
 import TrackEmbedBlock from "../TrackEmbedBlock";
 import PlaylistEmbedBlock from "../PlaylistEmbedBlock";
 import TrackGrid from "../TrackGrid";
@@ -56,7 +57,7 @@ function renderYoutubeEmbed(youtubeURL: string) {
       <div className="w-full mb-6">
         <div className="relative pb-[56.5%] h-0 overflow-hidden mx-auto ">
           <iframe
-            className="absolute top-0 left-0 w-full h-full rounded-md border-4 border-tgs-purple"
+            className="absolute top-0 left-0 w-full h-full rounded-md"
             src={`https://www.youtube.com/embed/${videoID}?rel=0`}
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; picture-in-picture"
             allowFullScreen
@@ -365,10 +366,16 @@ export default async function Page({
 }) {
   const slugParam = (await params).slug;
   const slug = Array.isArray(slugParam) ? slugParam.join("/") : slugParam;
-  const SLUG_QUERY = `*[_type == "post" && slug.current == "${slug}"]{_id, name, youtubeURL, thumb, writer, banner, playlistURL, appleMusicURL, content, slug, date, description, private, bgColor}`;
+  const SLUG_QUERY = `*[_type == "post" && slug.current == "${slug}"]{_id, name, youtubeURL, thumb, writer, banner, playlistURL, appleMusicURL, albumEmbed, content, slug, date, description, private, bgColor}`;
   const posts = await sanityFetch<SanityDocument[]>({ query: SLUG_QUERY });
   const post = posts[0];
   const customBg: string | null = post?.bgColor?.hex ?? null;
+  // New `albumEmbed` field is the source of truth; fall back to the legacy
+  // hidden playlistURL/appleMusicURL for posts not yet migrated.
+  const albumSpotify: string | null =
+    post?.albumEmbed?.spotifyUrl ?? post?.playlistURL ?? null;
+  const albumApple: string | null =
+    post?.albumEmbed?.appleMusicUrl ?? post?.appleMusicURL ?? null;
   return (
     <div className="font-roc text-lg text-white max-[300px]:w-80">
       <BlogBgSync customColor={customBg} />
@@ -415,11 +422,21 @@ export default async function Page({
             their custom bgColor. Re-add <BlogBgSwitch> here to bring it back. */}
         <BlogPlatformSwitcher />
       </BlogTitleBar>
-      {/* Spotify / Apple Music Embed */}
-      <PostEmbed
-        spotifyURL={post.playlistURL}
-        appleMusicURL={post.appleMusicURL}
-      />
+      {/* Album-led posts use the full-width album card; anything else falls
+          back to the legacy Spotify/Apple embed. */}
+      {albumSpotify && albumSpotify.includes("/album/") ? (
+        <div className="w-full mx-auto max-w-[1400px] pt-3">
+          <AlbumEmbedBlock
+            spotifyUrl={albumSpotify}
+            appleMusicUrl={albumApple ?? undefined}
+          />
+        </div>
+      ) : (
+        <PostEmbed
+          spotifyURL={albumSpotify ?? undefined}
+          appleMusicURL={albumApple ?? undefined}
+        />
+      )}
 
       <div className="font-roc-variable font-[280] [font-variation-settings:'wdth'_100] w-full mx-auto max-w-[1400px] px-3 pt-3 pb-6 text-left text-white text-[18.5px] lg:text-[21.5px] xl:text-[21px] leading-[1.1] tracking-[-0.005em] [word-spacing:1px] first-letter:text-[2.3rem] first-letter:font-[200] first-letter:text-white">
         <PortableText

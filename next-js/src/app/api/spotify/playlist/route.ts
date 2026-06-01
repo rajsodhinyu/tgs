@@ -1,40 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-
-const SPOTIFY_TOKEN_URL = "https://accounts.spotify.com/api/token";
-
-let cachedToken: string | null = null;
-let tokenExpiry = 0;
-
-async function getAccessToken(): Promise<string> {
-  if (cachedToken && Date.now() < tokenExpiry) {
-    return cachedToken;
-  }
-
-  const clientId = process.env.SPOTIFY_CLIENT_ID;
-  const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;
-
-  if (!clientId || !clientSecret) {
-    throw new Error("Missing Spotify credentials");
-  }
-
-  const res = await fetch(SPOTIFY_TOKEN_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-      Authorization: `Basic ${Buffer.from(`${clientId}:${clientSecret}`).toString("base64")}`,
-    },
-    body: "grant_type=client_credentials",
-  });
-
-  if (!res.ok) {
-    throw new Error(`Spotify token error: ${res.status}`);
-  }
-
-  const data = await res.json();
-  cachedToken = data.access_token;
-  tokenExpiry = Date.now() + (data.expires_in - 60) * 1000;
-  return cachedToken!;
-}
+import { getSpotifyToken } from "@/lib/spotify-token";
 
 function parsePlaylistId(url: string): string | null {
   try {
@@ -75,7 +40,7 @@ export async function GET(request: NextRequest) {
     request.nextUrl.searchParams.get("includeArtists") === "1";
 
   try {
-    const token = await getAccessToken();
+    const token = await getSpotifyToken();
     const apiUrl = `https://api.spotify.com/v1/playlists/${playlistId}?fields=tracks.items(track(name,artists(name,id),album(images)))`;
 
     const res = await fetch(apiUrl, {
