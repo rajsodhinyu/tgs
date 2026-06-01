@@ -32,6 +32,31 @@ All **pnpm**. Run inside the relevant package.
 - **Shop product pages**: server components fetch variants from Shopify, pass them to shared client components (`HorizontalCarousel`, `VariantSelector`) in `shop/product/components/`. Sold-out variants render greyed/disabled. Images are hardcoded (Sanity CDN). Route→handle map below.
 - **Catch-all routes**: blog posts (`blog/[...slug]`) and feature albums (`feature/2024|2025/[...slug]`).
 
+### Blog byline + reader background switch (`blog/[...slug]`)
+Each post can carry a custom `bgColor` (Sanity, `@sanity/color-input`). On the post page:
+- **`BlogBg.tsx`** — `PersistentBlogBackdrop` (the `#blog-bg` full-bleed div) lives in
+  `blog/[...slug]/layout.tsx` so it **survives navigation between posts** — that's what
+  lets its `background-color` cross-fade from one article to the next (a fresh element per
+  page would hard-cut). The live color is pushed in by `BlogBgSync` (a render-nothing
+  client cmp in `page.tsx`) via a layout-effect store; the layout resolves the first-paint
+  color server-side so a hard load doesn't flash. `BlogBgSwitch` is the reader control in
+  the byline — "dots" shows two circles (post color + default), tap to pick; persisted in
+  localStorage (`tgs-blog-bg-mode`), mirrors `PlatformSwitcher`'s external-store pattern.
+- The default (non-custom) background and switch shape are constants in **`bgStyle.ts`**.
+  Byline alignment values (switch stroke `1.5px`, Spotify switcher `-7px` margin, byline
+  text `translateY(2.5px)`) are hardcoded inline in the components.
+
+**Blog byline tuner (removed).** Those alignment/sizing numbers were originally dialed in
+with a dev-only live "tuner" — a draggable, ⌥B-toggled panel (`BgColorTuner.tsx`) that
+hot-swapped a `<style id="blog-bg-styles">` (`BgStyles.tsx` + `generateBgCss()` emitting
+`--blog-*` CSS vars) for instant preview and saved to `bgStyle.json` via a dev-only
+`POST /api/bg-style` (403 in prod). Each component read `var(--blog-…, fallback)`. It's all
+been ripped out and the values inlined. **To rebuild:** re-add a CSS-var layer + a stylesheet
+injector + a dev-only fetch-to-disk endpoint, and a hidden panel that hot-swaps the
+stylesheet and POSTs the JSON. Knobs it had: bg color, switch shape (pill/dots), switch
+width + stroke, switch/Spotify bottom padding, Spotify bottom margin (±), byline text
+translateY (±) + line-height, and a debug-border toggle outlining the three byline pieces.
+
 ### Sanity schema types (`thatgoodsht/schemaTypes/`)
 `posts.ts` (blog; also YouTube interviews via conditional fields) · `sotd.ts` (Song of the Day: audio + datetime) · `albums.ts` (Top 50 yearly features) · `event.ts` · `playlists.ts` · `blockContent.ts` (rich text + Spotify/Apple embeds) · `writer.ts`
 

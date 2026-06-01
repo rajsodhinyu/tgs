@@ -1,21 +1,19 @@
-import savedStyle from "./bgStyle.json";
-
 /**
- * Live-tweakable background color for blog post (`[...slug]`) pages.
+ * Locked-in design values for the blog byline + reader background switch.
  *
- * The value generates one stylesheet rule targeting `#blog-bg` (the fixed
- * full-bleed backdrop on the post page). The dev-only <BgColorTuner /> hot-swaps
- * that stylesheet for live preview and POSTs back via `/api/bg-style`.
+ * These numbers were dialed in with a dev-only live "tuner" (a draggable panel
+ * that hot-swapped a stylesheet via CSS vars and saved to a JSON file). That
+ * tuner has been removed to keep the shipped code simple — the values it
+ * produced are now hardcoded directly in the components. See CLAUDE.md ›
+ * "Blog byline tuner (removed)" for how it worked and how to rebuild it.
  */
 
-export type BgStyle = {
-  /** Page background color (any CSS color; the tuner emits hex). */
-  color: string;
+/** Reader switch presentation: one oval pill, or two colored circles. */
+export type SwitchShape = "pill" | "dots";
+
+export const bgStyle = {
+  /** Default blog-post background — used when a post has no custom `bgColor`. */
+  color: "#292929",
+  /** How the reader's background switch renders in the byline. */
+  switchShape: "dots" as SwitchShape,
 };
-
-export const bgStyle: BgStyle = savedStyle as BgStyle;
-
-/** Generate the `#blog-bg { … }` rule for the current config. */
-export function generateBgCss(style: BgStyle): string {
-  return `#blog-bg{background-color:${style.color};}`;
-}

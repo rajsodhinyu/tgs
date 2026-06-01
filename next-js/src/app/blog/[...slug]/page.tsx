@@ -20,10 +20,8 @@ import TrackGrid from "../TrackGrid";
 import { preprocessContent } from "../preprocessContent";
 import BlogPlatformSwitcher from "../BlogPlatformSwitcher";
 import BlogTitleBar from "../BlogTitleBar";
-import BgStyles from "../BgStyles";
-import BgColorTuner from "../BgColorTuner";
 import { bgStyle } from "../bgStyle";
-import { BlogBackdrop, BlogBgSwitch } from "../BlogBg";
+import { BlogBgSync, BlogBgSwitch } from "../BlogBg";
 
 const projectId = "fnvy29id";
 const dataset = "tgs";
@@ -56,7 +54,7 @@ function renderYoutubeEmbed(youtubeURL: string) {
     if (!videoID) return <div>Invalid YouTube URL</div>;
 
     return (
-      <div className="w-full my-6">
+      <div className="w-full mb-6">
         <div className="relative pb-[56.5%] h-0 overflow-hidden mx-auto ">
           <iframe
             className="absolute top-0 left-0 w-full h-full rounded-md border-4 border-tgs-purple"
@@ -372,19 +370,13 @@ export default async function Page({
   const posts = await sanityFetch<SanityDocument[]>({ query: SLUG_QUERY });
   const post = posts[0];
   const customBg: string | null = post?.bgColor?.hex ?? null;
-  const hasCustomBg =
-    !!customBg && customBg.toLowerCase() !== bgStyle.color.toLowerCase();
   return (
     <div className="font-roc text-lg text-white max-[300px]:w-80">
-      <BgStyles />
-      <BlogBackdrop customColor={customBg} />
-      <BlogBgSwitch customColor={customBg} defaultColor={bgStyle.color} />
-      {process.env.NODE_ENV !== "production" && (
-        <BgColorTuner initial={bgStyle} raised={hasCustomBg} />
-      )}
+      <BlogBgSync customColor={customBg} />
       <div className="place-items-center">{renderBanner(post)}</div>
       <BlogTitleBar title={post.name}>
-        <span>
+        {/* translateY nudge = locked-in optical alignment from the removed tuner. */}
+        <span style={{ transform: "translateY(2.5px)", display: "inline-block" }}>
           {/* Writer */}
           {post.writer &&
             (await (async () => {
@@ -420,6 +412,11 @@ export default async function Page({
             </span>
           )}
         </span>
+        <BlogBgSwitch
+          customColor={customBg}
+          defaultColor={bgStyle.color}
+          shape={bgStyle.switchShape}
+        />
         <BlogPlatformSwitcher />
       </BlogTitleBar>
       {/* Spotify / Apple Music Embed */}
