@@ -1,0 +1,4 @@
+interface:
+  display_name: "BG Audio"
+  short_description: "Render Instagram carousel videos from image and audio pairs."
+  default_prompt: "Make playlist carousel videos from the assets in scripts/bg-audio."

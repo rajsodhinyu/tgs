@@ -1,0 +1,4 @@
+interface:
+  display_name: "Endcards"
+  short_description: "Add animated endcards to vertical clips."
+  default_prompt: "Add endcards to clips in scripts/endcards using the matching thumbnail and timestamps."
