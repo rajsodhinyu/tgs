@@ -6,11 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "script start": "react-scripts start",
-    "script build": "react-scripts build",
-    "script test": "react-scripts test --env=jsdom",
-    "script eject": "react-scripts eject"
+    "lint": "next lint"
   },
   "dependencies": {
     "@sanity/image-url": "^1.1.0",
@@ -18,13 +14,12 @@
     "@vercel/analytics": "^1.5.0",
     "@vercel/speed-insights": "^1.2.0",
     "framer-motion": "^12.23.26",
-    "next": "15.0.7",
+    "next": "15.5.19",
     "next-sanity": "^9.10.2",
     "p5": "^1.11.5",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-konva": "^18.2.10",
-    "react-scripts": "^5.0.1"
+    "react-konva": "^18.2.10"
   },
   "devDependencies": {
     "@types/node": "^20.17.31",
@@ -36,5 +31,39 @@
     "postcss": "^8.5.3",
     "tailwindcss": "^3.4.17",
     "typescript": "^5.8.3"
+  },
+  "pnpm": {
+    "overrides": {
+      "form-data@>=4.0.0 <4.0.4": "4.0.5",
+      "@babel/plugin-transform-modules-systemjs@<7.29.4": "7.29.4",
+      "flatted@<3.4.2": "3.4.2",
+      "glob@>=10.0.0 <10.5.0": "10.5.0",
+      "glob@>=11.0.0 <11.1.0": "11.1.0",
+      "lodash@<4.18.0": "4.18.1",
+      "lodash-es@<4.18.0": "4.18.1",
+      "minimatch@<3.1.4": "3.1.4",
+      "minimatch@>=5.0.0 <5.1.8": "5.1.8",
+      "minimatch@>=9.0.0 <9.0.7": "9.0.7",
+      "minimatch@>=10.0.0 <10.2.3": "10.2.3",
+      "rollup@>=3.0.0 <3.30.0": "3.30.0",
+      "tar@<7.5.11": "7.5.16",
+      "tar-fs@>=2.0.0 <2.1.4": "2.1.4",
+      "valibot@>=0.31.0 <1.2.0": "1.2.0",
+      "vite@<6.4.2": "6.4.2",
+      "ajv@<6.14.0": "6.14.0",
+      "brace-expansion@<1.1.13": "1.1.13",
+      "brace-expansion@>=2.0.0 <2.0.3": "2.0.3",
+      "esbuild@<=0.24.2": "0.25.0",
+      "follow-redirects@<=1.15.11": "1.16.0",
+      "js-yaml@>=4.0.0 <4.1.1": "4.1.1",
+      "picomatch@<2.3.2": "2.3.2",
+      "picomatch@>=4.0.0 <4.0.4": "4.0.4",
+      "postcss@<8.5.10": "8.5.10",
+      "prismjs@<1.30.0": "1.30.0",
+      "uuid@<11.1.1": "11.1.1",
+      "ws@>=8.0.0 <8.20.1": "8.20.1",
+      "yaml@>=2.0.0 <2.8.3": "2.8.3",
+      "min-document@<=2.19.0": "2.19.1"
+    }
   }
 }
