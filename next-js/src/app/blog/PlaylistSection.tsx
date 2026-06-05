@@ -22,7 +22,9 @@ export default function PlaylistSection({
   const [platform, setPlatform] = usePlatform();
 
   return (
-    <>
+    // Cap the section (heading + crates) at the feature image's 1440px width and
+    // center it, so the crate row lines up edge-to-edge with the image above.
+    <div className="mx-auto w-full max-w-[1440px]">
       <div className="relative flex items-center justify-start  w-full py-3 sm:px-0">
         <Link
           href="/playlists"
@@ -61,14 +63,17 @@ export default function PlaylistSection({
           </div>
         ))}
       </div>
-      {/* Desktop: grid layout */}
-      <div className="hidden md:grid grid-cols-3 gap-2">
+      {/* Desktop: crates cap at 500px and spread (justify-between) within the
+          1440px column. Note: 3×500 > 1440, so at full width they fill the row
+          evenly; drop the cap below ~480px to reopen gaps between them. */}
+      <div className="hidden md:grid grid-cols-[repeat(3,minmax(0,500px))] justify-between gap-2">
         {playlists.map((playlist) => (
           <PlaylistCard
             key={playlist._id}
             title={playlist.name}
             description={playlist.description}
             cover={playlist.coverUrl}
+            playlistURL={playlist.playlistURL}
             disabled={platform === "apple" && !playlist.appleMusicURL}
             url={
               platform === "apple" && playlist.appleMusicURL
@@ -78,6 +83,6 @@ export default function PlaylistSection({
           />
         ))}
       </div>
-    </>
+    </div>
   );
 }

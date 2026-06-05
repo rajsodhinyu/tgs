@@ -58,10 +58,10 @@ export default async function Page() {
   const blogs = await sanityFetch<SanityDocument[]>({ query: PLAYLIST_Q });
   return (
     <div className="place-items-center overflow-hidden pb-3 md:pb-0">
-      <Link href={"/feature/2025"}>
+      <Link href={"/feature/2025"} className="block w-full">
         <div>
           <Image
-            className="rounded-2xl md:rounded-md border-opacity-0 hover:scale-[0.98] hover:border-opacity-100 border-white border-4 transition-all"
+            className="mx-auto rounded-2xl md:rounded-md border-opacity-0 hover:scale-[0.98] hover:border-opacity-100 border-white border-4 transition-all"
             priority={true}
             src="https://cdn.sanity.io/images/fnvy29id/tgs/3f865c1d27dc5d299ea783001c22015f5d45b3c6-2880x2160.png"
             alt=""
