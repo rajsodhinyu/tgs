@@ -6,42 +6,43 @@ import {
   FaCalendarDay,
   FaPenNib,
   FaCalendarWeek,
-  FaPlus,
   FaListUl,
+  FaYoutube,
 } from 'react-icons/fa6'
 import {SotdCalendar} from '../components/SotdCalendar'
 import {PlaylistOrder} from '../components/PlaylistOrder'
 import {WeeklyRoundupBuilder} from '../components/WeeklyRoundupBuilder'
+import {YoutubePicker} from '../components/YoutubePicker'
 
 export const structure: StructureResolver = (S) =>
   S.list()
     .id('root')
     .title('thatgoodsht.com')
     .items([
-      S.documentTypeListItem('post').title('Blog').icon(FaBurst),
       S.listItem()
-        .title('Good Sh*t Weekly')
-        .icon(FaCalendarWeek)
+        .title('Blog')
+        .icon(FaBurst)
         .child(
           S.list()
-            .id('weekly')
-            .title('Good Sh*t Weekly')
+            .id('blog')
+            .title('Blog')
             .items([
               S.listItem()
-                .title('New Roundup')
-                .icon(FaPlus)
-                .child(S.component(WeeklyRoundupBuilder).id('weekly-builder').title('New Roundup')),
-              S.listItem()
-                .title('Published Roundups')
-                .icon(FaListUl)
+                .title('New YouTube Interview')
+                .icon(FaYoutube)
                 .child(
-                  S.documentList()
-                    .id('weekly-list')
-                    .title('Good Sh*t Weekly')
-                    .schemaType('post')
-                    .filter('_type == "post" && weekly == true')
-                    .defaultOrdering([{field: 'date', direction: 'desc'}]),
+                  S.component(YoutubePicker).id('youtube-picker').title('New YouTube Interview'),
                 ),
+              S.listItem()
+                .title('New Good Sh*t Weekly')
+                .icon(FaCalendarWeek)
+                .child(
+                  S.component(WeeklyRoundupBuilder)
+                    .id('weekly-builder-blog')
+                    .title('New Good Sh*t Weekly'),
+                ),
+              S.divider(),
+              S.documentTypeListItem('post').title('All Posts').icon(FaListUl),
             ]),
         ),
       S.listItem()
