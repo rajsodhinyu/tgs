@@ -142,6 +142,13 @@ export const postType = defineType({
       initialValue: true,
       hidden: true,
     }),
+    defineField({
+      name: 'weekly',
+      title: 'Good Sh*t Weekly roundup',
+      description: 'Set by the Weekly Roundup builder; powers the Good Sh*t Weekly list.',
+      type: 'boolean',
+      hidden: true,
+    }),
 
     defineField({
       name: 'date',

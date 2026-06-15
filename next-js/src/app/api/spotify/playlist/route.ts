@@ -1,6 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getSpotifyToken } from "@/lib/spotify-token";
 
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "GET, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type",
+};
+
+export async function OPTIONS() {
+  return new NextResponse(null, { status: 204, headers: corsHeaders });
+}
+
 function parsePlaylistId(url: string): string | null {
   try {
     const u = new URL(url);
@@ -24,7 +34,7 @@ export async function GET(request: NextRequest) {
   if (!url) {
     return NextResponse.json(
       { error: "Missing query parameter 'url'" },
-      { status: 400 },
+      { status: 400, headers: corsHeaders },
     );
   }
 
@@ -32,7 +42,7 @@ export async function GET(request: NextRequest) {
   if (!playlistId) {
     return NextResponse.json(
       { error: "Invalid Spotify playlist URL" },
-      { status: 400 },
+      { status: 400, headers: corsHeaders },
     );
   }
 
@@ -41,28 +51,49 @@ export async function GET(request: NextRequest) {
 
   try {
     const token = await getSpotifyToken();
-    const apiUrl = `https://api.spotify.com/v1/playlists/${playlistId}?fields=tracks.total,tracks.items(track(name,artists(name,id),album(images),duration_ms))`;
+    const trackFields =
+      "items(track(id,name,external_urls.spotify,artists(name,id),album(images),duration_ms)),next,total";
+    const apiUrl = `https://api.spotify.com/v1/playlists/${playlistId}?fields=name,description,images,external_urls.spotify,tracks(${trackFields})`;
 
     const res = await fetch(apiUrl, {
       headers: { Authorization: `Bearer ${token}` },
     });
 
     if (!res.ok) {
-      throw new Error(`Spotify API error: ${res.status}`);
+      const body = await res.text();
+      throw new Error(
+        `Spotify API error: ${res.status}${body ? ` ${body}` : ""}`,
+      );
     }
 
     const data = await res.json();
+    const playlistItems = [...(data.tracks?.items || [])];
+    let nextUrl = data.tracks?.next;
+
+    while (nextUrl) {
+      const pagedRes = await fetch(
+        `${nextUrl}&fields=${encodeURIComponent(trackFields)}`,
+        { headers: { Authorization: `Bearer ${token}` } },
+      );
+      if (!pagedRes.ok) break;
+      const pagedData = await pagedRes.json();
+      playlistItems.push(...(pagedData.items || []));
+      nextUrl = pagedData.next;
+    }
+
     const seen = new Set<string>();
     const images: string[] = [];
     const tracks: {
+      id?: string;
       name: string;
       artist: string;
       art: string;
+      spotifyUrl?: string;
       artistId?: string;
     }[] = [];
     let durationMs = 0;
 
-    for (const item of data.tracks?.items || []) {
+    for (const item of playlistItems) {
       const track = item.track;
       if (!track) continue;
 
@@ -73,7 +104,14 @@ export async function GET(request: NextRequest) {
       const firstArtistId = track.artists?.[0]?.id;
       const imgs = track.album?.images;
       const trackArt = imgs?.[0]?.url || imgs?.[imgs.length - 1]?.url || "";
-      tracks.push({ name, artist, art: trackArt, artistId: firstArtistId });
+      tracks.push({
+        id: track.id,
+        name,
+        artist,
+        art: trackArt,
+        spotifyUrl: track.external_urls?.spotify,
+        artistId: firstArtistId,
+      });
 
       if (!imgs || imgs.length === 0) continue;
       const url = trackArt;
@@ -123,6 +161,12 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json(
       {
+        playlist: {
+          name: data.name || "",
+          description: data.description || "",
+          image: data.images?.[0]?.url || "",
+          spotifyUrl: data.external_urls?.spotify || url,
+        },
         images,
         tracks,
         total: data.tracks?.total ?? tracks.length,
@@ -131,6 +175,7 @@ export async function GET(request: NextRequest) {
       },
       {
         headers: {
+          ...corsHeaders,
           "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=86400",
         },
       },
@@ -139,7 +184,7 @@ export async function GET(request: NextRequest) {
     console.error("[spotify/playlist]", err.message);
     return NextResponse.json(
       { error: err.message },
-      { status: 500 },
+      { status: 500, headers: corsHeaders },
     );
   }
 }

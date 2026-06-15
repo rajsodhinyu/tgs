@@ -3,6 +3,8 @@ assets
 scripts/captures
 scripts/tmp-*.webm
 scripts/carousels
+scripts/sotd-import/sockseek.conf
+scripts/sotd-import/sockseek
 
 # short_end: ignore the heavy video/image media, keep the shell scripts
 scripts/short_end/*

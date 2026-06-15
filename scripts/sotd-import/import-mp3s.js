@@ -102,8 +102,8 @@ async function createBackup() {
     const backupFile = `backup-${timestamp}.tar.gz`;
 
     const exportProcess = spawn(
-      "sanity",
-      ["dataset", "export", "tgs", "--path", backupFile],
+      "npx",
+      ["sanity", "dataset", "export", "tgs", "--path", backupFile],
       {
         cwd: path.join(__dirname, "..", "..", "thatgoodsht"),
         stdio: "inherit",
@@ -133,11 +133,12 @@ async function runSanityImport(ndjsonPath) {
     console.log(chalk.blue("\n🚀 Running Sanity import...\n"));
 
     const importProcess = spawn(
-      "sanity",
+      "npx",
       [
+        "sanity",
         "dataset",
         "import",
-        path.join("..", "scripts", ndjsonPath),
+        path.join("..", "scripts", "sotd-import", ndjsonPath),
         "tgs",
         "--replace",
       ],
