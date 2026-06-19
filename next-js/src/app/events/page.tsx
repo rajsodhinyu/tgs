@@ -1,16 +1,13 @@
-import Link from "next/link";
-
-import Image from "next/image";
-
 import { SanityImageSource } from "@sanity/image-url/lib/types/types";
 import imageUrlBuilder from "@sanity/image-url";
 import { SanityDocument } from "next-sanity";
 import { sanityFetch } from "../client";
+import EventCard from "./EventCard";
 
 const projectId = "fnvy29id";
 const dataset = "tgs";
 
-const EVENTS_QUERY = `*[_type == "event"]{_id, name, link, flyer, slug, date}|order(date desc)`;
+const EVENTS_QUERY = `*[_type == "event"]{_id, name, link, flyer, slug, date, ticketEmbed}|order(date desc)`;
 
 const urlFor = (source: SanityImageSource) =>
   projectId && dataset
@@ -21,6 +18,17 @@ function eventImage(event: any) {
   let pull = event.flyer.asset?._ref;
   let thing = pull ? urlFor(pull)?.url() : null;
   return thing;
+}
+
+// Pull the iframe src out of a pasted ITM embed snippet. Falls back to a bare
+// URL if that's all that was pasted; returns null when there's nothing usable.
+function extractEmbedSrc(raw?: string): string | null {
+  if (!raw) return null;
+  const trimmed = raw.trim();
+  const match = trimmed.match(/<iframe[^>]*\ssrc=["']([^"']+)["']/i);
+  if (match) return match[1];
+  if (/^https?:\/\/\S+$/.test(trimmed)) return trimmed;
+  return null;
 }
 
 export default async function Page() {
@@ -58,28 +66,14 @@ export default async function Page() {
       </h1>
       <div className="grid lg:grid-cols-5 sm:grid-cols-4 grid-cols-2 md:p-2 mt-4 gap-2">
         {events.map((event) => (
-          <div className="group rounded-lg" key={event._id}>
-            <Link className=" decoration-tgs-purple" href={`${event.link}`}>
-              <div className="text-white">
-                <div className="relative w-full aspect-[4/5]">
-                  <Image
-                    className="object-contain rounded-md border-white border-0 group-hover:border-4 group-hover:scale-[98%] transition-all"
-                    src={`${eventImage(event)}`}
-                    fill={true}
-                    alt={`${event.name}`}
-                    sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 20vw"
-                    quality={100}
-                  />
-                </div>
-              </div>
-              <p className="text-center text-md sm:text-xl font-bit font-black text-balance pt-1 leading-tight text-white group-hover:underline group-hover:text-white transition-all">
-                {event.name}
-              </p>
-              <p className="text-gray-300 text-center text-xs sm:text-base font-roc py-2 -m-2 group-hover:text-white transition-all">
-                {stringifyDate(event.date)}
-              </p>
-            </Link>
-          </div>
+          <EventCard
+            key={event._id}
+            name={event.name}
+            imageUrl={`${eventImage(event)}`}
+            dateLabel={stringifyDate(event.date)}
+            link={`${event.link}`}
+            embedSrc={extractEmbedSrc(event.ticketEmbed)}
+          />
         ))}
       </div>
     </div>

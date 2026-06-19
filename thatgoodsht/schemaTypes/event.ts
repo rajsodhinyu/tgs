@@ -24,6 +24,14 @@ export const eventType = defineType({
         validation: rule => rule.required()
     }),
     defineField({
+        name: 'ticketEmbed',
+        title: 'Inline Ticket Embed (ITM)',
+        description:
+            'Optional. Paste the full ITM "Inline Embed" snippet (the <iframe> code). When filled in, this event opens a buy-on-site popup (flyer + checkout) instead of sending people to the ticket link.',
+        type: 'text',
+        rows: 6,
+    }),
+    defineField({
         name: 'date',
         title: 'Date & Start Time',
         type: 'datetime',
