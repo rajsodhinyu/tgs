@@ -16,6 +16,7 @@ import { Metadata } from "next";
 import AlbumEmbedBlock from "../AlbumEmbedBlock";
 import TrackEmbedBlock from "../TrackEmbedBlock";
 import PlaylistEmbedBlock from "../PlaylistEmbedBlock";
+import PhotoAlbumBlock, { AlbumPhoto } from "../PhotoAlbumBlock";
 import TrackGrid from "../TrackGrid";
 import { preprocessContent } from "../preprocessContent";
 import BlogPlatformSwitcher from "../BlogPlatformSwitcher";
@@ -206,6 +207,25 @@ const components: PortableTextComponents = {
     },
     trackGrid: ({ value }) => {
       return <TrackGrid tracks={value?.tracks || []} />;
+    },
+    photoAlbum: ({ value }) => {
+      const photos: AlbumPhoto[] = (value?.images || [])
+        .filter((img: any) => img?.asset?._ref)
+        .map((img: any, i: number) => {
+          // Asset refs encode natural dimensions: image-<id>-<w>x<h>-<ext>
+          const dims = img.asset._ref.match(/-(\d+)x(\d+)-/);
+          return {
+            key: img._key || `photo-${i}`,
+            src:
+              urlFor(img)?.width(1600).fit("max").auto("format").url() || "",
+            fullSrc: urlFor(img)?.width(2400).fit("max").url() || "",
+            alt: img.alt || "",
+            width: dims ? Number(dims[1]) : 1600,
+            height: dims ? Number(dims[2]) : 1200,
+          };
+        });
+      if (photos.length === 0) return null;
+      return <PhotoAlbumBlock photos={photos} title={value?.title} />;
     },
     playlistEmbed: ({ value }) => {
       return (

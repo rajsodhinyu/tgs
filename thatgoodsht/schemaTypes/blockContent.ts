@@ -1,8 +1,9 @@
 import React from 'react'
 import {defineType, defineArrayMember} from 'sanity'
+import {mediaAssetSource} from 'sanity-plugin-media'
 import {TrackSearchInput} from '../components/TrackSearchInput'
 import {PlaylistPickerInput} from '../components/PlaylistPickerInput'
-import {FaMusic} from 'react-icons/fa6'
+import {FaMusic, FaImages} from 'react-icons/fa6'
 import {RiPlayListFill} from 'react-icons/ri'
 export default defineType({
   title: 'Block Content',
@@ -161,6 +162,56 @@ export default defineType({
             title: name || 'Playlist',
             subtitle: description || '',
             media: coverUrl ? React.createElement('img', {src: coverUrl}) : undefined,
+          }
+        },
+      },
+    }),
+    defineArrayMember({
+      title: 'Carousel',
+      name: 'photoAlbum',
+      icon: FaImages,
+      type: 'object',
+      fields: [
+        {
+          title: 'Caption (optional)',
+          name: 'title',
+          type: 'string',
+          description: 'Shown under the album on the site',
+        },
+        {
+          title: 'Photos',
+          name: 'images',
+          type: 'array',
+          description:
+            'Drop a whole batch of files here to upload them all at once. Drag to reorder.',
+          options: {layout: 'grid'},
+          of: [
+            {
+              type: 'image',
+              options: {hotspot: true, sources: [mediaAssetSource]},
+              fields: [
+                {
+                  title: 'Alt text',
+                  name: 'alt',
+                  type: 'string',
+                },
+              ],
+            },
+          ],
+        },
+      ],
+      preview: {
+        select: {
+          title: 'title',
+          images: 'images',
+          firstImage: 'images.0',
+        },
+        prepare({title, images, firstImage}) {
+          const count = images ? Object.keys(images).length : 0
+          return {
+            title: title || 'Photo Album',
+            subtitle: `${count} photo${count === 1 ? '' : 's'}`,
+            media: firstImage,
           }
         },
       },
