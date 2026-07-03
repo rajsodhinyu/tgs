@@ -75,7 +75,7 @@ print(W, H, x, y, bw, bh)
       [0:v]chromakey=${KEY}:${SIM}:${BLEND},despill=type=green:mix=0.2:expand=0,format=yuva420p,split[fga][fgb];\
       [fga]alphaextract,erosion[mask];\
       [fgb][mask]alphamerge[fg];\
-      [vbg][fg]overlay=0:0:shortest=1[out]" \
+      [vbg][fg]overlay=0:0:shortest=1,crop=trunc(iw/2)*2:trunc(ih/2)*2:0:0[out]" \
     -map "[out]" -map "1:a?" \
     -c:v libx264 -pix_fmt yuv420p -crf 18 -preset ultrafast \
     -c:a aac -b:a 192k -movflags +faststart "$OUT" -y
