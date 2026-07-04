@@ -68,7 +68,8 @@ export default function PhotoAlbumBlock({ photos, title }: PhotoAlbumProps) {
       const file = new File([blob], `tgs-photo-${index + 1}.${ext}`, {
         type: blob.type,
       });
-      if (navigator.canShare?.({ files: [file] })) {
+      // Share sheet ("Save Image") on touch devices; plain download on desktop.
+      if (isMobile && navigator.canShare?.({ files: [file] })) {
         await navigator.share({ files: [file] });
       } else {
         const url = URL.createObjectURL(blob);
@@ -104,19 +105,22 @@ export default function PhotoAlbumBlock({ photos, title }: PhotoAlbumProps) {
               key={photo.key}
               className="relative h-full w-full shrink-0 snap-center"
             >
+              {/* unoptimized: serve the Sanity CDN URL as-is — Next's
+                  optimizer would re-compress to ~viewport width at q75,
+                  which also ruins long-press saves on mobile. */}
               <Image
                 src={photo.src}
                 alt={photo.alt || `Photo ${i + 1}`}
                 fill
                 className="object-contain"
                 sizes="(max-width: 1400px) 100vw, 1400px"
+                unoptimized
               />
             </div>
           ))}
         </div>
 
-        {/* Overlay arrows are desktop-only; mobile swipes the snap scroller. */}
-        {!isMobile && photos.length > 1 && index > 0 && (
+        {photos.length > 1 && index > 0 && (
           <button
             type="button"
             aria-label="Previous photo"
@@ -126,7 +130,7 @@ export default function PhotoAlbumBlock({ photos, title }: PhotoAlbumProps) {
             <ChevronDots direction="left" />
           </button>
         )}
-        {!isMobile && photos.length > 1 && index < photos.length - 1 && (
+        {photos.length > 1 && index < photos.length - 1 && (
           <button
             type="button"
             aria-label="Next photo"
@@ -147,16 +151,14 @@ export default function PhotoAlbumBlock({ photos, title }: PhotoAlbumProps) {
             {index + 1} / {photos.length}
           </div>
         )}
-        {isMobile && (
-          <button
-            type="button"
-            onClick={handleSave}
-            disabled={saving}
-            className="rounded border border-white/20 bg-white/10 px-2 py-0.5 text-xs font-bold uppercase tracking-widest text-white/70 active:bg-white/20 disabled:opacity-50"
-          >
-            {saving ? "Saving…" : "Save"}
-          </button>
-        )}
+        <button
+          type="button"
+          onClick={handleSave}
+          disabled={saving}
+          className="rounded border border-white/20 bg-white/10 px-2 py-0.5 text-xs font-bold uppercase tracking-widest text-white/70 hover:bg-white/20 active:bg-white/20 disabled:opacity-50"
+        >
+          {saving ? "Saving…" : "Save"}
+        </button>
       </div>
     </div>
   );

@@ -212,16 +212,37 @@ const components: PortableTextComponents = {
       const photos: AlbumPhoto[] = (value?.images || [])
         .filter((img: any) => img?.asset?._ref)
         .map((img: any, i: number) => {
-          // Asset refs encode natural dimensions: image-<id>-<w>x<h>-<ext>
-          const dims = img.asset._ref.match(/-(\d+)x(\d+)-/);
+          // Asset refs encode everything: image-<id>-<w>x<h>-<ext>
+          const ref = img.asset._ref.match(
+            /^image-([a-zA-Z0-9]+)-(\d+)x(\d+)-([a-z0-9]+)$/,
+          );
+          const ext = ref ? ref[4] : "";
+          // Pin formats — auto/format negotiation hands Safari avif/webp,
+          // which is what people end up with when they save to Photos.
+          // jpg everywhere, png kept only for transparency.
+          const displayFormat: "jpg" | "png" = ext === "png" ? "png" : "jpg";
+          // Bare asset URL (no transform params) = the original upload,
+          // byte-for-byte; webp/avif originals get converted at full res.
+          const originalUrl = ref
+            ? `https://cdn.sanity.io/images/${projectId}/${dataset}/${ref[1]}-${ref[2]}x${ref[3]}.${ref[4]}`
+            : urlFor(img)?.url() || "";
+          const fullSrc =
+            ref && !["jpg", "jpeg", "png"].includes(ext)
+              ? `${originalUrl}?fm=jpg&q=95`
+              : originalUrl;
           return {
             key: img._key || `photo-${i}`,
             src:
-              urlFor(img)?.width(1600).fit("max").auto("format").url() || "",
-            fullSrc: urlFor(img)?.width(2400).fit("max").url() || "",
+              urlFor(img)
+                ?.width(1600)
+                .fit("max")
+                .format(displayFormat)
+                .quality(90)
+                .url() || "",
+            fullSrc,
             alt: img.alt || "",
-            width: dims ? Number(dims[1]) : 1600,
-            height: dims ? Number(dims[2]) : 1200,
+            width: ref ? Number(ref[2]) : 1600,
+            height: ref ? Number(ref[3]) : 1200,
           };
         });
       if (photos.length === 0) return null;
