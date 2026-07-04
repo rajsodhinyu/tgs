@@ -8,6 +8,9 @@ export interface AlbumPhoto {
   key: string;
   src: string;
   fullSrc: string;
+  /** Lossless rendition shared on iOS — saving a JPEG to Photos re-encodes
+      it (~5x smaller file), but PNGs are stored as-is. */
+  pngSrc: string;
   alt: string;
   width: number;
   height: number;
@@ -26,25 +29,36 @@ export default function PhotoAlbumBlock({ photos, title }: PhotoAlbumProps) {
   const fileCache = useRef(new Map<string, File>());
   const [index, setIndex] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
+  const [isIOS, setIsIOS] = useState(false);
   const [saveState, setSaveState] = useState<"idle" | "saving" | "error">(
     "idle",
   );
 
   useEffect(() => {
     setIsMobile(window.matchMedia("(pointer: coarse)").matches);
+    // iPadOS reports itself as MacIntel, hence the touch-points check.
+    setIsIOS(
+      /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+        (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1),
+    );
   }, []);
 
-  const fetchFile = async (photo: AlbumPhoto, i: number) => {
-    const cached = fileCache.current.get(photo.fullSrc);
+  // What the share sheet gets: lossless PNG on iOS (Photos re-encodes JPEGs
+  // on save, but stores PNGs as-is), the untouched original everywhere else.
+  const shareSrc = (photo: AlbumPhoto) =>
+    (isIOS && photo.pngSrc) || photo.fullSrc;
+
+  const fetchFile = async (url: string, i: number) => {
+    const cached = fileCache.current.get(url);
     if (cached) return cached;
-    const res = await fetch(photo.fullSrc);
+    const res = await fetch(url);
     if (!res.ok) throw new Error(`Fetch failed: ${res.status}`);
     const blob = await res.blob();
     const ext = blob.type.split("/")[1]?.split("+")[0] || "jpg";
     const file = new File([blob], `tgs-photo-${i + 1}.${ext}`, {
       type: blob.type,
     });
-    fileCache.current.set(photo.fullSrc, file);
+    fileCache.current.set(url, file);
     return file;
   };
 
@@ -54,9 +68,9 @@ export default function PhotoAlbumBlock({ photos, title }: PhotoAlbumProps) {
   useEffect(() => {
     if (!isMobile) return;
     const photo = photos[index];
-    if (photo) fetchFile(photo, index).catch(() => {});
+    if (photo) fetchFile(shareSrc(photo), index).catch(() => {});
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isMobile, index, photos]);
+  }, [isMobile, isIOS, index, photos]);
 
   if (photos.length === 0) return null;
 
@@ -115,8 +129,8 @@ export default function PhotoAlbumBlock({ photos, title }: PhotoAlbumProps) {
           // Usually a cache hit (prefetched on swipe), so share() runs inside
           // the tap's user activation instead of after a slow await.
           const file =
-            fileCache.current.get(photo.fullSrc) ??
-            (await fetchFile(photo, index));
+            fileCache.current.get(shareSrc(photo)) ??
+            (await fetchFile(shareSrc(photo), index));
           await navigator.share({ files: [file] });
           setSaveState("idle");
           return;
@@ -131,7 +145,7 @@ export default function PhotoAlbumBlock({ photos, title }: PhotoAlbumProps) {
           debugErr("Share", err);
         }
       }
-      downloadFile(await fetchFile(photo, index));
+      downloadFile(await fetchFile(photo.fullSrc, index));
       setSaveState("idle");
     } catch (err) {
       debugErr("Save", err);

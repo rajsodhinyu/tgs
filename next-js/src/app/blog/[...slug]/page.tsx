@@ -232,9 +232,15 @@ const components: PortableTextComponents = {
               : originalUrl;
           // Same-origin via the proxy: iOS Safari's fetch() of the CDN URL
           // dies with "Load failed" (CORS/webview quirks), killing Save.
-          const fullSrc = upstreamFull
-            ? `/api/image-proxy?url=${encodeURIComponent(upstreamFull)}`
-            : "";
+          const proxied = (u: string) =>
+            u ? `/api/image-proxy?url=${encodeURIComponent(u)}` : "";
+          const fullSrc = proxied(upstreamFull);
+          // iOS re-encodes JPEGs on save-to-Photos (~750KB → ~150KB) but
+          // stores PNGs losslessly, so shares on iOS use a PNG rendition.
+          const pngSrc =
+            ext === "png"
+              ? fullSrc
+              : proxied(originalUrl && `${originalUrl}?fm=png`);
           return {
             key: img._key || `photo-${i}`,
             src:
@@ -245,6 +251,7 @@ const components: PortableTextComponents = {
                 .quality(90)
                 .url() || "",
             fullSrc,
+            pngSrc,
             alt: img.alt || "",
             width: ref ? Number(ref[2]) : 1600,
             height: ref ? Number(ref[3]) : 1200,
