@@ -23,6 +23,7 @@ const clamp = (n: number, min: number, max: number) =>
 
 export default function PhotoAlbumBlock({ photos, title }: PhotoAlbumProps) {
   const scrollerRef = useRef<HTMLDivElement>(null);
+  const fileCache = useRef(new Map<string, File>());
   const [index, setIndex] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -30,6 +31,30 @@ export default function PhotoAlbumBlock({ photos, title }: PhotoAlbumProps) {
   useEffect(() => {
     setIsMobile(window.matchMedia("(pointer: coarse)").matches);
   }, []);
+
+  const fetchFile = async (photo: AlbumPhoto, i: number) => {
+    const cached = fileCache.current.get(photo.fullSrc);
+    if (cached) return cached;
+    const res = await fetch(photo.fullSrc);
+    if (!res.ok) throw new Error(`Fetch failed: ${res.status}`);
+    const blob = await res.blob();
+    const ext = blob.type.split("/")[1]?.split("+")[0] || "jpg";
+    const file = new File([blob], `tgs-photo-${i + 1}.${ext}`, {
+      type: blob.type,
+    });
+    fileCache.current.set(photo.fullSrc, file);
+    return file;
+  };
+
+  // navigator.share must be called while the tap's user activation is still
+  // live — awaiting a full-res download first gets it rejected on iOS. So on
+  // touch devices, prefetch the visible photo; Save then shares synchronously.
+  useEffect(() => {
+    if (!isMobile) return;
+    const photo = photos[index];
+    if (photo) fetchFile(photo, index).catch(() => {});
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isMobile, index, photos]);
 
   if (photos.length === 0) return null;
 
@@ -62,25 +87,32 @@ export default function PhotoAlbumBlock({ photos, title }: PhotoAlbumProps) {
     const photo = photos[index];
     setSaving(true);
     try {
-      const res = await fetch(photo.fullSrc);
-      const blob = await res.blob();
-      const ext = blob.type.split("/")[1]?.split("+")[0] || "jpg";
-      const file = new File([blob], `tgs-photo-${index + 1}.${ext}`, {
-        type: blob.type,
-      });
       // Share sheet ("Save Image") on touch devices; plain download on desktop.
-      if (isMobile && navigator.canShare?.({ files: [file] })) {
-        await navigator.share({ files: [file] });
-      } else {
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = file.name;
-        a.click();
-        URL.revokeObjectURL(url);
+      if (isMobile) {
+        try {
+          // Usually a cache hit (prefetched on swipe), so share() runs inside
+          // the tap's user activation instead of after a slow await.
+          const file =
+            fileCache.current.get(photo.fullSrc) ??
+            (await fetchFile(photo, index));
+          if (navigator.canShare?.({ files: [file] })) {
+            await navigator.share({ files: [file] });
+            return;
+          }
+        } catch (err: any) {
+          if (err?.name === "AbortError") return; // user closed the sheet
+          console.error("Share failed, falling back to download:", err);
+        }
       }
-    } catch (err: any) {
-      if (err?.name !== "AbortError") console.error("Save failed:", err);
+      const file = await fetchFile(photo, index);
+      const url = URL.createObjectURL(file);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = file.name;
+      a.click();
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error("Save failed:", err);
     } finally {
       setSaving(false);
     }
