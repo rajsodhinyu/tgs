@@ -26,7 +26,9 @@ export default function PhotoAlbumBlock({ photos, title }: PhotoAlbumProps) {
   const fileCache = useRef(new Map<string, File>());
   const [index, setIndex] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
-  const [saving, setSaving] = useState(false);
+  const [saveState, setSaveState] = useState<"idle" | "saving" | "error">(
+    "idle",
+  );
 
   useEffect(() => {
     setIsMobile(window.matchMedia("(pointer: coarse)").matches);
@@ -81,40 +83,60 @@ export default function PhotoAlbumBlock({ photos, title }: PhotoAlbumProps) {
     if (i !== index) setIndex(i);
   };
 
+  const debugErr = (stage: string, err: any) => {
+    console.error(`${stage} failed:`, err);
+    // Field diagnostics: append ?savedebug to the URL to surface errors.
+    if (window.location.search.includes("savedebug"))
+      alert(`${stage}: ${err?.name ?? ""} ${err?.message ?? err}`);
+  };
+
+  const downloadFile = (file: File) => {
+    const url = URL.createObjectURL(file);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = file.name;
+    document.body.appendChild(a); // Firefox needs the anchor in the DOM
+    a.click();
+    a.remove();
+    // Safari cancels the download if the blob URL is revoked immediately.
+    setTimeout(() => URL.revokeObjectURL(url), 60_000);
+  };
+
   // Web Share with a file puts "Save Image" / "Save to Photos" in the
   // native sheet — the closest the web gets to writing to the gallery.
   const handleSave = async () => {
     const photo = photos[index];
-    setSaving(true);
+    setSaveState("saving");
     try {
-      // Share sheet ("Save Image") on touch devices; plain download on desktop.
-      if (isMobile) {
+      // Share sheet ("Save Image") on touch devices; plain download on
+      // desktop and in webviews that can't share files.
+      if (isMobile && typeof navigator.share === "function") {
         try {
           // Usually a cache hit (prefetched on swipe), so share() runs inside
           // the tap's user activation instead of after a slow await.
           const file =
             fileCache.current.get(photo.fullSrc) ??
             (await fetchFile(photo, index));
-          if (navigator.canShare?.({ files: [file] })) {
-            await navigator.share({ files: [file] });
+          await navigator.share({ files: [file] });
+          setSaveState("idle");
+          return;
+        } catch (err: any) {
+          if (err?.name === "AbortError") {
+            // user closed the sheet
+            setSaveState("idle");
             return;
           }
-        } catch (err: any) {
-          if (err?.name === "AbortError") return; // user closed the sheet
-          console.error("Share failed, falling back to download:", err);
+          // NotAllowedError (activation expired mid-download), TypeError
+          // (file sharing unsupported), … — fall through to a download.
+          debugErr("Share", err);
         }
       }
-      const file = await fetchFile(photo, index);
-      const url = URL.createObjectURL(file);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = file.name;
-      a.click();
-      URL.revokeObjectURL(url);
+      downloadFile(await fetchFile(photo, index));
+      setSaveState("idle");
     } catch (err) {
-      console.error("Save failed:", err);
-    } finally {
-      setSaving(false);
+      debugErr("Save", err);
+      setSaveState("error");
+      setTimeout(() => setSaveState("idle"), 2500);
     }
   };
 
@@ -186,10 +208,14 @@ export default function PhotoAlbumBlock({ photos, title }: PhotoAlbumProps) {
         <button
           type="button"
           onClick={handleSave}
-          disabled={saving}
+          disabled={saveState === "saving"}
           className="rounded border border-white/20 bg-white/10 px-2 py-0.5 text-xs font-bold uppercase tracking-widest text-white/70 hover:bg-white/20 active:bg-white/20 disabled:opacity-50"
         >
-          {saving ? "Saving…" : "Save"}
+          {saveState === "saving"
+            ? "Saving…"
+            : saveState === "error"
+              ? "Failed"
+              : "Save"}
         </button>
       </div>
     </div>
