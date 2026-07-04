@@ -22,22 +22,24 @@ export async function GET(request: NextRequest) {
 
   try {
     const res = await fetch(url);
-    if (!res.ok) {
+    if (!res.ok || !res.body) {
       return NextResponse.json(
         { error: `Upstream ${res.status}` },
         { status: 502 },
       );
     }
 
-    const contentType = res.headers.get("content-type") || "image/jpeg";
-    const buffer = await res.arrayBuffer();
-
-    return new NextResponse(buffer, {
-      headers: {
-        "Content-Type": contentType,
-        "Cache-Control": "public, max-age=86400",
-      },
+    const headers = new Headers({
+      "Content-Type": res.headers.get("content-type") || "image/jpeg",
+      // Asset URLs are content-addressed; s-maxage lets Vercel's CDN
+      // absorb repeat hits instead of re-invoking the function.
+      "Cache-Control": "public, max-age=86400, s-maxage=31536000, immutable",
     });
+    const len = res.headers.get("content-length");
+    if (len) headers.set("Content-Length", len);
+
+    // Stream — buffering full-res originals can blow the response size limit.
+    return new NextResponse(res.body, { headers });
   } catch (err: any) {
     console.error("[image-proxy]", err.message);
     return NextResponse.json({ error: "Fetch failed" }, { status: 500 });

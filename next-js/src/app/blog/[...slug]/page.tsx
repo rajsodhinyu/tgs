@@ -226,10 +226,15 @@ const components: PortableTextComponents = {
           const originalUrl = ref
             ? `https://cdn.sanity.io/images/${projectId}/${dataset}/${ref[1]}-${ref[2]}x${ref[3]}.${ref[4]}`
             : urlFor(img)?.url() || "";
-          const fullSrc =
+          const upstreamFull =
             ref && !["jpg", "jpeg", "png"].includes(ext)
               ? `${originalUrl}?fm=jpg&q=95`
               : originalUrl;
+          // Same-origin via the proxy: iOS Safari's fetch() of the CDN URL
+          // dies with "Load failed" (CORS/webview quirks), killing Save.
+          const fullSrc = upstreamFull
+            ? `/api/image-proxy?url=${encodeURIComponent(upstreamFull)}`
+            : "";
           return {
             key: img._key || `photo-${i}`,
             src:
