@@ -89,6 +89,9 @@ function render(image, audio, startSec, output) {
       '-map', '0:v:0',
       '-map', '1:a:0',
       '-t', String(CLIP_SECONDS),
+      // Force even dimensions — libx264 + yuv420p reject odd width/height.
+      // trunc down to the nearest even px (drops at most 1px, imperceptible; no black bar).
+      '-vf', 'scale=trunc(iw/2)*2:trunc(ih/2)*2',
       '-c:v', 'libx264',
       '-preset', 'slow',
       '-tune', 'stillimage',

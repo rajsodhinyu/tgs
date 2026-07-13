@@ -409,16 +409,18 @@ export function WeeklyRoundupBuilder() {
       slug: !slugify(slug),
       date: !date,
       tracks: selected.length === 0,
+      thumb: !thumbFile,
       banner: !bannerFile,
       apple: selected.filter(trackNeedsApple),
     }),
-    [title, slug, date, selected, bannerFile, trackNeedsApple],
+    [title, slug, date, selected, thumbFile, bannerFile, trackNeedsApple],
   )
   const formReady =
     !invalid.title &&
     !invalid.slug &&
     !invalid.date &&
     !invalid.tracks &&
+    !invalid.thumb &&
     !invalid.banner &&
     invalid.apple.length === 0
 
@@ -453,14 +455,13 @@ export function WeeklyRoundupBuilder() {
         alignment: i % 2 === 0 ? 'left' : 'right',
       }))
       setTracks(rows)
-      if (data.playlist?.image && !thumbPreview) setThumbPreview(data.playlist.image)
     } catch (err: any) {
       setError(err.message || 'Could not load playlist.')
       setStatus('')
     } finally {
       setLoading(false)
     }
-  }, [thumbPreview])
+  }, [])
 
   useEffect(() => {
     if (didLoad.current) return
@@ -529,6 +530,7 @@ export function WeeklyRoundupBuilder() {
     if (invalid.title) problems.push('Title')
     if (invalid.slug) problems.push('Slug')
     if (invalid.date) problems.push('Date')
+    if (invalid.thumb) problems.push('Thumbnail')
     if (invalid.banner) problems.push('Banner')
     if (invalid.apple.length) {
       problems.push(
@@ -548,11 +550,6 @@ export function WeeklyRoundupBuilder() {
       let thumb
       if (thumbFile) {
         const asset = await client.assets.upload('image', thumbFile, {filename: `${cleanSlug}-thumb`})
-        thumb = imageField(asset._id)
-      } else if (thumbPreview) {
-        // Fall back to the playlist cover art if no custom thumbnail was picked.
-        const blob = await (await fetch(thumbPreview)).blob()
-        const asset = await client.assets.upload('image', blob, {filename: `${cleanSlug}-thumb`})
         thumb = imageField(asset._id)
       }
 
@@ -607,7 +604,6 @@ export function WeeklyRoundupBuilder() {
     slug,
     date,
     thumbFile,
-    thumbPreview,
     bannerFile,
     buildContent,
     client,
@@ -663,7 +659,7 @@ export function WeeklyRoundupBuilder() {
           </Field>
 
           <Field>
-            <Label>Thumbnail — defaults to the Spotify cover, upload to override</Label>
+            <Label style={errColor(invalid.thumb)}>Thumbnail (square)</Label>
             {thumbPreview && <CoverPreview src={thumbPreview} alt="" />}
             <input
               type="file"
