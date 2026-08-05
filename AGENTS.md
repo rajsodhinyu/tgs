@@ -75,7 +75,15 @@ Homepage backgrounds are p5 sketches loaded via `next/dynamic` (`ssr: false`), e
 ```tsx
 const DynamicComponentWithNoSSR = dynamic(() => import("./ui/FireworksBackground"), { ssr: false });
 ```
-Sketch files in that dir: `Backround.tsx` (grid), `FireworksBackground`, `CheckerboardBackground`, `SpiralBackground`, `GlitchBackground` (halftone pixel-sort), `HalftoneBackground`, … — each exports a default component + named sketch fn. Read the file for the specifics.
+Sketch files in that dir: `Backround.tsx` (grid), `FireworksBackground`, `CheckerboardBackground`, `SpiralBackground`, `GlitchBackground` (halftone pixel-sort), `HalftoneBackground`, `PixelWarpBackground` (square starfield warp), `VHSBackground` (tape-tracking bars), `BeatRingsBackground` (pixel rings per beat), `LavaBackground` (banded metaballs, ambient), `MarqueeBackground` (bitcount tickers), … — each exports a default component + named sketch fn. Read the file for the specifics.
+
+Most of these are audio-reactive: each file carries its own copy of the `getAudioTap()` /
+`sampleLevel()` pair that RMS-samples the persistent `#myAudio` element (see
+`unused_FlowFieldBackground.tsx` for the canonical version). Sketches that want per-beat
+behavior derive it locally — a transient above a slow EMA of the level, rate-limited by a
+frame cooldown. Canvas text can't name a `next/font` family (the names are hashed), so
+`MarqueeBackground` registers `public/fonts/bitcount-prop-single.ttf` (byte-identical to
+`font_title.ttf`) via `FontFace` under a stable name, same as `playlists/export/artistCardCanvas.ts`.
 
 ### Shared components (`next-js/src/app/components/`)
 - `ChevronDots` — pixel-art dotted chevron SVG (matches bitcount-filled font). Props: `color`, `direction` (`left`/`right`), `className`. Nav arrows site-wide.

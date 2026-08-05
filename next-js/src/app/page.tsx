@@ -7,7 +7,7 @@ import { useSotData } from "./context/SotDataContext";
 import Link from "next/link";
 
 const DynamicComponentWithNoSSR = dynamic(
-  () => import("./ui/unused_FlowFieldBackground"),
+  () => import("./ui/PixelWarpBackground"),
   {
     ssr: false,
     loading: () => (
@@ -18,7 +18,7 @@ const DynamicComponentWithNoSSR = dynamic(
   },
 );
 
-const DiagnosticOverlay = dynamic(() => import("./ui/DiagnosticOverlay"), {
+const DiagnosticOverlay = dynamic(() => import("./ui/PixelWarpBackground"), {
   ssr: false,
 });
 
