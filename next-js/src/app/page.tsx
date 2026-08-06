@@ -7,7 +7,7 @@ import { useSotData } from "./context/SotDataContext";
 import Link from "next/link";
 
 const DynamicComponentWithNoSSR = dynamic(
-  () => import("./ui/PixelWarpBackground"),
+  () => import("./ui/VHSBackground"),
   {
     ssr: false,
     loading: () => (
