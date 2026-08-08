@@ -75,7 +75,12 @@ Homepage backgrounds are p5 sketches loaded via `next/dynamic` (`ssr: false`), e
 ```tsx
 const DynamicComponentWithNoSSR = dynamic(() => import("./ui/FireworksBackground"), { ssr: false });
 ```
-Sketch files in that dir: `Backround.tsx` (grid), `FireworksBackground`, `CheckerboardBackground`, `SpiralBackground`, `GlitchBackground` (halftone pixel-sort), `HalftoneBackground`, `PixelWarpBackground` (square starfield warp), `VHSBackground` (tape-tracking bars), `BeatRingsBackground` (pixel rings per beat), `LavaBackground` (banded metaballs, ambient), `MarqueeBackground` (bitcount tickers), … — each exports a default component + named sketch fn. Read the file for the specifics.
+Sketch files in that dir: `Backround.tsx` (grid), `FireworksBackground`, `CheckerboardBackground`, `SpiralBackground`, `GlitchBackground` (halftone pixel-sort), `HalftoneBackground`, `used_PixelWarpBackground` (square starfield warp), `used_VHSBackground` (tape-tracking bars), `BeatRingsBackground` (pixel rings per beat), `LavaBackground` (banded metaballs, ambient), `MarqueeBackground` (bitcount tickers), … — each exports a default component + named sketch fn. Read the file for the specifics.
+
+Filename prefixes track rotation history: **`used_`** = already had a turn as the live
+homepage background (don't re-pick it until the rest have run), **`unused_`** = built but
+never shipped / retired, no prefix = still waiting for its turn. Rename the file when you
+rotate one in, and update the import in `page.tsx` to match.
 
 Most of these are audio-reactive: each file carries its own copy of the `getAudioTap()` /
 `sampleLevel()` pair that RMS-samples the persistent `#myAudio` element (see

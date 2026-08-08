@@ -7,7 +7,7 @@ import { useSotData } from "./context/SotDataContext";
 import Link from "next/link";
 
 const DynamicComponentWithNoSSR = dynamic(
-  () => import("./ui/VHSBackground"),
+  () => import("./ui/LavaStaticBackground"),
   {
     ssr: false,
     loading: () => (
@@ -18,7 +18,7 @@ const DynamicComponentWithNoSSR = dynamic(
   },
 );
 
-const DiagnosticOverlay = dynamic(() => import("./ui/PixelWarpBackground"), {
+const DiagnosticOverlay = dynamic(() => import("./ui/DiagnosticOverlay"), {
   ssr: false,
 });
 

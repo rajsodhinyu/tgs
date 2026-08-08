@@ -8,81 +8,28 @@ const PURPLE: [number, number, number] = [108, 92, 190];
 const HILITE: [number, number, number] = [255, 235, 255];
 const DEEP: [number, number, number] = [28, 20, 60];
 
-type AudioTap = {
-  ctx: AudioContext;
-  analyser: AnalyserNode;
-  timeData: Uint8Array;
-  audio: HTMLAudioElement;
-};
-
-declare global {
-  interface HTMLAudioElement {
-    __tgsAudioTap?: AudioTap;
-  }
-}
-
-function getAudioTap(): AudioTap | null {
-  if (typeof window === "undefined") return null;
-  const audio = document.getElementById("myAudio") as HTMLAudioElement | null;
-  if (!audio) return null;
-  if (audio.__tgsAudioTap) return audio.__tgsAudioTap;
-  if (!audio.crossOrigin) return null;
-
-  try {
-    const Ctx =
-      window.AudioContext ||
-      (window as unknown as { webkitAudioContext: typeof AudioContext })
-        .webkitAudioContext;
-    if (!Ctx) return null;
-    const ctx = new Ctx();
-    const source = ctx.createMediaElementSource(audio);
-    const analyser = ctx.createAnalyser();
-    analyser.fftSize = 2048;
-    analyser.smoothingTimeConstant = 0.8;
-    source.connect(analyser);
-    analyser.connect(ctx.destination);
-    const tap: AudioTap = {
-      ctx,
-      analyser,
-      timeData: new Uint8Array(analyser.fftSize),
-      audio,
-    };
-    audio.__tgsAudioTap = tap;
-    return tap;
-  } catch {
-    return null;
-  }
-}
-
-// "Lava" — a slow ambient metaball field. Seven drifting blobs contribute an
-// inverse-square field; the field is sampled on a coarse 10px grid and each
-// cell is filled with whichever of four brand colors its field strength falls
-// into. The hard thresholds (rather than a gradient) are what make it read as
-// pixel-banded lava instead of a blur. Audio only breathes the blob radii, so
-// this one stays calm — it's the ambient option.
+// "Lava (static)" — the non-audio-reactive sibling of LavaBackground, same
+// relationship as CheckerboardStatic to Checkerboard. Identical metaball field
+// and color banding, but with no audio tap at all: the blobs drift on their own
+// velocities and breathe on a fixed sine, so the look is the same whether or not
+// the Song of the Day is playing. Use this one when the background shouldn't
+// respond to the music (or when there's no audio on the page to sample).
 type Blob = {
   x: number;
   y: number;
   vx: number;
   vy: number;
   r: number; // base radius
-  ph: number; // phase offset for the idle breathing wobble
-  cur: number; // radius this frame (base * wobble * audio)
+  ph: number; // phase offset for the breathing wobble
+  cur: number; // radius this frame (base * wobble)
 };
 
-export const lavaSketch = (s: p5) => {
+export const lavaStaticSketch = (s: p5) => {
   let width = s.windowWidth;
   let height = s.windowHeight;
 
   const CELL = 7; // field sample + fill size in px
   const blobs: Blob[] = [];
-
-  let tap: AudioTap | null = null;
-  let smoothedLevel = 0;
-
-  const resumeCtx = () => {
-    if (tap && tap.ctx.state === "suspended") tap.ctx.resume().catch(() => {});
-  };
 
   // One blob per this much canvas area, so a narrow phone viewport gets a few
   // well-spaced blobs instead of the same 7 crammed together. A fixed count was
@@ -137,9 +84,6 @@ export const lavaSketch = (s: p5) => {
     s.createCanvas(width, height);
     s.noStroke();
     seed();
-    tap = getAudioTap();
-    window.addEventListener("pointerdown", resumeCtx);
-    window.addEventListener("keydown", resumeCtx);
   };
 
   s.windowResized = () => {
@@ -162,21 +106,7 @@ export const lavaSketch = (s: p5) => {
     if (!blobs.length) seed();
   };
 
-  const sampleLevel = (): number => {
-    if (!tap || tap.ctx.state !== "running" || tap.audio.paused) return 0;
-    tap.analyser.getByteTimeDomainData(tap.timeData);
-    let sumSq = 0;
-    for (let i = 0; i < tap.timeData.length; i++) {
-      const v = (tap.timeData[i] - 128) / 128;
-      sumSq += v * v;
-    }
-    return Math.sqrt(sumSq / tap.timeData.length);
-  };
-
   s.draw = () => {
-    const level = sampleLevel();
-    // Very slow follow — the point is ambient drift, not beat response.
-    smoothedLevel += (level - smoothedLevel) * 0.06;
     const t = s.millis() / 1000;
 
     s.background(DEEP[0], DEEP[1], DEEP[2]);
@@ -185,8 +115,7 @@ export const lavaSketch = (s: p5) => {
       // Keep centers inside [0,w) x [0,h) and let the field itself wrap, below.
       b.x = (((b.x + b.vx) % width) + width) % width;
       b.y = (((b.y + b.vy) % height) + height) % height;
-      b.cur =
-        b.r * (1 + 0.12 * Math.sin(t * 0.6 + b.ph) + smoothedLevel * 0.22);
+      b.cur = b.r * (1 + 0.12 * Math.sin(t * 0.6 + b.ph));
     }
 
     for (let y = 0; y < height; y += CELL) {
@@ -195,9 +124,9 @@ export const lavaSketch = (s: p5) => {
         for (const b of blobs) {
           // Toroidal distance: measure to the nearest copy of the blob across
           // the seam, so a blob leaving one edge is already bleeding in at the
-          // opposite one. Wrapping the center is then invisible — teleporting
-          // it at one radius off-screen popped, because a blob's visible reach
-          // is ~1.5r, so it still lit the edge as it jumped.
+          // opposite one. Wrapping the center is then invisible — the old
+          // "teleport at one radius off-screen" popped, because a blob's
+          // visible reach is ~1.5r, so it still lit up the edge as it jumped.
           let dx = Math.abs(x + CELL / 2 - b.x);
           if (dx > width / 2) dx = width - dx;
           let dy = Math.abs(y + CELL / 2 - b.y);
@@ -227,8 +156,8 @@ export const lavaSketch = (s: p5) => {
   };
 };
 
-const LavaBackground = () => {
-  return <P5Background sketch={lavaSketch} />;
+const LavaStaticBackground = () => {
+  return <P5Background sketch={lavaStaticSketch} />;
 };
 
-export default LavaBackground;
+export default LavaStaticBackground;
