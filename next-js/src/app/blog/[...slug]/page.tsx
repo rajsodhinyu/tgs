@@ -22,6 +22,7 @@ import { preprocessContent } from "../preprocessContent";
 import BlogPlatformSwitcher from "../BlogPlatformSwitcher";
 import BlogTitleBar from "../BlogTitleBar";
 import { BlogBgSync } from "../BlogBg";
+import { DEFAULT_OG_IMAGE, letterboxOgImage } from "@/lib/ogImage";
 
 const projectId = "fnvy29id";
 const dataset = "tgs";
@@ -332,34 +333,21 @@ export async function generateMetadata({
     };
   }
 
-  // Get the image URL for OpenGraph
-  const getImageUrl = () => {
-    if (post.youtubeURL) {
-      // For YouTube videos, use the YouTube thumbnail
-      const getYoutubeID = (url: string) => {
-        const regExp =
-          /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
-        const match = url.match(regExp);
-        return match && match[7].length === 11 ? match[7] : null;
-      };
-      const videoID = getYoutubeID(post.youtubeURL);
-      if (videoID) {
-        return `https://img.youtube.com/vi/${videoID}/maxresdefault.jpg`;
-      }
-    }
-
-    // Use banner if available, otherwise use thumb
+  // Social card image. Interview posts carry a youtubeURL, but the card must
+  // never point at img.youtube.com — X won't render a hotlinked YouTube
+  // thumbnail, which is what left those posts with an image-less card. The
+  // post's own Sanity artwork is used instead.
+  const ogImage = (() => {
     if (post.banner) {
-      return urlFor(post.banner)?.width(1280).height(720)?.url();
+      const url = urlFor(post.banner)?.width(1280).height(720)?.url();
+      return url ? { url, width: 1280, height: 720 } : null;
     }
     if (post.thumb) {
-      return urlFor(post.thumb)?.fit("crop").width(700).height(700)?.url();
+      return letterboxOgImage(post.thumb);
     }
-
     return null;
-  };
+  })() ?? DEFAULT_OG_IMAGE;
 
-  const imageUrl = getImageUrl();
   const writerData = post.writer ? await findWriter(post.writer) : null;
   const writerName = writerData?.name || null;
   const formattedDate = post.date
@@ -383,16 +371,14 @@ export async function generateMetadata({
       title,
       description,
       type: "article",
-      ...(imageUrl && {
-        images: [
-          {
-            url: imageUrl,
-            width: post.youtubeURL ? 1280 : post.banner ? 1280 : 700,
-            height: post.youtubeURL ? 720 : post.banner ? 720 : 700,
-            alt: title,
-          },
-        ],
-      }),
+      images: [
+        {
+          url: ogImage.url,
+          width: ogImage.width,
+          height: ogImage.height,
+          alt: title,
+        },
+      ],
       ...(post.date && {
         publishedTime: new Date(post.date).toISOString(),
       }),
@@ -404,9 +390,7 @@ export async function generateMetadata({
       card: "summary_large_image",
       title,
       description,
-      ...(imageUrl && {
-        images: [imageUrl],
-      }),
+      images: [ogImage.url],
     },
   };
 }
