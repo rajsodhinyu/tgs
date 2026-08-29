@@ -22,7 +22,12 @@ import { preprocessContent } from "../preprocessContent";
 import BlogPlatformSwitcher from "../BlogPlatformSwitcher";
 import BlogTitleBar from "../BlogTitleBar";
 import { BlogBgSync } from "../BlogBg";
-import { DEFAULT_OG_IMAGE, letterboxOgImage } from "@/lib/ogImage";
+import { bgStyle } from "../bgStyle";
+import {
+  DEFAULT_OG_ARTWORK,
+  letterboxOgImage,
+  type OgImage,
+} from "@/lib/ogImage";
 
 const projectId = "fnvy29id";
 const dataset = "tgs";
@@ -322,7 +327,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const slugParam = (await params).slug;
   const slug = Array.isArray(slugParam) ? slugParam.join("/") : slugParam;
-  const SLUG_QUERY = `*[_type == "post" && slug.current == "${slug}"]{_id, name, youtubeURL, thumb, writer, banner, content, slug, date, description}`;
+  const SLUG_QUERY = `*[_type == "post" && slug.current == "${slug}"]{_id, name, youtubeURL, thumb, writer, banner, content, slug, date, description, bgColor}`;
   const posts = await sanityFetch<SanityDocument[]>({ query: SLUG_QUERY });
   const post = posts[0];
 
@@ -337,16 +342,18 @@ export async function generateMetadata({
   // never point at img.youtube.com — X won't render a hotlinked YouTube
   // thumbnail, which is what left those posts with an image-less card. The
   // post's own Sanity artwork is used instead.
-  const ogImage = (() => {
-    if (post.banner) {
-      const url = urlFor(post.banner)?.width(1280).height(720)?.url();
-      return url ? { url, width: 1280, height: 720 } : null;
-    }
-    if (post.thumb) {
-      return letterboxOgImage(post.thumb);
-    }
-    return null;
-  })() ?? DEFAULT_OG_IMAGE;
+  const bannerUrl = post.banner
+    ? urlFor(post.banner)?.width(1280).height(720)?.url()
+    : null;
+
+  const ogImage: OgImage = bannerUrl
+    ? { url: bannerUrl, width: 1280, height: 720 }
+    : // Square thumb: letterboxed over the post's own page background, so the
+      // padding in the card matches what the reader lands on.
+      letterboxOgImage(
+        post.thumb ?? DEFAULT_OG_ARTWORK,
+        post.bgColor?.hex ?? bgStyle.color,
+      );
 
   const writerData = post.writer ? await findWriter(post.writer) : null;
   const writerName = writerData?.name || null;
