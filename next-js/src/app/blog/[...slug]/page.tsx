@@ -22,6 +22,11 @@ import { preprocessContent } from "../preprocessContent";
 import BlogPlatformSwitcher from "../BlogPlatformSwitcher";
 import BlogTitleBar from "../BlogTitleBar";
 import { BlogBgSync } from "../BlogBg";
+import {
+  resolveYoutubeThumb,
+  youtubeThumbCardPath,
+  youtubeVideoId,
+} from "@/lib/youtubeThumb";
 
 const projectId = "fnvy29id";
 const dataset = "tgs";
@@ -41,15 +46,7 @@ function renderYoutubeEmbed(youtubeURL: string) {
   if (youtubeURL == null) {
     return <div className="-my-4"></div>;
   } else {
-    // Extract YouTube video ID from URL
-    const getYoutubeID = (url: string) => {
-      const regExp =
-        /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
-      const match = url.match(regExp);
-      return match && match[7].length === 11 ? match[7] : null;
-    };
-
-    const videoID = getYoutubeID(youtubeURL);
+    const videoID = youtubeVideoId(youtubeURL);
 
     if (!videoID) return <div>Invalid YouTube URL</div>;
 
@@ -91,6 +88,22 @@ function renderBanner(post: any) {
       />
     );
   }
+}
+
+/**
+ * Card image for posts with no video behind them — Weekly, Artist of the Week
+ * and friends — taken from the post's own Sanity artwork.
+ */
+function sanityOgImage(post: any) {
+  if (post.banner) {
+    const url = urlFor(post.banner)?.width(1280).height(720)?.url();
+    return url ? { url, width: 1280, height: 720 } : null;
+  }
+  if (post.thumb) {
+    const url = urlFor(post.thumb)?.fit("crop").width(700).height(700)?.url();
+    return url ? { url, width: 700, height: 700 } : null;
+  }
+  return null;
 }
 
 async function findWriter(writer: any) {
@@ -332,34 +345,22 @@ export async function generateMetadata({
     };
   }
 
-  // Get the image URL for OpenGraph
-  const getImageUrl = () => {
-    if (post.youtubeURL) {
-      // For YouTube videos, use the YouTube thumbnail
-      const getYoutubeID = (url: string) => {
-        const regExp =
-          /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
-        const match = url.match(regExp);
-        return match && match[7].length === 11 ? match[7] : null;
-      };
-      const videoID = getYoutubeID(post.youtubeURL);
-      if (videoID) {
-        return `https://img.youtube.com/vi/${videoID}/maxresdefault.jpg`;
-      }
-    }
+  // Interviews card with the video's own thumbnail, but served from this app
+  // rather than linked: X won't render a card image pointing at
+  // img.youtube.com / i.ytimg.com, which is what left those posts image-less.
+  // A relative path here becomes absolute via the layout's metadataBase.
+  const videoId = youtubeVideoId(post.youtubeURL);
+  const videoThumb = videoId ? await resolveYoutubeThumb(videoId) : null;
 
-    // Use banner if available, otherwise use thumb
-    if (post.banner) {
-      return urlFor(post.banner)?.width(1280).height(720)?.url();
-    }
-    if (post.thumb) {
-      return urlFor(post.thumb)?.fit("crop").width(700).height(700)?.url();
-    }
+  const ogImage =
+    videoId && videoThumb
+      ? {
+          url: youtubeThumbCardPath(videoId),
+          width: videoThumb.width,
+          height: videoThumb.height,
+        }
+      : sanityOgImage(post);
 
-    return null;
-  };
-
-  const imageUrl = getImageUrl();
   const writerData = post.writer ? await findWriter(post.writer) : null;
   const writerName = writerData?.name || null;
   const formattedDate = post.date
@@ -383,12 +384,12 @@ export async function generateMetadata({
       title,
       description,
       type: "article",
-      ...(imageUrl && {
+      ...(ogImage && {
         images: [
           {
-            url: imageUrl,
-            width: post.youtubeURL ? 1280 : post.banner ? 1280 : 700,
-            height: post.youtubeURL ? 720 : post.banner ? 720 : 700,
+            url: ogImage.url,
+            width: ogImage.width,
+            height: ogImage.height,
             alt: title,
           },
         ],
@@ -404,8 +405,8 @@ export async function generateMetadata({
       card: "summary_large_image",
       title,
       description,
-      ...(imageUrl && {
-        images: [imageUrl],
+      ...(ogImage && {
+        images: [ogImage.url],
       }),
     },
   };
