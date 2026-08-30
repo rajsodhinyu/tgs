@@ -44,6 +44,11 @@ export const metadata = {
   metadataBase: new URL(siteUrl()),
   title: "That Good Sh*t",
   description: "Good Sh*t lives here.",
+  openGraph: {
+    // Public brand, with the asterisk — same string as the root title. Child
+    // pages merge this in, so interviews, weekly, merch, etc. all get it.
+    siteName: "That Good Sh*t",
+  },
 };
 
 export default async function RootLayout({
