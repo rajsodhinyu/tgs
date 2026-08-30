@@ -27,6 +27,7 @@ import {
   youtubeThumbCardPath,
   youtubeVideoId,
 } from "@/lib/youtubeThumb";
+import { ledeFromContent } from "@/lib/blogLede";
 
 const projectId = "fnvy29id";
 const dataset = "tgs";
@@ -373,9 +374,13 @@ export async function generateMetadata({
     : null;
 
   const title = post.name || "Blog Post";
+  const byline = `${writerName ? `By ${writerName}` : ""}${writerName && formattedDate ? " • " : ""}${formattedDate || ""}`;
+  // Card copy is the first sentence of the body they already wrote. The
+  // previous byline ("By TGS Staff • August 21, 2026") was never a dek.
+  // Posts with no body sentence (older interviews that are just the embed)
+  // keep the byline rather than inventing one.
   const description =
-    post.description ||
-    `${writerName ? `By ${writerName}` : ""}${writerName && formattedDate ? " • " : ""}${formattedDate || ""}`;
+    ledeFromContent(post.content) || post.description || byline;
 
   return {
     title,
@@ -383,6 +388,7 @@ export async function generateMetadata({
     openGraph: {
       title,
       description,
+      siteName: "That Good Sh*t",
       type: "article",
       ...(ogImage && {
         images: [
