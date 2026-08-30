@@ -7,6 +7,7 @@ import { SanityDocument } from "next-sanity";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { SotDataProvider } from "./context/SotDataContext";
+import { siteUrl } from "@/lib/siteUrl";
 
 const bitcount = localFont({
   src: "../../font.ttf",
@@ -38,6 +39,9 @@ const bitcount_fill = localFont({
 });
 
 export const metadata = {
+  // Lets pages hand Next a same-origin path for og:image and get an absolute
+  // URL out, on preview deploys as well as production.
+  metadataBase: new URL(siteUrl()),
   title: "That Good Sh*t",
   description: "Good Sh*t lives here.",
 };
