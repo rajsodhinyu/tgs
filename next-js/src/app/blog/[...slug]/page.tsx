@@ -22,12 +22,11 @@ import { preprocessContent } from "../preprocessContent";
 import BlogPlatformSwitcher from "../BlogPlatformSwitcher";
 import BlogTitleBar from "../BlogTitleBar";
 import { BlogBgSync } from "../BlogBg";
-import { bgStyle } from "../bgStyle";
 import {
-  DEFAULT_OG_ARTWORK,
-  letterboxOgImage,
-  type OgImage,
-} from "@/lib/ogImage";
+  resolveYoutubeThumb,
+  youtubeThumbCardPath,
+  youtubeVideoId,
+} from "@/lib/youtubeThumb";
 
 const projectId = "fnvy29id";
 const dataset = "tgs";
@@ -47,15 +46,7 @@ function renderYoutubeEmbed(youtubeURL: string) {
   if (youtubeURL == null) {
     return <div className="-my-4"></div>;
   } else {
-    // Extract YouTube video ID from URL
-    const getYoutubeID = (url: string) => {
-      const regExp =
-        /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
-      const match = url.match(regExp);
-      return match && match[7].length === 11 ? match[7] : null;
-    };
-
-    const videoID = getYoutubeID(youtubeURL);
+    const videoID = youtubeVideoId(youtubeURL);
 
     if (!videoID) return <div>Invalid YouTube URL</div>;
 
@@ -97,6 +88,22 @@ function renderBanner(post: any) {
       />
     );
   }
+}
+
+/**
+ * Card image for posts with no video behind them — Weekly, Artist of the Week
+ * and friends — taken from the post's own Sanity artwork.
+ */
+function sanityOgImage(post: any) {
+  if (post.banner) {
+    const url = urlFor(post.banner)?.width(1280).height(720)?.url();
+    return url ? { url, width: 1280, height: 720 } : null;
+  }
+  if (post.thumb) {
+    const url = urlFor(post.thumb)?.fit("crop").width(700).height(700)?.url();
+    return url ? { url, width: 700, height: 700 } : null;
+  }
+  return null;
 }
 
 async function findWriter(writer: any) {
@@ -327,7 +334,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const slugParam = (await params).slug;
   const slug = Array.isArray(slugParam) ? slugParam.join("/") : slugParam;
-  const SLUG_QUERY = `*[_type == "post" && slug.current == "${slug}"]{_id, name, youtubeURL, thumb, writer, banner, content, slug, date, description, bgColor}`;
+  const SLUG_QUERY = `*[_type == "post" && slug.current == "${slug}"]{_id, name, youtubeURL, thumb, writer, banner, content, slug, date, description}`;
   const posts = await sanityFetch<SanityDocument[]>({ query: SLUG_QUERY });
   const post = posts[0];
 
@@ -338,22 +345,21 @@ export async function generateMetadata({
     };
   }
 
-  // Social card image. Interview posts carry a youtubeURL, but the card must
-  // never point at img.youtube.com — X won't render a hotlinked YouTube
-  // thumbnail, which is what left those posts with an image-less card. The
-  // post's own Sanity artwork is used instead.
-  const bannerUrl = post.banner
-    ? urlFor(post.banner)?.width(1280).height(720)?.url()
-    : null;
+  // Interviews card with the video's own thumbnail, but served from this app
+  // rather than linked: X won't render a card image pointing at
+  // img.youtube.com / i.ytimg.com, which is what left those posts image-less.
+  // A relative path here becomes absolute via the layout's metadataBase.
+  const videoId = youtubeVideoId(post.youtubeURL);
+  const videoThumb = videoId ? await resolveYoutubeThumb(videoId) : null;
 
-  const ogImage: OgImage = bannerUrl
-    ? { url: bannerUrl, width: 1280, height: 720 }
-    : // Square thumb: letterboxed over the post's own page background, so the
-      // padding in the card matches what the reader lands on.
-      letterboxOgImage(
-        post.thumb ?? DEFAULT_OG_ARTWORK,
-        post.bgColor?.hex ?? bgStyle.color,
-      );
+  const ogImage =
+    videoId && videoThumb
+      ? {
+          url: youtubeThumbCardPath(videoId),
+          width: videoThumb.width,
+          height: videoThumb.height,
+        }
+      : sanityOgImage(post);
 
   const writerData = post.writer ? await findWriter(post.writer) : null;
   const writerName = writerData?.name || null;
@@ -378,14 +384,16 @@ export async function generateMetadata({
       title,
       description,
       type: "article",
-      images: [
-        {
-          url: ogImage.url,
-          width: ogImage.width,
-          height: ogImage.height,
-          alt: title,
-        },
-      ],
+      ...(ogImage && {
+        images: [
+          {
+            url: ogImage.url,
+            width: ogImage.width,
+            height: ogImage.height,
+            alt: title,
+          },
+        ],
+      }),
       ...(post.date && {
         publishedTime: new Date(post.date).toISOString(),
       }),
@@ -397,7 +405,9 @@ export async function generateMetadata({
       card: "summary_large_image",
       title,
       description,
-      images: [ogImage.url],
+      ...(ogImage && {
+        images: [ogImage.url],
+      }),
     },
   };
 }
