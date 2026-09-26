@@ -55,7 +55,7 @@ export default function PlaylistCard({
         {/* Crate-style stack: album arts peek above the front playlist cover,
             each deeper one narrower (--shrink per level). */}
         <div
-          className="relative [--peek:20px] [--shrink:12px] lg:[--peek:30px] lg:[--shrink:24px]"
+          className="relative [--peek:20px] [--shrink:6px] lg:[--peek:30px] lg:[--shrink:12px]"
           style={{ paddingTop: `calc(var(--peek) * ${count})` }}
         >
           {behind.map((src, i) => (
