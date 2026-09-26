@@ -52,7 +52,6 @@ export default function PlaylistSection({
               title={playlist.name}
               description={playlist.description}
               cover={playlist.coverUrl}
-              playlistURL={playlist.playlistURL}
               disabled={platform === "apple" && !playlist.appleMusicURL}
               url={
                 platform === "apple" && playlist.appleMusicURL
@@ -73,7 +72,6 @@ export default function PlaylistSection({
             title={playlist.name}
             description={playlist.description}
             cover={playlist.coverUrl}
-            playlistURL={playlist.playlistURL}
             disabled={platform === "apple" && !playlist.appleMusicURL}
             url={
               platform === "apple" && playlist.appleMusicURL
