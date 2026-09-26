@@ -16,7 +16,7 @@ const LIGHT_PINK: [number, number, number] = [250, 200, 255];
 type AudioTap = {
   ctx: AudioContext;
   analyser: AnalyserNode;
-  timeData: Uint8Array;
+  timeData: Uint8Array<ArrayBuffer>;
   audio: HTMLAudioElement;
 };
 
@@ -87,7 +87,7 @@ export const spectrumSkylineSketch = (s: p5) => {
   let height = s.windowHeight;
   let tap: AudioTap | null = null;
   // Owned frequency buffer (sized to the shared analyser once it's available).
-  let freqData: Uint8Array = new Uint8Array(0);
+  let freqData: Uint8Array<ArrayBuffer> = new Uint8Array(0);
 
   const NUM_BARS = 52; // grouped display bars across the width
   const BLOCK = 16; // pixel-grid: building "window" block size (px)

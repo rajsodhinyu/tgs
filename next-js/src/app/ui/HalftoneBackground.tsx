@@ -9,7 +9,7 @@ const LIGHT_PINK: [number, number, number] = [250, 200, 255];
 type AudioTap = {
   ctx: AudioContext;
   analyser: AnalyserNode;
-  timeData: Uint8Array;
+  timeData: Uint8Array<ArrayBuffer>;
   audio: HTMLAudioElement;
 };
 

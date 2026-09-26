@@ -11,7 +11,7 @@ const DEEP: [number, number, number] = [28, 20, 60];
 type AudioTap = {
   ctx: AudioContext;
   analyser: AnalyserNode;
-  timeData: Uint8Array;
+  timeData: Uint8Array<ArrayBuffer>;
   audio: HTMLAudioElement;
 };
 

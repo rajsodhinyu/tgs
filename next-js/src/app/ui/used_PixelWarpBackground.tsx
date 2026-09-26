@@ -10,7 +10,7 @@ const HILITE: [number, number, number] = [255, 235, 255];
 type AudioTap = {
   ctx: AudioContext;
   analyser: AnalyserNode;
-  timeData: Uint8Array;
+  timeData: Uint8Array<ArrayBuffer>;
   audio: HTMLAudioElement;
 };
 
