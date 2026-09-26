@@ -10,7 +10,7 @@ actually needs it.
 ThatGoodSht (TGS) is an independent music curation platform. Monorepo, three packages
 (no root workspace — each has its own `pnpm-lock.yaml`):
 
-- **`next-js/`** — Next.js 15 frontend (App Router, React 18, TypeScript, Tailwind)
+- **`next-js/`** — Next.js 16 frontend (App Router, React 19, TypeScript, Tailwind)
 - **`thatgoodsht/`** — Sanity v3 CMS (content studio)
 - **`scripts/`** — Standalone media/video tooling + SOTD bulk import (Node / bash + ffmpeg). See [scripts/ tooling](#scripts-tooling).
 
