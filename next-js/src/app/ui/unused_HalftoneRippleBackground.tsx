@@ -14,7 +14,7 @@ const LIGHT_PINK: [number, number, number] = [250, 200, 255]; // ripple crest
 type AudioTap = {
   ctx: AudioContext;
   analyser: AnalyserNode;
-  timeData: Uint8Array;
+  timeData: Uint8Array<ArrayBuffer>;
   audio: HTMLAudioElement;
 };
 
@@ -85,7 +85,7 @@ export const halftoneRippleSketch = (s: p5) => {
   let tap: AudioTap | null = null;
   // Local frequency buffer, allocated lazily to match the tap's analyser. Kept
   // here (not on the shared tap) so we never depend on another sketch's tap.
-  let freqData: Uint8Array | null = null;
+  let freqData: Uint8Array<ArrayBuffer> | null = null;
 
   // Beat detection state.
   let smoothedBass = 0; // fast-following bass energy
