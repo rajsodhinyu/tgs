@@ -71,8 +71,8 @@ importers:
         specifier: ^13.3.4
         version: 13.3.4(@sanity/client@8.7.0)(@types/react@19.3.0)(next@16.3.6(@babel/core@7.29.7(supports-color@8.1.1))(@types/node@20.19.43)(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(sanity@6.16.0(@babel/core@7.29.7(supports-color@8.1.1))(@babel/runtime@7.29.7)(@noble/hashes@2.4.0)(@rolldown/plugin-babel@0.2.4(@babel/core@7.29.7(supports-color@8.1.1))(@babel/runtime@7.29.7)(rolldown@1.2.11)(vite@8.3.1(@types/node@20.19.43)(jiti@1.21.7)(yaml@2.9.1)))(@types/node@20.19.43)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(immer@10.2.0)(jiti@1.21.7)(prismjs@1.30.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(rolldown@1.2.11)(styled-components@6.5.3(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(supports-color@8.1.1)(typescript@5.9.3))(styled-components@6.5.3(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(typescript@5.9.3)
       p5:
-        specifier: ^1.11.5
-        version: 1.11.13
+        specifier: 1.11.5
+        version: 1.11.5
       react:
         specifier: 19.3.0
         version: 19.3.0
@@ -4525,8 +4525,8 @@ packages:
     resolution: {integrity: sha512-R4nPAVTAU0B9D35/Gk3uJf/7XYbQcyohSKdvAxIRSNghFl4e71hVoGnBNQz9cWaXxO2I10KTC+3jMdvvoKw6dQ==}
     engines: {node: '>=6'}
 
-  p5@1.11.13:
-    resolution: {integrity: sha512-gfGo4AkyuNMs6Ko7UNFM9K2edqFRGyLrFaYUB+XXF127JVdEPu0BIaC5uDDNJpsRMOD9hJMUpsOH4HkfuNhvhA==}
+  p5@1.11.5:
+    resolution: {integrity: sha512-tn/Em+mwRReFOH6HgAhr/kj2BSRtlEn4bga3MMCwo4OQE1POO9zEIg+7SDxJj8f+H37N6NJgxtEYaQGSNpxwyA==}
 
   pako@0.2.9:
     resolution: {integrity: sha512-NUcwaKxUxWrZLpDG+z/xZaCgQITkA/Dv4V/T6bw7VON6l1Xz/VnrBqrYjZQ12TamKHzITTfOEIYUj48y2KXImA==}
@@ -10744,7 +10744,7 @@ snapshots:
 
   p-try@2.2.0: {}
 
-  p5@1.11.13: {}
+  p5@1.11.5: {}
 
   pako@0.2.9: {}
 
