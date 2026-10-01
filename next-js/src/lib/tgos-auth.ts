@@ -36,7 +36,7 @@ export function normalizePhone(raw: unknown): string | null {
   return null;
 }
 
-// TGOS_TEAM="Raj:+1 916 500 9487, Annabelle:(805) 850-8160, ..." → phone → name.
+// TGOS_TEAM="Raj:+1 555 010 0001, Annabelle:(555) 010-0002, ..." → phone → name.
 export function team(): Map<string, string> {
   const out = new Map<string, string>();
   for (const entry of (process.env.TGOS_TEAM || "").split(",")) {
