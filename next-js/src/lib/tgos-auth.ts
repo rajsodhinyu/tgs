@@ -1,6 +1,7 @@
-// tgos.app auth: a whitelist of team phone numbers (TGOS_ALLOWED_PHONES), a
-// login code texted through Linq, and an HMAC-signed session cookie. Stateless
-// (no DB) and Web Crypto only, so the proxy and route handlers share it.
+// tgos.app auth: a team list of names + phone numbers (TGOS_TEAM), a login code
+// texted through Linq, and an HMAC-signed session cookie. Stateless (no DB) and
+// Web Crypto only, so the proxy and route handlers share it. Anyone can verify a
+// number; only team numbers get a session (others get a short "pending" token).
 //
 // Login codes are derived from (phone, 5-minute window) rather than stored:
 // repeat requests in a window produce the same code + Linq idempotency key, so
@@ -9,6 +10,8 @@
 
 export const TGOS_SESSION_COOKIE = "tgos_session";
 export const TGOS_SESSION_MAX_AGE = 60 * 60 * 24 * 30; // 30 days, in seconds
+export const TGOS_PENDING_COOKIE = "tgos_pending";
+export const TGOS_PENDING_MAX_AGE = 60 * 30;
 
 const CODE_WINDOW_MS = 5 * 60 * 1000;
 const CODE_DIGITS = 8;
@@ -33,17 +36,23 @@ export function normalizePhone(raw: unknown): string | null {
   return null;
 }
 
-export function allowedPhones(): Set<string> {
-  const out = new Set<string>();
-  for (const entry of (process.env.TGOS_ALLOWED_PHONES || "").split(",")) {
-    const phone = normalizePhone(entry);
-    if (phone) out.add(phone);
+// TGOS_TEAM="Raj:+1 916 500 9487, Annabelle:(805) 850-8160, ..." → phone → name.
+export function team(): Map<string, string> {
+  const out = new Map<string, string>();
+  for (const entry of (process.env.TGOS_TEAM || "").split(",")) {
+    const i = entry.indexOf(":");
+    const phone = normalizePhone(i === -1 ? entry : entry.slice(i + 1));
+    if (phone) out.set(phone, i === -1 ? "" : entry.slice(0, i).trim());
   }
   return out;
 }
 
-export function isAllowedPhone(phone: string): boolean {
-  return allowedPhones().has(phone);
+export function isTeamPhone(phone: string): boolean {
+  return team().has(phone);
+}
+
+export function teamName(phone: string): string {
+  return team().get(phone) || "";
 }
 
 async function hmacKey(key: string): Promise<CryptoKey> {
@@ -134,6 +143,9 @@ export function isLoginLocked(phone: string): boolean {
 }
 
 export function recordFailedLogin(phone: string): void {
+  if (failedLogins.size > 10_000) {
+    for (const key of [...failedLogins.keys()]) failedLoginCount(key);
+  }
   const count = failedLoginCount(phone);
   const window = failedLogins.get(phone)?.window ?? codeWindow();
   failedLogins.set(phone, { window, count: count + 1 });
@@ -143,32 +155,48 @@ export function clearFailedLogins(phone: string): void {
   failedLogins.delete(phone);
 }
 
-export async function createSession(phone: string): Promise<string> {
-  const exp = String(Date.now() + TGOS_SESSION_MAX_AGE * 1000);
+type TokenKind = "session" | "pending";
+
+async function createToken(kind: TokenKind, phone: string, maxAge: number): Promise<string> {
+  const exp = String(Date.now() + maxAge * 1000);
   const payload = `${phone}.${exp}`;
-  return `${payload}.${toHex(await sign(`session.${payload}`))}`;
+  return `${payload}.${toHex(await sign(`${kind}.${payload}`))}`;
 }
 
-// Returns the phone if the cookie is validly signed, unexpired, and the phone
-// is still on the whitelist (removing a number revokes its sessions).
-export async function readSession(value: string | undefined): Promise<string | null> {
+async function readToken(kind: TokenKind, value: string | undefined): Promise<string | null> {
   if (!value || !isAuthConfigured()) return null;
   const parts = value.split(".");
   if (parts.length !== 3) return null;
   const [phone, exp, sigHex] = parts;
-  if (normalizePhone(phone) !== phone || !isAllowedPhone(phone)) return null;
+  if (normalizePhone(phone) !== phone) return null;
   const expNum = Number(exp);
   if (!Number.isFinite(expNum) || expNum < Date.now()) return null;
   const sig = fromHex(sigHex);
   if (!sig) return null;
   const key = await hmacKey(secret());
-  const ok = await crypto.subtle.verify(
-    "HMAC",
-    key,
-    sig,
-    encoder.encode(`session.${phone}.${exp}`),
-  );
+  const ok = await crypto.subtle.verify("HMAC", key, sig, encoder.encode(`${kind}.${phone}.${exp}`));
   return ok ? phone : null;
+}
+
+export function createSession(phone: string): Promise<string> {
+  return createToken("session", phone, TGOS_SESSION_MAX_AGE);
+}
+
+// Returns the phone if the cookie is validly signed, unexpired, and the phone
+// is still on the team list (removing a number revokes its sessions).
+export async function readSession(value: string | undefined): Promise<string | null> {
+  const phone = await readToken("session", value);
+  return phone && isTeamPhone(phone) ? phone : null;
+}
+
+// Proof that a non-team number was verified, so it can attach a name to its
+// access request.
+export function createPendingToken(phone: string): Promise<string> {
+  return createToken("pending", phone, TGOS_PENDING_MAX_AGE);
+}
+
+export function readPendingToken(value: string | undefined): Promise<string | null> {
+  return readToken("pending", value);
 }
 
 export function sessionCookieOptions(maxAge: number = TGOS_SESSION_MAX_AGE) {

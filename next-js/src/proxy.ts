@@ -19,6 +19,8 @@ export const config = {
 const TGOS_HOSTS = new Set(["tgos.app", "www.tgos.app", "tgos.localhost"]);
 
 const PUBLIC_PAGES = new Set(["/os/login"]);
+// Home-screen manifest + icons in public/tgos/, needed before login.
+const PUBLIC_ASSET_PREFIX = "/tgos/";
 const PUBLIC_API_PREFIX = "/api/os/auth/";
 
 const CORS_HEADERS = {
@@ -66,7 +68,9 @@ export async function proxy(req: NextRequest) {
   // Static files from public/ (fonts, images) pass straight through, but only
   // for team members; otherwise any dotted public route would skip the gate.
   if (/\.[a-z0-9]+$/i.test(pathname)) {
-    return session ? NextResponse.next() : new NextResponse(null, { status: 404 });
+    return session || pathname.startsWith(PUBLIC_ASSET_PREFIX)
+      ? NextResponse.next()
+      : new NextResponse(null, { status: 404 });
   }
 
   const effective = inSection(pathname, "/os")

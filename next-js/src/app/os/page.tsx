@@ -1,4 +1,7 @@
 import Link from "next/link";
+import { cookies } from "next/headers";
+import { TGOS_SESSION_COOKIE, readSession, teamName } from "@/lib/tgos-auth";
+import HomeScreenHint from "./HomeScreenHint";
 
 const TOOLS = [
   {
@@ -8,11 +11,13 @@ const TOOLS = [
   },
 ];
 
-export default function Page() {
+export default async function Page() {
+  const phone = await readSession((await cookies()).get(TGOS_SESSION_COOKIE)?.value);
+  const name = phone ? teamName(phone) : "";
   return (
     <div className="mx-auto max-w-2xl pt-10">
       <div className="flex items-center justify-between">
-        <h1 className="font-title text-4xl uppercase">tgos</h1>
+        <h1 className="font-title text-4xl uppercase">{name ? `Hi, ${name}!` : "tgos"}</h1>
         <form action="/api/os/auth/logout" method="post">
           <button className="rounded-full bg-white/10 px-4 py-1.5 font-title text-sm uppercase hover:bg-white/20">
             log out
@@ -32,6 +37,7 @@ export default function Page() {
           </li>
         ))}
       </ul>
+      <HomeScreenHint />
     </div>
   );
 }

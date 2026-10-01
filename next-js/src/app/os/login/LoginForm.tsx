@@ -2,7 +2,11 @@
 
 import { useState } from "react";
 
-type Step = { kind: "phone" } | { kind: "code"; phone: string };
+type Step =
+  | { kind: "phone" }
+  | { kind: "code"; phone: string }
+  | { kind: "pending" }
+  | { kind: "requested"; name: string };
 
 const inputClass =
   "w-full rounded-full bg-white/10 px-5 py-3 font-roc text-lg text-white placeholder:text-white/40 outline-none focus:bg-white/20";
@@ -13,6 +17,7 @@ export default function LoginForm({ next }: { next: string }) {
   const [step, setStep] = useState<Step>({ kind: "phone" });
   const [phone, setPhone] = useState("");
   const [code, setCode] = useState("");
+  const [name, setName] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -51,7 +56,52 @@ export default function LoginForm({ next }: { next: string }) {
       setBusy(false);
       return setError(data.error || "Something went wrong");
     }
-    window.location.assign(next);
+    if (data.member) return window.location.assign(next);
+    setBusy(false);
+    setStep({ kind: "pending" });
+  }
+
+  async function saveName(e: React.FormEvent) {
+    e.preventDefault();
+    setBusy(true);
+    setError(null);
+    const { ok, data } = await post("/api/os/auth/request", { name });
+    setBusy(false);
+    if (!ok) return setError(data.error || "Something went wrong");
+    setStep({ kind: "requested", name: name.trim() });
+  }
+
+  if (step.kind === "requested") {
+    return (
+      <p className="mt-8 font-roc text-lg text-white/80">
+        Thanks, {step.name}. We&apos;ll let you know if you get access.
+      </p>
+    );
+  }
+
+  if (step.kind === "pending") {
+    return (
+      <form onSubmit={saveName} className="mt-8 grid gap-3">
+        <p className="font-roc text-sm text-white/70">
+          Your number checks out, but it isn&apos;t on the team list yet. Tell us who you are.
+        </p>
+        <input
+          className={inputClass}
+          type="text"
+          autoComplete="name"
+          placeholder="Your name"
+          maxLength={80}
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          autoFocus
+          required
+        />
+        <button className={buttonClass} disabled={busy || !name.trim()}>
+          {busy ? "saving…" : "send"}
+        </button>
+        {error && <p className="font-roc text-sm text-red-300">{error}</p>}
+      </form>
+    );
   }
 
   if (step.kind === "phone") {
@@ -79,7 +129,7 @@ export default function LoginForm({ next }: { next: string }) {
   return (
     <form onSubmit={verify} className="mt-8 grid gap-3">
       <p className="font-roc text-sm text-white/70">
-        If {step.phone} is on the team list, a code is on its way.
+        We texted a code to {step.phone}.
       </p>
       <input
         className={`${inputClass} tracking-[0.3em]`}

@@ -38,14 +38,26 @@ All **pnpm**. Run inside the relevant package.
 Same Next app, second domain. `src/proxy.ts` rewrites every non-API, non-asset path on
 `tgos.app` / `www.tgos.app` / `tgos.localhost` into `src/app/os/*` (URL bar keeps
 `tgos.app/...`) and 404s `/os` + `/api/os` on every other host. Locally: `http://tgos.localhost:3000`.
-- **Auth** (`src/lib/tgos-auth.ts`, `src/app/api/os/auth/*`): phone whitelist in
-  `TGOS_ALLOWED_PHONES` (comma-separated, US numbers can be messy) → 8-digit code texted via
-  Linq (`src/lib/linq.ts`, `LINQ_API_KEY` + `LINQ_FROM_NUMBER`) → HMAC session cookie
-  `tgos_session` (30 days, `TGOS_SESSION_SECRET`, ≥32 chars). Stateless: the code is derived
-  from (phone, 5-min window), and the Linq idempotency key is the same, so repeat requests
-  don't re-text. Sessions are re-checked against the whitelist on every request, so removing
-  a number logs it out. Linq rejects URLs in the first text of a new chat — keep the code
-  message link-free.
+- **Auth** (`src/lib/tgos-auth.ts`, `src/app/api/os/auth/*`): team list in `TGOS_TEAM`
+  (`Name:phone,Name:phone`, US numbers can be messy) → 8-digit code texted via Linq
+  (`src/lib/linq.ts`, `LINQ_API_KEY` + `LINQ_FROM_NUMBER`) → HMAC session cookie `tgos_session`
+  (30 days, `TGOS_SESSION_SECRET`, ≥32 chars). The code is derived from (phone, 5-min window),
+  and the Linq idempotency key is the same, so repeat requests don't re-text. Sessions are
+  re-checked against the team list on every request, so removing a number logs it out. Home
+  says "Hi, {name}!" from that list. Linq rejects URLs in the first text of a new chat — keep
+  the code message link-free.
+- **Non-team numbers** can verify too, but get no session: they're upserted into
+  `tgos_access_requests` (phone, optional name, verify timestamps) and can add a name via a
+  30-min `tgos_pending` cookie. Code sends are rate-limited in `tgos_code_sends` (per IP,
+  per phone, and a global non-team cap). Both tables live in the regex.design Neon DB
+  (`DATABASE_URL`, `src/lib/tgos-db.ts`, lazy `CREATE TABLE IF NOT EXISTS`). Team logins
+  still work if the DB is down.
+- **iPhone**: the code input is `autocomplete="one-time-code"` (keyboard suggests the texted
+  code; typing it works too). Home-screen manifest + icons live in `public/tgos/` and are
+  the only dotted paths served on tgos hosts without a session.
+- **Regex Slack bridge**: team numbers except Raj are in regex's
+  `STUDIO_COMMS_EXCLUDED_PHONES` so code texts and replies never open `txt-*` channels.
+  Add new team members there too.
 - **Tools**: add a page under `src/app/os/` and a card in `src/app/os/page.tsx`.
   `tgos.app/playlists/export` reuses `playlists/export/PlaylistExporter` (`backHref` prop).
 
