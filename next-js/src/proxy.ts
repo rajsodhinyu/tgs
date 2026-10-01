@@ -63,8 +63,11 @@ export async function proxy(req: NextRequest) {
   }
   if (pathname.startsWith("/api/")) return publicApi(req);
 
-  // Static files from public/ (fonts, images) pass straight through.
-  if (/\.[a-z0-9]+$/i.test(pathname)) return NextResponse.next();
+  // Static files from public/ (fonts, images) pass straight through, but only
+  // for team members; otherwise any dotted public route would skip the gate.
+  if (/\.[a-z0-9]+$/i.test(pathname)) {
+    return session ? NextResponse.next() : new NextResponse(null, { status: 404 });
+  }
 
   const effective = inSection(pathname, "/os")
     ? pathname

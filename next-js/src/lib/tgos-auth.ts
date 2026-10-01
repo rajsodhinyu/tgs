@@ -115,6 +115,34 @@ export async function verifyLoginCode(phone: string, raw: unknown): Promise<bool
   return a || b;
 }
 
+const MAX_FAILED_LOGINS = 5;
+// Best-effort and per server instance; codes are 8 digits and expire in 5-10 min.
+const failedLogins = new Map<string, { window: number; count: number }>();
+
+function failedLoginCount(phone: string): number {
+  const entry = failedLogins.get(phone);
+  if (!entry) return 0;
+  if (entry.window < codeWindow() - 1) {
+    failedLogins.delete(phone);
+    return 0;
+  }
+  return entry.count;
+}
+
+export function isLoginLocked(phone: string): boolean {
+  return failedLoginCount(phone) >= MAX_FAILED_LOGINS;
+}
+
+export function recordFailedLogin(phone: string): void {
+  const count = failedLoginCount(phone);
+  const window = failedLogins.get(phone)?.window ?? codeWindow();
+  failedLogins.set(phone, { window, count: count + 1 });
+}
+
+export function clearFailedLogins(phone: string): void {
+  failedLogins.delete(phone);
+}
+
 export async function createSession(phone: string): Promise<string> {
   const exp = String(Date.now() + TGOS_SESSION_MAX_AGE * 1000);
   const payload = `${phone}.${exp}`;

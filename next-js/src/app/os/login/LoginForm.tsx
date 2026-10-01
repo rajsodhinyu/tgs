@@ -17,13 +17,17 @@ export default function LoginForm({ next }: { next: string }) {
   const [error, setError] = useState<string | null>(null);
 
   async function post(path: string, body: object) {
-    const res = await fetch(path, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
-    });
-    const data = await res.json().catch(() => ({}));
-    return { ok: res.ok, data };
+    try {
+      const res = await fetch(path, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+      const data = await res.json().catch(() => ({}));
+      return { ok: res.ok, data };
+    } catch {
+      return { ok: false, data: { error: "Couldn't reach the server. Try again." } };
+    }
   }
 
   async function sendCode(e: React.FormEvent) {
