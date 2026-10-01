@@ -8,7 +8,11 @@
     "start": "next start",
     "lint": "eslint ."
   },
+  "engines": {
+    "node": "24.x"
+  },
   "dependencies": {
+    "@neondatabase/serverless": "1.1.0",
     "@sanity/image-url": "^1.1.0",
     "@shopify/storefront-api-client": "^1.0.7",
     "@vercel/analytics": "^1.5.0",

@@ -36,8 +36,10 @@ function proxyUrl(url: string) {
 
 export default function PlaylistExporter({
   playlists,
+  backHref = "/playlists",
 }: {
   playlists: Playlist[];
+  backHref?: string;
 }) {
   const [mode, setMode] = useState<Mode>("crate");
   const [state, setState] = useState<ExportState>({ step: "select" });
@@ -371,7 +373,7 @@ export default function PlaylistExporter({
           </button>
         ) : (
           <Link
-            href="/playlists"
+            href={backHref}
             className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 transition-colors flex items-center justify-center justify-self-start"
           >
             <ChevronDots direction="left" color="white" />
