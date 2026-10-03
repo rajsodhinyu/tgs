@@ -10,7 +10,7 @@ export type ActionResult = { error?: string } | undefined;
 
 async function welcome(phone: string, name: string) {
   try {
-    await sendLinqText(phone, `You're in, ${name}! Open tgos.app and log in with this number.`, `tgos-welcome:${phone}`);
+    await sendLinqText(phone, `You're in, ${name}! You can log in to tgos with this number.`, `tgos-welcome:${phone}`);
   } catch (err) {
     logError("welcome text failed", err, { phoneLast4: phone.slice(-4) });
   }

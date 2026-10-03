@@ -14,6 +14,7 @@ import { logError } from "@/lib/http";
 import {
   clearFailedLogins,
   getMember,
+  hasRecentCodeSend,
   isLoginLocked,
   recordAccessRequest,
   recordFailedLogin,
@@ -34,7 +35,7 @@ export async function POST(request: NextRequest) {
         { status: 429 },
       );
     }
-    if (!(await verifyLoginCode(phone, body?.code))) {
+    if (!(await hasRecentCodeSend(phone)) || !(await verifyLoginCode(phone, body?.code))) {
       await recordFailedLogin(phone);
       return NextResponse.json({ error: "That code didn't work" }, { status: 401 });
     }

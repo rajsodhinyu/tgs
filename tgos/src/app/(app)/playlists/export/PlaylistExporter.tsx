@@ -309,18 +309,23 @@ export default function PlaylistExporter({
     }
   }
 
+  // Album art is usually JPEG; the clipboard needs real PNG bytes.
+  async function toPng(url: string): Promise<Blob> {
+    const bitmap = await createImageBitmap(await (await fetch(proxyImage(url))).blob());
+    const canvas = document.createElement("canvas");
+    canvas.width = bitmap.width;
+    canvas.height = bitmap.height;
+    canvas.getContext("2d")!.drawImage(bitmap, 0, 0);
+    return new Promise((resolve, reject) =>
+      canvas.toBlob((b) => (b ? resolve(b) : reject(new Error("PNG encode failed"))), "image/png"),
+    );
+  }
+
   function copyImageFromUrl(url: string, label: string) {
-    fetch(proxyImage(url))
-      .then((r) => r.blob())
-      .then((blob) => {
-        const pngBlob = new Blob([blob], { type: "image/png" });
-        navigator.clipboard
-          .write([new ClipboardItem({ "image/png": pngBlob })])
-          .then(() => {
-            setCopied(label);
-            setTimeout(() => setCopied(null), 1500);
-          });
-      });
+    navigator.clipboard.write([new ClipboardItem({ "image/png": toPng(url) })]).then(() => {
+      setCopied(label);
+      setTimeout(() => setCopied(null), 1500);
+    });
   }
 
   function copyImage(blob: Blob, label: string) {

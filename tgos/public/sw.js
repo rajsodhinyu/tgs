@@ -1,7 +1,7 @@
-// Cache-first for immutable build assets, fonts and icons so the installed app
-// opens instantly. Pages and API calls always go to the network.
-const CACHE = "tgos-static-v1";
-const STATIC = /^\/(_next\/static\/|fonts\/|icon-|apple-touch-icon)/;
+// Cache-first for content-hashed build assets so the installed app opens
+// instantly. Everything else (pages, APIs, unversioned public files) goes to the network.
+const CACHE = "tgos-static-v2";
+const STATIC = /^\/_next\/static\//;
 
 self.addEventListener("install", () => self.skipWaiting());
 

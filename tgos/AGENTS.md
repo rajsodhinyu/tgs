@@ -18,7 +18,8 @@ Local env lives in `.env.local` (see `.env.example`).
 ## Auth
 - Phone + 8-digit code texted through Linq (`src/lib/linq.ts`). Codes are derived from
   (phone, 5-min window) with HMAC (`src/lib/auth.ts`), never stored; the Linq idempotency key
-  uses the same window so retries don't re-text. Linq rejects URLs in the first text of a new
+  uses the same window so retries don't re-text. A code is only accepted if a send was
+  recorded for that number in `tgos.code_sends` in the last 10 min. Linq rejects URLs in the first text of a new
   chat — keep the code text link-free.
 - Session = HMAC-signed `tgos_session` cookie (30 days). `src/proxy.ts` only checks the
   signature; every page and server action must call `requireMember()` (`src/lib/members.ts`),
@@ -47,5 +48,5 @@ texts with the Linq line don't open Slack `txt-*` channels. Update it when addin
 
 ## Mobile
 `src/app/manifest.ts` + `public/icon-*.png` + `apple-touch-icon.png`; `public/sw.js` caches only
-immutable build assets/fonts/icons. Respect safe areas (`env(safe-area-inset-*)`). The code
+content-hashed `/_next/static/` assets. Respect safe areas (`env(safe-area-inset-*)`). The code
 input keeps `autocomplete="one-time-code"` for iOS autofill.

@@ -60,6 +60,16 @@ export async function allowCodeSend(phone: string, ip: string, member: boolean):
   return allowed;
 }
 
+// Codes are only accepted for a number we actually texted within the last two
+// code windows, so codes can't be tried against numbers that never asked.
+export async function hasRecentCodeSend(phone: string): Promise<boolean> {
+  const [row] = await db()
+    .select({ n: count() })
+    .from(codeSends)
+    .where(and(eq(codeSends.phone, phone), gt(codeSends.sentAt, sql`now() - interval '10 minutes'`)));
+  return row.n > 0;
+}
+
 const MAX_FAILED_LOGINS = 5;
 const recentFailure = (phone: string) =>
   and(eq(loginFailures.phone, phone), gt(loginFailures.failedAt, sql`now() - interval '10 minutes'`));
@@ -140,8 +150,10 @@ export async function denyRequest(phone: string, by: Member): Promise<void> {
     .where(eq(accessRequests.phone, phone));
 }
 
+// Also drops their old approved request so a later verify shows up as pending again.
 export async function removeMember(phone: string): Promise<void> {
   await db().delete(members).where(eq(members.phone, phone));
+  await db().delete(accessRequests).where(eq(accessRequests.phone, phone));
 }
 
 export async function pendingRequest(phone: string) {
