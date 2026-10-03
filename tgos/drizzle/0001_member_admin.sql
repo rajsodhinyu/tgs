@@ -1,0 +1,1 @@
+ALTER TABLE "tgos"."members" ADD COLUMN "admin" boolean DEFAULT false NOT NULL;

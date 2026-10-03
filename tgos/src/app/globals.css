@@ -1,0 +1,34 @@
+@import "tailwindcss";
+
+@theme inline {
+  --font-bit: var(--nf-bitcount);
+  --font-title: var(--nf-bitcount-filled);
+  --font-roc: var(--nf-roc);
+}
+
+@theme {
+  --color-tgs-pink: #ed9df9;
+  --color-tgs-purple: #6c5cbe;
+  --color-tgs-dark-purple: #3d3564;
+  --color-tgs-gray: #dbdbdb;
+  --color-tgs-ink: #191a24;
+}
+
+html {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  overscroll-behavior-y: none;
+}
+
+button,
+a {
+  touch-action: manipulation;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 160ms;
+}

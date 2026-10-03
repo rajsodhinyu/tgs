@@ -7,11 +7,12 @@ actually needs it.
 
 ## Project Overview
 
-ThatGoodSht (TGS) is an independent music curation platform. Monorepo, three packages
+ThatGoodSht (TGS) is an independent music curation platform. Monorepo, four packages
 (no root workspace — each has its own `pnpm-lock.yaml`):
 
 - **`next-js/`** — Next.js 16 frontend (App Router, React 19, TypeScript, Tailwind)
 - **`thatgoodsht/`** — Sanity v3 CMS (content studio)
+- **`tgos/`** — tgos.app, the standalone team-only internal app (own Vercel project, Next 16, Drizzle/Neon). Read `tgos/AGENTS.md` before touching it.
 - **`scripts/`** — Standalone media/video tooling + SOTD bulk import (Node / bash + ffmpeg). See [scripts/ tooling](#scripts-tooling).
 
 ## Commands
